@@ -12,3 +12,4 @@ ignore =
 per-file-ignores =
     pages/*:E302
     app.py:E402
+    core/grader.py:C901

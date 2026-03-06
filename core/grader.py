@@ -878,8 +878,6 @@ class Grader:
 
         passed_count = 0
         details = []
-        # 합산 타임아웃 10초: 케이스당 최대 시간 = 10 / total 초
-        per_case_timeout = max(1.0, 10.0 / total)
 
         for i, tc in enumerate(test_cases, 1):
             stdin = tc.get("input") or tc.get("stdin", "")
