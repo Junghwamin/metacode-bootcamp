@@ -98,7 +98,7 @@ class SecurityValidator(ast.NodeVisitor):
         "pickle",       # 객체 직렬화 → 임의 코드 실행 가능
         "shelve",       # pickle 기반 영속 저장소
         "sqlite3",      # 데이터베이스 접근
-        "__builtins__", # 내장 함수 딕셔너리
+        "__builtins__",  # 내장 함수 딕셔너리
     }
 
     def __init__(self) -> None:

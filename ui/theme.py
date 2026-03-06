@@ -20,7 +20,7 @@ THEME = {
     "surface": "#FFFFFF",       # 순수 흰색: 카드, 패널
     # 텍스트
     "text_primary": "#2D3748",  # 짙은 회색: 주요 텍스트 (흰 배경에서 WCAG AA 통과)
-    "text_secondary": "#718096", # 중간 회색: 보조 텍스트, 힌트
+    "text_secondary": "#718096",  # 중간 회색: 보조 텍스트, 힌트
     # 상태 색상
     "success": "#48BB78",       # 초록: 정답, 완료, 통과
     "error": "#F56565",         # 빨강: 오류, 실패
@@ -28,7 +28,7 @@ THEME = {
     "info": "#4299E1",          # 밝은 파란: 정보, 안내
     # 난이도 색상 (DIFFICULTY_LABELS와 동기화)
     "difficulty_basic": "#48BB78",        # 초록: 기초
-    "difficulty_intermediate": "#ED8936", # 주황: 중급
+    "difficulty_intermediate": "#ED8936",  # 주황: 중급
     "difficulty_advanced": "#F56565",     # 빨강: 심화
     # 코드 에디터 (VS Code Dark 테마 기반)
     "editor_bg": "#1E1E1E",     # 짙은 배경: 장시간 코딩 시 눈 편안

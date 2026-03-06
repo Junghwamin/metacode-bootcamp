@@ -158,7 +158,6 @@ def render_progress_page() -> None:
     st.markdown("**난이도별 풀이 현황**")
 
     difficulty_counts = {"basic": 0, "intermediate": 0, "advanced": 0}
-    difficulty_labels = {"basic": "기초", "intermediate": "중급", "advanced": "심화"}
 
     # 문제 데이터에서 난이도 정보 추출
     import json

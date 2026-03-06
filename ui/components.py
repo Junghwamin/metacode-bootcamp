@@ -165,7 +165,7 @@ def render_grade_result(passed: bool, score: float, feedback: str) -> None:
 
 
 def render_hint_panel(hint_text: str = "", level: int = 1, problem: dict = None,
-                       hints_used: int = 0, on_hint_callback=None) -> None:
+                      hints_used: int = 0, on_hint_callback=None) -> None:
     """힌트 패널을 렌더링한다.
 
     두 가지 호출 방식을 모두 지원한다:
@@ -308,7 +308,6 @@ def render_problem_navigation(
         diff_short = {"basic": "기초", "intermediate": "중급", "advanced": "심화"}.get(difficulty, "")
 
         label = f"{icon} {i+1}. {title} [{diff_short}]"
-        style = "font-weight:700;color:#4A90D9;" if i == current_idx else ""
 
         if st.button(label, key=f"nav_prob_{i}_{pid}", use_container_width=True):
             new_idx = i

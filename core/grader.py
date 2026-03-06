@@ -541,7 +541,6 @@ class Grader:
         test_cases = class_spec.get("test_cases", [])
 
         details = []
-        passed_count = 0
 
         # Step 1: 클래스 존재 확인
         cls = variables.get(class_name)

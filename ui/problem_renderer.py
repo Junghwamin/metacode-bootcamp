@@ -10,7 +10,6 @@
 """
 
 import streamlit as st
-from typing import Optional
 
 from ui.components import (
     render_code_editor,
@@ -19,9 +18,7 @@ from ui.components import (
     render_grade_result,
     render_hint_panel,
     render_problem_navigation,
-    render_progress_bar,
 )
-from ui.theme import DIFFICULTY_LABELS
 
 
 class ProblemRenderer:
@@ -202,7 +199,6 @@ class ProblemRenderer:
         for col, diff_key, diff_label in difficulty_cols:
             with col:
                 count = difficulty_counts.get(diff_key, 0)
-                color = DIFFICULTY_LABELS[diff_key]["color"]
                 # 체크박스 레이블에 문제 수 포함
                 new_val = st.checkbox(
                     f"{diff_label} ({count})",
@@ -349,7 +345,69 @@ class ProblemRenderer:
             st.markdown("</div>", unsafe_allow_html=True)
 
         # ---- 버튼 액션 처리 ----
+        self._handle_button_actions(
+            run_clicked, submit_clicked, reset_clicked,
+            code_key, result_key, grade_key, hints_key,
+            initial_code, prob_id, problem,
+        )
 
+        # ---- 6. 실행 결과 영역 ----
+        exec_result = st.session_state.get(result_key)
+        if exec_result:
+            render_execution_result(exec_result)
+
+        # ---- 7. 채점 결과 영역 ----
+        grade_result = st.session_state.get(grade_key)
+        if grade_result:
+            render_grade_result(grade_result)
+
+        # ---- 8. 힌트 패널 ----
+        hints_used = st.session_state.get(hints_key, 0)
+
+        def on_hint_callback(hint_num: int) -> None:
+            """힌트 열기 콜백.
+
+            Args:
+                hint_num: 열려는 힌트 번호 (1부터 시작)
+            """
+            st.session_state[hints_key] = hint_num
+            st.rerun()
+
+        render_hint_panel(
+            problem=problem,
+            hints_used=hints_used,
+            on_hint_callback=on_hint_callback,
+        )
+
+    def _handle_button_actions(
+        self,
+        run_clicked: bool,
+        submit_clicked: bool,
+        reset_clicked: bool,
+        code_key: str,
+        result_key: str,
+        grade_key: str,
+        hints_key: str,
+        initial_code: str,
+        prob_id: str,
+        problem: dict,
+    ) -> None:
+        """버튼 클릭 액션을 처리한다.
+
+        실행/제출/초기화 버튼의 각 클릭 이벤트를 처리한다.
+
+        Args:
+            run_clicked: 실행 버튼 클릭 여부
+            submit_clicked: 제출 버튼 클릭 여부
+            reset_clicked: 초기화 버튼 클릭 여부
+            code_key: 코드 session_state 키
+            result_key: 실행 결과 session_state 키
+            grade_key: 채점 결과 session_state 키
+            hints_key: 힌트 사용 횟수 session_state 키
+            initial_code: 초기 코드 문자열
+            prob_id: 문제 ID
+            problem: 문제 딕셔너리
+        """
         if reset_clicked:
             # 초기화: 코드를 initial_code로 리셋
             st.session_state[code_key] = initial_code
@@ -386,34 +444,6 @@ class ProblemRenderer:
             else:
                 # 실행 실패 시 채점 결과 초기화
                 st.session_state[grade_key] = None
-
-        # ---- 6. 실행 결과 영역 ----
-        exec_result = st.session_state.get(result_key)
-        if exec_result:
-            render_execution_result(exec_result)
-
-        # ---- 7. 채점 결과 영역 ----
-        grade_result = st.session_state.get(grade_key)
-        if grade_result:
-            render_grade_result(grade_result)
-
-        # ---- 8. 힌트 패널 ----
-        hints_used = st.session_state.get(hints_key, 0)
-
-        def on_hint_callback(hint_num: int) -> None:
-            """힌트 열기 콜백.
-
-            Args:
-                hint_num: 열려는 힌트 번호 (1부터 시작)
-            """
-            st.session_state[hints_key] = hint_num
-            st.rerun()
-
-        render_hint_panel(
-            problem=problem,
-            hints_used=hints_used,
-            on_hint_callback=on_hint_callback,
-        )
 
     def _execute_code(self, code: str) -> dict:
         """코드를 안전하게 실행하고 결과를 반환한다.
