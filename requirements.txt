@@ -1,12 +1,12 @@
-# === Streamlit 프레임워크 ===
+# Streamlit framework
 streamlit>=1.41.0
 
-# === 코드 에디터 UI ===
+# Code editor UI
 streamlit-code-editor>=0.1.0
 
-# === 브라우저 localStorage 연동 (진행도 저장) ===
+# Browser localStorage (progress save)
 streamlit-local-storage>=0.0.22
 
-# === 챕터 8: 데이터 분석 라이브러리 ===
+# Chapter 8: data analysis libraries
 numpy>=1.26.0
 pandas>=2.2.0
