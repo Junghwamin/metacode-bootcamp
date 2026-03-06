@@ -1,7 +1,6 @@
 """데이터 파일 무결성 테스트."""
 
 import json
-import glob
 import os
 import pytest
 
