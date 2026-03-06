@@ -1,0 +1,109 @@
+{
+    "chapter_id": 2,
+    "quiz_title": "챕터 2 확인 퀴즈",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch2_q01",
+            "type": "multiple_choice",
+            "question": "다음 중 파이썬에서 정수 나눗셈(몫만 구하는) 연산자는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "/"},
+                {"label": "B", "text": "%"},
+                {"label": "C", "text": "//"},
+                {"label": "D", "text": "**"}
+            ],
+            "correct_answer": "C",
+            "explanation": "// 연산자는 정수 나눗셈으로 소수점을 버린 몫을 반환합니다. 예: 7 // 2 = 3"
+        },
+        {
+            "question_id": "ch2_q02",
+            "type": "fill_blank",
+            "question": "10을 3으로 나눈 나머지를 구하는 연산식을 작성하세요. (연산자만 작성)",
+            "correct_answer": "%",
+            "accept_answers": ["10 % 3"],
+            "explanation": "% 연산자는 나머지를 구합니다. 10 % 3 = 1"
+        },
+        {
+            "question_id": "ch2_q03",
+            "type": "ox",
+            "question": "파이썬에서 7 / 2의 결과는 3이다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. 파이썬 3에서 / 연산자는 항상 실수를 반환합니다. 7 / 2 = 3.5입니다. 정수 나눗셈은 7 // 2 = 3입니다."
+        },
+        {
+            "question_id": "ch2_q04",
+            "type": "multiple_choice",
+            "question": "다음 코드의 출력 결과는 무엇인가요?\n\ntext = 'Python'\nprint(text[2])",
+            "options": [
+                {"label": "A", "text": "P"},
+                {"label": "B", "text": "y"},
+                {"label": "C", "text": "t"},
+                {"label": "D", "text": "h"}
+            ],
+            "correct_answer": "C",
+            "explanation": "인덱스는 0부터 시작합니다. text[0]='P', text[1]='y', text[2]='t'이므로 결과는 't'입니다."
+        },
+        {
+            "question_id": "ch2_q05",
+            "type": "multiple_choice",
+            "question": "'Hello World'.upper() 의 결과는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "hello world"},
+                {"label": "B", "text": "HELLO WORLD"},
+                {"label": "C", "text": "Hello world"},
+                {"label": "D", "text": "hELLO wORLD"}
+            ],
+            "correct_answer": "B",
+            "explanation": "upper() 메소드는 문자열의 모든 문자를 대문자로 변환합니다."
+        },
+        {
+            "question_id": "ch2_q06",
+            "type": "ox",
+            "question": "파이썬에서 '==' 연산자는 두 값이 같은지 비교할 때 사용한다.",
+            "correct_answer": true,
+            "explanation": "맞습니다. == 은 비교 연산자로 두 값이 같으면 True, 다르면 False를 반환합니다. = 는 변수에 값을 대입하는 대입 연산자입니다."
+        },
+        {
+            "question_id": "ch2_q07",
+            "type": "multiple_choice",
+            "question": "True and False 의 결과는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "True"},
+                {"label": "B", "text": "False"},
+                {"label": "C", "text": "None"},
+                {"label": "D", "text": "Error"}
+            ],
+            "correct_answer": "B",
+            "explanation": "and 연산자는 두 값이 모두 True일 때만 True를 반환합니다. 하나라도 False이면 False입니다."
+        },
+        {
+            "question_id": "ch2_q08",
+            "type": "fill_blank",
+            "question": "'hello world'.split() 의 결과 리스트의 첫 번째 요소는 무엇인가요?",
+            "correct_answer": "hello",
+            "accept_answers": ["'hello'"],
+            "explanation": "split()은 공백을 기준으로 문자열을 분리합니다. 결과는 ['hello', 'world']이며 첫 번째 요소는 'hello'입니다."
+        },
+        {
+            "question_id": "ch2_q09",
+            "type": "multiple_choice",
+            "question": "bool(0) 의 결과는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "True"},
+                {"label": "B", "text": "False"},
+                {"label": "C", "text": "0"},
+                {"label": "D", "text": "None"}
+            ],
+            "correct_answer": "B",
+            "explanation": "파이썬에서 0은 False로 취급됩니다. bool(0)은 False를 반환합니다. 0이 아닌 모든 숫자는 True로 취급됩니다."
+        },
+        {
+            "question_id": "ch2_q10",
+            "type": "ox",
+            "question": "파이썬에서 문자열 'Python'[0:3] 의 결과는 'Pyt'이다.",
+            "correct_answer": true,
+            "explanation": "맞습니다. 슬라이싱 [0:3]은 인덱스 0, 1, 2를 포함하며 3은 포함하지 않습니다. 'P', 'y', 't'를 합쳐 'Pyt'가 됩니다."
+        }
+    ]
+}

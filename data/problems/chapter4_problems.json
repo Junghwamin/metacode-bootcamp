@@ -1,0 +1,408 @@
+{
+    "chapter_id": 4,
+    "problems": [
+        {
+            "problem_id": "ch4_p01",
+            "title": "if문 기초",
+            "difficulty": "basic",
+            "description": "숫자를 입력받아 양수, 음수, 또는 0인지 판별하는 프로그램을 작성하세요.",
+            "instructions": [
+                "정수를 input()으로 입력받으세요",
+                "양수이면 '양수입니다', 음수이면 '음수입니다', 0이면 '0입니다'를 출력하세요"
+            ],
+            "initial_code": "n = int(input('숫자를 입력하세요: '))\n\n# n이 양수, 음수, 0 중 무엇인지 판별하세요\n",
+            "solution_code": "n = int(input('숫자를 입력하세요: '))\nif n > 0:\n    print('양수입니다')\nelif n < 0:\n    print('음수입니다')\nelse:\n    print('0입니다')",
+            "hints": [
+                {"level": 1, "text": "if/elif/else 구조를 사용하세요. 조건: n > 0, n < 0, 나머지"},
+                {"level": 2, "text": "if n > 0: ... elif n < 0: ... else: ... 구조로 작성하세요."},
+                {"level": 3, "text": "if n > 0:\n    print('양수입니다')\nelif n < 0:\n    print('음수입니다')\nelse:\n    print('0입니다')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["5"], "expected_output": "양수입니다"},
+                    {"input": ["-3"], "expected_output": "음수입니다"},
+                    {"input": ["0"], "expected_output": "0입니다"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["if", "조건문", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch4_p02",
+            "title": "if-elif-else 활용",
+            "difficulty": "basic",
+            "description": "점수를 입력받아 학점을 출력하는 프로그램을 작성하세요.",
+            "instructions": [
+                "점수를 정수로 입력받으세요",
+                "90 이상: 'A', 80 이상: 'B', 70 이상: 'C', 60 이상: 'D', 그 외: 'F'",
+                "'학점: [학점]' 형태로 출력하세요"
+            ],
+            "initial_code": "score = int(input('점수: '))\n\n# 점수에 따라 학점을 결정하세요\n",
+            "solution_code": "score = int(input('점수: '))\nif score >= 90:\n    grade = 'A'\nelif score >= 80:\n    grade = 'B'\nelif score >= 70:\n    grade = 'C'\nelif score >= 60:\n    grade = 'D'\nelse:\n    grade = 'F'\nprint(f'학점: {grade}')",
+            "hints": [
+                {"level": 1, "text": "if/elif를 사용해 점수 범위를 위에서 아래로 검사합니다."},
+                {"level": 2, "text": "if score >= 90: grade='A' elif score >= 80: grade='B' 등의 구조로 작성하세요."},
+                {"level": 3, "text": "if score >= 90:\n    grade = 'A'\nelif score >= 80:\n    grade = 'B'\n...\nprint(f'학점: {grade}')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["95"], "expected_output": "학점: A"},
+                    {"input": ["83"], "expected_output": "학점: B"},
+                    {"input": ["72"], "expected_output": "학점: C"},
+                    {"input": ["55"], "expected_output": "학점: F"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["if", "elif", "else", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch4_p03",
+            "title": "for 반복문 기초",
+            "difficulty": "basic",
+            "description": "for 반복문과 range()를 사용해 1부터 10까지의 합을 구하세요.",
+            "instructions": [
+                "total 변수를 0으로 초기화하세요",
+                "for 반복문과 range(1, 11)을 사용하세요",
+                "각 숫자를 total에 더하세요",
+                "total을 출력하세요"
+            ],
+            "initial_code": "total = 0\n\n# 1부터 10까지 합산하세요\nfor i in range(1, 11):\n    # total에 i를 더하세요\n    pass\n\nprint(total)",
+            "solution_code": "total = 0\nfor i in range(1, 11):\n    total += i\nprint(total)",
+            "hints": [
+                {"level": 1, "text": "for i in range(1, 11): 로 1~10을 순서대로 처리합니다."},
+                {"level": 2, "text": "total += i 로 누적 합산합니다."},
+                {"level": 3, "text": "for i in range(1, 11):\n    total += i\nprint(total)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "55",
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "range", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch4_p04",
+            "title": "while 반복문 기초",
+            "difficulty": "basic",
+            "description": "while 반복문으로 1부터 5까지를 한 줄씩 출력하세요.",
+            "instructions": [
+                "n = 1 로 초기화하세요",
+                "while 반복문을 사용해 n이 5 이하인 동안 반복하세요",
+                "n을 출력하고 n을 1씩 증가시키세요"
+            ],
+            "initial_code": "n = 1\n\n# while 반복문으로 1부터 5까지 출력하세요\n",
+            "solution_code": "n = 1\nwhile n <= 5:\n    print(n)\n    n += 1",
+            "hints": [
+                {"level": 1, "text": "while n <= 5: 조건을 사용하세요."},
+                {"level": 2, "text": "루프 안에서 print(n) 후 n += 1 로 증가시켜야 무한 루프를 방지합니다."},
+                {"level": 3, "text": "while n <= 5:\n    print(n)\n    n += 1"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1\n2\n3\n4\n5",
+                "normalize_whitespace": true
+            },
+            "tags": ["while", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch4_p05",
+            "title": "enumerate 사용",
+            "difficulty": "basic",
+            "description": "enumerate()를 사용해 리스트를 번호와 함께 출력하세요.",
+            "instructions": [
+                "animals = ['강아지', '고양이', '토끼', '햄스터'] 로 설정하세요",
+                "enumerate()를 사용해 1번부터 번호를 매겨 출력하세요",
+                "출력 형식: '1. 강아지'"
+            ],
+            "initial_code": "animals = ['강아지', '고양이', '토끼', '햄스터']\n\n# enumerate()를 사용해 번호와 함께 출력하세요 (1번부터)\n",
+            "solution_code": "animals = ['강아지', '고양이', '토끼', '햄스터']\nfor i, animal in enumerate(animals, start=1):\n    print(f'{i}. {animal}')",
+            "hints": [
+                {"level": 1, "text": "enumerate(리스트, start=1)로 1부터 번호를 매길 수 있습니다."},
+                {"level": 2, "text": "for i, animal in enumerate(animals, start=1): print(f'{i}. {animal}')"},
+                {"level": 3, "text": "for i, animal in enumerate(animals, start=1):\n    print(f'{i}. {animal}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1. 강아지\n2. 고양이\n3. 토끼\n4. 햄스터",
+                "normalize_whitespace": true
+            },
+            "tags": ["enumerate", "for", "기초"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch4_p06",
+            "title": "짝수/홀수 분류",
+            "difficulty": "intermediate",
+            "description": "1부터 20까지의 숫자를 짝수와 홀수로 분류하여 출력하세요.",
+            "instructions": [
+                "for 반복문으로 1~20을 순회하세요",
+                "% 연산자로 짝수/홀수를 구별하세요",
+                "짝수는 한 줄에, 홀수는 한 줄에 출력하세요",
+                "출력 형식: '짝수: 2 4 6...' 과 '홀수: 1 3 5...'"
+            ],
+            "initial_code": "evens = []\nodds = []\n\n# 1~20을 짝수와 홀수로 분류하세요\nfor i in range(1, 21):\n    pass\n\nprint('짝수:', *evens)\nprint('홀수:', *odds)",
+            "solution_code": "evens = []\nodds = []\nfor i in range(1, 21):\n    if i % 2 == 0:\n        evens.append(i)\n    else:\n        odds.append(i)\nprint('짝수:', *evens)\nprint('홀수:', *odds)",
+            "hints": [
+                {"level": 1, "text": "i % 2 == 0 이면 짝수, i % 2 != 0 이면 홀수입니다."},
+                {"level": 2, "text": "if i % 2 == 0: evens.append(i) else: odds.append(i)"},
+                {"level": 3, "text": "for i in range(1, 21):\n    if i % 2 == 0:\n        evens.append(i)\n    else:\n        odds.append(i)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "짝수: 2 4 6 8 10 12 14 16 18 20\n홀수: 1 3 5 7 9 11 13 15 17 19",
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "if", "나머지", "중급"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch4_p07",
+            "title": "break와 continue",
+            "difficulty": "intermediate",
+            "description": "1부터 20까지 중 3의 배수는 건너뛰고, 15를 만나면 반복을 종료하세요.",
+            "instructions": [
+                "for 반복문으로 1~20을 순회하세요",
+                "3의 배수이면 continue로 건너뛰세요",
+                "숫자가 15이면 break로 종료하세요",
+                "해당하지 않는 숫자를 출력하세요"
+            ],
+            "initial_code": "for i in range(1, 21):\n    # 3의 배수이면 건너뛰세요\n    \n    # 15이면 종료하세요\n    \n    # 그 외는 출력하세요\n    pass",
+            "solution_code": "for i in range(1, 21):\n    if i % 3 == 0:\n        continue\n    if i == 15:\n        break\n    print(i)",
+            "hints": [
+                {"level": 1, "text": "continue는 현재 반복을 건너뛰고, break는 반복 전체를 종료합니다."},
+                {"level": 2, "text": "if i % 3 == 0: continue 를 먼저 쓰고, if i == 15: break 를 그 다음에 쓰세요."},
+                {"level": 3, "text": "if i % 3 == 0:\n    continue\nif i == 15:\n    break\nprint(i)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1\n2\n4\n5\n7\n8\n10\n11\n13\n14",
+                "normalize_whitespace": true
+            },
+            "tags": ["break", "continue", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch4_p08",
+            "title": "중첩 반복문",
+            "difficulty": "intermediate",
+            "description": "2단부터 5단까지의 구구단을 출력하는 프로그램을 작성하세요.",
+            "instructions": [
+                "바깥쪽 for문은 2~5 (단)",
+                "안쪽 for문은 1~9 (곱하는 수)",
+                "출력 형식: '2 x 1 = 2'"
+            ],
+            "initial_code": "# 2단부터 5단까지 구구단을 출력하세요\nfor i in range(2, 6):\n    for j in range(1, 10):\n        # 구구단을 출력하세요\n        pass",
+            "solution_code": "for i in range(2, 6):\n    for j in range(1, 10):\n        print(f'{i} x {j} = {i*j}')",
+            "hints": [
+                {"level": 1, "text": "중첩 for문에서 바깥 변수(i)가 단, 안쪽 변수(j)가 곱하는 수입니다."},
+                {"level": 2, "text": "print(f'{i} x {j} = {i*j}') 형식으로 출력하세요."},
+                {"level": 3, "text": "for i in range(2, 6):\n    for j in range(1, 10):\n        print(f'{i} x {j} = {i*j}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "2 x 1 = 2\n2 x 2 = 4\n2 x 3 = 6\n2 x 4 = 8\n2 x 5 = 10\n2 x 6 = 12\n2 x 7 = 14\n2 x 8 = 16\n2 x 9 = 18\n3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\n3 x 6 = 18\n3 x 7 = 21\n3 x 8 = 24\n3 x 9 = 27\n4 x 1 = 4\n4 x 2 = 8\n4 x 3 = 12\n4 x 4 = 16\n4 x 5 = 20\n4 x 6 = 24\n4 x 7 = 28\n4 x 8 = 32\n4 x 9 = 36\n5 x 1 = 5\n5 x 2 = 10\n5 x 3 = 15\n5 x 4 = 20\n5 x 5 = 25\n5 x 6 = 30\n5 x 7 = 35\n5 x 8 = 40\n5 x 9 = 45",
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "중첩반복문", "구구단", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch4_p09",
+            "title": "리스트 컴프리헨션",
+            "difficulty": "intermediate",
+            "description": "리스트 컴프리헨션으로 1~10의 제곱수 리스트를 만드세요.",
+            "instructions": [
+                "리스트 컴프리헨션 문법을 사용하세요",
+                "1~10의 제곱수를 squares 리스트에 저장하세요",
+                "squares를 출력하세요"
+            ],
+            "initial_code": "# 리스트 컴프리헨션으로 1~10의 제곱수 리스트를 만드세요\n# 형식: [표현식 for 변수 in 범위]\nsquares = []\n\nprint(squares)",
+            "solution_code": "squares = [x**2 for x in range(1, 11)]\nprint(squares)",
+            "hints": [
+                {"level": 1, "text": "리스트 컴프리헨션: [표현식 for 변수 in 범위] 형태입니다."},
+                {"level": 2, "text": "[x**2 for x in range(1, 11)] 이 1~10의 제곱수 리스트입니다."},
+                {"level": 3, "text": "squares = [x**2 for x in range(1, 11)]"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"squares": [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]},
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트컴프리헨션", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch4_p10",
+            "title": "별 패턴 출력",
+            "difficulty": "intermediate",
+            "description": "중첩 반복문으로 삼각형 별 패턴을 출력하세요.",
+            "instructions": [
+                "5줄의 삼각형을 출력하세요",
+                "1줄: *, 2줄: **, 3줄: ***, 4줄: ****, 5줄: *****"
+            ],
+            "initial_code": "# 5줄의 삼각형 별 패턴을 출력하세요\nfor i in range(1, 6):\n    # i개의 별을 출력하세요\n    pass",
+            "solution_code": "for i in range(1, 6):\n    print('*' * i)",
+            "hints": [
+                {"level": 1, "text": "'*' * i 로 별을 i개 만들 수 있습니다."},
+                {"level": 2, "text": "print('*' * i) 로 i개의 별을 한 줄에 출력합니다."},
+                {"level": 3, "text": "for i in range(1, 6):\n    print('*' * i)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "*\n**\n***\n****\n*****",
+                "normalize_whitespace": false
+            },
+            "tags": ["for", "패턴", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch4_p11",
+            "title": "소수 판별기",
+            "difficulty": "advanced",
+            "description": "입력받은 수가 소수인지 판별하는 프로그램을 작성하세요.",
+            "instructions": [
+                "정수를 input()으로 입력받으세요",
+                "2부터 n-1까지 나누어지는지 확인하세요",
+                "소수이면 '소수입니다', 아니면 '소수가 아닙니다'를 출력하세요"
+            ],
+            "initial_code": "n = int(input('숫자를 입력하세요: '))\nis_prime = True\n\n# n이 소수인지 확인하세요\n# 2부터 n-1까지 나누어지면 소수가 아닙니다\n# 힌트: n이 1 이하이면 소수가 아닙니다\n\nif is_prime:\n    print('소수입니다')\nelse:\n    print('소수가 아닙니다')",
+            "solution_code": "n = int(input('숫자를 입력하세요: '))\nis_prime = True\nif n <= 1:\n    is_prime = False\nelse:\n    for i in range(2, n):\n        if n % i == 0:\n            is_prime = False\n            break\nif is_prime:\n    print('소수입니다')\nelse:\n    print('소수가 아닙니다')",
+            "hints": [
+                {"level": 1, "text": "소수는 1과 자기 자신만으로 나누어지는 수입니다. 1 이하는 소수가 아닙니다."},
+                {"level": 2, "text": "for i in range(2, n): if n % i == 0: is_prime = False; break"},
+                {"level": 3, "text": "if n <= 1:\n    is_prime = False\nelse:\n    for i in range(2, n):\n        if n % i == 0:\n            is_prime = False\n            break"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["7"], "expected_output": "소수입니다"},
+                    {"input": ["10"], "expected_output": "소수가 아닙니다"},
+                    {"input": ["2"], "expected_output": "소수입니다"},
+                    {"input": ["1"], "expected_output": "소수가 아닙니다"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "break", "소수", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch4_p12",
+            "title": "FizzBuzz",
+            "difficulty": "advanced",
+            "description": "1부터 30까지 출력하되, 3의 배수는 'Fizz', 5의 배수는 'Buzz', 15의 배수는 'FizzBuzz'를 출력하세요.",
+            "instructions": [
+                "for 반복문으로 1부터 30까지 순회하세요",
+                "15의 배수이면 'FizzBuzz'",
+                "3의 배수이면 'Fizz'",
+                "5의 배수이면 'Buzz'",
+                "그 외는 숫자를 출력하세요",
+                "15의 배수 조건을 먼저 검사해야 합니다"
+            ],
+            "initial_code": "# 1부터 30까지 FizzBuzz를 출력하세요\nfor i in range(1, 31):\n    # 15의 배수 → FizzBuzz\n    # 3의 배수 → Fizz\n    # 5의 배수 → Buzz\n    # 그 외 → 숫자\n    pass",
+            "solution_code": "for i in range(1, 31):\n    if i % 15 == 0:\n        print('FizzBuzz')\n    elif i % 3 == 0:\n        print('Fizz')\n    elif i % 5 == 0:\n        print('Buzz')\n    else:\n        print(i)",
+            "hints": [
+                {"level": 1, "text": "15의 배수 조건(i % 15 == 0)을 가장 먼저 검사해야 합니다. 순서가 중요합니다."},
+                {"level": 2, "text": "if i % 15 == 0: ... elif i % 3 == 0: ... elif i % 5 == 0: ... else: ..."},
+                {"level": 3, "text": "if i % 15 == 0:\n    print('FizzBuzz')\nelif i % 3 == 0:\n    print('Fizz')\nelif i % 5 == 0:\n    print('Buzz')\nelse:\n    print(i)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz\nFizz\n22\n23\nFizz\nBuzz\n26\nFizz\n28\n29\nFizzBuzz",
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "if", "나머지", "FizzBuzz", "심화"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch4_p13",
+            "title": "숫자 맞추기 게임",
+            "difficulty": "advanced",
+            "description": "비밀 숫자(42)를 맞추는 게임을 while 반복문으로 구현하세요.",
+            "instructions": [
+                "비밀 숫자는 42로 고정하세요",
+                "사용자가 숫자를 입력할 때마다 비밀 숫자보다 크면 '더 작은 수', 작으면 '더 큰 수'를 출력하세요",
+                "맞추면 '정답입니다!'를 출력하고 종료하세요"
+            ],
+            "initial_code": "secret = 42\n\nwhile True:\n    guess = int(input('숫자를 맞춰보세요: '))\n    # guess가 secret과 비교하여 힌트를 출력하세요\n    # 맞으면 '정답입니다!'를 출력하고 break\n    pass",
+            "solution_code": "secret = 42\nwhile True:\n    guess = int(input('숫자를 맞춰보세요: '))\n    if guess == secret:\n        print('정답입니다!')\n        break\n    elif guess > secret:\n        print('더 작은 수')\n    else:\n        print('더 큰 수')",
+            "hints": [
+                {"level": 1, "text": "while True: 루프 안에서 입력을 받고, break로 종료합니다."},
+                {"level": 2, "text": "if guess == secret: 정답 출력 후 break, elif guess > secret: '더 작은 수', else: '더 큰 수'"},
+                {"level": 3, "text": "if guess == secret:\n    print('정답입니다!')\n    break\nelif guess > secret:\n    print('더 작은 수')\nelse:\n    print('더 큰 수')"}
+            ],
+            "grading": {
+                "method": "regex_output",
+                "pattern": "정답입니다!",
+                "test_input": ["10", "50", "42"],
+                "normalize_whitespace": true
+            },
+            "tags": ["while", "break", "게임", "심화"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch4_p14",
+            "title": "최대값/최소값 찾기",
+            "difficulty": "advanced",
+            "description": "반복문을 사용해 직접 리스트의 최대값과 최소값을 찾으세요. (max(), min() 함수 사용 금지)",
+            "instructions": [
+                "숫자 개수를 입력받으세요",
+                "각 숫자를 입력받아 리스트에 저장하세요",
+                "반복문으로 최대값(maximum)과 최소값(minimum)을 직접 구하세요",
+                "두 값을 출력하세요"
+            ],
+            "initial_code": "n = int(input('숫자 개수: '))\nnumbers = []\nfor i in range(n):\n    numbers.append(int(input('숫자: ')))\n\n# max(), min() 함수 없이 최대값과 최소값을 구하세요\nmaximum = numbers[0]  # 첫 번째 값으로 초기화\nminimum = numbers[0]\n\nfor num in numbers:\n    # maximum과 minimum을 업데이트하세요\n    pass\n\nprint(f'최대: {maximum}')\nprint(f'최소: {minimum}')",
+            "solution_code": "n = int(input('숫자 개수: '))\nnumbers = []\nfor i in range(n):\n    numbers.append(int(input('숫자: ')))\nmaximum = numbers[0]\nminimum = numbers[0]\nfor num in numbers:\n    if num > maximum:\n        maximum = num\n    if num < minimum:\n        minimum = num\nprint(f'최대: {maximum}')\nprint(f'최소: {minimum}')",
+            "hints": [
+                {"level": 1, "text": "첫 번째 값으로 초기화한 후, 더 큰/작은 값을 만날 때마다 업데이트합니다."},
+                {"level": 2, "text": "if num > maximum: maximum = num 과 if num < minimum: minimum = num"},
+                {"level": 3, "text": "for num in numbers:\n    if num > maximum:\n        maximum = num\n    if num < minimum:\n        minimum = num"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["5", "3", "7", "1", "9", "4"], "expected_output": "최대: 9\n최소: 1"},
+                    {"input": ["3", "100", "50", "75"], "expected_output": "최대: 100\n최소: 50"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "최대값", "최소값", "심화"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch4_p15",
+            "title": "피보나치 수열",
+            "difficulty": "advanced",
+            "description": "피보나치 수열의 첫 N개 항을 출력하는 프로그램을 작성하세요. (피보나치: 1, 1, 2, 3, 5, 8, 13, ...)",
+            "instructions": [
+                "N을 input()으로 입력받으세요",
+                "피보나치 수열의 첫 N개 항을 리스트로 만드세요",
+                "리스트를 출력하세요",
+                "피보나치: fib[i] = fib[i-1] + fib[i-2]"
+            ],
+            "initial_code": "n = int(input('몇 개의 피보나치 수를 출력할까요? '))\nfib = [1, 1]  # 처음 두 항은 1, 1\n\n# n개의 피보나치 수열을 만드세요\n# n이 2보다 크면 추가 항을 계산하세요\n\nprint(fib[:n])",
+            "solution_code": "n = int(input('몇 개의 피보나치 수를 출력할까요? '))\nfib = [1, 1]\nfor i in range(2, n):\n    fib.append(fib[i-1] + fib[i-2])\nprint(fib[:n])",
+            "hints": [
+                {"level": 1, "text": "fib[i] = fib[i-1] + fib[i-2] 규칙으로 새 항을 계산하여 리스트에 추가합니다."},
+                {"level": 2, "text": "for i in range(2, n): fib.append(fib[i-1] + fib[i-2])"},
+                {"level": 3, "text": "for i in range(2, n):\n    fib.append(fib[i-1] + fib[i-2])\nprint(fib[:n])"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["7"], "expected_output": "[1, 1, 2, 3, 5, 8, 13]"},
+                    {"input": ["1"], "expected_output": "[1]"},
+                    {"input": ["10"], "expected_output": "[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["for", "피보나치", "리스트", "심화"],
+            "related_section": "s2"
+        }
+    ]
+}

@@ -1,0 +1,420 @@
+{
+    "chapter_id": 1,
+    "problems": [
+        {
+            "problem_id": "ch1_p01",
+            "title": "첫 번째 출력",
+            "difficulty": "basic",
+            "description": "파이썬에서 화면에 글자를 출력하려면 print() 함수를 사용합니다. 정확히 'Hello, Python!'이라는 문장을 출력해 보세요.",
+            "instructions": [
+                "print() 함수를 사용하세요",
+                "큰따옴표나 작은따옴표로 문자열을 감싸세요",
+                "대소문자와 쉼표, 느낌표를 정확히 입력하세요"
+            ],
+            "initial_code": "# Hello, Python! 을 출력하세요\n",
+            "solution_code": "print('Hello, Python!')",
+            "hints": [
+                {"level": 1, "text": "print() 함수 안에 출력할 내용을 따옴표로 감싸서 넣어보세요."},
+                {"level": 2, "text": "print('출력할 내용') 형태로 작성합니다. 문장 부호(쉼표, 느낌표)도 정확히 입력해야 합니다."},
+                {"level": 3, "text": "print('Hello, Python!') 이라고 작성하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "Hello, Python!",
+                "normalize_whitespace": true
+            },
+            "tags": ["print", "출력", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch1_p02",
+            "title": "주석 달기",
+            "difficulty": "basic",
+            "description": "아래 코드에 주석을 추가해서 코드가 무엇을 하는지 설명해 보세요. 그리고 코드를 실행하면 '파이썬 재미있다!'가 출력되어야 합니다.",
+            "instructions": [
+                "# 기호를 사용해 주석을 달아보세요",
+                "코드의 첫 줄에 '이 프로그램은 메시지를 출력합니다'라는 주석을 추가하세요",
+                "print 코드는 그대로 유지하세요"
+            ],
+            "initial_code": "# 여기에 주석을 추가하세요\nprint('파이썬 재미있다!')",
+            "solution_code": "# 이 프로그램은 메시지를 출력합니다\nprint('파이썬 재미있다!')",
+            "hints": [
+                {"level": 1, "text": "주석은 # 기호로 시작합니다. # 뒤에 원하는 설명을 적으면 됩니다."},
+                {"level": 2, "text": "첫 번째 줄의 # 뒤에 '이 프로그램은 메시지를 출력합니다'라고 적어보세요."},
+                {"level": 3, "text": "# 이 프로그램은 메시지를 출력합니다 라고 첫 줄에 작성하세요."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "파이썬 재미있다!",
+                "normalize_whitespace": true
+            },
+            "tags": ["주석", "comment", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch1_p03",
+            "title": "변수 만들기",
+            "difficulty": "basic",
+            "description": "변수를 사용해 이름과 나이를 저장하고 출력해 보세요. name 변수에 '홍길동'을, age 변수에 25를 저장하세요.",
+            "instructions": [
+                "name 변수에 문자열 '홍길동'을 저장하세요",
+                "age 변수에 정수 25를 저장하세요",
+                "두 변수를 각각 출력하세요"
+            ],
+            "initial_code": "# name 변수에 '홍길동'을 저장하세요\n\n# age 변수에 25를 저장하세요\n\n# 변수를 출력하세요\n",
+            "solution_code": "name = '홍길동'\nage = 25\nprint(name)\nprint(age)",
+            "hints": [
+                {"level": 1, "text": "변수는 '변수이름 = 값' 형태로 만듭니다. 문자열은 따옴표로 감싸야 합니다."},
+                {"level": 2, "text": "name = '홍길동' 과 age = 25 와 같이 각각 변수를 만들어보세요."},
+                {"level": 3, "text": "name = '홍길동'\nage = 25\nprint(name)\nprint(age)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"name": "홍길동", "age": 25},
+                "normalize_whitespace": true
+            },
+            "tags": ["변수", "variable", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch1_p04",
+            "title": "여러 줄 출력",
+            "difficulty": "basic",
+            "description": "print() 함수를 여러 번 사용해서 3줄을 출력해 보세요. 출력 결과는 정확히 아래와 같아야 합니다:\n1번째 줄\n2번째 줄\n3번째 줄",
+            "instructions": [
+                "print() 함수를 3번 사용하세요",
+                "각 줄에 '1번째 줄', '2번째 줄', '3번째 줄'을 출력하세요",
+                "숫자는 한글로 표기합니다"
+            ],
+            "initial_code": "# 3줄을 출력하는 코드를 작성하세요\n",
+            "solution_code": "print('1번째 줄')\nprint('2번째 줄')\nprint('3번째 줄')",
+            "hints": [
+                {"level": 1, "text": "print()를 각 줄에 한 번씩, 총 3번 사용해야 합니다."},
+                {"level": 2, "text": "print('1번째 줄')처럼 각 줄마다 print()를 호출하세요."},
+                {"level": 3, "text": "print('1번째 줄')\nprint('2번째 줄')\nprint('3번째 줄')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1번째 줄\n2번째 줄\n3번째 줄",
+                "normalize_whitespace": true
+            },
+            "tags": ["print", "출력", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch1_p05",
+            "title": "input() 사용해보기",
+            "difficulty": "basic",
+            "description": "사용자로부터 이름을 입력받아 '안녕하세요, [이름]님!'을 출력하는 프로그램을 작성하세요.",
+            "instructions": [
+                "input() 함수로 이름을 입력받아 name 변수에 저장하세요",
+                "'안녕하세요, [이름]님!' 형태로 출력하세요",
+                "input()의 안내 메시지는 '이름을 입력하세요: ' 로 하세요"
+            ],
+            "initial_code": "# 이름을 입력받으세요\nname = input('이름을 입력하세요: ')\n\n# '안녕하세요, [이름]님!'을 출력하세요\n",
+            "solution_code": "name = input('이름을 입력하세요: ')\nprint('안녕하세요, ' + name + '님!')",
+            "hints": [
+                {"level": 1, "text": "input()으로 받은 값을 name 변수에 저장하고, print()로 출력하세요."},
+                {"level": 2, "text": "문자열을 + 로 연결하거나 f-string을 사용하세요. '안녕하세요, ' + name + '님!'"},
+                {"level": 3, "text": "print('안녕하세요, ' + name + '님!') 또는 print(f'안녕하세요, {name}님!')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": "홍길동", "expected_output": "안녕하세요, 홍길동님!"},
+                    {"input": "파이썬", "expected_output": "안녕하세요, 파이썬님!"},
+                    {"input": "김철수", "expected_output": "안녕하세요, 김철수님!"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["input", "출력", "기초"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch1_p06",
+            "title": "변수 연산",
+            "difficulty": "intermediate",
+            "description": "두 숫자 변수를 이용해 덧셈과 곱셈 결과를 저장하고 출력하세요. a=10, b=3 으로 설정하고 sum_result에 합을, product에 곱을 저장하세요.",
+            "instructions": [
+                "변수 a에 10, b에 3을 저장하세요",
+                "sum_result 변수에 a + b 의 결과를 저장하세요",
+                "product 변수에 a * b 의 결과를 저장하세요",
+                "두 결과를 각각 출력하세요"
+            ],
+            "initial_code": "# a와 b를 초기화하세요\na = 10\nb = 3\n\n# a + b의 결과를 sum_result에 저장하세요\n\n# a * b의 결과를 product에 저장하세요\n\n# 출력하세요\n",
+            "solution_code": "a = 10\nb = 3\nsum_result = a + b\nproduct = a * b\nprint(sum_result)\nprint(product)",
+            "hints": [
+                {"level": 1, "text": "변수에 계산 결과를 저장할 수 있습니다. result = a + b 형태를 사용하세요."},
+                {"level": 2, "text": "sum_result = a + b 와 product = a * b 로 각각 계산 결과를 저장하세요."},
+                {"level": 3, "text": "sum_result = a + b\nproduct = a * b\nprint(sum_result)\nprint(product)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"sum_result": 13, "product": 30},
+                "normalize_whitespace": true
+            },
+            "tags": ["변수", "연산", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch1_p07",
+            "title": "문자열 연결",
+            "difficulty": "intermediate",
+            "description": "first_name과 last_name 변수를 입력받아 full_name을 출력하는 프로그램을 작성하세요.",
+            "instructions": [
+                "first_name과 last_name을 각각 input()으로 입력받으세요",
+                "두 문자열을 연결하여 full_name을 만드세요 (사이에 공백 없음)",
+                "full_name을 출력하세요"
+            ],
+            "initial_code": "# 성(last_name)과 이름(first_name)을 입력받으세요\nlast_name = input('성을 입력하세요: ')\nfirst_name = input('이름을 입력하세요: ')\n\n# full_name을 만들어 출력하세요\n",
+            "solution_code": "last_name = input('성을 입력하세요: ')\nfirst_name = input('이름을 입력하세요: ')\nfull_name = last_name + first_name\nprint(full_name)",
+            "hints": [
+                {"level": 1, "text": "문자열은 + 연산자로 연결할 수 있습니다."},
+                {"level": 2, "text": "full_name = last_name + first_name 으로 연결하세요."},
+                {"level": 3, "text": "full_name = last_name + first_name\nprint(full_name)"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["홍", "길동"], "expected_output": "홍길동"},
+                    {"input": ["김", "철수"], "expected_output": "김철수"},
+                    {"input": ["이", "영희"], "expected_output": "이영희"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["문자열", "변수", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch1_p08",
+            "title": "사칙연산 계산기",
+            "difficulty": "intermediate",
+            "description": "두 수를 입력받아 사칙연산 결과를 모두 출력하는 계산기를 만드세요.",
+            "instructions": [
+                "두 정수를 input()으로 입력받아 각각 a, b에 저장하세요",
+                "int()로 형변환을 잊지 마세요",
+                "덧셈, 뺄셈, 곱셈, 나눗셈 결과를 각각 한 줄씩 출력하세요",
+                "나눗셈은 소수점 이하를 모두 표시하세요"
+            ],
+            "initial_code": "# 두 수를 입력받으세요 (정수로 변환)\na = int(input('첫 번째 수: '))\nb = int(input('두 번째 수: '))\n\n# 사칙연산 결과를 출력하세요\n",
+            "solution_code": "a = int(input('첫 번째 수: '))\nb = int(input('두 번째 수: '))\nprint(a + b)\nprint(a - b)\nprint(a * b)\nprint(a / b)",
+            "hints": [
+                {"level": 1, "text": "입력받은 값은 문자열이므로 int()로 변환해야 숫자 계산이 가능합니다."},
+                {"level": 2, "text": "+, -, *, / 연산자를 각각 사용해 결과를 print()로 출력하세요."},
+                {"level": 3, "text": "print(a + b)\nprint(a - b)\nprint(a * b)\nprint(a / b)"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["10", "4"], "expected_output": "14\n6\n40\n2.5"},
+                    {"input": ["20", "5"], "expected_output": "25\n15\n100\n4.0"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["연산자", "input", "중급"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch1_p09",
+            "title": "나이 계산기",
+            "difficulty": "intermediate",
+            "description": "태어난 연도를 입력받아 올해 나이를 계산하고 출력하세요. 올해는 2024년입니다.",
+            "instructions": [
+                "태어난 연도를 input()으로 입력받아 birth_year에 저장하세요",
+                "int()로 형변환하세요",
+                "age = 2024 - birth_year 로 나이를 계산하세요",
+                "'당신의 나이는 [나이]세입니다.' 형태로 출력하세요"
+            ],
+            "initial_code": "# 태어난 연도를 입력받으세요\nbirth_year = int(input('태어난 연도를 입력하세요: '))\n\n# 나이를 계산하고 출력하세요\n",
+            "solution_code": "birth_year = int(input('태어난 연도를 입력하세요: '))\nage = 2024 - birth_year\nprint(f'당신의 나이는 {age}세입니다.')",
+            "hints": [
+                {"level": 1, "text": "올해 연도(2024)에서 태어난 연도를 빼면 나이가 됩니다."},
+                {"level": 2, "text": "age = 2024 - birth_year 로 나이를 계산하고, f-string으로 출력하세요."},
+                {"level": 3, "text": "age = 2024 - birth_year\nprint(f'당신의 나이는 {age}세입니다.')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["2000"], "expected_output": "당신의 나이는 24세입니다."},
+                    {"input": ["1990"], "expected_output": "당신의 나이는 34세입니다."},
+                    {"input": ["2005"], "expected_output": "당신의 나이는 19세입니다."}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["연산", "input", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch1_p10",
+            "title": "변수 교환",
+            "difficulty": "intermediate",
+            "description": "두 변수 a와 b의 값을 서로 교환하세요. a=5, b=10 으로 시작하여 교환 후 a=10, b=5 가 되어야 합니다.",
+            "instructions": [
+                "a = 5, b = 10 으로 초기화하세요",
+                "두 변수의 값을 서로 교환하세요",
+                "교환 후 a와 b를 각각 출력하세요"
+            ],
+            "initial_code": "# 변수 초기화\na = 5\nb = 10\n\n# 두 변수의 값을 교환하세요\n# 힌트: 파이썬에서는 a, b = b, a 처럼 한 줄로 교환할 수 있습니다\n\nprint(a)\nprint(b)",
+            "solution_code": "a = 5\nb = 10\na, b = b, a\nprint(a)\nprint(b)",
+            "hints": [
+                {"level": 1, "text": "임시 변수를 사용하거나, 파이썬의 튜플 언패킹으로 교환할 수 있습니다."},
+                {"level": 2, "text": "파이썬에서는 a, b = b, a 와 같이 한 줄로 두 변수를 교환할 수 있습니다."},
+                {"level": 3, "text": "a, b = b, a 한 줄을 추가하면 됩니다."}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"a": 10, "b": 5},
+                "normalize_whitespace": true
+            },
+            "tags": ["변수", "교환", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch1_p11",
+            "title": "온도 변환기",
+            "difficulty": "advanced",
+            "description": "섭씨(Celsius) 온도를 입력받아 화씨(Fahrenheit) 온도로 변환하는 프로그램을 작성하세요.\n변환 공식: F = C × 9/5 + 32",
+            "instructions": [
+                "섭씨 온도를 float로 입력받으세요",
+                "공식 F = C * 9/5 + 32 를 사용해 변환하세요",
+                "결과를 소수점 첫째 자리까지 출력하세요 (예: 212.0)",
+                "출력 형식: '섭씨 [C]도 = 화씨 [F]도'"
+            ],
+            "initial_code": "# 섭씨 온도를 입력받으세요\ncelsius = float(input('섭씨 온도를 입력하세요: '))\n\n# 화씨로 변환하세요 (공식: F = C * 9/5 + 32)\n\n# 결과를 출력하세요\n",
+            "solution_code": "celsius = float(input('섭씨 온도를 입력하세요: '))\nfahrenheit = celsius * 9/5 + 32\nprint(f'섭씨 {celsius}도 = 화씨 {fahrenheit:.1f}도')",
+            "hints": [
+                {"level": 1, "text": "공식 F = C × 9/5 + 32를 코드로 표현하면 fahrenheit = celsius * 9/5 + 32 입니다."},
+                {"level": 2, "text": "f-string에서 소수점 자리수를 지정하려면 {변수:.1f} 처럼 사용합니다."},
+                {"level": 3, "text": "fahrenheit = celsius * 9/5 + 32\nprint(f'섭씨 {celsius}도 = 화씨 {fahrenheit:.1f}도')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["100"], "expected_output": "섭씨 100.0도 = 화씨 212.0도"},
+                    {"input": ["0"], "expected_output": "섭씨 0.0도 = 화씨 32.0도"},
+                    {"input": ["37"], "expected_output": "섭씨 37.0도 = 화씨 98.6도"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["연산", "float", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch1_p12",
+            "title": "BMI 계산기",
+            "difficulty": "advanced",
+            "description": "키(cm)와 몸무게(kg)를 입력받아 BMI를 계산하세요.\nBMI 공식: 몸무게(kg) / (키(m))²",
+            "instructions": [
+                "키를 cm 단위로 입력받아 m 단위로 변환하세요 (÷100)",
+                "몸무게를 kg 단위로 입력받으세요",
+                "BMI = 몸무게 / (키_m의 제곱) 으로 계산하세요",
+                "결과를 소수점 둘째 자리까지 출력하세요"
+            ],
+            "initial_code": "# 키(cm)와 몸무게(kg)를 입력받으세요\nheight_cm = float(input('키를 입력하세요 (cm): '))\nweight = float(input('몸무게를 입력하세요 (kg): '))\n\n# 키를 m 단위로 변환하세요\n\n# BMI를 계산하세요 (BMI = 몸무게 / 키_m^2)\n\n# 결과를 출력하세요\n",
+            "solution_code": "height_cm = float(input('키를 입력하세요 (cm): '))\nweight = float(input('몸무게를 입력하세요 (kg): '))\nheight_m = height_cm / 100\nbmi = weight / (height_m ** 2)\nprint(f'BMI: {bmi:.2f}')",
+            "hints": [
+                {"level": 1, "text": "cm를 m로 바꾸려면 100으로 나눠야 합니다. height_m = height_cm / 100"},
+                {"level": 2, "text": "BMI 계산: bmi = weight / (height_m ** 2) 또는 (height_m * height_m)"},
+                {"level": 3, "text": "height_m = height_cm / 100\nbmi = weight / (height_m ** 2)\nprint(f'BMI: {bmi:.2f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "BMI: 22.86",
+                "tolerance": 0.1,
+                "test_input": ["175", "70"],
+                "pass_threshold": 0.6
+            },
+            "tags": ["연산", "float", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch1_p13",
+            "title": "시간 변환기",
+            "difficulty": "advanced",
+            "description": "초(second) 단위의 시간을 입력받아 시:분:초 형태로 변환하는 프로그램을 작성하세요.",
+            "instructions": [
+                "초 단위 시간을 정수로 입력받으세요",
+                "// 연산자로 시간, 분을 계산하세요",
+                "% 연산자로 나머지 분, 초를 계산하세요",
+                "'[시간]시간 [분]분 [초]초' 형태로 출력하세요"
+            ],
+            "initial_code": "# 초 단위 시간을 입력받으세요\ntotal_seconds = int(input('초를 입력하세요: '))\n\n# 시간, 분, 초로 변환하세요\n# 힌트: // 는 정수 나눗셈, % 는 나머지\n# hours = total_seconds // 3600\n# minutes = (total_seconds % 3600) // 60\n# seconds = total_seconds % 60\n\n# 결과를 출력하세요\n",
+            "solution_code": "total_seconds = int(input('초를 입력하세요: '))\nhours = total_seconds // 3600\nminutes = (total_seconds % 3600) // 60\nseconds = total_seconds % 60\nprint(f'{hours}시간 {minutes}분 {seconds}초')",
+            "hints": [
+                {"level": 1, "text": "1시간 = 3600초, 1분 = 60초 임을 기억하세요. // 와 % 연산자를 활용하세요."},
+                {"level": 2, "text": "hours = total_seconds // 3600, minutes = (total_seconds % 3600) // 60, seconds = total_seconds % 60"},
+                {"level": 3, "text": "hours = total_seconds // 3600\nminutes = (total_seconds % 3600) // 60\nseconds = total_seconds % 60\nprint(f'{hours}시간 {minutes}분 {seconds}초')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["3661"], "expected_output": "1시간 1분 1초"},
+                    {"input": ["7200"], "expected_output": "2시간 0분 0초"},
+                    {"input": ["90"], "expected_output": "0시간 1분 30초"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["연산", "정수나눗셈", "나머지", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch1_p14",
+            "title": "거스름돈 계산기",
+            "difficulty": "advanced",
+            "description": "물건 가격과 지불 금액을 입력받아 거스름돈을 가장 큰 단위의 돈부터 계산하는 프로그램을 작성하세요. (단위: 1000원, 100원, 10원, 1원)",
+            "instructions": [
+                "물건 가격과 지불 금액을 정수로 입력받으세요",
+                "거스름돈 = 지불금액 - 물건가격 을 계산하세요",
+                "1000원, 100원, 10원, 1원 단위로 각각 필요한 개수를 계산하세요",
+                "각 단위별로 '[단위]원: [개수]개' 형태로 출력하세요"
+            ],
+            "initial_code": "# 물건 가격과 지불 금액을 입력받으세요\nprice = int(input('물건 가격: '))\npaid = int(input('지불 금액: '))\n\n# 거스름돈을 계산하세요\nchange = paid - price\n\n# 각 단위별 개수를 계산하세요\n# 1000원짜리 개수: change // 1000\n# 나머지: change % 1000\n\n# 결과를 출력하세요\n",
+            "solution_code": "price = int(input('물건 가격: '))\npaid = int(input('지불 금액: '))\nchange = paid - price\nthousands = change // 1000\nchange %= 1000\nhundreds = change // 100\nchange %= 100\ntens = change // 10\nones = change % 10\nprint(f'1000원: {thousands}개')\nprint(f'100원: {hundreds}개')\nprint(f'10원: {tens}개')\nprint(f'1원: {ones}개')",
+            "hints": [
+                {"level": 1, "text": "큰 단위부터 // 로 개수를 구하고, % 로 나머지를 다음 단계로 넘깁니다."},
+                {"level": 2, "text": "thousands = change // 1000, 그 다음 change = change % 1000 으로 나머지를 업데이트합니다."},
+                {"level": 3, "text": "thousands = change // 1000\nchange %= 1000\nhundreds = change // 100\nchange %= 100\ntens = change // 10\nones = change % 10"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["1234", "5000"], "expected_output": "1000원: 3개\n100원: 7개\n10원: 6개\n1원: 6개"},
+                    {"input": ["500", "1000"], "expected_output": "1000원: 0개\n100원: 5개\n10원: 0개\n1원: 0개"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["연산", "정수나눗셈", "나머지", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch1_p15",
+            "title": "자기소개 카드",
+            "difficulty": "advanced",
+            "description": "이름, 나이, 직업을 입력받아 예쁜 자기소개 카드 형태로 출력하는 프로그램을 작성하세요.",
+            "instructions": [
+                "이름, 나이(정수), 직업을 각각 input()으로 입력받으세요",
+                "아래 형식에 맞게 출력하세요:",
+                "=====",
+                "이름: [이름]",
+                "나이: [나이]세",
+                "직업: [직업]",
+                "====="
+            ],
+            "initial_code": "# 정보를 입력받으세요\nname = input('이름: ')\nage = int(input('나이: '))\njob = input('직업: ')\n\n# 자기소개 카드를 출력하세요\n",
+            "solution_code": "name = input('이름: ')\nage = int(input('나이: '))\njob = input('직업: ')\nprint('=====')\nprint(f'이름: {name}')\nprint(f'나이: {age}세')\nprint(f'직업: {job}')\nprint('=====')",
+            "hints": [
+                {"level": 1, "text": "입력받은 정보를 f-string을 사용해 형식에 맞게 출력하세요."},
+                {"level": 2, "text": "===== 구분선과 이름, 나이, 직업을 각각 print()로 출력하세요."},
+                {"level": 3, "text": "print('=====')\nprint(f'이름: {name}')\nprint(f'나이: {age}세')\nprint(f'직업: {job}')\nprint('=====')"}
+            ],
+            "grading": {
+                "method": "regex_output",
+                "pattern": "=====\\n이름: .+\\n나이: \\d+세\\n직업: .+\\n=====",
+                "test_input": ["홍길동", "25", "개발자"],
+                "normalize_whitespace": false
+            },
+            "tags": ["print", "f-string", "심화"],
+            "related_section": "s3"
+        }
+    ]
+}

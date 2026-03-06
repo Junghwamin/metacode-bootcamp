@@ -1,0 +1,87 @@
+{
+    "chapter_id": 6,
+    "quiz_title": "챕터 6 확인 퀴즈 - 파일 다루기",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch6_q01",
+            "type": "multiple_choice",
+            "question": "파이썬에서 파일을 열 때 사용하는 함수는?",
+            "options": ["file()", "open()", "read()", "load()"],
+            "correct_answer": "open()",
+            "explanation": "파이썬에서 파일을 열 때는 open() 함수를 사용합니다. open(파일명, 모드, encoding='utf-8') 형태로 사용합니다."
+        },
+        {
+            "question_id": "ch6_q02",
+            "type": "multiple_choice",
+            "question": "파일을 읽기 전용으로 열 때 사용하는 모드는?",
+            "options": ["'w'", "'a'", "'r'", "'x'"],
+            "correct_answer": "'r'",
+            "explanation": "'r'은 읽기(read) 모드입니다. 파일이 존재하지 않으면 오류가 발생합니다."
+        },
+        {
+            "question_id": "ch6_q03",
+            "type": "ox",
+            "question": "'w' 모드로 파일을 열면 기존 내용이 유지된다.",
+            "options": ["O", "X"],
+            "correct_answer": "X",
+            "explanation": "'w' (쓰기) 모드로 열면 기존 파일 내용이 모두 삭제되고 새로 쓰여집니다. 기존 내용을 유지하려면 'a' (추가) 모드를 사용해야 합니다."
+        },
+        {
+            "question_id": "ch6_q04",
+            "type": "multiple_choice",
+            "question": "파일의 모든 줄을 리스트로 반환하는 메소드는?",
+            "options": ["read()", "readline()", "readlines()", "readall()"],
+            "correct_answer": "readlines()",
+            "explanation": "readlines()는 파일의 모든 줄을 리스트로 반환합니다. 각 줄은 줄바꿈 문자(\\n)를 포함합니다."
+        },
+        {
+            "question_id": "ch6_q05",
+            "type": "ox",
+            "question": "with 문을 사용하면 파일을 수동으로 close()하지 않아도 된다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "with 문(컨텍스트 매니저)은 블록이 끝날 때 자동으로 파일을 닫아줍니다. 오류가 발생해도 안전하게 파일이 닫힙니다."
+        },
+        {
+            "question_id": "ch6_q06",
+            "type": "multiple_choice",
+            "question": "기존 파일의 내용을 유지하면서 새 내용을 뒤에 추가할 때 사용하는 모드는?",
+            "options": ["'r'", "'w'", "'a'", "'rw'"],
+            "correct_answer": "'a'",
+            "explanation": "'a' (append, 추가) 모드는 파일이 없으면 새로 만들고, 있으면 기존 내용 뒤에 새 내용을 추가합니다."
+        },
+        {
+            "question_id": "ch6_q07",
+            "type": "fill_blank",
+            "question": "파일에서 한 줄만 읽어오는 메소드는 _______()이다.",
+            "options": [],
+            "correct_answer": "readline",
+            "explanation": "readline()은 파일에서 한 줄을 읽어 문자열로 반환합니다. 파일 끝에 도달하면 빈 문자열을 반환합니다."
+        },
+        {
+            "question_id": "ch6_q08",
+            "type": "multiple_choice",
+            "question": "한국어 파일을 올바르게 처리하기 위해 open()에 추가해야 하는 매개변수는?",
+            "options": ["charset='korean'", "encoding='utf-8'", "language='ko'", "format='text'"],
+            "correct_answer": "encoding='utf-8'",
+            "explanation": "한국어 문자를 포함한 파일을 처리할 때는 encoding='utf-8'을 지정해야 합니다. 지정하지 않으면 시스템 기본 인코딩이 사용되어 오류가 발생할 수 있습니다."
+        },
+        {
+            "question_id": "ch6_q09",
+            "type": "multiple_choice",
+            "question": "readlines()로 읽은 각 줄에서 끝의 줄바꿈 문자(\\n)를 제거하는 메소드는?",
+            "options": ["trim()", "strip()", "remove()", "clean()"],
+            "correct_answer": "strip()",
+            "explanation": "strip()은 문자열 앞뒤의 공백과 줄바꿈 문자를 제거합니다. rstrip()을 사용하면 오른쪽(끝)만 제거합니다."
+        },
+        {
+            "question_id": "ch6_q10",
+            "type": "ox",
+            "question": "파일을 'r' 모드로 열 때 해당 파일이 존재하지 않으면 자동으로 새 파일을 만든다.",
+            "options": ["O", "X"],
+            "correct_answer": "X",
+            "explanation": "'r' 모드는 읽기 전용이므로 파일이 없으면 FileNotFoundError가 발생합니다. 파일이 없을 때 자동으로 만들려면 'w' 또는 'a' 모드를 사용해야 합니다."
+        }
+    ]
+}

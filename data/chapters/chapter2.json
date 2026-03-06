@@ -1,0 +1,158 @@
+{
+    "chapter_id": 2,
+    "title": "데이터 타입 (Data Type)",
+    "description": "파이썬의 기본 데이터 타입인 숫자형, 문자열, Boolean을 배우고, 다양한 연산자를 활용하는 방법을 익힙니다.",
+    "learning_objectives": [
+        "정수(int)와 실수(float)의 차이를 이해하고 사용할 수 있다",
+        "산술 연산자로 다양한 수식 계산을 할 수 있다",
+        "비교 연산자와 논리 연산자를 활용할 수 있다",
+        "문자열의 인덱싱, 슬라이싱, 주요 메소드를 사용할 수 있다",
+        "Boolean 타입과 조건식을 이해한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "숫자형 (int, float)",
+            "content_md": "## 숫자형이란?\n\n파이썬에는 두 가지 기본 숫자 타입이 있습니다.\n\n### 정수 (int)\n소수점이 없는 숫자입니다.\n```python\na = 10\nb = -5\nc = 0\n```\n\n### 실수 (float)\n소수점이 있는 숫자입니다.\n```python\npi = 3.14\nprice = 9.99\nnegative = -2.5\n```\n\n### 타입 확인\n```python\nprint(type(10))    # <class 'int'>\nprint(type(3.14))  # <class 'float'>\n```\n\n### 타입 변환\n```python\nint(3.7)    # 3 (소수점 버림)\nfloat(5)    # 5.0\n```",
+            "code_examples": [
+                {
+                    "title": "정수와 실수",
+                    "code": "# 정수 (int)\ncount = 10\ntemperature = -5\n\n# 실수 (float)\npi = 3.14159\nweight = 65.5\n\nprint(count, temperature)\nprint(pi, weight)\nprint(type(count))   # 타입 확인\nprint(type(pi))",
+                    "expected_output": "10 -5\n3.14159 65.5\n<class 'int'>\n<class 'float'>",
+                    "explanation": "int는 정수, float는 소수점이 있는 실수입니다. type() 함수로 타입을 확인할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "타입 변환",
+                    "code": "# float -> int (소수점 버림)\nx = int(3.9)\nprint('int(3.9) =', x)\n\n# int -> float\ny = float(7)\nprint('float(7) =', y)\n\n# 문자열 -> 숫자\nnum_str = '42'\nnum = int(num_str)\nprint(num + 8)",
+                    "expected_output": "int(3.9) = 3\nfloat(7) = 7.0\n50",
+                    "explanation": "int()와 float() 함수로 타입을 변환할 수 있습니다. int()는 소수점 이하를 버립니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "int는 소수점이 없는 정수, float는 소수점이 있는 실수이다",
+                "type() 함수로 변수의 타입을 확인할 수 있다",
+                "int()로 변환 시 소수점 이하는 버려진다 (반올림 아님)",
+                "정수와 실수를 함께 연산하면 결과는 실수(float)이다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "산술 연산자",
+            "content_md": "## 산술 연산자\n\n파이썬에서 사용할 수 있는 산술 연산자입니다.\n\n| 연산자 | 의미 | 예시 | 결과 |\n|--------|------|------|------|\n| `+` | 더하기 | 5 + 3 | 8 |\n| `-` | 빼기 | 5 - 3 | 2 |\n| `*` | 곱하기 | 5 * 3 | 15 |\n| `/` | 나누기 | 5 / 3 | 1.666... |\n| `//` | 정수 나누기 | 5 // 3 | 1 |\n| `%` | 나머지 | 5 % 3 | 2 |\n| `**` | 거듭제곱 | 5 ** 3 | 125 |\n\n### 복합 대입 연산자\n```python\nx = 10\nx += 5   # x = x + 5 와 동일\nx -= 3   # x = x - 3 과 동일\nx *= 2   # x = x * 2 와 동일\n```",
+            "code_examples": [
+                {
+                    "title": "기본 산술 연산",
+                    "code": "a = 17\nb = 5\n\nprint(a + b)   # 더하기\nprint(a - b)   # 빼기\nprint(a * b)   # 곱하기\nprint(a / b)   # 나누기 (실수)\nprint(a // b)  # 정수 나누기\nprint(a % b)   # 나머지\nprint(a ** 2)  # 거듭제곱",
+                    "expected_output": "22\n12\n85\n3.4\n3\n2\n289",
+                    "explanation": "/ 는 항상 실수를 반환하고, // 는 소수점을 버린 정수를 반환합니다. % 는 나머지를 구합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "복합 대입 연산자",
+                    "code": "score = 100\nprint('초기 점수:', score)\n\nscore -= 10  # score = score - 10\nprint('10점 감점:', score)\n\nscore += 5   # score = score + 5\nprint('5점 추가:', score)\n\nscore *= 2   # score = score * 2\nprint('2배 적용:', score)",
+                    "expected_output": "초기 점수: 100\n10점 감점: 90\n5점 추가: 95\n2배 적용: 190",
+                    "explanation": "+=, -=, *=, /= 등의 복합 대입 연산자를 사용하면 코드를 간결하게 쓸 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "/ 연산자는 항상 실수(float)를 반환한다",
+                "// 연산자는 몫을 구하고 소수점을 버린다",
+                "% 연산자는 나머지를 구한다 (짝수/홀수 판별에 자주 사용)",
+                "** 연산자는 거듭제곱을 계산한다",
+                "+= 등의 복합 대입 연산자로 코드를 간결하게 쓸 수 있다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "비교/논리 연산자",
+            "content_md": "## 비교 연산자\n\n두 값을 비교하여 True 또는 False를 반환합니다.\n\n| 연산자 | 의미 | 예시 |\n|--------|------|------|\n| `==` | 같다 | 5 == 5 → True |\n| `!=` | 다르다 | 5 != 3 → True |\n| `>` | 크다 | 5 > 3 → True |\n| `<` | 작다 | 5 < 3 → False |\n| `>=` | 크거나 같다 | 5 >= 5 → True |\n| `<=` | 작거나 같다 | 5 <= 3 → False |\n\n## 논리 연산자\n\n| 연산자 | 의미 | 예시 |\n|--------|------|------|\n| `and` | 그리고 (둘 다 True) | True and True → True |\n| `or` | 또는 (하나라도 True) | False or True → True |\n| `not` | 반대 | not True → False |",
+            "code_examples": [
+                {
+                    "title": "비교 연산자",
+                    "code": "a = 10\nb = 20\n\nprint(a == b)   # 같은가?\nprint(a != b)   # 다른가?\nprint(a > b)    # a가 더 큰가?\nprint(a < b)    # a가 더 작은가?\nprint(a >= 10)  # a가 10 이상인가?",
+                    "expected_output": "False\nTrue\nFalse\nTrue\nTrue",
+                    "explanation": "비교 연산자는 두 값을 비교하여 True 또는 False를 반환합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "논리 연산자",
+                    "code": "age = 25\nhas_id = True\n\n# and: 두 조건 모두 True일 때만 True\nprint(age >= 18 and has_id)\n\n# or: 하나라도 True이면 True\nprint(age < 18 or has_id)\n\n# not: True를 False로, False를 True로\nprint(not has_id)",
+                    "expected_output": "True\nTrue\nFalse",
+                    "explanation": "and는 모든 조건이 True일 때, or는 하나라도 True일 때 True를 반환합니다. not은 값을 반전시킵니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "비교 연산자는 두 값을 비교하여 True 또는 False를 반환한다",
+                "== 은 같음을 비교하고, = 은 값을 대입하는 것으로 혼동하지 않는다",
+                "and는 모든 조건이 True일 때, or는 하나라도 True일 때 True이다",
+                "not은 Boolean 값을 반전시킨다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "문자열 (String)",
+            "content_md": "## 문자열이란?\n\n문자열은 문자들의 나열입니다. 작은따옴표(')나 큰따옴표(\")로 감쌉니다.\n\n### 문자열 생성\n```python\nname = '홍길동'\ngreeting = \"안녕하세요\"\nmultiline = '''여러\n줄 문자열'''\n```\n\n### 인덱싱 (Indexing)\n```python\ns = 'Python'\nprint(s[0])   # 'P' (첫 번째 문자)\nprint(s[-1])  # 'n' (마지막 문자)\n```\n\n### 슬라이싱 (Slicing)\n```python\ns = 'Python'\nprint(s[0:3])   # 'Pyt'\nprint(s[2:])    # 'thon'\nprint(s[:3])    # 'Pyt'\n```\n\n### 주요 메소드\n- `upper()`: 대문자 변환\n- `lower()`: 소문자 변환\n- `strip()`: 앞뒤 공백 제거\n- `replace(a, b)`: a를 b로 교체\n- `split(구분자)`: 문자열 분리\n- `join(리스트)`: 문자열 합치기\n- `find(s)`: 위치 찾기\n- `count(s)`: 개수 세기",
+            "code_examples": [
+                {
+                    "title": "문자열 인덱싱과 슬라이싱",
+                    "code": "word = 'Python'\n\n# 인덱싱\nprint(word[0])    # 첫 번째 문자\nprint(word[-1])   # 마지막 문자\n\n# 슬라이싱\nprint(word[0:3])  # 0번째부터 3번째 이전까지\nprint(word[2:])   # 2번째부터 끝까지\nprint(word[:4])   # 처음부터 4번째 이전까지",
+                    "expected_output": "P\nn\nPyt\nthon\nPyth",
+                    "explanation": "인덱스는 0부터 시작하고, 음수는 뒤에서부터 셉니다. 슬라이싱은 [시작:끝] 형태로 사용합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "문자열 메소드",
+                    "code": "text = '  Hello, World!  '\n\nprint(text.strip())          # 공백 제거\nprint(text.strip().lower())  # 소문자 변환\nprint(text.strip().upper())  # 대문자 변환\nprint(text.strip().replace('World', 'Python'))  # 교체\nprint(len(text.strip()))     # 길이",
+                    "expected_output": "Hello, World!\nhello, world!\nHELLO, WORLD!\nHello, Python!\n13",
+                    "explanation": "문자열 메소드는 문자열을 조작하는 다양한 기능을 제공합니다. 메소드를 연속으로 사용할 수도 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "split과 join",
+                    "code": "# split: 문자열을 분리하여 리스트로\nsentence = '사과,바나나,딸기,포도'\nfruits = sentence.split(',')\nprint(fruits)\n\n# join: 리스트를 합쳐서 문자열로\njoined = ' / '.join(fruits)\nprint(joined)",
+                    "expected_output": "['사과', '바나나', '딸기', '포도']\n사과 / 바나나 / 딸기 / 포도",
+                    "explanation": "split()으로 문자열을 분리하고, join()으로 합칠 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "문자열은 작은따옴표나 큰따옴표로 감싼다",
+                "인덱스는 0부터 시작하며, 음수 인덱스는 뒤에서부터 센다",
+                "슬라이싱은 [시작:끝] 형태이며 끝 인덱스는 포함되지 않는다",
+                "문자열은 변경 불가(immutable)하며, 메소드는 새로운 문자열을 반환한다",
+                "len()으로 문자열의 길이를 구할 수 있다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "Boolean (불리언)",
+            "content_md": "## Boolean이란?\n\nBoolean은 참(True) 또는 거짓(False) 두 가지 값만 가지는 타입입니다.\n\n### Boolean 값\n```python\nis_student = True\nis_adult = False\n```\n\n### Falsy 값 (False로 취급되는 값)\n- `False`\n- `0`, `0.0`\n- `''` (빈 문자열)\n- `None`\n- `[]`, `{}`, `()` (빈 컨테이너)\n\n### bool() 함수\n```python\nbool(0)     # False\nbool(1)     # True\nbool('')    # False\nbool('hi')  # True\n```",
+            "code_examples": [
+                {
+                    "title": "Boolean 기본",
+                    "code": "is_sunny = True\nis_raining = False\n\nprint(is_sunny)\nprint(is_raining)\nprint(type(is_sunny))\n\n# 비교 연산의 결과는 Boolean\nx = 10\nprint(x > 5)\nprint(x == 20)",
+                    "expected_output": "True\nFalse\n<class 'bool'>\nTrue\nFalse",
+                    "explanation": "Boolean 값은 True와 False 두 가지이며, 비교 연산의 결과로 얻을 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "bool() 변환",
+                    "code": "# 다양한 값의 Boolean 변환\nprint(bool(0))      # 0은 False\nprint(bool(1))      # 0이 아닌 숫자는 True\nprint(bool(''))     # 빈 문자열은 False\nprint(bool('hello'))  # 비어있지 않으면 True\nprint(bool(None))   # None은 False",
+                    "expected_output": "False\nTrue\nFalse\nTrue\nFalse",
+                    "explanation": "파이썬에서 0, 빈 문자열, None 등은 False로 취급됩니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "Boolean은 True와 False 두 가지 값만 가진다 (대소문자 주의!)",
+                "비교 연산자와 논리 연산자는 Boolean 값을 반환한다",
+                "0, 빈 문자열, None 등은 False로 취급된다 (Falsy 값)",
+                "bool() 함수로 다른 타입을 Boolean으로 변환할 수 있다"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,404 @@
+{
+    "chapter_id": 3,
+    "problems": [
+        {
+            "problem_id": "ch3_p01",
+            "title": "리스트 생성",
+            "difficulty": "basic",
+            "description": "5개의 과일 이름이 담긴 리스트를 만들어보세요.",
+            "instructions": [
+                "fruits 변수에 ['사과', '바나나', '딸기', '포도', '오렌지'] 리스트를 저장하세요",
+                "리스트를 출력하세요",
+                "리스트의 길이를 출력하세요"
+            ],
+            "initial_code": "# fruits 리스트를 만드세요\n\n# 리스트를 출력하세요\n\n# 리스트의 길이를 출력하세요\n",
+            "solution_code": "fruits = ['사과', '바나나', '딸기', '포도', '오렌지']\nprint(fruits)\nprint(len(fruits))",
+            "hints": [
+                {"level": 1, "text": "리스트는 [] 안에 값들을 콤마로 구분하여 만듭니다."},
+                {"level": 2, "text": "fruits = ['사과', '바나나', '딸기', '포도', '오렌지'] 로 만들고 len()으로 길이를 구하세요."},
+                {"level": 3, "text": "fruits = ['사과', '바나나', '딸기', '포도', '오렌지']\nprint(fruits)\nprint(len(fruits))"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"fruits": ["사과", "바나나", "딸기", "포도", "오렌지"]},
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch3_p02",
+            "title": "리스트 인덱싱/슬라이싱",
+            "difficulty": "basic",
+            "description": "리스트에서 특정 요소를 인덱싱과 슬라이싱으로 가져오세요.",
+            "instructions": [
+                "nums = [10, 20, 30, 40, 50] 으로 설정하세요",
+                "first에 첫 번째 요소, last에 마지막 요소를 저장하세요",
+                "middle에 2번째부터 4번째 요소(슬라이싱)를 저장하세요",
+                "세 변수를 각각 출력하세요"
+            ],
+            "initial_code": "nums = [10, 20, 30, 40, 50]\n\n# 첫 번째 요소를 first에 저장하세요\n\n# 마지막 요소를 last에 저장하세요\n\n# 2번째~4번째 요소를 middle에 저장하세요\n\n# 출력하세요\n",
+            "solution_code": "nums = [10, 20, 30, 40, 50]\nfirst = nums[0]\nlast = nums[-1]\nmiddle = nums[1:4]\nprint(first)\nprint(last)\nprint(middle)",
+            "hints": [
+                {"level": 1, "text": "인덱스는 0부터 시작합니다. 마지막 요소는 [-1]로 접근합니다."},
+                {"level": 2, "text": "슬라이싱은 [시작:끝] 형태입니다. nums[1:4]는 인덱스 1,2,3의 요소입니다."},
+                {"level": 3, "text": "first = nums[0]\nlast = nums[-1]\nmiddle = nums[1:4]"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"first": 10, "last": 50, "middle": [20, 30, 40]},
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트", "인덱싱", "슬라이싱", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch3_p03",
+            "title": "리스트 수정",
+            "difficulty": "basic",
+            "description": "리스트의 요소를 추가, 수정, 삭제해보세요.",
+            "instructions": [
+                "colors = ['빨강', '파랑', '초록'] 으로 시작하세요",
+                "append()로 '노랑'을 추가하세요",
+                "0번 인덱스 값을 '하양'으로 변경하세요",
+                "최종 리스트를 출력하세요"
+            ],
+            "initial_code": "colors = ['빨강', '파랑', '초록']\n\n# '노랑'을 리스트 끝에 추가하세요\n\n# 0번 인덱스를 '하양'으로 변경하세요\n\n# 최종 리스트를 출력하세요\n",
+            "solution_code": "colors = ['빨강', '파랑', '초록']\ncolors.append('노랑')\ncolors[0] = '하양'\nprint(colors)",
+            "hints": [
+                {"level": 1, "text": "리스트.append(값)으로 끝에 추가하고, 리스트[인덱스] = 값으로 수정합니다."},
+                {"level": 2, "text": "colors.append('노랑') 으로 추가하고, colors[0] = '하양' 으로 첫 번째 요소를 바꾸세요."},
+                {"level": 3, "text": "colors.append('노랑')\ncolors[0] = '하양'\nprint(colors)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"colors": ["하양", "파랑", "초록", "노랑"]},
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트", "append", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch3_p04",
+            "title": "튜플 기초",
+            "difficulty": "basic",
+            "description": "튜플을 만들고 언패킹을 사용해 변수에 저장하세요.",
+            "instructions": [
+                "point = (3, 7) 튜플을 만드세요",
+                "언패킹으로 x, y 변수에 각각 저장하세요",
+                "x와 y를 출력하세요"
+            ],
+            "initial_code": "# point 튜플을 만드세요\npoint = (3, 7)\n\n# 튜플 언패킹으로 x, y에 저장하세요\n\n# x와 y를 출력하세요\n",
+            "solution_code": "point = (3, 7)\nx, y = point\nprint(x)\nprint(y)",
+            "hints": [
+                {"level": 1, "text": "튜플 언패킹은 x, y = 튜플 형태로 사용합니다."},
+                {"level": 2, "text": "x, y = point 로 언패킹하면 x=3, y=7이 됩니다."},
+                {"level": 3, "text": "x, y = point\nprint(x)\nprint(y)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"x": 3, "y": 7},
+                "normalize_whitespace": true
+            },
+            "tags": ["튜플", "언패킹", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch3_p05",
+            "title": "딕셔너리 기초",
+            "difficulty": "basic",
+            "description": "학생 정보를 딕셔너리로 만들고 값을 출력하세요.",
+            "instructions": [
+                "student 딕셔너리를 만드세요: name='김철수', age=20, grade='A'",
+                "name 값을 출력하세요",
+                "age 값을 출력하세요"
+            ],
+            "initial_code": "# student 딕셔너리를 만드세요\n# name='김철수', age=20, grade='A'\n\n# name과 age를 출력하세요\n",
+            "solution_code": "student = {'name': '김철수', 'age': 20, 'grade': 'A'}\nprint(student['name'])\nprint(student['age'])",
+            "hints": [
+                {"level": 1, "text": "딕셔너리는 {'키': 값} 형태로 만듭니다."},
+                {"level": 2, "text": "딕셔너리['키'] 로 값에 접근합니다."},
+                {"level": 3, "text": "student = {'name': '김철수', 'age': 20, 'grade': 'A'}\nprint(student['name'])\nprint(student['age'])"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"student": {"name": "김철수", "age": 20, "grade": "A"}},
+                "normalize_whitespace": true
+            },
+            "tags": ["딕셔너리", "기초"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch3_p06",
+            "title": "리스트 메소드 활용",
+            "difficulty": "intermediate",
+            "description": "리스트를 정렬하고 뒤집는 연습을 하세요.",
+            "instructions": [
+                "nums = [5, 2, 8, 1, 9, 3] 으로 설정하세요",
+                "sort()로 오름차순 정렬하여 출력하세요",
+                "reverse()로 순서를 뒤집어 출력하세요"
+            ],
+            "initial_code": "nums = [5, 2, 8, 1, 9, 3]\n\n# sort()로 정렬하고 출력하세요\n\n# reverse()로 뒤집고 출력하세요\n",
+            "solution_code": "nums = [5, 2, 8, 1, 9, 3]\nnums.sort()\nprint(nums)\nnums.reverse()\nprint(nums)",
+            "hints": [
+                {"level": 1, "text": "sort()는 오름차순으로, reverse()는 순서를 뒤집습니다. 둘 다 원본을 수정합니다."},
+                {"level": 2, "text": "nums.sort() 후 출력, 그 다음 nums.reverse() 후 출력합니다."},
+                {"level": 3, "text": "nums.sort()\nprint(nums)\nnums.reverse()\nprint(nums)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "[1, 2, 3, 5, 8, 9]\n[9, 8, 5, 3, 2, 1]",
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트메소드", "sort", "reverse", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch3_p07",
+            "title": "집합 연산",
+            "difficulty": "intermediate",
+            "description": "두 집합의 교집합, 합집합, 차집합을 구하세요.",
+            "instructions": [
+                "set_a = {1, 2, 3, 4, 5} 와 set_b = {4, 5, 6, 7, 8} 로 설정하세요",
+                "intersection에 교집합을 저장하세요",
+                "union에 합집합을 저장하세요",
+                "두 변수를 출력하세요"
+            ],
+            "initial_code": "set_a = {1, 2, 3, 4, 5}\nset_b = {4, 5, 6, 7, 8}\n\n# 교집합을 intersection에 저장하세요\n\n# 합집합을 union에 저장하세요\n\n# 출력하세요\n",
+            "solution_code": "set_a = {1, 2, 3, 4, 5}\nset_b = {4, 5, 6, 7, 8}\nintersection = set_a & set_b\nunion = set_a | set_b\nprint(intersection)\nprint(union)",
+            "hints": [
+                {"level": 1, "text": "& 연산자로 교집합, | 연산자로 합집합을 구합니다."},
+                {"level": 2, "text": "intersection = set_a & set_b, union = set_a | set_b"},
+                {"level": 3, "text": "intersection = set_a & set_b\nunion = set_a | set_b\nprint(intersection)\nprint(union)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"intersection": [4, 5], "union": [1, 2, 3, 4, 5, 6, 7, 8]},
+                "normalize_whitespace": true
+            },
+            "tags": ["집합", "set", "집합연산", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch3_p08",
+            "title": "딕셔너리 메소드",
+            "difficulty": "intermediate",
+            "description": "딕셔너리의 keys(), values(), items()를 활용하세요.",
+            "instructions": [
+                "scores = {'수학': 90, '영어': 85, '과학': 92} 로 설정하세요",
+                "keys()로 모든 키를 출력하세요",
+                "values()로 모든 값을 출력하세요",
+                "get()으로 '국어' 점수를 가져오세요 (없으면 0 반환)"
+            ],
+            "initial_code": "scores = {'수학': 90, '영어': 85, '과학': 92}\n\n# 모든 키를 리스트로 출력하세요\n\n# 모든 값을 리스트로 출력하세요\n\n# '국어' 점수를 가져오세요 (없으면 0)\n",
+            "solution_code": "scores = {'수학': 90, '영어': 85, '과학': 92}\nprint(list(scores.keys()))\nprint(list(scores.values()))\nprint(scores.get('국어', 0))",
+            "hints": [
+                {"level": 1, "text": "keys(), values()는 리스트처럼 보이게 list()로 변환해 출력하세요."},
+                {"level": 2, "text": "get(키, 기본값)은 키가 없을 때 기본값을 반환합니다."},
+                {"level": 3, "text": "print(list(scores.keys()))\nprint(list(scores.values()))\nprint(scores.get('국어', 0))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "['수학', '영어', '과학']\n[90, 85, 92]\n0",
+                "normalize_whitespace": true
+            },
+            "tags": ["딕셔너리메소드", "get", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch3_p09",
+            "title": "중첩 리스트",
+            "difficulty": "intermediate",
+            "description": "2차원 리스트(리스트 안의 리스트)를 만들고 특정 요소에 접근하세요.",
+            "instructions": [
+                "matrix = [[1,2,3], [4,5,6], [7,8,9]] 로 설정하세요",
+                "center에 가운데 요소(5)를 저장하세요 (matrix[1][1])",
+                "last에 마지막 요소(9)를 저장하세요",
+                "두 변수를 출력하세요"
+            ],
+            "initial_code": "matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\n\n# 가운데 요소(5)를 center에 저장하세요\n\n# 마지막 요소(9)를 last에 저장하세요\n\n# 출력하세요\n",
+            "solution_code": "matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\ncenter = matrix[1][1]\nlast = matrix[2][2]\nprint(center)\nprint(last)",
+            "hints": [
+                {"level": 1, "text": "2차원 리스트는 matrix[행][열] 형태로 접근합니다."},
+                {"level": 2, "text": "가운데 5는 1행 1열이므로 matrix[1][1], 마지막 9는 matrix[2][2]입니다."},
+                {"level": 3, "text": "center = matrix[1][1]\nlast = matrix[2][2]"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"center": 5, "last": 9},
+                "normalize_whitespace": true
+            },
+            "tags": ["중첩리스트", "2차원리스트", "중급"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch3_p10",
+            "title": "리스트 복사",
+            "difficulty": "intermediate",
+            "description": "리스트를 올바르게 복사하는 방법을 배우세요.",
+            "instructions": [
+                "original = [1, 2, 3, 4, 5] 로 설정하세요",
+                "copy = original[:] 또는 copy = original.copy()로 복사하세요",
+                "copy에 6을 append하세요",
+                "original과 copy를 각각 출력하세요 (원본은 변하지 않아야 함)"
+            ],
+            "initial_code": "original = [1, 2, 3, 4, 5]\n\n# original을 복사하여 copy에 저장하세요\n# (주의: copy = original 은 복사가 아닙니다!)\n\n# copy에 6을 추가하세요\n\n# original과 copy를 각각 출력하세요\n",
+            "solution_code": "original = [1, 2, 3, 4, 5]\ncopy = original[:]\ncopy.append(6)\nprint(original)\nprint(copy)",
+            "hints": [
+                {"level": 1, "text": "copy = original 은 같은 리스트를 가리킵니다. 진짜 복사는 [:] 또는 .copy()를 사용합니다."},
+                {"level": 2, "text": "copy = original[:] 또는 copy = original.copy()로 독립적인 복사본을 만드세요."},
+                {"level": 3, "text": "copy = original[:]\ncopy.append(6)\nprint(original)\nprint(copy)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"original": [1, 2, 3, 4, 5], "copy": [1, 2, 3, 4, 5, 6]},
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트복사", "중급"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch3_p11",
+            "title": "학생 성적 관리",
+            "difficulty": "advanced",
+            "description": "리스트에 점수를 추가하고 평균, 최대, 최솟값을 계산하는 프로그램을 작성하세요.",
+            "instructions": [
+                "점수 개수를 입력받으세요",
+                "각 점수를 입력받아 리스트에 추가하세요",
+                "평균, 최대값, 최솟값을 계산하여 출력하세요",
+                "출력 형식: '평균: N.N, 최대: N, 최소: N'"
+            ],
+            "initial_code": "n = int(input('점수 개수: '))\nscores = []\n\n# n개의 점수를 입력받아 scores에 추가하세요\nfor i in range(n):\n    score = int(input(f'{i+1}번째 점수: '))\n    # scores에 score를 추가하세요\n    pass\n\n# 평균, 최대, 최소를 계산하고 출력하세요\n",
+            "solution_code": "n = int(input('점수 개수: '))\nscores = []\nfor i in range(n):\n    score = int(input(f'{i+1}번째 점수: '))\n    scores.append(score)\navg = sum(scores) / n\nprint(f'평균: {avg:.1f}, 최대: {max(scores)}, 최소: {min(scores)}')",
+            "hints": [
+                {"level": 1, "text": "scores.append(score)로 리스트에 추가합니다. sum(), max(), min() 함수를 활용하세요."},
+                {"level": 2, "text": "평균 = sum(scores) / n, 최대 = max(scores), 최소 = min(scores)"},
+                {"level": 3, "text": "scores.append(score)\n...\navg = sum(scores) / n\nprint(f'평균: {avg:.1f}, 최대: {max(scores)}, 최소: {min(scores)}')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["3", "80", "90", "70"], "expected_output": "평균: 80.0, 최대: 90, 최소: 70"},
+                    {"input": ["4", "100", "95", "88", "92"], "expected_output": "평균: 93.8, 최대: 100, 최소: 88"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["리스트", "sum", "max", "min", "심화"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch3_p12",
+            "title": "장바구니 시스템",
+            "difficulty": "advanced",
+            "description": "딕셔너리로 장바구니를 관리하는 프로그램을 작성하세요.",
+            "instructions": [
+                "상품명과 가격을 입력받아 딕셔너리에 추가하세요",
+                "3개 상품을 입력받으세요",
+                "모든 상품과 가격을 출력하세요",
+                "총 금액을 출력하세요"
+            ],
+            "initial_code": "cart = {}\n\n# 3개 상품을 입력받아 cart에 추가하세요\nfor i in range(3):\n    item = input('상품명: ')\n    price = int(input('가격: '))\n    # cart에 item: price를 추가하세요\n    pass\n\n# 모든 상품과 가격을 출력하고 총액을 출력하세요\n",
+            "solution_code": "cart = {}\nfor i in range(3):\n    item = input('상품명: ')\n    price = int(input('가격: '))\n    cart[item] = price\nfor item, price in cart.items():\n    print(f'{item}: {price}원')\nprint(f'총액: {sum(cart.values())}원')",
+            "hints": [
+                {"level": 1, "text": "cart[item] = price 로 딕셔너리에 추가합니다."},
+                {"level": 2, "text": "cart.items()로 키와 값을 함께 순회하고, sum(cart.values())로 총액을 계산합니다."},
+                {"level": 3, "text": "cart[item] = price\n...\nfor item, price in cart.items():\n    print(f'{item}: {price}원')\nprint(f'총액: {sum(cart.values())}원')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["사과", "3000", "바나나", "2000", "딸기", "5000"], "expected_output": "사과: 3000원\n바나나: 2000원\n딸기: 5000원\n총액: 10000원"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["딕셔너리", "sum", "items", "심화"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch3_p13",
+            "title": "중복 제거기",
+            "difficulty": "advanced",
+            "description": "리스트에서 중복을 제거하고 정렬하여 출력하는 프로그램을 작성하세요.",
+            "instructions": [
+                "숫자 개수를 입력받으세요",
+                "각 숫자를 입력받아 리스트에 저장하세요",
+                "set()으로 중복을 제거하고 sorted()로 정렬하세요",
+                "결과를 출력하세요"
+            ],
+            "initial_code": "n = int(input('숫자 개수: '))\nnumbers = []\n\nfor i in range(n):\n    num = int(input('숫자: '))\n    numbers.append(num)\n\n# 중복 제거 후 정렬하여 unique에 저장하세요\n\n# 결과를 출력하세요\n",
+            "solution_code": "n = int(input('숫자 개수: '))\nnumbers = []\nfor i in range(n):\n    num = int(input('숫자: '))\n    numbers.append(num)\nunique = sorted(set(numbers))\nprint(unique)",
+            "hints": [
+                {"level": 1, "text": "set()으로 중복을 제거하고, sorted()로 정렬합니다."},
+                {"level": 2, "text": "unique = sorted(set(numbers)) 한 줄로 처리할 수 있습니다."},
+                {"level": 3, "text": "unique = sorted(set(numbers))\nprint(unique)"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["6", "3", "1", "4", "1", "5", "3"], "expected_output": "[1, 3, 4, 5]"},
+                    {"input": ["5", "2", "2", "2", "2", "2"], "expected_output": "[2]"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["집합", "중복제거", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch3_p14",
+            "title": "단어 빈도수",
+            "difficulty": "advanced",
+            "description": "문장을 입력받아 각 단어의 등장 횟수를 딕셔너리로 저장하고 출력하세요.",
+            "instructions": [
+                "문장을 input()으로 입력받으세요",
+                "split()으로 단어 리스트를 만드세요",
+                "각 단어의 빈도수를 딕셔너리(freq)에 저장하세요",
+                "freq 딕셔너리를 출력하세요"
+            ],
+            "initial_code": "sentence = input('문장 입력: ')\nwords = sentence.split()\nfreq = {}\n\n# 각 단어의 빈도수를 freq 딕셔너리에 저장하세요\n# 힌트: 단어가 freq에 없으면 0으로 시작, 있으면 1 추가\nfor word in words:\n    pass\n\nprint(freq)",
+            "solution_code": "sentence = input('문장 입력: ')\nwords = sentence.split()\nfreq = {}\nfor word in words:\n    freq[word] = freq.get(word, 0) + 1\nprint(freq)",
+            "hints": [
+                {"level": 1, "text": "freq.get(word, 0) + 1 을 사용하면 키가 없을 때 0으로 시작해 1을 더합니다."},
+                {"level": 2, "text": "for word in words: freq[word] = freq.get(word, 0) + 1"},
+                {"level": 3, "text": "for word in words:\n    freq[word] = freq.get(word, 0) + 1\nprint(freq)"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["a b a c b a"], "expected_output": "{'a': 3, 'b': 2, 'c': 1}"},
+                    {"input": ["hello hello world"], "expected_output": "{'hello': 2, 'world': 1}"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["딕셔너리", "빈도수", "get", "심화"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch3_p15",
+            "title": "전화번호부",
+            "difficulty": "advanced",
+            "description": "딕셔너리로 전화번호부를 만들고 이름으로 번호를 검색하세요.",
+            "instructions": [
+                "3명의 이름과 전화번호를 입력받아 phonebook 딕셔너리에 저장하세요",
+                "검색할 이름을 입력받으세요",
+                "해당 이름이 있으면 전화번호를 출력하고, 없으면 '찾을 수 없습니다'를 출력하세요"
+            ],
+            "initial_code": "phonebook = {}\n\n# 3명의 정보를 입력받으세요\nfor i in range(3):\n    name = input('이름: ')\n    phone = input('전화번호: ')\n    # phonebook에 저장하세요\n    pass\n\n# 검색\nsearch = input('검색할 이름: ')\n# 이름이 있으면 전화번호, 없으면 '찾을 수 없습니다' 출력\n",
+            "solution_code": "phonebook = {}\nfor i in range(3):\n    name = input('이름: ')\n    phone = input('전화번호: ')\n    phonebook[name] = phone\nsearch = input('검색할 이름: ')\nresult = phonebook.get(search)\nif result:\n    print(result)\nelse:\n    print('찾을 수 없습니다')",
+            "hints": [
+                {"level": 1, "text": "phonebook[name] = phone 으로 저장하고, get()으로 검색합니다."},
+                {"level": 2, "text": "get()이 None을 반환하면 이름이 없는 것입니다."},
+                {"level": 3, "text": "phonebook[name] = phone\n...\nresult = phonebook.get(search)\nif result:\n    print(result)\nelse:\n    print('찾을 수 없습니다')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["홍길동", "010-1234-5678", "김철수", "010-9876-5432", "이영희", "010-1111-2222", "홍길동"], "expected_output": "010-1234-5678"},
+                    {"input": ["홍길동", "010-1234-5678", "김철수", "010-9876-5432", "이영희", "010-1111-2222", "박민준"], "expected_output": "찾을 수 없습니다"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["딕셔너리", "get", "검색", "심화"],
+            "related_section": "s5"
+        }
+    ]
+}

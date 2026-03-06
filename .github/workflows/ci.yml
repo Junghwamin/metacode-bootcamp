@@ -1,0 +1,82 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: 코드 린트 검사
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: flake8 린트
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --max-complexity=10 --max-line-length=120 --statistics
+
+  test:
+    name: 테스트 실행
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: pytest 실행
+        run: |
+          pytest tests/ -v --cov=core --cov-report=term-missing
+
+  data-integrity:
+    name: 데이터 파일 무결성 검사
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: JSON 검증
+        run: |
+          python -c "
+          import json, glob, sys
+          errors = []
+          for f in glob.glob('data/**/*.json', recursive=True):
+              try:
+                  with open(f) as fp:
+                      data = json.load(fp)
+                  if 'problems' in f and len(data.get('problems', [])) < 15:
+                      errors.append(f'{f}: 문제 수 부족 ({len(data[\"problems\"])}개)')
+              except json.JSONDecodeError as e:
+                  errors.append(f'{f}: JSON 파싱 오류 - {e}')
+          if errors:
+              print('\n'.join(errors))
+              sys.exit(1)
+          print('모든 데이터 파일 검증 통과')
+          "

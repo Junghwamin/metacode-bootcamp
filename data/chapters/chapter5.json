@@ -1,0 +1,128 @@
+{
+    "chapter_id": 5,
+    "title": "함수와 클래스",
+    "description": "코드를 재사용하고 구조화하는 핵심 도구인 함수(function)와 클래스(class)를 배웁니다. 함수는 반복되는 코드를 한 곳에 모아두는 방법이고, 클래스는 데이터와 기능을 하나의 단위로 묶는 방법입니다.",
+    "learning_objectives": [
+        "def 키워드로 함수를 정의하고 return으로 값을 반환할 수 있다",
+        "매개변수 기본값, *args, **kwargs를 활용한 유연한 함수를 작성할 수 있다",
+        "지역 변수와 전역 변수의 차이를 이해하고 올바르게 사용할 수 있다",
+        "class 키워드로 클래스를 정의하고 __init__으로 객체를 초기화할 수 있다",
+        "상속(inheritance)을 사용하여 기존 클래스를 확장할 수 있다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "함수 정의하기 (def, return)",
+            "content_md": "## 함수란 무엇인가요?\n\n함수(function)는 특정 작업을 수행하는 코드 묶음입니다. 한 번 정의해두면 여러 번 재사용할 수 있어 코드를 간결하게 만들어줍니다.\n\n### 함수 기본 구조\n\n```python\ndef 함수이름(매개변수):\n    실행할 코드\n    return 반환값\n```\n\n- `def`: 함수를 정의할 때 사용하는 키워드\n- `함수이름`: 함수를 부를 때 사용할 이름\n- `매개변수`: 함수에 전달할 입력값 (없어도 됨)\n- `return`: 함수가 결과값을 돌려줄 때 사용",
+            "code_examples": [
+                {
+                    "title": "기본 함수 만들기",
+                    "code": "# 인사하는 함수 정의\ndef greet():\n    print('안녕하세요!')\n    print('파이썬을 배우고 있습니다.')\n\n# 함수 호출\ngreet()\ngreet()  # 여러 번 사용 가능",
+                    "expected_output": "안녕하세요!\n파이썬을 배우고 있습니다.\n안녕하세요!\n파이썬을 배우고 있습니다.",
+                    "explanation": "def로 함수를 정의한 후, 함수이름()으로 호출합니다. greet()를 두 번 호출했으므로 출력도 두 번 됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "반환값이 있는 함수",
+                    "code": "# 두 숫자를 더하는 함수\ndef add(a, b):\n    result = a + b\n    return result  # 결과값 반환\n\n# 반환값을 변수에 저장\nsum_value = add(3, 5)\nprint(sum_value)  # 8\n\n# 바로 출력에 사용\nprint(add(10, 20))  # 30",
+                    "expected_output": "8\n30",
+                    "explanation": "return 키워드로 계산 결과를 반환합니다. 반환된 값은 변수에 저장하거나 바로 사용할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "def 키워드로 함수를 정의한다",
+                "함수를 사용하려면 함수이름()으로 호출해야 한다",
+                "return 키워드로 결과값을 반환한다",
+                "함수를 한 번 정의하면 여러 번 재사용할 수 있다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "매개변수 활용하기 (기본값, *args, **kwargs)",
+            "content_md": "## 다양한 매개변수 방식\n\n파이썬 함수는 매개변수를 매우 유연하게 사용할 수 있습니다.\n\n### 기본값 매개변수\n\n```python\ndef greet(name, greeting='안녕하세요'):\n    print(f'{greeting}, {name}!')\n\ngreet('민준')          # 안녕하세요, 민준!\ngreet('서연', '반가워요')  # 반가워요, 서연!\n```\n\n### *args - 여러 개의 위치 인자\n\n```python\ndef total(*numbers):\n    return sum(numbers)\n\nprint(total(1, 2, 3))     # 6\nprint(total(1, 2, 3, 4))  # 10\n```\n\n### **kwargs - 여러 개의 키워드 인자\n\n```python\ndef profile(**info):\n    for key, value in info.items():\n        print(f'{key}: {value}')\n\nprofile(이름='김파이', 나이=20, 취미='코딩')\n```",
+            "code_examples": [
+                {
+                    "title": "*args 사용하기",
+                    "code": "# 여러 숫자의 평균을 구하는 함수\ndef average(*numbers):\n    if len(numbers) == 0:\n        return 0\n    return sum(numbers) / len(numbers)\n\nprint(average(1, 2, 3))     # 2.0\nprint(average(10, 20, 30, 40))  # 25.0",
+                    "expected_output": "2.0\n25.0",
+                    "explanation": "*args를 사용하면 몇 개의 인자를 전달해도 모두 받을 수 있습니다. numbers는 튜플로 처리됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "**kwargs 사용하기",
+                    "code": "# 사용자 정보를 출력하는 함수\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f'{key}: {value}')\n\nprint_info(이름='이파이', 나이=25, 도시='서울')",
+                    "expected_output": "이름: 이파이\n나이: 25\n도시: 서울",
+                    "explanation": "**kwargs를 사용하면 키워드 인자를 몇 개든 받을 수 있습니다. kwargs는 딕셔너리로 처리됩니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "기본값 매개변수: def func(a, b=10) - b가 없으면 10을 사용",
+                "*args: 여러 위치 인자를 튜플로 받는다",
+                "**kwargs: 여러 키워드 인자를 딕셔너리로 받는다",
+                "기본값 매개변수는 일반 매개변수 뒤에 와야 한다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "변수 범위 (지역 변수와 전역 변수)",
+            "content_md": "## 변수가 살아있는 범위, 스코프(Scope)\n\n변수는 어디서 만들어졌느냐에 따라 사용할 수 있는 범위가 달라집니다.\n\n### 지역 변수 (Local Variable)\n함수 안에서 만든 변수는 그 함수 안에서만 사용할 수 있습니다.\n\n```python\ndef my_func():\n    local_var = '나는 지역 변수'  # 함수 안에서만 존재\n    print(local_var)\n\nmy_func()\n# print(local_var)  # 오류! 함수 밖에서는 사용 불가\n```\n\n### 전역 변수 (Global Variable)\n함수 밖에서 만든 변수는 어디서든 읽을 수 있습니다.\n\n```python\nglobal_var = '나는 전역 변수'\n\ndef my_func():\n    print(global_var)  # 읽기는 가능\n\nmy_func()\n```",
+            "code_examples": [
+                {
+                    "title": "지역/전역 변수 차이",
+                    "code": "# 전역 변수\ncount = 0\n\ndef add_one():\n    # 함수 안의 지역 변수\n    local_count = 10\n    print(f'함수 안: count={count}, local_count={local_count}')\n\nadd_one()\nprint(f'함수 밖: count={count}')\n# print(local_count)  # 오류 발생!",
+                    "expected_output": "함수 안: count=0, local_count=10\n함수 밖: count=0",
+                    "explanation": "전역 변수 count는 함수 안에서도 읽을 수 있지만, 지역 변수 local_count는 함수 밖에서 사용할 수 없습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "함수 안에서 만든 변수 = 지역 변수 (함수 안에서만 사용 가능)",
+                "함수 밖에서 만든 변수 = 전역 변수 (어디서든 읽기 가능)",
+                "함수 안에서 전역 변수를 수정하려면 global 키워드 필요",
+                "지역 변수와 전역 변수 이름이 같으면 지역 변수가 우선"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "클래스 기초 (__init__, 메소드)",
+            "content_md": "## 클래스(Class)란?\n\n클래스는 데이터(속성)와 기능(메소드)을 하나로 묶은 설계도입니다. 클래스로부터 실제 객체(인스턴스)를 만들 수 있습니다.\n\n### 클래스 기본 구조\n\n```python\nclass 클래스이름:\n    def __init__(self, 매개변수):\n        self.속성 = 값\n    \n    def 메소드(self):\n        동작\n```\n\n- `__init__`: 객체가 만들어질 때 자동으로 호출되는 초기화 메소드\n- `self`: 현재 객체 자신을 가리키는 참조\n- 메소드: 클래스 안에 정의된 함수",
+            "code_examples": [
+                {
+                    "title": "강아지 클래스 만들기",
+                    "code": "class Dog:\n    def __init__(self, name, age):\n        self.name = name  # 이름 속성\n        self.age = age    # 나이 속성\n    \n    def bark(self):\n        print(f'{self.name}: 왈왈!')\n    \n    def info(self):\n        print(f'이름: {self.name}, 나이: {self.age}살')\n\n# 객체(인스턴스) 생성\ndog1 = Dog('바둑이', 3)\ndog2 = Dog('콩이', 1)\n\ndog1.bark()\ndog2.info()",
+                    "expected_output": "바둑이: 왈왈!\n이름: 콩이, 나이: 1살",
+                    "explanation": "__init__으로 객체를 초기화하고, 메소드로 동작을 정의합니다. self는 항상 첫 번째 매개변수로 현재 객체를 나타냅니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "class 키워드로 클래스를 정의한다",
+                "__init__은 객체 생성 시 자동 호출되는 생성자",
+                "self는 현재 객체 자신을 가리킨다",
+                "객체.메소드() 형태로 메소드를 호출한다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "상속 (Inheritance)",
+            "content_md": "## 상속이란?\n\n상속은 기존 클래스(부모 클래스)의 기능을 물려받아 새 클래스(자식 클래스)를 만드는 것입니다. 코드를 재사용하고 확장할 때 유용합니다.\n\n```python\nclass 자식클래스(부모클래스):\n    def __init__(self, ...):\n        super().__init__(...)  # 부모 초기화\n        # 자식만의 속성\n```\n\n### super() 함수\n`super()`는 부모 클래스를 가리킵니다. 부모의 `__init__`을 호출할 때 사용합니다.",
+            "code_examples": [
+                {
+                    "title": "동물 상속 예시",
+                    "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        print(f'{self.name}이(가) 소리를 냅니다.')\n\nclass Dog(Animal):  # Animal을 상속\n    def speak(self):  # 메소드 오버라이딩\n        print(f'{self.name}: 왈왈!')\n\nclass Cat(Animal):  # Animal을 상속\n    def speak(self):\n        print(f'{self.name}: 야옹~')\n\ndog = Dog('바둑이')\ncat = Cat('나비')\ndog.speak()\ncat.speak()",
+                    "expected_output": "바둑이: 왈왈!\n나비: 야옹~",
+                    "explanation": "Dog와 Cat 모두 Animal을 상속받아 name 속성을 가집니다. speak() 메소드를 각자 다르게 구현(오버라이딩)했습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "class 자식(부모): 형태로 상속을 선언한다",
+                "자식 클래스는 부모의 모든 속성과 메소드를 물려받는다",
+                "super()로 부모 클래스에 접근할 수 있다",
+                "같은 이름의 메소드를 재정의하는 것을 오버라이딩이라 한다"
+            ]
+        }
+    ]
+}

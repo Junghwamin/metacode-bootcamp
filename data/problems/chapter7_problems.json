@@ -1,0 +1,393 @@
+{
+    "chapter_id": 7,
+    "problems": [
+        {
+            "problem_id": "ch7_p01",
+            "title": "첫 번째 try/except",
+            "difficulty": "basic",
+            "description": "0으로 나누기 오류를 try/except로 처리하세요.",
+            "instructions": [
+                "try 블록에서 10 / 0을 계산하세요",
+                "ZeroDivisionError를 except로 처리하세요",
+                "오류 발생 시 '0으로 나눌 수 없어요!'를 출력하세요"
+            ],
+            "initial_code": "# try/except로 ZeroDivisionError를 처리하세요\ntry:\n    # 여기서 10 / 0을 계산하세요\n    pass\nexcept ZeroDivisionError:\n    # 오류 메시지를 출력하세요\n    pass\n",
+            "solution_code": "try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print('0으로 나눌 수 없어요!')",
+            "hints": [
+                {"level": 1, "text": "try 블록 안에 result = 10 / 0 을 넣으세요"},
+                {"level": 2, "text": "except ZeroDivisionError: 아래에 print()로 오류 메시지를 출력하세요"},
+                {"level": 3, "text": "try:\\n    result = 10 / 0\\nexcept ZeroDivisionError:\\n    print('0으로 나눌 수 없어요!')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "0으로 나눌 수 없어요!"
+            },
+            "tags": ["예외처리", "try", "except", "ZeroDivisionError"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch7_p02",
+            "title": "안전한 숫자 변환",
+            "difficulty": "basic",
+            "description": "문자열을 정수로 변환할 때 발생하는 ValueError를 처리하세요.",
+            "instructions": [
+                "safe_int(s) 함수를 정의하세요",
+                "try 블록에서 int(s)로 변환하여 반환하세요",
+                "ValueError 발생 시 None을 반환하세요"
+            ],
+            "initial_code": "# safe_int 함수를 정의하세요\n\n\n# 테스트\nprint(safe_int('42'))   # 42\nprint(safe_int('abc'))  # None\nprint(safe_int('3.14')) # None\n",
+            "solution_code": "def safe_int(s):\n    try:\n        return int(s)\n    except ValueError:\n        return None\n\nprint(safe_int('42'))\nprint(safe_int('abc'))\nprint(safe_int('3.14'))",
+            "hints": [
+                {"level": 1, "text": "try 블록에서 return int(s)를 시도합니다"},
+                {"level": 2, "text": "int()에 숫자가 아닌 문자열을 전달하면 ValueError가 발생합니다"},
+                {"level": 3, "text": "def safe_int(s):\\n    try:\\n        return int(s)\\n    except ValueError:\\n        return None"}
+            ],
+            "grading": {
+                "method": "function_call",
+                "func_name": "safe_int",
+                "test_cases": [
+                    {"args": ["42"], "expected": 42},
+                    {"args": ["abc"], "expected": null},
+                    {"args": ["3.14"], "expected": null},
+                    {"args": ["0"], "expected": 0}
+                ]
+            },
+            "tags": ["예외처리", "ValueError", "형변환"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch7_p03",
+            "title": "리스트 안전 접근",
+            "difficulty": "basic",
+            "description": "리스트에서 인덱스를 안전하게 접근하는 함수를 만드세요.",
+            "instructions": [
+                "safe_get(lst, index) 함수를 정의하세요",
+                "lst[index]를 반환하되, IndexError 시 '범위 초과'를 반환하세요"
+            ],
+            "initial_code": "# safe_get 함수를 정의하세요\n\n\n# 테스트\nmy_list = [10, 20, 30]\nprint(safe_get(my_list, 1))   # 20\nprint(safe_get(my_list, 10))  # 범위 초과\n",
+            "solution_code": "def safe_get(lst, index):\n    try:\n        return lst[index]\n    except IndexError:\n        return '범위 초과'\n\nmy_list = [10, 20, 30]\nprint(safe_get(my_list, 1))\nprint(safe_get(my_list, 10))",
+            "hints": [
+                {"level": 1, "text": "try 블록에서 return lst[index] 를 시도합니다"},
+                {"level": 2, "text": "인덱스가 범위를 벗어나면 IndexError가 발생합니다"},
+                {"level": 3, "text": "def safe_get(lst, index):\\n    try:\\n        return lst[index]\\n    except IndexError:\\n        return '범위 초과'"}
+            ],
+            "grading": {
+                "method": "function_call",
+                "func_name": "safe_get",
+                "test_cases": [
+                    {"args": [[10, 20, 30], 1], "expected": 20},
+                    {"args": [[10, 20, 30], 10], "expected": "범위 초과"},
+                    {"args": [[10, 20, 30], 0], "expected": 10},
+                    {"args": [[], 0], "expected": "범위 초과"}
+                ]
+            },
+            "tags": ["예외처리", "IndexError", "리스트"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch7_p04",
+            "title": "딕셔너리 안전 조회",
+            "difficulty": "basic",
+            "description": "딕셔너리에서 키를 안전하게 조회하는 함수를 만드세요.",
+            "instructions": [
+                "safe_dict_get(d, key) 함수를 정의하세요",
+                "d[key]를 반환하되, KeyError 발생 시 '키 없음'을 반환하세요"
+            ],
+            "initial_code": "# safe_dict_get 함수를 정의하세요\n\n\n# 테스트\ninfo = {'이름': '김파이', '나이': 20}\nprint(safe_dict_get(info, '이름'))  # 김파이\nprint(safe_dict_get(info, '점수'))  # 키 없음\n",
+            "solution_code": "def safe_dict_get(d, key):\n    try:\n        return d[key]\n    except KeyError:\n        return '키 없음'\n\ninfo = {'이름': '김파이', '나이': 20}\nprint(safe_dict_get(info, '이름'))\nprint(safe_dict_get(info, '점수'))",
+            "hints": [
+                {"level": 1, "text": "try 블록에서 return d[key] 를 시도합니다"},
+                {"level": 2, "text": "딕셔너리에 없는 키에 접근하면 KeyError가 발생합니다"},
+                {"level": 3, "text": "def safe_dict_get(d, key):\\n    try:\\n        return d[key]\\n    except KeyError:\\n        return '키 없음'"}
+            ],
+            "grading": {
+                "method": "function_call",
+                "func_name": "safe_dict_get",
+                "test_cases": [
+                    {"args": [{"이름": "김파이", "나이": 20}, "이름"], "expected": "김파이"},
+                    {"args": [{"이름": "김파이", "나이": 20}, "점수"], "expected": "키 없음"},
+                    {"args": [{}, "key"], "expected": "키 없음"}
+                ]
+            },
+            "tags": ["예외처리", "KeyError", "딕셔너리"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch7_p05",
+            "title": "여러 예외 처리하기",
+            "difficulty": "basic",
+            "description": "여러 종류의 예외를 각각 다른 메시지로 처리하세요.",
+            "instructions": [
+                "divide(a, b) 함수를 정의하세요",
+                "a / b를 시도하고, ZeroDivisionError 시 '0으로 나눌 수 없어요'를 출력하세요",
+                "TypeError 발생 시 '숫자를 입력해야 해요'를 출력하세요",
+                "두 경우 모두 None을 반환하세요"
+            ],
+            "initial_code": "# 여러 예외를 처리하는 divide 함수를 정의하세요\n\n\n# 테스트\nprint(divide(10, 2))    # 5.0\ndivide(10, 0)           # 0으로 나눌 수 없어요\ndivide('10', 2)         # 숫자를 입력해야 해요\n",
+            "solution_code": "def divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        print('0으로 나눌 수 없어요')\n        return None\n    except TypeError:\n        print('숫자를 입력해야 해요')\n        return None\n\nprint(divide(10, 2))\ndivide(10, 0)\ndivide('10', 2)",
+            "hints": [
+                {"level": 1, "text": "try 블록 하나에 여러 except를 연결할 수 있습니다"},
+                {"level": 2, "text": "문자열을 숫자처럼 연산하면 TypeError가 발생합니다"},
+                {"level": 3, "text": "except ZeroDivisionError:\\n    print('0으로 나눌 수 없어요')\\nexcept TypeError:\\n    print('숫자를 입력해야 해요')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "5.0\n0으로 나눌 수 없어요\n숫자를 입력해야 해요"
+            },
+            "tags": ["예외처리", "다중예외", "ZeroDivisionError", "TypeError"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch7_p06",
+            "title": "예외 메시지 출력",
+            "difficulty": "intermediate",
+            "description": "예외 객체(as e)를 사용하여 오류 메시지를 출력하는 함수를 만드세요.",
+            "instructions": [
+                "risky_operation(value) 함수를 정의하세요",
+                "int(value) / 0 을 계산하세요",
+                "발생하는 모든 예외를 except Exception as e 로 잡아 '오류: {e}'를 출력하세요"
+            ],
+            "initial_code": "# 예외 메시지를 출력하는 함수를 만드세요\n\n\n# 테스트\nrisky_operation('abc')  # ValueError 발생\nrisky_operation(10)     # ZeroDivisionError 발생\n",
+            "solution_code": "def risky_operation(value):\n    try:\n        result = int(value) / 0\n    except Exception as e:\n        print(f'오류: {e}')\n\nrisky_operation('abc')\nrisky_operation(10)",
+            "hints": [
+                {"level": 1, "text": "except Exception as e: 는 모든 예외를 잡고 e에 예외 객체를 저장합니다"},
+                {"level": 2, "text": "print(f'오류: {e}') 로 예외 메시지를 출력합니다"},
+                {"level": 3, "text": "except Exception as e:\\n    print(f'오류: {e}')"}
+            ],
+            "grading": {
+                "method": "regex_output",
+                "pattern": "오류:.+\\n오류:.+"
+            },
+            "tags": ["예외처리", "Exception", "오류메시지"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch7_p07",
+            "title": "finally로 정리하기",
+            "difficulty": "intermediate",
+            "description": "finally를 사용하여 항상 실행되는 정리 코드를 작성하세요.",
+            "instructions": [
+                "process_data(data) 함수를 정의하세요",
+                "try에서 int(data) * 2를 계산하여 출력하세요",
+                "ValueError 발생 시 '변환 실패' 출력하세요",
+                "finally에서 항상 '처리 완료'를 출력하세요"
+            ],
+            "initial_code": "# finally를 활용한 함수를 만드세요\n\n\n# 테스트\nprocess_data('5')\nprocess_data('abc')\n",
+            "solution_code": "def process_data(data):\n    try:\n        result = int(data) * 2\n        print(result)\n    except ValueError:\n        print('변환 실패')\n    finally:\n        print('처리 완료')\n\nprocess_data('5')\nprocess_data('abc')",
+            "hints": [
+                {"level": 1, "text": "try/except 뒤에 finally: 블록을 추가합니다"},
+                {"level": 2, "text": "finally 블록은 예외 발생 여부와 관계없이 항상 실행됩니다"},
+                {"level": 3, "text": "finally:\\n    print('처리 완료')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "10\n처리 완료\n변환 실패\n처리 완료"
+            },
+            "tags": ["예외처리", "finally", "정리"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch7_p08",
+            "title": "else 절 활용",
+            "difficulty": "intermediate",
+            "description": "예외가 발생하지 않을 때만 실행되는 else를 사용하세요.",
+            "instructions": [
+                "safe_sqrt(n) 함수를 정의하세요",
+                "try에서 n이 음수이면 ValueError를 발생시키세요",
+                "except에서 '음수의 제곱근은 없어요' 출력하세요",
+                "else에서 n ** 0.5를 계산하여 출력하세요"
+            ],
+            "initial_code": "# else 절을 활용한 safe_sqrt 함수를 만드세요\n\n\n# 테스트\nsafe_sqrt(16)  # 4.0\nsafe_sqrt(-4)  # 음수의 제곱근은 없어요\n",
+            "solution_code": "def safe_sqrt(n):\n    try:\n        if n < 0:\n            raise ValueError('음수입니다')\n    except ValueError:\n        print('음수의 제곱근은 없어요')\n    else:\n        print(n ** 0.5)\n\nsafe_sqrt(16)\nsafe_sqrt(-4)",
+            "hints": [
+                {"level": 1, "text": "try 블록에서 n < 0 이면 raise ValueError() 로 예외를 발생시킵니다"},
+                {"level": 2, "text": "else: 블록은 예외가 발생하지 않았을 때만 실행됩니다"},
+                {"level": 3, "text": "try:\\n    if n < 0: raise ValueError()\\nexcept ValueError:\\n    print('음수의 제곱근은 없어요')\\nelse:\\n    print(n ** 0.5)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "4.0\n음수의 제곱근은 없어요"
+            },
+            "tags": ["예외처리", "else", "raise"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch7_p09",
+            "title": "raise로 예외 발생시키기",
+            "difficulty": "intermediate",
+            "description": "입력값을 검증하고 유효하지 않으면 raise로 예외를 발생시키세요.",
+            "instructions": [
+                "validate_age(age) 함수를 정의하세요",
+                "age가 0 미만이면 ValueError('나이는 0 이상이어야 합니다')를 raise하세요",
+                "age가 150 초과이면 ValueError('유효하지 않은 나이입니다')를 raise하세요",
+                "정상이면 age를 반환하세요"
+            ],
+            "initial_code": "# validate_age 함수를 정의하세요\n\n\n# 테스트\ntry:\n    print(validate_age(25))\nexcept ValueError as e:\n    print(f'오류: {e}')\n\ntry:\n    print(validate_age(-5))\nexcept ValueError as e:\n    print(f'오류: {e}')\n",
+            "solution_code": "def validate_age(age):\n    if age < 0:\n        raise ValueError('나이는 0 이상이어야 합니다')\n    if age > 150:\n        raise ValueError('유효하지 않은 나이입니다')\n    return age\n\ntry:\n    print(validate_age(25))\nexcept ValueError as e:\n    print(f'오류: {e}')\n\ntry:\n    print(validate_age(-5))\nexcept ValueError as e:\n    print(f'오류: {e}')",
+            "hints": [
+                {"level": 1, "text": "if age < 0: raise ValueError('메시지') 로 예외를 발생시킵니다"},
+                {"level": 2, "text": "raise는 함수 안에서 조건에 따라 예외를 직접 발생시킵니다"},
+                {"level": 3, "text": "def validate_age(age):\\n    if age < 0:\\n        raise ValueError('나이는 0 이상이어야 합니다')\\n    return age"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "25\n오류: 나이는 0 이상이어야 합니다"
+            },
+            "tags": ["예외처리", "raise", "ValueError", "입력검증"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch7_p10",
+            "title": "사용자 정의 예외",
+            "difficulty": "intermediate",
+            "description": "Exception을 상속받아 나만의 예외 클래스를 만드세요.",
+            "instructions": [
+                "InsufficientFundsError 예외 클래스를 Exception을 상속하여 정의하세요",
+                "withdraw(balance, amount) 함수에서 amount > balance 이면 InsufficientFundsError를 raise하세요",
+                "정상이면 balance - amount를 반환하세요"
+            ],
+            "initial_code": "# InsufficientFundsError 예외 클래스를 정의하세요\n\n\n# withdraw 함수를 정의하세요\n\n\n# 테스트\ntry:\n    result = withdraw(1000, 500)\n    print(f'출금 후 잔액: {result}')\nexcept InsufficientFundsError as e:\n    print(f'오류: {e}')\n\ntry:\n    result = withdraw(1000, 2000)\n    print(f'출금 후 잔액: {result}')\nexcept InsufficientFundsError as e:\n    print(f'오류: {e}')\n",
+            "solution_code": "class InsufficientFundsError(Exception):\n    pass\n\ndef withdraw(balance, amount):\n    if amount > balance:\n        raise InsufficientFundsError('잔액이 부족합니다')\n    return balance - amount\n\ntry:\n    result = withdraw(1000, 500)\n    print(f'출금 후 잔액: {result}')\nexcept InsufficientFundsError as e:\n    print(f'오류: {e}')\n\ntry:\n    result = withdraw(1000, 2000)\n    print(f'출금 후 잔액: {result}')\nexcept InsufficientFundsError as e:\n    print(f'오류: {e}')",
+            "hints": [
+                {"level": 1, "text": "class InsufficientFundsError(Exception): 처럼 Exception을 상속합니다"},
+                {"level": 2, "text": "클래스 내부에 pass만 있어도 됩니다. 이름만으로도 의미 있는 예외가 됩니다"},
+                {"level": 3, "text": "class InsufficientFundsError(Exception):\\n    pass\\n\\ndef withdraw(balance, amount):\\n    if amount > balance:\\n        raise InsufficientFundsError('잔액이 부족합니다')\\n    return balance - amount"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "출금 후 잔액: 500\n오류: 잔액이 부족합니다"
+            },
+            "tags": ["예외처리", "사용자정의예외", "Exception", "상속"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch7_p11",
+            "title": "안전한 파일 읽기",
+            "difficulty": "advanced",
+            "description": "파일이 없을 때를 대비한 안전한 파일 읽기 함수를 만드세요.",
+            "instructions": [
+                "safe_read_file(filename) 함수를 정의하세요",
+                "FileNotFoundError 발생 시 None을 반환하세요",
+                "성공 시 파일 내용을 반환하세요",
+                "finally에서 '파일 읽기 시도 완료'를 출력하세요"
+            ],
+            "initial_code": "# safe_read_file 함수를 정의하세요\n\n\n# 테스트\nresult = safe_read_file('없는파일.txt')\nprint(result)  # None\n",
+            "solution_code": "def safe_read_file(filename):\n    try:\n        with open(filename, 'r', encoding='utf-8') as f:\n            return f.read()\n    except FileNotFoundError:\n        return None\n    finally:\n        print('파일 읽기 시도 완료')\n\nresult = safe_read_file('없는파일.txt')\nprint(result)",
+            "hints": [
+                {"level": 1, "text": "FileNotFoundError는 파일이 없을 때 발생합니다"},
+                {"level": 2, "text": "finally 블록은 try나 except가 끝난 후 항상 실행됩니다"},
+                {"level": 3, "text": "try:\\n    with open(filename, 'r') as f:\\n        return f.read()\\nexcept FileNotFoundError:\\n    return None\\nfinally:\\n    print('파일 읽기 시도 완료')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "파일 읽기 시도 완료\nNone"
+            },
+            "tags": ["예외처리", "FileNotFoundError", "finally", "파일"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch7_p12",
+            "title": "재시도 로직 구현",
+            "difficulty": "advanced",
+            "description": "최대 3번 재시도하는 안전한 나누기 함수를 만드세요.",
+            "instructions": [
+                "retry_divide(a, attempts) 함수를 정의하세요",
+                "attempts 리스트의 각 값으로 a를 나누기 시도하세요",
+                "ZeroDivisionError 발생 시 '시도 {i}: 실패'를 출력하고 다음으로 넘어가세요",
+                "성공 시 '시도 {i}: 성공 - {result}'를 출력하고 결과를 반환하세요"
+            ],
+            "initial_code": "# retry_divide 함수를 정의하세요\n\n\n# 테스트\nresult = retry_divide(100, [0, 0, 5])\nprint(f'최종 결과: {result}')\n",
+            "solution_code": "def retry_divide(a, attempts):\n    for i, b in enumerate(attempts, 1):\n        try:\n            result = a / b\n            print(f'시도 {i}: 성공 - {result}')\n            return result\n        except ZeroDivisionError:\n            print(f'시도 {i}: 실패')\n    return None\n\nresult = retry_divide(100, [0, 0, 5])\nprint(f'최종 결과: {result}')",
+            "hints": [
+                {"level": 1, "text": "for i, b in enumerate(attempts, 1): 로 각 시도를 순회합니다"},
+                {"level": 2, "text": "try/except 안에서 성공하면 바로 return, 실패하면 continue(다음 반복)"},
+                {"level": 3, "text": "for i, b in enumerate(attempts, 1):\\n    try:\\n        result = a / b\\n        print(f'시도 {i}: 성공 - {result}')\\n        return result\\n    except ZeroDivisionError:\\n        print(f'시도 {i}: 실패')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "시도 1: 실패\n시도 2: 실패\n시도 3: 성공 - 20.0\n최종 결과: 20.0"
+            },
+            "tags": ["예외처리", "재시도", "반복문", "ZeroDivisionError"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch7_p13",
+            "title": "예외 체인",
+            "difficulty": "advanced",
+            "description": "여러 단계의 예외를 처리하는 함수를 만드세요.",
+            "instructions": [
+                "parse_and_double(text) 함수를 정의하세요",
+                "text를 int로 변환하고 2를 곱해 반환하세요",
+                "ValueError 발생 시 '숫자가 아닙니다: {text}'를 출력하고 0을 반환하세요",
+                "OverflowError 발생 시 '너무 큰 숫자입니다'를 출력하고 0을 반환하세요"
+            ],
+            "initial_code": "# parse_and_double 함수를 정의하세요\n\n\n# 테스트\nprint(parse_and_double('5'))    # 10\nprint(parse_and_double('abc'))  # 숫자가 아닙니다: abc + 0\nprint(parse_and_double('3'))    # 6\n",
+            "solution_code": "def parse_and_double(text):\n    try:\n        return int(text) * 2\n    except ValueError:\n        print(f'숫자가 아닙니다: {text}')\n        return 0\n    except OverflowError:\n        print('너무 큰 숫자입니다')\n        return 0\n\nprint(parse_and_double('5'))\nprint(parse_and_double('abc'))\nprint(parse_and_double('3'))",
+            "hints": [
+                {"level": 1, "text": "try 블록에서 int(text) * 2 를 반환합니다"},
+                {"level": 2, "text": "ValueError와 OverflowError를 각각 다른 except 블록으로 처리합니다"},
+                {"level": 3, "text": "except ValueError:\\n    print(f'숫자가 아닙니다: {text}')\\n    return 0"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "10\n숫자가 아닙니다: abc\n0\n6"
+            },
+            "tags": ["예외처리", "다중예외", "ValueError"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch7_p14",
+            "title": "컨텍스트 매니저 패턴",
+            "difficulty": "advanced",
+            "description": "예외 처리와 with 문을 결합하여 안전한 파일 처리 함수를 만드세요.",
+            "instructions": [
+                "count_lines(filename) 함수를 정의하세요",
+                "with 문으로 파일을 열어 줄 수를 세세요",
+                "FileNotFoundError 시 -1을 반환하세요",
+                "파일 줄 수를 반환하세요"
+            ],
+            "initial_code": "# count_lines 함수를 정의하세요\n\n\n# 테스트\nprint(count_lines('없는파일.txt'))  # -1\n",
+            "solution_code": "def count_lines(filename):\n    try:\n        with open(filename, 'r', encoding='utf-8') as f:\n            lines = f.readlines()\n            return len(lines)\n    except FileNotFoundError:\n        return -1\n\nprint(count_lines('없는파일.txt'))",
+            "hints": [
+                {"level": 1, "text": "try 블록 안에 with open() 문을 넣습니다"},
+                {"level": 2, "text": "파일이 없으면 FileNotFoundError가 발생합니다"},
+                {"level": 3, "text": "try:\\n    with open(filename, 'r') as f:\\n        return len(f.readlines())\\nexcept FileNotFoundError:\\n    return -1"}
+            ],
+            "grading": {
+                "method": "function_call",
+                "func_name": "count_lines",
+                "test_cases": [
+                    {"args": ["없는파일.txt"], "expected": -1}
+                ]
+            },
+            "tags": ["예외처리", "파일", "with문", "FileNotFoundError"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch7_p15",
+            "title": "입력 검증 시스템",
+            "difficulty": "advanced",
+            "description": "나이와 점수를 검증하는 함수 시스템을 만드세요.",
+            "instructions": [
+                "AgeError와 ScoreError를 Exception을 상속하여 정의하세요",
+                "validate_student(name, age, score) 함수를 정의하세요",
+                "age가 0~150 범위 밖이면 AgeError를 raise하세요",
+                "score가 0~100 범위 밖이면 ScoreError를 raise하세요",
+                "정상이면 '{name}의 정보가 저장되었습니다'를 출력하세요"
+            ],
+            "initial_code": "# AgeError, ScoreError 클래스를 정의하세요\n\n\n# validate_student 함수를 정의하세요\n\n\n# 테스트\ntry:\n    validate_student('김파이', 25, 90)\nexcept (AgeError, ScoreError) as e:\n    print(f'오류: {e}')\n\ntry:\n    validate_student('이파이', 200, 90)\nexcept (AgeError, ScoreError) as e:\n    print(f'오류: {e}')\n",
+            "solution_code": "class AgeError(Exception):\n    pass\n\nclass ScoreError(Exception):\n    pass\n\ndef validate_student(name, age, score):\n    if age < 0 or age > 150:\n        raise AgeError(f'나이 오류: {age}는 유효하지 않습니다')\n    if score < 0 or score > 100:\n        raise ScoreError(f'점수 오류: {score}는 0~100 범위여야 합니다')\n    print(f'{name}의 정보가 저장되었습니다')\n\ntry:\n    validate_student('김파이', 25, 90)\nexcept (AgeError, ScoreError) as e:\n    print(f'오류: {e}')\n\ntry:\n    validate_student('이파이', 200, 90)\nexcept (AgeError, ScoreError) as e:\n    print(f'오류: {e}')",
+            "hints": [
+                {"level": 1, "text": "class AgeError(Exception): pass 와 class ScoreError(Exception): pass 로 사용자 정의 예외를 만듭니다"},
+                {"level": 2, "text": "if age < 0 or age > 150: raise AgeError('메시지') 로 나이 범위를 검사합니다"},
+                {"level": 3, "text": "except (AgeError, ScoreError) as e: 처럼 여러 예외를 한 번에 처리할 수 있습니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "김파이의 정보가 저장되었습니다\n오류: 나이 오류: 200는 유효하지 않습니다"
+            },
+            "tags": ["예외처리", "사용자정의예외", "입력검증", "raise"],
+            "related_section": "s4"
+        }
+    ]
+}

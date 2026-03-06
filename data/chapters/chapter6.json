@@ -1,0 +1,93 @@
+{
+    "chapter_id": 6,
+    "title": "파일 다루기",
+    "description": "파이썬으로 파일을 읽고 쓰는 방법을 배웁니다. 파일 입출력(File I/O)은 데이터를 영구적으로 저장하고 불러올 때 사용하는 핵심 기능입니다. with 문을 활용하여 안전하게 파일을 다루는 방법도 배웁니다.",
+    "learning_objectives": [
+        "open() 함수로 파일을 열고 write()로 내용을 쓸 수 있다",
+        "read(), readline(), readlines()의 차이를 이해하고 사용할 수 있다",
+        "with 문을 사용하여 파일을 안전하게 열고 닫을 수 있다",
+        "파일 모드(r, w, a)의 차이를 이해하고 적절히 선택할 수 있다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "파일 열기와 쓰기 (open, write)",
+            "content_md": "## 파일을 다루는 기본\n\n파이썬에서 파일을 다루려면 먼저 파일을 `open()`으로 열어야 합니다.\n\n### 파일 쓰기\n\n```python\n# 'w' 모드: 쓰기 모드 (파일이 없으면 생성, 있으면 덮어쓰기)\nfile = open('hello.txt', 'w', encoding='utf-8')\nfile.write('안녕하세요\\n')  # \\n은 줄바꿈\nfile.write('파이썬 파일 쓰기')\nfile.close()  # 반드시 닫아야 함!\n```\n\n### 주의사항\n- `encoding='utf-8'`: 한국어 문자를 올바르게 처리하기 위해 필수\n- `file.close()`: 파일 작업 후 반드시 닫아야 합니다 (with 문 사용 권장)",
+            "code_examples": [
+                {
+                    "title": "파일 쓰기 기본",
+                    "code": "# 파일에 텍스트 쓰기\nfile = open('test.txt', 'w', encoding='utf-8')\nfile.write('첫 번째 줄\\n')\nfile.write('두 번째 줄\\n')\nfile.close()\n\n# 확인을 위해 읽어보기\nfile = open('test.txt', 'r', encoding='utf-8')\ncontent = file.read()\nfile.close()\nprint(content)",
+                    "expected_output": "첫 번째 줄\n두 번째 줄",
+                    "explanation": "write()로 파일에 텍스트를 씁니다. \\n은 줄바꿈 문자입니다. 파일을 다 사용한 후에는 close()로 닫아야 합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "open(파일명, 모드, encoding='utf-8')으로 파일을 열기",
+                "write()로 문자열을 파일에 쓰기",
+                "close()로 파일을 반드시 닫기",
+                "한국어는 encoding='utf-8' 필수"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "파일 읽기 (read, readline, readlines)",
+            "content_md": "## 파일 읽기 세 가지 방법\n\n### read() - 전체를 한 번에\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    content = f.read()  # 파일 전체를 하나의 문자열로\n```\n\n### readline() - 한 줄씩\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    line = f.readline()  # 한 줄만 읽기\n```\n\n### readlines() - 모든 줄을 리스트로\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    lines = f.readlines()  # ['줄1\\n', '줄2\\n', ...]\n    for line in lines:\n        print(line.strip())  # strip()으로 \\n 제거\n```",
+            "code_examples": [
+                {
+                    "title": "readlines()로 줄별 처리",
+                    "code": "# 먼저 파일 생성\nwith open('sample.txt', 'w', encoding='utf-8') as f:\n    f.write('사과\\n바나나\\n체리\\n')\n\n# readlines()로 읽기\nwith open('sample.txt', 'r', encoding='utf-8') as f:\n    lines = f.readlines()\n\nfor i, line in enumerate(lines, 1):\n    print(f'{i}. {line.strip()}')",
+                    "expected_output": "1. 사과\n2. 바나나\n3. 체리",
+                    "explanation": "readlines()는 파일의 모든 줄을 리스트로 반환합니다. strip()으로 각 줄 끝의 줄바꿈 문자를 제거합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "read(): 파일 전체를 하나의 문자열로 반환",
+                "readline(): 한 줄만 읽어 문자열로 반환",
+                "readlines(): 모든 줄을 리스트로 반환",
+                "strip()으로 각 줄 끝의 \\n 제거"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "with 문으로 안전하게 파일 다루기",
+            "content_md": "## with 문이 왜 더 좋을까요?\n\n`with` 문을 사용하면 파일을 자동으로 닫아줍니다. `close()` 호출을 잊어도 안전합니다.\n\n```python\n# with 문 사용 (권장)\nwith open('data.txt', 'w', encoding='utf-8') as f:\n    f.write('파이썬은 재미있다!')\n# with 블록이 끝나면 자동으로 close() 호출!\n```\n\n### with 문의 장점\n1. 파일이 자동으로 닫힌다\n2. 오류가 발생해도 파일이 안전하게 닫힌다\n3. 코드가 더 간결하고 읽기 쉽다",
+            "code_examples": [
+                {
+                    "title": "with 문 사용 예시",
+                    "code": "# with 문으로 파일 쓰기\nwith open('note.txt', 'w', encoding='utf-8') as f:\n    f.write('오늘도 파이썬 공부!\\n')\n    f.write('with 문을 배웠다.')\n\n# with 문으로 파일 읽기\nwith open('note.txt', 'r', encoding='utf-8') as f:\n    content = f.read()\n\nprint(content)",
+                    "expected_output": "오늘도 파이썬 공부!\nwith 문을 배웠다.",
+                    "explanation": "with 문을 사용하면 as f 로 파일 객체에 이름을 붙이고, 블록이 끝나면 자동으로 파일이 닫힙니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "with open(파일명, 모드) as f: 형태로 사용",
+                "with 블록이 끝나면 자동으로 파일을 닫는다",
+                "오류가 발생해도 파일이 안전하게 닫힌다",
+                "파일 다루기에는 with 문 사용을 강력 권장"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "파일 모드 (r, w, a)",
+            "content_md": "## 파일 모드의 종류\n\n| 모드 | 의미 | 파일 없으면 | 기존 내용 |\n|------|------|------------|----------|\n| 'r' | 읽기 | 오류 발생 | 유지 |\n| 'w' | 쓰기 | 새로 생성 | 덮어쓰기 |\n| 'a' | 추가 | 새로 생성 | 유지하고 뒤에 추가 |\n\n### 추가 모드 'a' 예시\n```python\n# 기존 파일에 내용 추가\nwith open('log.txt', 'a', encoding='utf-8') as f:\n    f.write('새로운 내용 추가\\n')\n```",
+            "code_examples": [
+                {
+                    "title": "추가 모드(a) 사용",
+                    "code": "# 파일 생성\nwith open('diary.txt', 'w', encoding='utf-8') as f:\n    f.write('1일차: 파이썬 시작\\n')\n\n# 추가 모드로 내용 더하기\nwith open('diary.txt', 'a', encoding='utf-8') as f:\n    f.write('2일차: 변수 공부\\n')\n    f.write('3일차: 함수 공부\\n')\n\n# 전체 내용 읽기\nwith open('diary.txt', 'r', encoding='utf-8') as f:\n    print(f.read())",
+                    "expected_output": "1일차: 파이썬 시작\n2일차: 변수 공부\n3일차: 함수 공부",
+                    "explanation": "'a' 모드는 기존 파일 내용을 유지하고 뒤에 내용을 추가합니다. 로그 파일이나 일기장에 적합합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "'r': 읽기 전용 (파일이 없으면 오류)",
+                "'w': 쓰기 모드 (파일이 없으면 생성, 있으면 덮어쓰기)",
+                "'a': 추가 모드 (파일이 없으면 생성, 있으면 기존 내용 뒤에 추가)",
+                "파일 내용 유지가 필요하면 반드시 'a' 모드 사용"
+            ]
+        }
+    ]
+}

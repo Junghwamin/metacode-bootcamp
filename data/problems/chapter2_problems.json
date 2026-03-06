@@ -1,0 +1,399 @@
+{
+    "chapter_id": 2,
+    "problems": [
+        {
+            "problem_id": "ch2_p01",
+            "title": "정수와 실수",
+            "difficulty": "basic",
+            "description": "정수와 실수 변수를 만들고 타입을 확인해 보세요.",
+            "instructions": [
+                "변수 a에 정수 42를 저장하세요",
+                "변수 b에 실수 3.14를 저장하세요",
+                "각 변수와 해당 타입을 출력하세요"
+            ],
+            "initial_code": "# 정수 변수 a를 만드세요\n\n# 실수 변수 b를 만드세요\n\n# a와 b를 각각 출력하세요\n",
+            "solution_code": "a = 42\nb = 3.14\nprint(a)\nprint(b)",
+            "hints": [
+                {"level": 1, "text": "정수는 소수점 없이, 실수는 소수점과 함께 입력합니다."},
+                {"level": 2, "text": "a = 42 와 b = 3.14 로 변수를 만드세요."},
+                {"level": 3, "text": "a = 42\nb = 3.14\nprint(a)\nprint(b)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"a": 42, "b": 3.14},
+                "normalize_whitespace": true
+            },
+            "tags": ["int", "float", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch2_p02",
+            "title": "산술 연산자",
+            "difficulty": "basic",
+            "description": "a=17, b=5로 두고 모든 산술 연산 결과를 출력하세요. (+, -, *, /, //, %, **)",
+            "instructions": [
+                "a = 17, b = 5로 설정하세요",
+                "7가지 산술 연산 결과를 각각 한 줄씩 출력하세요",
+                "출력 순서: 더하기, 빼기, 곱하기, 나누기, 정수나누기, 나머지, 거듭제곱"
+            ],
+            "initial_code": "a = 17\nb = 5\n\n# 7가지 연산 결과를 출력하세요\n",
+            "solution_code": "a = 17\nb = 5\nprint(a + b)\nprint(a - b)\nprint(a * b)\nprint(a / b)\nprint(a // b)\nprint(a % b)\nprint(a ** b)",
+            "hints": [
+                {"level": 1, "text": "각 연산자를 사용한 결과를 print()로 출력하세요."},
+                {"level": 2, "text": "7가지 연산: +, -, *, /, //, %, ** 를 순서대로 사용하세요."},
+                {"level": 3, "text": "print(a + b)\nprint(a - b)\nprint(a * b)\nprint(a / b)\nprint(a // b)\nprint(a % b)\nprint(a ** b)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "22\n12\n85\n3.4\n3\n2\n1419857",
+                "normalize_whitespace": true
+            },
+            "tags": ["산술연산자", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch2_p03",
+            "title": "비교 연산자",
+            "difficulty": "basic",
+            "description": "두 변수 x=10, y=20을 비교하는 코드를 작성하세요.",
+            "instructions": [
+                "x = 10, y = 20 으로 설정하세요",
+                "is_equal: x == y 결과를 저장하세요",
+                "is_less: x < y 결과를 저장하세요",
+                "두 변수를 출력하세요"
+            ],
+            "initial_code": "x = 10\ny = 20\n\n# x == y 결과를 is_equal에 저장하세요\n\n# x < y 결과를 is_less에 저장하세요\n\n# 두 변수를 출력하세요\n",
+            "solution_code": "x = 10\ny = 20\nis_equal = x == y\nis_less = x < y\nprint(is_equal)\nprint(is_less)",
+            "hints": [
+                {"level": 1, "text": "비교 연산자의 결과는 True 또는 False입니다."},
+                {"level": 2, "text": "is_equal = (x == y) 와 is_less = (x < y) 로 저장하세요."},
+                {"level": 3, "text": "is_equal = x == y\nis_less = x < y\nprint(is_equal)\nprint(is_less)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"is_equal": false, "is_less": true},
+                "normalize_whitespace": true
+            },
+            "tags": ["비교연산자", "boolean", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch2_p04",
+            "title": "문자열 기초",
+            "difficulty": "basic",
+            "description": "'Hello, World!'를 출력하고 문자열의 길이도 출력하세요.",
+            "instructions": [
+                "변수 text에 'Hello, World!'를 저장하세요",
+                "text를 출력하세요",
+                "len()으로 text의 길이를 출력하세요"
+            ],
+            "initial_code": "# text 변수에 'Hello, World!'를 저장하세요\n\n# text를 출력하세요\n\n# text의 길이를 출력하세요\n",
+            "solution_code": "text = 'Hello, World!'\nprint(text)\nprint(len(text))",
+            "hints": [
+                {"level": 1, "text": "문자열은 따옴표로 감싸서 변수에 저장합니다."},
+                {"level": 2, "text": "len() 함수로 문자열의 길이를 구할 수 있습니다."},
+                {"level": 3, "text": "text = 'Hello, World!'\nprint(text)\nprint(len(text))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "Hello, World!\n13",
+                "normalize_whitespace": true
+            },
+            "tags": ["문자열", "len", "기초"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch2_p05",
+            "title": "Boolean 기초",
+            "difficulty": "basic",
+            "description": "두 Boolean 변수를 만들고 논리 연산을 수행하세요.",
+            "instructions": [
+                "is_raining = True, has_umbrella = False 로 설정하세요",
+                "result 변수에 is_raining and has_umbrella 결과를 저장하세요",
+                "result를 출력하세요"
+            ],
+            "initial_code": "# Boolean 변수를 설정하세요\nis_raining = True\nhas_umbrella = False\n\n# and 연산 결과를 result에 저장하고 출력하세요\n",
+            "solution_code": "is_raining = True\nhas_umbrella = False\nresult = is_raining and has_umbrella\nprint(result)",
+            "hints": [
+                {"level": 1, "text": "and 연산자는 두 값이 모두 True일 때만 True를 반환합니다."},
+                {"level": 2, "text": "result = is_raining and has_umbrella 로 저장하세요."},
+                {"level": 3, "text": "result = is_raining and has_umbrella\nprint(result)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"result": false},
+                "normalize_whitespace": true
+            },
+            "tags": ["boolean", "논리연산자", "기초"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch2_p06",
+            "title": "복합 대입 연산자",
+            "difficulty": "intermediate",
+            "description": "복합 대입 연산자를 사용해 변수 x를 여러 번 업데이트하세요.",
+            "instructions": [
+                "x = 100 으로 시작하세요",
+                "x에서 15를 빼세요 (x -= 15)",
+                "x에 3을 곱하세요 (x *= 3)",
+                "x를 2로 나누세요 (x //= 2)",
+                "최종 x 값을 출력하세요"
+            ],
+            "initial_code": "x = 100\n\n# x에서 15를 빼세요\n\n# x에 3을 곱하세요\n\n# x를 2로 나누세요 (정수 나눗셈)\n\n# 최종 x를 출력하세요\n",
+            "solution_code": "x = 100\nx -= 15\nx *= 3\nx //= 2\nprint(x)",
+            "hints": [
+                {"level": 1, "text": "-=, *=, //= 복합 대입 연산자를 순서대로 사용하세요."},
+                {"level": 2, "text": "x -= 15 는 x = x - 15 와 같습니다."},
+                {"level": 3, "text": "x -= 15\nx *= 3\nx //= 2\nprint(x)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"x": 127},
+                "normalize_whitespace": true
+            },
+            "tags": ["복합대입연산자", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch2_p07",
+            "title": "문자열 메소드",
+            "difficulty": "intermediate",
+            "description": "'  hello, python!  ' 문자열에 메소드를 적용해 결과를 출력하세요.",
+            "instructions": [
+                "text = '  hello, python!  ' 로 설정하세요",
+                "strip() 후 upper()로 변환한 결과를 출력하세요",
+                "strip() 후 replace('python', 'world')로 변환한 결과를 출력하세요"
+            ],
+            "initial_code": "text = '  hello, python!  '\n\n# strip() 후 upper() 결과를 출력하세요\n\n# strip() 후 replace('python', 'world') 결과를 출력하세요\n",
+            "solution_code": "text = '  hello, python!  '\nprint(text.strip().upper())\nprint(text.strip().replace('python', 'world'))",
+            "hints": [
+                {"level": 1, "text": "메소드는 연속으로 사용할 수 있습니다. text.strip().upper() 처럼요."},
+                {"level": 2, "text": "strip()으로 공백을 제거한 뒤 upper() 또는 replace()를 호출하세요."},
+                {"level": 3, "text": "print(text.strip().upper())\nprint(text.strip().replace('python', 'world'))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "HELLO, PYTHON!\nhello, world!",
+                "normalize_whitespace": false
+            },
+            "tags": ["문자열메소드", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch2_p08",
+            "title": "split과 join",
+            "difficulty": "intermediate",
+            "description": "문자열을 split으로 분리하고 join으로 다시 합치세요.",
+            "instructions": [
+                "csv = '이름,나이,도시,직업' 으로 설정하세요",
+                "split(',')으로 분리하여 fields에 저장하세요",
+                "fields를 ' | '로 join하여 출력하세요"
+            ],
+            "initial_code": "csv = '이름,나이,도시,직업'\n\n# split(',')으로 분리하여 fields에 저장하세요\n\n# ' | '로 join하여 출력하세요\n",
+            "solution_code": "csv = '이름,나이,도시,직업'\nfields = csv.split(',')\nprint(' | '.join(fields))",
+            "hints": [
+                {"level": 1, "text": "split('구분자')로 문자열을 분리하고, '구분자'.join(리스트)로 합칩니다."},
+                {"level": 2, "text": "fields = csv.split(',') 으로 분리한 뒤 ' | '.join(fields) 로 합치세요."},
+                {"level": 3, "text": "fields = csv.split(',')\nprint(' | '.join(fields))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "이름 | 나이 | 도시 | 직업",
+                "normalize_whitespace": false
+            },
+            "tags": ["split", "join", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch2_p09",
+            "title": "format 메소드",
+            "difficulty": "intermediate",
+            "description": "이름과 점수를 입력받아 성적표 형식으로 출력하세요.",
+            "instructions": [
+                "이름을 input()으로 입력받으세요",
+                "점수를 float로 입력받으세요",
+                "f-string을 사용해 '이름: [이름], 점수: [소수점1자리]' 형태로 출력하세요"
+            ],
+            "initial_code": "name = input('이름: ')\nscore = float(input('점수: '))\n\n# f-string으로 출력하세요\n",
+            "solution_code": "name = input('이름: ')\nscore = float(input('점수: '))\nprint(f'이름: {name}, 점수: {score:.1f}')",
+            "hints": [
+                {"level": 1, "text": "f-string에서 소수점 자리수는 {변수:.1f} 처럼 지정합니다."},
+                {"level": 2, "text": "f'이름: {name}, 점수: {score:.1f}' 형태로 작성하세요."},
+                {"level": 3, "text": "print(f'이름: {name}, 점수: {score:.1f}')"}
+            ],
+            "grading": {
+                "method": "regex_output",
+                "pattern": "이름: .+, 점수: \\d+\\.\\d",
+                "test_input": ["홍길동", "95.7"],
+                "normalize_whitespace": true
+            },
+            "tags": ["f-string", "format", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch2_p10",
+            "title": "타입 변환",
+            "difficulty": "intermediate",
+            "description": "문자열로 된 숫자를 정수/실수로 변환하고, 정수를 실수로 변환하는 연습을 하세요.",
+            "instructions": [
+                "str_num = '42' 로 설정하고 int로 변환하여 int_num에 저장하세요",
+                "str_pi = '3.14' 로 설정하고 float으로 변환하여 float_num에 저장하세요",
+                "int_num과 float_num을 더한 결과를 출력하세요"
+            ],
+            "initial_code": "str_num = '42'\nstr_pi = '3.14'\n\n# str_num을 int로 변환하여 int_num에 저장하세요\n\n# str_pi를 float으로 변환하여 float_num에 저장하세요\n\n# 두 변수를 더한 결과를 출력하세요\n",
+            "solution_code": "str_num = '42'\nstr_pi = '3.14'\nint_num = int(str_num)\nfloat_num = float(str_pi)\nprint(int_num + float_num)",
+            "hints": [
+                {"level": 1, "text": "int() 함수로 정수로, float() 함수로 실수로 변환합니다."},
+                {"level": 2, "text": "int_num = int(str_num) 과 float_num = float(str_pi) 로 변환하세요."},
+                {"level": 3, "text": "int_num = int(str_num)\nfloat_num = float(str_pi)\nprint(int_num + float_num)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"int_num": 42, "float_num": 3.14},
+                "normalize_whitespace": true
+            },
+            "tags": ["타입변환", "int", "float", "중급"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch2_p11",
+            "title": "비밀번호 검증기",
+            "difficulty": "advanced",
+            "description": "비밀번호를 입력받아 조건을 검사하는 프로그램을 작성하세요. 비밀번호는 8자 이상이어야 합니다.",
+            "instructions": [
+                "비밀번호를 input()으로 입력받으세요",
+                "길이가 8 이상이면 True, 아니면 False를 is_valid에 저장하세요",
+                "is_valid 값을 출력하세요"
+            ],
+            "initial_code": "password = input('비밀번호: ')\n\n# 비밀번호 길이가 8 이상인지 확인하세요\n\n# is_valid를 출력하세요\n",
+            "solution_code": "password = input('비밀번호: ')\nis_valid = len(password) >= 8\nprint(is_valid)",
+            "hints": [
+                {"level": 1, "text": "len()으로 비밀번호 길이를 구하고, >= 8 로 조건을 확인하세요."},
+                {"level": 2, "text": "is_valid = len(password) >= 8 로 Boolean 값을 저장합니다."},
+                {"level": 3, "text": "is_valid = len(password) >= 8\nprint(is_valid)"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["password123"], "expected_output": "True"},
+                    {"input": ["abc"], "expected_output": "False"},
+                    {"input": ["12345678"], "expected_output": "True"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["len", "비교연산자", "심화"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch2_p12",
+            "title": "문자열 분석기",
+            "difficulty": "advanced",
+            "description": "문장을 입력받아 글자 수, 단어 수, 공백 수를 분석하는 프로그램을 작성하세요.",
+            "instructions": [
+                "문장을 input()으로 입력받으세요",
+                "전체 글자 수(len)를 출력하세요",
+                "단어 수(split()으로 분리 후 len)를 출력하세요",
+                "공백 수(count(' '))를 출력하세요",
+                "출력 형식: '글자 수: N, 단어 수: N, 공백 수: N'"
+            ],
+            "initial_code": "sentence = input('문장을 입력하세요: ')\n\n# 글자 수, 단어 수, 공백 수를 계산하고 출력하세요\n",
+            "solution_code": "sentence = input('문장을 입력하세요: ')\nchar_count = len(sentence)\nword_count = len(sentence.split())\nspace_count = sentence.count(' ')\nprint(f'글자 수: {char_count}, 단어 수: {word_count}, 공백 수: {space_count}')",
+            "hints": [
+                {"level": 1, "text": "len(sentence)로 글자 수, len(sentence.split())으로 단어 수를 구합니다."},
+                {"level": 2, "text": "공백 수는 sentence.count(' ')로 구합니다."},
+                {"level": 3, "text": "char_count = len(sentence)\nword_count = len(sentence.split())\nspace_count = sentence.count(' ')\nprint(f'글자 수: {char_count}, 단어 수: {word_count}, 공백 수: {space_count}')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["hello world"], "expected_output": "글자 수: 11, 단어 수: 2, 공백 수: 1"},
+                    {"input": ["파이썬 공부 재미있다"], "expected_output": "글자 수: 10, 단어 수: 3, 공백 수: 2"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["문자열메소드", "count", "split", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch2_p13",
+            "title": "진법 변환",
+            "difficulty": "advanced",
+            "description": "10진수 255를 2진수, 8진수, 16진수로 변환하여 출력하세요.",
+            "instructions": [
+                "n = 255 로 설정하세요",
+                "bin()으로 2진수, oct()으로 8진수, hex()으로 16진수를 구하세요",
+                "각각 출력하세요 (파이썬 내장 함수 그대로 출력)"
+            ],
+            "initial_code": "n = 255\n\n# bin(), oct(), hex() 함수를 사용해 변환 후 출력하세요\n",
+            "solution_code": "n = 255\nprint(bin(n))\nprint(oct(n))\nprint(hex(n))",
+            "hints": [
+                {"level": 1, "text": "bin(), oct(), hex() 함수를 사용하면 진법 변환을 쉽게 할 수 있습니다."},
+                {"level": 2, "text": "bin(255)는 '0b11111111', oct(255)는 '0o377', hex(255)는 '0xff'를 반환합니다."},
+                {"level": 3, "text": "print(bin(n))\nprint(oct(n))\nprint(hex(n))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0b11111111\n0o377\n0xff",
+                "normalize_whitespace": true
+            },
+            "tags": ["진법변환", "bin", "hex", "심화"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch2_p14",
+            "title": "가격 계산기",
+            "difficulty": "advanced",
+            "description": "물건 가격과 할인율을 입력받아 최종 가격을 계산하세요.",
+            "instructions": [
+                "원래 가격을 float로 입력받으세요",
+                "할인율(%)을 float로 입력받으세요",
+                "할인 가격 = 원가 * (1 - 할인율/100) 으로 계산하세요",
+                "최종 가격을 소수점 둘째 자리까지 출력하세요"
+            ],
+            "initial_code": "original_price = float(input('원래 가격: '))\ndiscount_rate = float(input('할인율 (%): '))\n\n# 최종 가격을 계산하고 출력하세요\n",
+            "solution_code": "original_price = float(input('원래 가격: '))\ndiscount_rate = float(input('할인율 (%): '))\nfinal_price = original_price * (1 - discount_rate / 100)\nprint(f'{final_price:.2f}')",
+            "hints": [
+                {"level": 1, "text": "할인 후 가격 = 원가 × (1 - 할인율/100) 공식을 사용하세요."},
+                {"level": 2, "text": "final_price = original_price * (1 - discount_rate / 100)"},
+                {"level": 3, "text": "final_price = original_price * (1 - discount_rate / 100)\nprint(f'{final_price:.2f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "8000.00",
+                "tolerance": 0.1,
+                "test_input": ["10000", "20"],
+                "pass_threshold": 0.6
+            },
+            "tags": ["실수연산", "float", "심화"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch2_p15",
+            "title": "이메일 파서",
+            "difficulty": "advanced",
+            "description": "이메일 주소를 입력받아 사용자명과 도메인을 분리하여 출력하세요.",
+            "instructions": [
+                "이메일 주소를 input()으로 입력받으세요",
+                "split('@')으로 사용자명과 도메인을 분리하세요",
+                "'사용자명: [사용자명]' 과 '도메인: [도메인]'을 출력하세요"
+            ],
+            "initial_code": "email = input('이메일 주소: ')\n\n# @를 기준으로 사용자명과 도메인을 분리하세요\n\n# 결과를 출력하세요\n",
+            "solution_code": "email = input('이메일 주소: ')\nparts = email.split('@')\nusername = parts[0]\ndomain = parts[1]\nprint(f'사용자명: {username}')\nprint(f'도메인: {domain}')",
+            "hints": [
+                {"level": 1, "text": "이메일은 '@'를 기준으로 사용자명과 도메인으로 나뉩니다."},
+                {"level": 2, "text": "parts = email.split('@') 으로 분리하면 parts[0]이 사용자명, parts[1]이 도메인입니다."},
+                {"level": 3, "text": "parts = email.split('@')\nprint(f'사용자명: {parts[0]}')\nprint(f'도메인: {parts[1]}')"}
+            ],
+            "grading": {
+                "method": "multi_testcase",
+                "test_cases": [
+                    {"input": ["user@example.com"], "expected_output": "사용자명: user\n도메인: example.com"},
+                    {"input": ["admin@python.org"], "expected_output": "사용자명: admin\n도메인: python.org"}
+                ],
+                "normalize_whitespace": true
+            },
+            "tags": ["문자열메소드", "split", "심화"],
+            "related_section": "s4"
+        }
+    ]
+}

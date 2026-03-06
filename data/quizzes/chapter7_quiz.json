@@ -1,0 +1,97 @@
+{
+    "chapter_id": 7,
+    "quiz_title": "챕터 7 확인 퀴즈 - 예외 처리",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch7_q01",
+            "type": "multiple_choice",
+            "question": "파이썬에서 예외를 처리할 때 사용하는 키워드 조합은?",
+            "options": ["if/else", "try/except", "do/while", "catch/throw"],
+            "correct_answer": "try/except",
+            "explanation": "파이썬에서 예외를 처리할 때는 try/except 구문을 사용합니다. try 블록에 예외가 발생할 수 있는 코드를, except 블록에 예외 처리 코드를 작성합니다."
+        },
+        {
+            "question_id": "ch7_q02",
+            "type": "multiple_choice",
+            "question": "0으로 나누기 시 발생하는 예외는?",
+            "options": ["ValueError", "TypeError", "ZeroDivisionError", "ArithmeticError"],
+            "correct_answer": "ZeroDivisionError",
+            "explanation": "정수나 실수를 0으로 나누면 ZeroDivisionError가 발생합니다. 예: 10 / 0"
+        },
+        {
+            "question_id": "ch7_q03",
+            "type": "ox",
+            "question": "try/except로 예외를 처리하면 예외 발생 후에도 프로그램이 계속 실행된다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "try/except로 예외를 처리하면 프로그램이 종료되지 않고 계속 실행됩니다. except 블록에서 예외를 처리한 후 다음 코드로 이동합니다."
+        },
+        {
+            "question_id": "ch7_q04",
+            "type": "multiple_choice",
+            "question": "int('abc')를 실행하면 어떤 예외가 발생하는가?",
+            "options": ["TypeError", "ValueError", "NameError", "AttributeError"],
+            "correct_answer": "ValueError",
+            "explanation": "int()에 숫자가 아닌 문자열을 전달하면 ValueError가 발생합니다. ValueError는 '잘못된 값'을 나타내는 예외입니다."
+        },
+        {
+            "question_id": "ch7_q05",
+            "type": "multiple_choice",
+            "question": "finally 절에 대한 설명으로 올바른 것은?",
+            "options": [
+                "예외가 발생했을 때만 실행된다",
+                "예외가 없을 때만 실행된다",
+                "예외 발생 여부와 관계없이 항상 실행된다",
+                "try 블록보다 먼저 실행된다"
+            ],
+            "correct_answer": "예외 발생 여부와 관계없이 항상 실행된다",
+            "explanation": "finally 블록은 try/except 블록이 끝난 후 예외 발생 여부와 관계없이 항상 실행됩니다. 파일 닫기, 연결 해제 등의 정리 작업에 사용합니다."
+        },
+        {
+            "question_id": "ch7_q06",
+            "type": "fill_blank",
+            "question": "예외를 직접 발생시키기 위해 사용하는 키워드는 _______이다.",
+            "options": [],
+            "correct_answer": "raise",
+            "explanation": "raise 키워드로 예외를 직접 발생시킬 수 있습니다. 예: raise ValueError('잘못된 값입니다')"
+        },
+        {
+            "question_id": "ch7_q07",
+            "type": "ox",
+            "question": "else 절은 try 블록에서 예외가 발생하지 않았을 때 실행된다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "else 절은 try 블록이 예외 없이 정상적으로 완료되었을 때만 실행됩니다. 예외가 발생하면 else 블록은 건너뜁니다."
+        },
+        {
+            "question_id": "ch7_q08",
+            "type": "multiple_choice",
+            "question": "사용자 정의 예외 클래스를 만들 때 상속해야 하는 기본 클래스는?",
+            "options": ["Error", "Exception", "BaseException", "RuntimeError"],
+            "correct_answer": "Exception",
+            "explanation": "사용자 정의 예외는 Exception 클래스를 상속하여 만듭니다. 예: class MyError(Exception): pass"
+        },
+        {
+            "question_id": "ch7_q09",
+            "type": "multiple_choice",
+            "question": "except Exception as e: 에서 as e의 역할은?",
+            "options": [
+                "예외 클래스에 별칭을 붙인다",
+                "발생한 예외 객체를 변수 e에 저장한다",
+                "예외 발생 시 e를 출력한다",
+                "예외를 무시한다"
+            ],
+            "correct_answer": "발생한 예외 객체를 변수 e에 저장한다",
+            "explanation": "as e는 발생한 예외 객체를 변수 e에 저장합니다. print(e)로 예외 메시지를 출력하거나, type(e)로 예외 종류를 확인할 수 있습니다."
+        },
+        {
+            "question_id": "ch7_q10",
+            "type": "multiple_choice",
+            "question": "리스트의 범위를 벗어난 인덱스에 접근할 때 발생하는 예외는?",
+            "options": ["ValueError", "KeyError", "IndexError", "RangeError"],
+            "correct_answer": "IndexError",
+            "explanation": "리스트에서 존재하지 않는 인덱스에 접근하면 IndexError가 발생합니다. 예: lst = [1,2,3]; lst[10]"
+        }
+    ]
+}

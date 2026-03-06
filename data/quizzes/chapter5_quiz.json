@@ -1,0 +1,97 @@
+{
+    "chapter_id": 5,
+    "quiz_title": "챕터 5 확인 퀴즈 - 함수와 클래스",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch5_q01",
+            "type": "multiple_choice",
+            "question": "파이썬에서 함수를 정의할 때 사용하는 키워드는?",
+            "options": ["func", "def", "function", "define"],
+            "correct_answer": "def",
+            "explanation": "파이썬에서 함수 정의는 def 키워드로 시작합니다. 예: def my_function():"
+        },
+        {
+            "question_id": "ch5_q02",
+            "type": "ox",
+            "question": "파이썬 함수는 여러 개의 값을 동시에 return할 수 있다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "파이썬은 return a, b 처럼 쉼표로 구분하여 여러 값을 반환할 수 있습니다. 반환된 값은 튜플로 묶입니다."
+        },
+        {
+            "question_id": "ch5_q03",
+            "type": "multiple_choice",
+            "question": "다음 중 *args에 대한 설명으로 올바른 것은?",
+            "options": [
+                "키워드 인자를 딕셔너리로 받는다",
+                "임의 개수의 위치 인자를 튜플로 받는다",
+                "반드시 1개의 인자만 받는다",
+                "인자를 리스트로 받는다"
+            ],
+            "correct_answer": "임의 개수의 위치 인자를 튜플로 받는다",
+            "explanation": "*args는 임의 개수의 위치 인자를 튜플로 받습니다. **kwargs는 키워드 인자를 딕셔너리로 받습니다."
+        },
+        {
+            "question_id": "ch5_q04",
+            "type": "fill_blank",
+            "question": "클래스에서 객체가 생성될 때 자동으로 호출되는 초기화 메소드의 이름은 _______이다.",
+            "options": [],
+            "correct_answer": "__init__",
+            "explanation": "__init__ 메소드는 클래스의 생성자입니다. 객체가 만들어질 때 자동으로 호출되어 속성을 초기화합니다."
+        },
+        {
+            "question_id": "ch5_q05",
+            "type": "ox",
+            "question": "함수 안에서 만든 지역 변수는 함수 밖에서도 사용할 수 있다.",
+            "options": ["O", "X"],
+            "correct_answer": "X",
+            "explanation": "지역 변수(local variable)는 함수 안에서만 존재합니다. 함수가 끝나면 사라지므로 함수 밖에서 접근하면 오류가 발생합니다."
+        },
+        {
+            "question_id": "ch5_q06",
+            "type": "multiple_choice",
+            "question": "클래스 메소드의 첫 번째 매개변수 self는 무엇을 가리키는가?",
+            "options": [
+                "클래스 자체",
+                "부모 클래스",
+                "현재 객체(인스턴스)",
+                "함수의 반환값"
+            ],
+            "correct_answer": "현재 객체(인스턴스)",
+            "explanation": "self는 메소드를 호출한 현재 객체(인스턴스)를 가리킵니다. 파이썬 관례상 self로 이름 짓지만 다른 이름도 가능합니다."
+        },
+        {
+            "question_id": "ch5_q07",
+            "type": "multiple_choice",
+            "question": "상속에서 부모 클래스의 메소드를 자식 클래스에서 재정의하는 것을 무엇이라 하는가?",
+            "options": ["상속(Inheritance)", "오버로딩(Overloading)", "오버라이딩(Overriding)", "캡슐화(Encapsulation)"],
+            "correct_answer": "오버라이딩(Overriding)",
+            "explanation": "오버라이딩(Overriding)은 부모 클래스에서 정의된 메소드를 자식 클래스에서 같은 이름으로 재정의하는 것입니다."
+        },
+        {
+            "question_id": "ch5_q08",
+            "type": "fill_blank",
+            "question": "자식 클래스에서 부모 클래스에 접근하기 위해 사용하는 함수는 _______()이다.",
+            "options": [],
+            "correct_answer": "super",
+            "explanation": "super()는 부모 클래스를 참조합니다. super().__init__()으로 부모의 초기화 메소드를 호출할 수 있습니다."
+        },
+        {
+            "question_id": "ch5_q09",
+            "type": "multiple_choice",
+            "question": "다음 코드의 출력 결과는?\n\ndef add(a, b=10):\n    return a + b\n\nprint(add(5))",
+            "options": ["5", "10", "15", "오류 발생"],
+            "correct_answer": "15",
+            "explanation": "b의 기본값이 10이므로 add(5)를 호출하면 a=5, b=10이 됩니다. 따라서 5 + 10 = 15가 반환됩니다."
+        },
+        {
+            "question_id": "ch5_q10",
+            "type": "ox",
+            "question": "파이썬에서 하나의 클래스는 여러 부모 클래스를 상속받을 수 있다 (다중 상속).",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "파이썬은 다중 상속을 지원합니다. class Child(Parent1, Parent2): 처럼 여러 부모 클래스를 쉼표로 나열할 수 있습니다."
+        }
+    ]
+}

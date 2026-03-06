@@ -1,0 +1,156 @@
+{
+    "chapter_id": 4,
+    "title": "조건문과 반복문",
+    "description": "프로그램의 흐름을 제어하는 조건문(if/elif/else)과 반복문(for/while)을 배웁니다. break, continue, enumerate, 리스트 컴프리헨션까지 다룹니다.",
+    "learning_objectives": [
+        "if/elif/else 조건문으로 상황에 따라 다른 코드를 실행할 수 있다",
+        "for 반복문으로 시퀀스를 순회하고 range()를 활용할 수 있다",
+        "while 반복문으로 조건 기반 반복을 구현할 수 있다",
+        "break와 continue로 반복 흐름을 제어할 수 있다",
+        "enumerate와 리스트 컴프리헨션을 활용할 수 있다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "if 조건문",
+            "content_md": "## if 조건문이란?\n\n조건에 따라 다른 코드 블록을 실행하는 구문입니다.\n\n### 기본 구조\n```python\nif 조건:\n    # 조건이 True일 때 실행\nelif 다른조건:\n    # 다른 조건이 True일 때 실행\nelse:\n    # 모든 조건이 False일 때 실행\n```\n\n### 중요: 들여쓰기(Indentation)\n파이썬은 들여쓰기로 코드 블록을 구분합니다. 보통 **스페이스 4칸**을 사용합니다.\n\n### 예시\n```python\nscore = 85\n\nif score >= 90:\n    print('A학점')\nelif score >= 80:\n    print('B학점')\nelif score >= 70:\n    print('C학점')\nelse:\n    print('F학점')\n```",
+            "code_examples": [
+                {
+                    "title": "기본 if-else",
+                    "code": "age = 20\n\nif age >= 18:\n    print('성인입니다')\n    print('투표할 수 있습니다')\nelse:\n    print('미성년자입니다')\n    print('투표할 수 없습니다')\n\nprint('확인 완료')",
+                    "expected_output": "성인입니다\n투표할 수 있습니다\n확인 완료",
+                    "explanation": "if 블록은 조건이 True일 때, else 블록은 False일 때 실행됩니다. 들여쓰기로 블록을 구분합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "if-elif-else",
+                    "code": "score = 75\n\nif score >= 90:\n    grade = 'A'\nelif score >= 80:\n    grade = 'B'\nelif score >= 70:\n    grade = 'C'\nelif score >= 60:\n    grade = 'D'\nelse:\n    grade = 'F'\n\nprint(f'점수 {score}점 → {grade}학점')",
+                    "expected_output": "점수 75점 → C학점",
+                    "explanation": "elif를 사용하면 여러 조건을 순서대로 검사합니다. 처음으로 True가 되는 블록만 실행됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "중첩 if문",
+                    "code": "username = 'admin'\npassword = '1234'\n\nif username == 'admin':\n    if password == '1234':\n        print('로그인 성공!')\n    else:\n        print('비밀번호가 틀렸습니다')\nelse:\n    print('존재하지 않는 사용자입니다')",
+                    "expected_output": "로그인 성공!",
+                    "explanation": "if문 안에 if문을 중첩할 수 있습니다. 들여쓰기 레벨로 중첩 구조를 표현합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "파이썬은 들여쓰기(스페이스 4칸)로 코드 블록을 구분한다",
+                "elif는 여러 조건을 순서대로 검사한다",
+                "조건은 위에서 아래로 검사하며 첫 번째 True인 블록만 실행된다",
+                "else는 모든 조건이 False일 때 실행된다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "for 반복문",
+            "content_md": "## for 반복문이란?\n\n시퀀스(리스트, 튜플, 문자열, range 등)의 각 요소를 순서대로 처리하는 반복문입니다.\n\n### 기본 구조\n```python\nfor 변수 in 시퀀스:\n    # 반복 실행할 코드\n```\n\n### range() 함수\n```python\nrange(5)       # 0, 1, 2, 3, 4\nrange(1, 6)    # 1, 2, 3, 4, 5\nrange(0, 10, 2)  # 0, 2, 4, 6, 8\n```\n\n### 시퀀스 순회\n```python\nfruits = ['사과', '바나나', '딸기']\nfor fruit in fruits:\n    print(fruit)\n\nfor char in 'Python':\n    print(char)\n```",
+            "code_examples": [
+                {
+                    "title": "range()를 이용한 반복",
+                    "code": "# 1부터 5까지 출력\nfor i in range(1, 6):\n    print(i)\n\nprint('---')\n\n# 짝수만 출력 (0, 2, 4, 6, 8)\nfor i in range(0, 10, 2):\n    print(i, end=' ')\nprint()",
+                    "expected_output": "1\n2\n3\n4\n5\n---\n0 2 4 6 8 ",
+                    "explanation": "range(시작, 끝, 간격)으로 숫자 범위를 만듭니다. 끝 값은 포함되지 않습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "리스트 순회",
+                    "code": "students = ['홍길동', '김철수', '이영희', '박민준']\ntotal = 0\nscores = [85, 92, 78, 96]\n\nfor i in range(len(students)):\n    print(f'{i+1}. {students[i]}: {scores[i]}점')\n    total += scores[i]\n\nprint(f'\\n평균: {total/len(scores):.1f}점')",
+                    "expected_output": "1. 홍길동: 85점\n2. 김철수: 92점\n3. 이영희: 78점\n4. 박민준: 96점\n\n평균: 87.8점",
+                    "explanation": "range(len(리스트))로 인덱스를 순회하거나, 리스트를 직접 순회할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "for 반복문은 시퀀스의 각 요소를 순서대로 처리한다",
+                "range(끝), range(시작, 끝), range(시작, 끝, 간격) 형태로 사용한다",
+                "range의 끝 값은 포함되지 않는다 (range(5)는 0~4)",
+                "문자열, 리스트, 튜플 등 모든 시퀀스를 순회할 수 있다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "while 반복문",
+            "content_md": "## while 반복문이란?\n\n조건이 True인 동안 계속 반복하는 반복문입니다.\n\n### 기본 구조\n```python\nwhile 조건:\n    # 조건이 True인 동안 반복 실행\n```\n\n### 주의사항\n조건이 항상 True이면 무한 루프가 됩니다. 반드시 반복을 종료하는 조건을 만들어야 합니다.\n\n```python\ncount = 0\nwhile count < 5:\n    print(count)\n    count += 1  # 이 줄이 없으면 무한 루프!\n```\n\n### for vs while\n- `for`: 반복 횟수가 정해진 경우\n- `while`: 반복 종료 조건이 있는 경우",
+            "code_examples": [
+                {
+                    "title": "기본 while 반복문",
+                    "code": "# 1부터 5까지 출력\ncount = 1\nwhile count <= 5:\n    print(count)\n    count += 1\n\nprint('반복 종료')",
+                    "expected_output": "1\n2\n3\n4\n5\n반복 종료",
+                    "explanation": "while은 조건이 True인 동안 반복합니다. count += 1로 조건을 변화시켜 무한 루프를 방지합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "while로 합계 구하기",
+                    "code": "# 1부터 100까지의 합\ntotal = 0\nn = 1\n\nwhile n <= 100:\n    total += n\n    n += 1\n\nprint(f'1부터 100까지의 합: {total}')",
+                    "expected_output": "1부터 100까지의 합: 5050",
+                    "explanation": "while을 사용해 누적 합계를 구할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "while은 조건이 True인 동안 계속 반복한다",
+                "반복 변수를 업데이트하지 않으면 무한 루프가 된다",
+                "반복 횟수가 정해진 경우 for를, 조건 기반 반복은 while을 사용한다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "break와 continue",
+            "content_md": "## 반복 제어\n\n### break\n반복문을 즉시 종료합니다.\n\n```python\nfor i in range(10):\n    if i == 5:\n        break  # 5에서 반복 종료\n    print(i)\n# 출력: 0 1 2 3 4\n```\n\n### continue\n현재 반복을 건너뛰고 다음 반복으로 넘어갑니다.\n\n```python\nfor i in range(10):\n    if i % 2 == 0:\n        continue  # 짝수는 건너뜀\n    print(i)\n# 출력: 1 3 5 7 9\n```\n\n### while에서의 break\n```python\nwhile True:  # 무한 루프\n    answer = input('종료하려면 q를 입력: ')\n    if answer == 'q':\n        break  # 조건을 만족하면 종료\n```",
+            "code_examples": [
+                {
+                    "title": "break 사용",
+                    "code": "# 리스트에서 특정 값 찾기\nnumbers = [12, 5, 33, 7, 18, 25]\ntarget = 18\n\nfor i, num in enumerate(numbers):\n    if num == target:\n        print(f'{target}을 {i}번 인덱스에서 찾았습니다!')\n        break\nelse:\n    print(f'{target}을 찾지 못했습니다')",
+                    "expected_output": "18을 4번 인덱스에서 찾았습니다!",
+                    "explanation": "break로 원하는 값을 찾은 즉시 반복을 종료합니다. for-else 구문에서 else는 break 없이 완료된 경우 실행됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "continue 사용",
+                    "code": "# 짝수만 출력\nfor i in range(1, 11):\n    if i % 2 != 0:  # 홀수이면\n        continue    # 건너뜀\n    print(i, end=' ')\nprint()\n\n# 특정 값 제외하고 합계\ntotal = 0\nfor n in range(1, 11):\n    if n == 5:\n        continue  # 5는 제외\n    total += n\nprint(f'1~10 합계 (5 제외): {total}')",
+                    "expected_output": "2 4 6 8 10 \n1~10 합계 (5 제외): 50",
+                    "explanation": "continue는 조건에 해당하는 반복만 건너뛰고, 나머지 반복은 계속 실행됩니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "break는 반복문 전체를 즉시 종료한다",
+                "continue는 현재 반복만 건너뛰고 다음 반복을 계속한다",
+                "for-else에서 else는 break 없이 반복이 완료됐을 때 실행된다",
+                "while True: ... break 패턴은 메뉴 선택 등에 자주 사용된다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "enumerate와 리스트 컴프리헨션",
+            "content_md": "## enumerate()\n\n시퀀스를 순회할 때 인덱스와 값을 함께 가져오는 함수입니다.\n\n```python\nfruits = ['사과', '바나나', '딸기']\nfor i, fruit in enumerate(fruits):\n    print(f'{i}: {fruit}')\n# 0: 사과\n# 1: 바나나\n# 2: 딸기\n\n# 시작 번호 변경\nfor i, fruit in enumerate(fruits, start=1):\n    print(f'{i}번: {fruit}')\n```\n\n## 리스트 컴프리헨션 (List Comprehension)\n\n리스트를 간결하게 생성하는 문법입니다.\n\n```python\n# 일반적인 방법\nsquares = []\nfor i in range(1, 6):\n    squares.append(i ** 2)\n\n# 리스트 컴프리헨션\nsquares = [i ** 2 for i in range(1, 6)]\n# [1, 4, 9, 16, 25]\n\n# 조건 포함\nevens = [i for i in range(20) if i % 2 == 0]\n```",
+            "code_examples": [
+                {
+                    "title": "enumerate 사용",
+                    "code": "menu = ['아메리카노', '카페라떼', '바닐라라떼', '카푸치노']\n\nprint('=== 메뉴판 ===')\nfor num, item in enumerate(menu, start=1):\n    print(f'{num}. {item}')\n\nprint()\n# enumerate 없이 인덱스 사용\nprint('선택하신 메뉴:', menu[2])",
+                    "expected_output": "=== 메뉴판 ===\n1. 아메리카노\n2. 카페라떼\n3. 바닐라라떼\n4. 카푸치노\n\n선택하신 메뉴: 바닐라라떼",
+                    "explanation": "enumerate()는 인덱스와 값을 함께 반환합니다. start 매개변수로 시작 번호를 지정할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "리스트 컴프리헨션",
+                    "code": "# 1~10의 제곱수\nsquares = [x**2 for x in range(1, 11)]\nprint('제곱수:', squares)\n\n# 짝수만 필터링\nevens = [x for x in range(1, 21) if x % 2 == 0]\nprint('짝수:', evens)\n\n# 문자열 처리\nwords = ['hello', 'python', 'world']\nupper_words = [w.upper() for w in words]\nprint('대문자:', upper_words)",
+                    "expected_output": "제곱수: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\n짝수: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]\n대문자: ['HELLO', 'PYTHON', 'WORLD']",
+                    "explanation": "리스트 컴프리헨션은 [표현식 for 변수 in 시퀀스 if 조건] 형태로 리스트를 간결하게 생성합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "enumerate()는 인덱스와 값을 함께 반환하여 index 관리를 편리하게 한다",
+                "enumerate(seq, start=1)로 시작 번호를 변경할 수 있다",
+                "리스트 컴프리헨션은 [표현식 for 변수 in 시퀀스] 형태이다",
+                "조건을 추가할 때는 [표현식 for 변수 in 시퀀스 if 조건] 형태를 사용한다",
+                "리스트 컴프리헨션은 for 루프보다 간결하지만 복잡한 경우 가독성이 떨어질 수 있다"
+            ]
+        }
+    ]
+}

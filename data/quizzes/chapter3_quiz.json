@@ -1,0 +1,109 @@
+{
+    "chapter_id": 3,
+    "quiz_title": "챕터 3 확인 퀴즈",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch3_q01",
+            "type": "multiple_choice",
+            "question": "리스트 [1, 2, 3, 4, 5] 에서 마지막 요소를 가져오는 올바른 방법은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "list[5]"},
+                {"label": "B", "text": "list[last]"},
+                {"label": "C", "text": "list[-1]"},
+                {"label": "D", "text": "list[4]"}
+            ],
+            "correct_answer": "C",
+            "explanation": "리스트[-1]은 마지막 요소를 가져오는 가장 일반적인 방법입니다. list[4]도 같은 결과이지만, 리스트 길이에 의존하므로 list[-1]이 더 안전합니다."
+        },
+        {
+            "question_id": "ch3_q02",
+            "type": "ox",
+            "question": "튜플(Tuple)의 요소는 생성 후에도 자유롭게 변경할 수 있다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. 튜플은 변경 불가(immutable)한 자료형입니다. 한 번 생성된 튜플의 요소는 변경할 수 없습니다. 요소를 변경하려면 리스트를 사용해야 합니다."
+        },
+        {
+            "question_id": "ch3_q03",
+            "type": "multiple_choice",
+            "question": "set([1, 2, 2, 3, 3, 3]) 의 결과는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "[1, 2, 3]"},
+                {"label": "B", "text": "{1, 2, 3}"},
+                {"label": "C", "text": "(1, 2, 3)"},
+                {"label": "D", "text": "{1, 2, 2, 3, 3, 3}"}
+            ],
+            "correct_answer": "B",
+            "explanation": "set()은 중복을 제거합니다. 결과는 집합 타입인 {1, 2, 3}이 됩니다."
+        },
+        {
+            "question_id": "ch3_q04",
+            "type": "fill_blank",
+            "question": "딕셔너리 d = {'a': 1, 'b': 2} 에서 키 'c'가 없을 때 기본값 0을 반환하는 메소드 호출은? (메소드 이름만 작성)",
+            "correct_answer": "get",
+            "accept_answers": ["get()", "d.get"],
+            "explanation": "딕셔너리.get(키, 기본값) 메소드를 사용합니다. d.get('c', 0)은 키 'c'가 없으면 0을 반환합니다."
+        },
+        {
+            "question_id": "ch3_q05",
+            "type": "multiple_choice",
+            "question": "리스트 fruits에 'grape'를 끝에 추가하는 올바른 코드는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "fruits.add('grape')"},
+                {"label": "B", "text": "fruits.insert('grape')"},
+                {"label": "C", "text": "fruits.append('grape')"},
+                {"label": "D", "text": "fruits + 'grape'"}
+            ],
+            "correct_answer": "C",
+            "explanation": "리스트의 끝에 요소를 추가할 때는 append() 메소드를 사용합니다. add()는 집합(set)의 메소드입니다."
+        },
+        {
+            "question_id": "ch3_q06",
+            "type": "ox",
+            "question": "파이썬에서 빈 집합(set)은 {} 로 만들 수 있다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. {}는 빈 딕셔너리를 만듭니다. 빈 집합을 만들려면 반드시 set() 함수를 사용해야 합니다."
+        },
+        {
+            "question_id": "ch3_q07",
+            "type": "multiple_choice",
+            "question": "다음 코드의 출력 결과는 무엇인가요?\n\nA = {1, 2, 3}\nB = {2, 3, 4}\nprint(A & B)",
+            "options": [
+                {"label": "A", "text": "{1, 2, 3, 4}"},
+                {"label": "B", "text": "{2, 3}"},
+                {"label": "C", "text": "{1, 4}"},
+                {"label": "D", "text": "{1, 2, 3, 2, 3, 4}"}
+            ],
+            "correct_answer": "B",
+            "explanation": "& 연산자는 교집합을 구합니다. A와 B 모두에 있는 요소는 2와 3이므로 결과는 {2, 3}입니다."
+        },
+        {
+            "question_id": "ch3_q08",
+            "type": "fill_blank",
+            "question": "리스트 [3, 1, 4, 1, 5]를 오름차순으로 정렬하는 메소드 이름은 무엇인가요?",
+            "correct_answer": "sort",
+            "accept_answers": ["sort()", ".sort()"],
+            "explanation": "리스트.sort() 메소드는 리스트를 오름차순으로 정렬합니다. 원본 리스트를 직접 수정합니다. sorted() 함수와 달리 새 리스트를 반환하지 않습니다."
+        },
+        {
+            "question_id": "ch3_q09",
+            "type": "multiple_choice",
+            "question": "딕셔너리에서 모든 키-값 쌍을 튜플 형태로 순회하는 메소드는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "keys()"},
+                {"label": "B", "text": "values()"},
+                {"label": "C", "text": "items()"},
+                {"label": "D", "text": "pairs()"}
+            ],
+            "correct_answer": "C",
+            "explanation": "items() 메소드는 (키, 값) 튜플을 반환합니다. for key, value in dict.items(): 형태로 키와 값을 동시에 순회할 수 있습니다."
+        },
+        {
+            "question_id": "ch3_q10",
+            "type": "ox",
+            "question": "파이썬에서 copy = original 로 리스트를 복사하면, copy를 수정해도 original은 변하지 않는다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. copy = original 은 같은 리스트 객체를 가리키는 참조 복사입니다. copy를 수정하면 original도 함께 변경됩니다. 독립적인 복사본을 만들려면 copy = original[:] 또는 copy = original.copy()를 사용해야 합니다."
+        }
+    ]
+}

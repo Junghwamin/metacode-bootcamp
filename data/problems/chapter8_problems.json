@@ -1,0 +1,388 @@
+{
+    "chapter_id": 8,
+    "allowed_modules": ["numpy", "pandas"],
+    "problems": [
+        {
+            "problem_id": "ch8_p01",
+            "title": "첫 번째 NumPy 배열",
+            "difficulty": "basic",
+            "description": "NumPy를 import하고 첫 번째 배열을 만들어보세요.",
+            "instructions": [
+                "numpy를 np로 import하세요",
+                "[1, 2, 3, 4, 5] 로 배열 arr을 생성하세요",
+                "배열을 출력하세요",
+                "배열의 shape를 출력하세요"
+            ],
+            "initial_code": "# numpy를 import하고 배열을 만드세요\n\n\n",
+            "solution_code": "import numpy as np\n\narr = np.array([1, 2, 3, 4, 5])\nprint(arr)\nprint(arr.shape)",
+            "hints": [
+                {"level": 1, "text": "import numpy as np 로 NumPy를 가져옵니다"},
+                {"level": 2, "text": "np.array([1, 2, 3, 4, 5]) 로 리스트를 배열로 변환합니다"},
+                {"level": 3, "text": "import numpy as np\\narr = np.array([1, 2, 3, 4, 5])\\nprint(arr)\\nprint(arr.shape)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "[1 2 3 4 5]\n(5,)"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "array", "shape"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch8_p02",
+            "title": "zeros와 ones 배열",
+            "difficulty": "basic",
+            "description": "0과 1로 초기화된 배열을 생성하세요.",
+            "instructions": [
+                "np.zeros(5) 로 0이 5개인 1D 배열을 만들어 출력하세요",
+                "np.ones((2, 3)) 로 1이 채워진 2x3 배열을 만들어 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\n# 0으로 채운 배열과 1로 채운 배열을 만드세요\n\n",
+            "solution_code": "import numpy as np\n\nzeros = np.zeros(5)\nprint(zeros)\n\nones = np.ones((2, 3))\nprint(ones)",
+            "hints": [
+                {"level": 1, "text": "np.zeros(개수) 로 0이 채워진 배열을 만듭니다"},
+                {"level": 2, "text": "np.ones((행, 열)) 로 2D 배열을 만들 때 튜플로 크기를 지정합니다"},
+                {"level": 3, "text": "print(np.zeros(5))\\nprint(np.ones((2, 3)))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "[0. 0. 0. 0. 0.]\n[[1. 1. 1.]\n [1. 1. 1.]]"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "zeros", "ones"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch8_p03",
+            "title": "arange로 배열 생성",
+            "difficulty": "basic",
+            "description": "np.arange()를 사용하여 다양한 배열을 만드세요.",
+            "instructions": [
+                "np.arange(10) 으로 0~9 배열을 만들어 출력하세요",
+                "np.arange(1, 11) 으로 1~10 배열을 만들어 출력하세요",
+                "np.arange(0, 20, 2) 로 0~18 짝수 배열을 만들어 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\n# arange로 세 가지 배열을 만드세요\n\n",
+            "solution_code": "import numpy as np\n\nprint(np.arange(10))\nprint(np.arange(1, 11))\nprint(np.arange(0, 20, 2))",
+            "hints": [
+                {"level": 1, "text": "np.arange(stop) 은 0부터 stop-1까지 배열을 만듭니다"},
+                {"level": 2, "text": "np.arange(start, stop, step) 으로 시작, 끝, 간격을 지정합니다"},
+                {"level": 3, "text": "print(np.arange(10))\\nprint(np.arange(1, 11))\\nprint(np.arange(0, 20, 2))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "[0 1 2 3 4 5 6 7 8 9]\n[ 1  2  3  4  5  6  7  8  9 10]\n[ 0  2  4  6  8 10 12 14 16 18]"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "arange"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch8_p04",
+            "title": "배열 기본 통계",
+            "difficulty": "basic",
+            "description": "NumPy 배열의 기본 통계를 계산하세요.",
+            "instructions": [
+                "[15, 25, 35, 45, 55, 65] 로 배열을 생성하세요",
+                "합계(sum), 평균(mean), 최소값(min), 최대값(max)을 각각 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\n# 배열 생성 및 통계 계산\narr = np.array([15, 25, 35, 45, 55, 65])\n\n# 합계, 평균, 최소, 최대를 출력하세요\n",
+            "solution_code": "import numpy as np\n\narr = np.array([15, 25, 35, 45, 55, 65])\n\nprint(np.sum(arr))\nprint(np.mean(arr))\nprint(np.min(arr))\nprint(np.max(arr))",
+            "hints": [
+                {"level": 1, "text": "np.sum(arr), np.mean(arr), np.min(arr), np.max(arr) 로 각 통계를 계산합니다"},
+                {"level": 2, "text": "또는 arr.sum(), arr.mean(), arr.min(), arr.max() 메소드 형식으로도 사용 가능합니다"},
+                {"level": 3, "text": "print(np.sum(arr))\\nprint(np.mean(arr))\\nprint(np.min(arr))\\nprint(np.max(arr))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "240\n40.0\n15\n65"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "통계", "sum", "mean"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch8_p05",
+            "title": "배열 연산",
+            "difficulty": "basic",
+            "description": "두 배열의 산술 연산을 수행하세요.",
+            "instructions": [
+                "a = [1, 2, 3, 4, 5], b = [10, 20, 30, 40, 50] 으로 두 배열을 생성하세요",
+                "a + b (원소별 합계)를 출력하세요",
+                "a * b (원소별 곱)를 출력하세요",
+                "b / a (원소별 나눗셈)를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\na = np.array([1, 2, 3, 4, 5])\nb = np.array([10, 20, 30, 40, 50])\n\n# 배열 연산을 출력하세요\n",
+            "solution_code": "import numpy as np\n\na = np.array([1, 2, 3, 4, 5])\nb = np.array([10, 20, 30, 40, 50])\n\nprint(a + b)\nprint(a * b)\nprint(b / a)",
+            "hints": [
+                {"level": 1, "text": "NumPy 배열은 +, *, / 연산자로 원소별 연산을 합니다"},
+                {"level": 2, "text": "print(a + b) 처럼 바로 출력하면 됩니다"},
+                {"level": 3, "text": "print(a + b)\\nprint(a * b)\\nprint(b / a)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "[11 22 33 44 55]\n[ 10  40  90 160 250]\n[10. 10. 10. 10. 10.]"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "배열연산", "원소별연산"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch8_p06",
+            "title": "배열 인덱싱과 슬라이싱",
+            "difficulty": "intermediate",
+            "description": "NumPy 배열에서 원하는 원소와 구간을 추출하세요.",
+            "instructions": [
+                "[10, 20, 30, 40, 50, 60, 70, 80, 90, 100] 배열을 생성하세요",
+                "첫 번째 원소(인덱스 0)를 출력하세요",
+                "마지막 원소(인덱스 -1)를 출력하세요",
+                "인덱스 2~5 (슬라이싱 [2:6])를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\narr = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])\n\n# 인덱싱과 슬라이싱을 사용하세요\n",
+            "solution_code": "import numpy as np\n\narr = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])\n\nprint(arr[0])\nprint(arr[-1])\nprint(arr[2:6])",
+            "hints": [
+                {"level": 1, "text": "arr[0] 으로 첫 번째 원소, arr[-1] 로 마지막 원소에 접근합니다"},
+                {"level": 2, "text": "arr[2:6] 은 인덱스 2, 3, 4, 5 (6은 포함 안 됨)를 반환합니다"},
+                {"level": 3, "text": "print(arr[0])\\nprint(arr[-1])\\nprint(arr[2:6])"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "10\n100\n[30 40 50 60]"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "인덱싱", "슬라이싱"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch8_p07",
+            "title": "불리언 인덱싱",
+            "difficulty": "intermediate",
+            "description": "조건으로 배열을 필터링하세요.",
+            "instructions": [
+                "[5, 15, 25, 35, 45, 55, 65, 75] 배열을 생성하세요",
+                "30보다 큰 원소만 필터링하여 출력하세요",
+                "필터링된 원소의 개수를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\narr = np.array([5, 15, 25, 35, 45, 55, 65, 75])\n\n# 30보다 큰 원소를 필터링하세요\n",
+            "solution_code": "import numpy as np\n\narr = np.array([5, 15, 25, 35, 45, 55, 65, 75])\n\nfiltered = arr[arr > 30]\nprint(filtered)\nprint(len(filtered))",
+            "hints": [
+                {"level": 1, "text": "arr > 30 은 각 원소가 30보다 큰지 True/False 배열을 반환합니다"},
+                {"level": 2, "text": "arr[arr > 30] 처럼 조건을 배열 인덱스로 사용하면 True인 원소만 추출됩니다"},
+                {"level": 3, "text": "filtered = arr[arr > 30]\\nprint(filtered)\\nprint(len(filtered))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "[35 45 55 65 75]\n5"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "불리언인덱싱", "필터링"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch8_p08",
+            "title": "2D 배열 다루기",
+            "difficulty": "intermediate",
+            "description": "2차원 배열을 생성하고 특정 행과 열에 접근하세요.",
+            "instructions": [
+                "[[1,2,3],[4,5,6],[7,8,9]] 로 3x3 배열을 생성하세요",
+                "shape를 출력하세요",
+                "첫 번째 행(인덱스 0)을 출력하세요",
+                "두 번째 열(인덱스 1)을 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nmatrix = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\n\n# shape, 첫 번째 행, 두 번째 열을 출력하세요\n",
+            "solution_code": "import numpy as np\n\nmatrix = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\n\nprint(matrix.shape)\nprint(matrix[0])\nprint(matrix[:, 1])",
+            "hints": [
+                {"level": 1, "text": "matrix[0] 으로 첫 번째 행에 접근합니다"},
+                {"level": 2, "text": "matrix[:, 1] 은 모든 행(:)의 1번 열을 의미합니다"},
+                {"level": 3, "text": "print(matrix.shape)\\nprint(matrix[0])\\nprint(matrix[:, 1])"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "(3, 3)\n[1 2 3]\n[2 5 8]"
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["NumPy", "2D배열", "행렬"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch8_p09",
+            "title": "첫 번째 Pandas Series",
+            "difficulty": "intermediate",
+            "description": "Pandas Series를 만들고 기본 정보를 확인하세요.",
+            "instructions": [
+                "pandas를 pd로 import하세요",
+                "[85, 90, 78, 92, 88] 과 index=['국어','영어','수학','과학','사회'] 로 Series를 만드세요",
+                "Series를 출력하세요",
+                "평균(mean)을 출력하세요"
+            ],
+            "initial_code": "# pandas를 import하고 Series를 만드세요\n\n",
+            "solution_code": "import pandas as pd\n\nscores = pd.Series(\n    [85, 90, 78, 92, 88],\n    index=['국어', '영어', '수학', '과학', '사회']\n)\n\nprint(scores)\nprint(scores.mean())",
+            "hints": [
+                {"level": 1, "text": "import pandas as pd 로 Pandas를 가져옵니다"},
+                {"level": 2, "text": "pd.Series(리스트, index=레이블리스트) 로 Series를 만듭니다"},
+                {"level": 3, "text": "scores = pd.Series([85, 90, 78, 92, 88], index=['국어','영어','수학','과학','사회'])"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "국어    85\n영어    90\n수학    78\n과학    92\n사회    88\ndtype: int64\n86.6"
+            },
+            "allowed_modules": ["pandas"],
+            "tags": ["Pandas", "Series", "mean"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch8_p10",
+            "title": "Series 인덱싱",
+            "difficulty": "intermediate",
+            "description": "Pandas Series에서 특정 값을 조회하세요.",
+            "instructions": [
+                "과일 가격 Series를 만드세요: 사과=1500, 바나나=800, 체리=3000, 딸기=2500",
+                "사과의 가격을 출력하세요",
+                "2000원 이상인 과일만 필터링하여 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\n# 과일 가격 Series를 만드세요\n\n",
+            "solution_code": "import pandas as pd\n\nprices = pd.Series(\n    [1500, 800, 3000, 2500],\n    index=['사과', '바나나', '체리', '딸기']\n)\n\nprint(prices['사과'])\nprint(prices[prices >= 2000])",
+            "hints": [
+                {"level": 1, "text": "prices['사과'] 로 특정 레이블의 값에 접근합니다"},
+                {"level": 2, "text": "prices[prices >= 2000] 로 조건에 맞는 원소만 필터링합니다"},
+                {"level": 3, "text": "print(prices['사과'])\\nprint(prices[prices >= 2000])"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "1500\n체리    3000\n딸기    2500\ndtype: int64"
+            },
+            "allowed_modules": ["pandas"],
+            "tags": ["Pandas", "Series", "인덱싱", "필터링"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch8_p11",
+            "title": "첫 번째 DataFrame 만들기",
+            "difficulty": "advanced",
+            "description": "Pandas DataFrame을 생성하고 기본 정보를 확인하세요.",
+            "instructions": [
+                "딕셔너리로 학생 데이터 DataFrame을 만드세요",
+                "이름: ['민준', '서연', '지훈', '수아'], 국어: [85, 90, 78, 92], 수학: [90, 85, 92, 88]",
+                "DataFrame을 출력하세요",
+                "shape를 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\n# 학생 데이터 DataFrame을 만드세요\n\n",
+            "solution_code": "import pandas as pd\n\ndata = {\n    '이름': ['민준', '서연', '지훈', '수아'],\n    '국어': [85, 90, 78, 92],\n    '수학': [90, 85, 92, 88]\n}\n\ndf = pd.DataFrame(data)\nprint(df)\nprint(df.shape)",
+            "hints": [
+                {"level": 1, "text": "딕셔너리에서 키가 열 이름이 되고, 값 리스트가 해당 열의 데이터가 됩니다"},
+                {"level": 2, "text": "pd.DataFrame(딕셔너리) 로 DataFrame을 생성합니다"},
+                {"level": 3, "text": "df = pd.DataFrame(data)\\nprint(df)\\nprint(df.shape)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "   이름  국어  수학\n0  민준  85  90\n1  서연  90  85\n2  지훈  78  92\n3  수아  92  88\n(4, 3)"
+            },
+            "allowed_modules": ["pandas"],
+            "tags": ["Pandas", "DataFrame", "딕셔너리"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch8_p12",
+            "title": "DataFrame 열 선택과 통계",
+            "difficulty": "advanced",
+            "description": "DataFrame에서 특정 열을 선택하고 통계를 계산하세요.",
+            "instructions": [
+                "판매 데이터 DataFrame을 만드세요: 제품=['A','B','C','D'], 가격=[1000,2000,1500,3000], 수량=[50,30,45,20]",
+                "가격 열을 출력하세요",
+                "수량 열의 합계를 출력하세요",
+                "가격 × 수량 = 매출 열을 추가하고 총 매출을 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\n# 판매 데이터 DataFrame을 만드세요\n\n",
+            "solution_code": "import pandas as pd\n\ndata = {\n    '제품': ['A', 'B', 'C', 'D'],\n    '가격': [1000, 2000, 1500, 3000],\n    '수량': [50, 30, 45, 20]\n}\n\ndf = pd.DataFrame(data)\nprint(df['가격'])\nprint(df['수량'].sum())\n\ndf['매출'] = df['가격'] * df['수량']\nprint(df['매출'].sum())",
+            "hints": [
+                {"level": 1, "text": "df['가격'] 으로 가격 열을 선택합니다"},
+                {"level": 2, "text": "df['수량'].sum() 으로 합계를 계산합니다"},
+                {"level": 3, "text": "df['매출'] = df['가격'] * df['수량'] 으로 새 열을 추가합니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "0    1000\n1    2000\n2    1500\n3    3000\nName: 가격, dtype: int64\n145\n227500"
+            },
+            "allowed_modules": ["pandas"],
+            "tags": ["Pandas", "DataFrame", "열선택", "통계"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch8_p13",
+            "title": "DataFrame 필터링",
+            "difficulty": "advanced",
+            "description": "DataFrame에서 조건에 맞는 행을 필터링하세요.",
+            "instructions": [
+                "학생 성적 DataFrame: 이름=['A','B','C','D','E'], 점수=[75, 85, 60, 92, 78]",
+                "점수가 80 이상인 학생만 필터링하여 출력하세요",
+                "합격 학생 수를 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndata = {\n    '이름': ['A', 'B', 'C', 'D', 'E'],\n    '점수': [75, 85, 60, 92, 78]\n}\ndf = pd.DataFrame(data)\n\n# 점수 80 이상인 학생을 필터링하세요\n",
+            "solution_code": "import pandas as pd\n\ndata = {\n    '이름': ['A', 'B', 'C', 'D', 'E'],\n    '점수': [75, 85, 60, 92, 78]\n}\ndf = pd.DataFrame(data)\n\npassed = df[df['점수'] >= 80]\nprint(passed)\nprint(len(passed))",
+            "hints": [
+                {"level": 1, "text": "df[df['점수'] >= 80] 으로 조건에 맞는 행을 필터링합니다"},
+                {"level": 2, "text": "필터링 결과에 len()을 적용하면 행 수를 구할 수 있습니다"},
+                {"level": 3, "text": "passed = df[df['점수'] >= 80]\\nprint(passed)\\nprint(len(passed))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "  이름  점수\n1   B  85\n3   D  92\n2"
+            },
+            "allowed_modules": ["pandas"],
+            "tags": ["Pandas", "DataFrame", "필터링", "조건"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch8_p14",
+            "title": "NumPy와 Pandas 함께 사용",
+            "difficulty": "advanced",
+            "description": "NumPy 배열로 계산한 결과를 Pandas Series로 만드세요.",
+            "instructions": [
+                "NumPy 배열 temperatures = [23.5, 25.1, 22.8, 26.3, 24.0] 를 만드세요",
+                "np.mean(), np.max(), np.min() 으로 통계를 계산하세요",
+                "계산 결과를 Pandas Series stats로 만드세요 (index=['평균','최고','최저'])",
+                "stats를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport pandas as pd\n\n# 기온 데이터 분석\ntemperatures = np.array([23.5, 25.1, 22.8, 26.3, 24.0])\n\n# 통계 계산 및 Series 생성\n\n",
+            "solution_code": "import numpy as np\nimport pandas as pd\n\ntemperatures = np.array([23.5, 25.1, 22.8, 26.3, 24.0])\n\nstats = pd.Series(\n    [np.mean(temperatures), np.max(temperatures), np.min(temperatures)],\n    index=['평균', '최고', '최저']\n)\nprint(stats)",
+            "hints": [
+                {"level": 1, "text": "np.mean(), np.max(), np.min()으로 각 통계값을 계산합니다"},
+                {"level": 2, "text": "계산된 세 값을 리스트로 묶어 pd.Series()의 첫 번째 인자로 전달합니다"},
+                {"level": 3, "text": "stats = pd.Series([np.mean(temperatures), np.max(temperatures), np.min(temperatures)], index=['평균', '최고', '최저'])"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected": "평균    24.34\n최고    26.30\n최저    22.80\ndtype: float64"
+            },
+            "allowed_modules": ["numpy", "pandas"],
+            "tags": ["NumPy", "Pandas", "Series", "통계"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch8_p15",
+            "title": "데이터 분석 미니 프로젝트",
+            "difficulty": "advanced",
+            "description": "NumPy와 Pandas를 활용한 간단한 데이터 분석을 수행하세요.",
+            "instructions": [
+                "월별 매출 데이터 DataFrame을 만드세요: 월=['1월','2월','3월','4월','5월','6월'], 매출=[1200, 1500, 1100, 1800, 2100, 1900]",
+                "전체 평균 매출을 출력하세요",
+                "평균보다 높은 달을 필터링하여 출력하세요",
+                "NumPy로 표준편차를 계산하여 출력하세요 (np.std())"
+            ],
+            "initial_code": "import numpy as np\nimport pandas as pd\n\n# 월별 매출 분석\n\n",
+            "solution_code": "import numpy as np\nimport pandas as pd\n\ndata = {\n    '월': ['1월', '2월', '3월', '4월', '5월', '6월'],\n    '매출': [1200, 1500, 1100, 1800, 2100, 1900]\n}\n\ndf = pd.DataFrame(data)\navg = df['매출'].mean()\nprint(f'평균 매출: {avg}')\n\nhigh_months = df[df['매출'] > avg]\nprint(high_months)\n\nstd = np.std(df['매출'])\nprint(f'표준편차: {std:.2f}')",
+            "hints": [
+                {"level": 1, "text": "df['매출'].mean() 으로 평균을 계산합니다"},
+                {"level": 2, "text": "df[df['매출'] > avg] 로 평균보다 높은 달을 필터링합니다"},
+                {"level": 3, "text": "np.std(df['매출']) 으로 표준편차를 계산합니다"}
+            ],
+            "grading": {
+                "method": "regex_output",
+                "pattern": "평균 매출:.+\\n"
+            },
+            "allowed_modules": ["numpy", "pandas"],
+            "tags": ["NumPy", "Pandas", "데이터분석", "통계"],
+            "related_section": "s4"
+        }
+    ]
+}

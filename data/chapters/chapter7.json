@@ -1,0 +1,93 @@
+{
+    "chapter_id": 7,
+    "title": "예외 처리",
+    "description": "프로그램이 실행 중에 발생할 수 있는 오류(예외)를 처리하는 방법을 배웁니다. try/except 구문으로 오류를 잡아 프로그램이 갑자기 종료되지 않도록 하고, 사용자에게 친절한 메시지를 보여줄 수 있습니다.",
+    "learning_objectives": [
+        "try/except 구문으로 예외를 처리할 수 있다",
+        "TypeError, ValueError, ZeroDivisionError 등 주요 예외 종류를 알고 적절히 처리할 수 있다",
+        "else와 finally 절의 역할을 이해하고 사용할 수 있다",
+        "raise로 예외를 발생시키고, 사용자 정의 예외 클래스를 만들 수 있다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "try/except 기초",
+            "content_md": "## 예외(Exception)란?\n\n예외는 프로그램 실행 중에 발생하는 오류입니다. 예외 처리 없이는 오류가 발생하면 프로그램이 즉시 종료됩니다.\n\n### try/except 기본 구조\n\n```python\ntry:\n    위험할 수 있는 코드\nexcept 오류종류:\n    오류 발생 시 실행할 코드\n```\n\n### 예시\n```python\ntry:\n    number = int(input('숫자를 입력하세요: '))\n    print(f'입력한 숫자: {number}')\nexcept ValueError:\n    print('숫자를 입력해야 합니다!')\n```\n\n숫자가 아닌 문자를 입력해도 프로그램이 종료되지 않고 안내 메시지를 보여줍니다.",
+            "code_examples": [
+                {
+                    "title": "기본 try/except",
+                    "code": "# 0으로 나누기 예외 처리\ntry:\n    result = 10 / 0\n    print(result)\nexcept ZeroDivisionError:\n    print('0으로 나눌 수 없습니다!')\n\nprint('프로그램이 계속 실행됩니다.')",
+                    "expected_output": "0으로 나눌 수 없습니다!\n프로그램이 계속 실행됩니다.",
+                    "explanation": "ZeroDivisionError가 발생하면 except 블록이 실행됩니다. 예외를 처리했으므로 프로그램은 계속 실행됩니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "try 블록에 오류가 발생할 수 있는 코드를 넣는다",
+                "except 블록에 오류 발생 시 실행할 코드를 넣는다",
+                "예외 처리 후 프로그램은 계속 실행된다",
+                "예외 종류를 지정하면 해당 예외만 처리한다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "여러 예외 처리하기",
+            "content_md": "## 주요 예외 종류\n\n| 예외 | 발생 상황 |\n|------|---------|\n| `ValueError` | 잘못된 값 (예: int('abc')) |\n| `TypeError` | 타입 불일치 (예: 1 + '2') |\n| `ZeroDivisionError` | 0으로 나누기 |\n| `IndexError` | 리스트 범위 초과 |\n| `KeyError` | 딕셔너리에 없는 키 |\n| `FileNotFoundError` | 파일 없음 |\n\n### 여러 예외 처리\n\n```python\ntry:\n    코드\nexcept ValueError:\n    print('값 오류')\nexcept TypeError:\n    print('타입 오류')\nexcept Exception as e:\n    print(f'다른 오류: {e}')\n```",
+            "code_examples": [
+                {
+                    "title": "여러 예외 처리",
+                    "code": "def safe_divide(a, b):\n    try:\n        result = a / b\n        return result\n    except ZeroDivisionError:\n        print('오류: 0으로 나눌 수 없습니다')\n        return None\n    except TypeError:\n        print('오류: 숫자만 입력하세요')\n        return None\n\nprint(safe_divide(10, 2))   # 5.0\nprint(safe_divide(10, 0))   # 오류 메시지 + None\nprint(safe_divide(10, '2')) # 오류 메시지 + None",
+                    "expected_output": "5.0\n오류: 0으로 나눌 수 없습니다\nNone\n오류: 숫자만 입력하세요\nNone",
+                    "explanation": "예외 종류별로 다른 처리를 할 수 있습니다. 각 except 절은 해당 예외가 발생했을 때만 실행됩니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "하나의 try에 여러 except를 사용할 수 있다",
+                "except Exception as e: 로 모든 예외를 처리할 수 있다",
+                "더 구체적인 예외를 먼저 처리해야 한다",
+                "as e로 예외 객체를 변수에 저장하면 오류 메시지를 볼 수 있다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "else와 finally",
+            "content_md": "## try/except의 완전한 구조\n\n```python\ntry:\n    위험한 코드\nexcept 예외종류:\n    예외 발생 시 실행\nelse:\n    예외가 없었을 때만 실행\nfinally:\n    항상 실행 (예외 발생 여부 무관)\n```\n\n### else 절\n예외가 발생하지 않았을 때만 실행됩니다.\n\n### finally 절\n예외 발생 여부와 관계없이 항상 실행됩니다. 파일 닫기, 연결 해제 등 정리 작업에 사용합니다.",
+            "code_examples": [
+                {
+                    "title": "else와 finally 사용",
+                    "code": "def open_and_read(filename):\n    try:\n        f = open(filename, 'r')\n        content = f.read()\n    except FileNotFoundError:\n        print(f'파일을 찾을 수 없습니다: {filename}')\n    else:\n        print(f'파일 읽기 성공: {len(content)}글자')\n        f.close()\n    finally:\n        print('파일 작업 완료')\n\nopen_and_read('없는파일.txt')",
+                    "expected_output": "파일을 찾을 수 없습니다: 없는파일.txt\n파일 작업 완료",
+                    "explanation": "FileNotFoundError가 발생하여 except 블록이 실행됩니다. finally 블록은 항상 실행됩니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "else: 예외가 없었을 때만 실행",
+                "finally: 예외 여부와 무관하게 항상 실행",
+                "finally는 파일, 연결 등의 정리 작업에 사용",
+                "try → except(예외 있을 때) → finally 순서"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "raise와 사용자 정의 예외",
+            "content_md": "## 예외를 직접 발생시키기\n\n`raise` 키워드로 예외를 직접 발생시킬 수 있습니다.\n\n```python\ndef check_age(age):\n    if age < 0:\n        raise ValueError('나이는 0 이상이어야 합니다')\n    return age\n```\n\n## 사용자 정의 예외\n\n`Exception` 클래스를 상속하여 나만의 예외를 만들 수 있습니다.\n\n```python\nclass InsufficientFundsError(Exception):\n    \"\"\"잔액 부족 예외\"\"\"\n    pass\n\ndef withdraw(balance, amount):\n    if amount > balance:\n        raise InsufficientFundsError('잔액이 부족합니다')\n    return balance - amount\n```",
+            "code_examples": [
+                {
+                    "title": "raise로 예외 발생",
+                    "code": "def check_score(score):\n    if score < 0 or score > 100:\n        raise ValueError(f'점수는 0~100 사이여야 합니다. 입력값: {score}')\n    return score\n\ntry:\n    check_score(150)\nexcept ValueError as e:\n    print(f'오류: {e}')\n\ntry:\n    result = check_score(85)\n    print(f'점수: {result}점')\nexcept ValueError as e:\n    print(f'오류: {e}')",
+                    "expected_output": "오류: 점수는 0~100 사이여야 합니다. 입력값: 150\n점수: 85점",
+                    "explanation": "raise ValueError('메시지')로 ValueError를 직접 발생시킵니다. 이 예외는 as e로 받아 메시지를 출력할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "raise 예외클래스('메시지')로 예외를 직접 발생시킨다",
+                "입력값 검증에 raise를 활용한다",
+                "Exception을 상속하여 나만의 예외 클래스를 만든다",
+                "사용자 정의 예외로 의미 있는 오류 메시지를 제공한다"
+            ]
+        }
+    ]
+}

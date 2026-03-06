@@ -1,0 +1,13 @@
+[flake8]
+max-line-length = 120
+max-complexity = 10
+exclude =
+    .git,
+    __pycache__,
+    .streamlit,
+    .omc
+ignore =
+    E501,
+    W503
+per-file-ignores =
+    pages/*:E302
