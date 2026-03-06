@@ -117,14 +117,26 @@ class Grader:
         # MULTI_TESTCASE는 user_code를 직접 사용 (실행 결과 불필요)
         if method == GradeMethod.MULTI_TESTCASE:
             test_cases = grading_config.get("test_cases", [])
-            normalize = grading_config.get("normalize", True)
+            normalize = grading_config.get("normalize_whitespace", grading_config.get("normalize", True))
             return self._grade_multi_testcase(user_code, test_cases, normalize)
 
         # 그 외 방식: execution_result 필요
         if execution_result is None:
             if self.executor is not None:
-                stdin = grading_config.get("stdin", "")
-                execution_result = self.executor.execute(user_code, stdin=stdin)
+                stdin = grading_config.get("test_input") or grading_config.get("stdin", "")
+                if isinstance(stdin, list):
+                    preset_inputs = [str(s) for s in stdin]
+                elif stdin:
+                    preset_inputs = stdin.split("\n")
+                else:
+                    preset_inputs = None
+                # 챕터 6 문제에 preset_files가 있으면 VFS에 전달
+                preset_files = problem.get("preset_files") if problem else None
+                execution_result = self.executor.execute(
+                    user_code,
+                    preset_inputs=preset_inputs,
+                    preset_files=preset_files if preset_files else None,
+                )
             else:
                 return GradeResult(
                     passed=False,
@@ -135,11 +147,15 @@ class Grader:
                 )
 
         # 실행 중 에러 확인
-        if execution_result.get("error") and method not in (
+        # FUNCTION_CALL, CLASS_CHECK는 _grade_function_call/_grade_class_check에서
+        # user_code를 재실행하므로 초기 실행 에러가 있어도 채점을 계속 진행한다.
+        if execution_result.get("error_type") and method not in (
             GradeMethod.FUNCTION_EXISTS,
             GradeMethod.VARIABLE_CHECK,
+            GradeMethod.FUNCTION_CALL,
+            GradeMethod.CLASS_CHECK,
         ):
-            error_msg = execution_result.get("stderr", "") or execution_result.get("error", "")
+            error_msg = execution_result.get("stderr", "")
             return GradeResult(
                 passed=False,
                 score=0.0,
@@ -150,8 +166,8 @@ class Grader:
 
         # 채점 방식별 분기
         if method == GradeMethod.EXACT_OUTPUT:
-            expected = grading_config.get("expected", "")
-            normalize = grading_config.get("normalize", True)
+            expected = grading_config.get("expected_output") or grading_config.get("expected", "")
+            normalize = grading_config.get("normalize_whitespace", grading_config.get("normalize", True))
             return self._grade_exact_output(execution_result, expected, normalize)
 
         elif method == GradeMethod.REGEX_OUTPUT:
@@ -169,15 +185,38 @@ class Grader:
         elif method == GradeMethod.FUNCTION_CALL:
             func_name = grading_config.get("func_name", "")
             test_cases = grading_config.get("test_cases", [])
+            # user_code를 재실행에 사용하기 위해 result에 주입
+            if isinstance(execution_result, dict):
+                execution_result["_user_code"] = user_code
+            else:
+                # ExecutionResult 객체인 경우 임시 dict로 래핑
+                execution_result = dict(
+                    stdout=execution_result.get("stdout", ""),
+                    stderr=execution_result.get("stderr", ""),
+                    variables=execution_result.get("variables", {}),
+                    error_type=execution_result.get("error_type"),
+                    _user_code=user_code,
+                )
             return self._grade_function_call(execution_result, func_name, test_cases)
 
         elif method == GradeMethod.CLASS_CHECK:
             class_spec = grading_config.get("class_spec", {})
+            # user_code를 재실행에 사용하기 위해 result에 주입
+            if isinstance(execution_result, dict):
+                execution_result["_user_code"] = user_code
+            else:
+                execution_result = dict(
+                    stdout=execution_result.get("stdout", ""),
+                    stderr=execution_result.get("stderr", ""),
+                    variables=execution_result.get("variables", {}),
+                    error_type=execution_result.get("error_type"),
+                    _user_code=user_code,
+                )
             return self._grade_class_check(execution_result, class_spec)
 
         elif method == GradeMethod.NUMERIC_OUTPUT:
-            expected = grading_config.get("expected", 0.0)
-            epsilon = grading_config.get("epsilon", 1e-6)
+            expected = grading_config.get("expected_output") or grading_config.get("expected", 0.0)
+            epsilon = grading_config.get("tolerance", grading_config.get("epsilon", 1e-6))
             return self._grade_numeric_output(execution_result, expected, epsilon)
 
         else:
@@ -418,19 +457,25 @@ class Grader:
     ) -> GradeResult:
         """함수 호출 결과 검증 채점.
 
-        정의된 함수를 각 테스트케이스로 호출하여 expected 값과 비교한다.
-        부분 점수를 지원한다.
+        executor로 user_code + 테스트 호출 코드를 재실행하여
+        _test_result 변수에서 반환값을 추출한다.
+        executor가 없으면 실패를 반환한다.
 
         Args:
-            result: 코드 실행 결과 딕셔너리 (함수 객체를 variables에 포함해야 함)
+            result: 코드 실행 결과 딕셔너리.
+                    "_user_code" 키에 사용자 코드가 담겨 있어야 함.
             func_name: 호출할 함수 이름
             test_cases: 테스트케이스 리스트.
                         각 항목: {"args": [...], "kwargs": {...}, "expected": 값}
 
         Returns:
             GradeResult: 부분 점수 포함. 모두 통과하면 score=1.0
+
+        Note:
+            - executor가 None이면 채점 불가 에러를 반환한다.
+            - 함수 반환값은 _test_result 변수로 추출한다.
+            - 튜플 반환은 JSON 직렬화 시 리스트로 변환되므로 expected도 리스트 비교 지원.
         """
-        variables = result.get("variables", {})
         total = len(test_cases)
 
         if total == 0:
@@ -442,16 +487,46 @@ class Grader:
                 feedback="테스트케이스가 없습니다.",
             )
 
+        # executor 없으면 채점 불가
+        if self.executor is None:
+            return GradeResult(
+                passed=False,
+                score=0.0,
+                total_tests=total,
+                passed_tests=0,
+                feedback="FUNCTION_CALL 채점에는 executor가 필요합니다.",
+            )
+
+        # user_code 추출 (grade()에서 주입됨)
+        user_code = result.get("_user_code", "")
+
         # 함수 존재 여부 확인
-        func = variables.get(func_name)
-        if func is None or not callable(func):
+        # 우선 초기 실행 결과(variables)에서 확인하고,
+        # variables에 없으면 user_code 소스에서 def 선언 패턴으로 확인한다.
+        # (재귀 함수 등 executor 스코프 이슈로 초기 실행이 실패했을 때도 처리)
+        variables = result.get("variables", {})
+        func_val = variables.get(func_name)
+        func_exists = (
+            callable(func_val)
+            or (isinstance(func_val, dict) and func_val.get("__callable__"))
+            or (isinstance(func_val, str) and (
+                func_val.startswith("<function") or func_val.startswith("<class")
+            ))
+        )
+        # variables에서 찾지 못한 경우 user_code 텍스트에서 def 선언 확인
+        if not func_exists and user_code:
+            import re as _re
+            func_exists = bool(
+                _re.search(r"^\s*def\s+" + _re.escape(func_name) + r"\s*\(", user_code, _re.MULTILINE)
+            )
+        if not func_exists:
             return GradeResult(
                 passed=False,
                 score=0.0,
                 total_tests=total,
                 passed_tests=0,
                 feedback=(
-                    f"'{func_name}' 함수를 찾을 수 없거나 호출할 수 없습니다.\n\n"
+                    f"'{func_name}' 함수를 찾을 수 없습니다.\n\n"
                     f"함수가 올바르게 정의되었는지 확인해보세요."
                 ),
             )
@@ -465,11 +540,38 @@ class Grader:
             expected = tc.get("expected")
 
             try:
-                actual = func(*args, **kwargs)
+                # Step 1: 호출 코드 생성
+                # args를 repr()로 직렬화하여 코드에 삽입
+                # kwargs가 있는 경우 **kwargs 형태로 삽입
+                args_repr = ", ".join(repr(a) for a in args)
+                kwargs_repr = ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
+                call_args = ", ".join(filter(None, [args_repr, kwargs_repr]))
+                # metacode_result: _로 시작하지 않아야 executor 변수 추출에 포함됨
+                call_snippet = f"metacode_result = {func_name}({call_args})\n"
 
-                # 결과 비교 (숫자는 float tolerance 적용)
+                # Step 2: user_code + 테스트 호출 코드를 합쳐서 실행
+                combined_code = user_code + "\n" + call_snippet
+                exec_result = self.executor.execute(combined_code)
+
+                # Step 3: 에러 확인
+                if exec_result.get("error_type"):
+                    details.append(
+                        f"테스트 {i}: 실행 오류 "
+                        f"(입력: {args}{' ' + str(kwargs) if kwargs else ''}, "
+                        f"오류: {exec_result.get('stderr', '')[:80]})"
+                    )
+                    continue
+
+                # Step 4: metacode_result 변수 추출
+                actual = exec_result.get("variables", {}).get("metacode_result")
+
+                # Step 5: 결과 비교
+                # 튜플은 JSON 직렬화 시 리스트가 되므로 expected가 list면 actual도 list와 비교
                 if isinstance(expected, (int, float)) and isinstance(actual, (int, float)):
                     match = math.isclose(float(actual), float(expected), rel_tol=1e-6)
+                elif isinstance(expected, (list, tuple)) and isinstance(actual, list):
+                    # 튜플 반환값 처리: expected를 list로 정규화 후 비교
+                    match = list(expected) == actual
                 else:
                     match = actual == expected
 
@@ -517,15 +619,16 @@ class Grader:
         """클래스 구조 및 동작 검증 채점.
 
         클래스 존재 → 메서드 존재 → 테스트케이스 실행 순서로 검증한다.
-        각 단계별 부분 점수를 지원한다.
+        executor로 user_code + 클래스 테스트 코드를 재실행하여 결과를 추출한다.
 
         검증 순서 (논리적 의존성):
         1. 클래스 정의 여부 (기본 점수 획득)
-        2. 필수 메서드 존재 여부 (부분 점수)
-        3. 테스트케이스 실행 결과 (부분 점수)
+        2. 필수 메서드 존재 여부 - user_code + hasattr 코드 재실행
+        3. 테스트케이스 실행 결과 - user_code + 인스턴스 생성 + 메서드 호출 재실행
 
         Args:
-            result: 코드 실행 결과 딕셔너리
+            result: 코드 실행 결과 딕셔너리.
+                    "_user_code" 키에 사용자 코드가 담겨 있어야 함.
             class_spec: 클래스 검사 명세 딕셔너리
                         {"name": "클래스명", "methods": ["메서드명"], "test_cases": [...]}
                         test_cases 각 항목:
@@ -534,6 +637,12 @@ class Grader:
 
         Returns:
             GradeResult: 부분 점수 포함. 모두 통과하면 score=1.0
+
+        Note:
+            - executor가 None이면 채점 불가 에러를 반환한다.
+            - 클래스 존재는 직렬화된 "<class '...'>'" 문자열로도 감지한다.
+            - 메서드 존재는 재실행 후 _test_has_{method} 변수로 확인한다.
+            - 테스트 반환값은 _test_result 변수로 추출한다.
         """
         variables = result.get("variables", {})
         class_name = class_spec.get("name", "")
@@ -542,9 +651,34 @@ class Grader:
 
         details = []
 
+        # executor 없으면 채점 불가
+        if self.executor is None:
+            return GradeResult(
+                passed=False,
+                score=0.0,
+                total_tests=1,
+                passed_tests=0,
+                feedback="CLASS_CHECK 채점에는 executor가 필요합니다.",
+            )
+
+        # user_code 추출 (grade()에서 주입됨)
+        user_code = result.get("_user_code", "")
+
         # Step 1: 클래스 존재 확인
-        cls = variables.get(class_name)
-        if cls is None or not isinstance(cls, type):
+        # executor가 직렬화한 클래스는 "<class 'ClassName'>" 형태의 문자열.
+        # variables에서 찾지 못한 경우 user_code 텍스트에서 class 선언 확인.
+        cls_val = variables.get(class_name)
+        class_exists = (
+            (isinstance(cls_val, str) and cls_val.startswith("<class"))
+            or isinstance(cls_val, type)
+        )
+        # variables에서 찾지 못한 경우 user_code 텍스트에서 class 선언 확인
+        if not class_exists and user_code:
+            import re as _re
+            class_exists = bool(
+                _re.search(r"^\s*class\s+" + _re.escape(class_name) + r"\s*[\(:]", user_code, _re.MULTILINE)
+            )
+        if not class_exists:
             return GradeResult(
                 passed=False,
                 score=0.0,
@@ -561,15 +695,32 @@ class Grader:
         details.append(f"'{class_name}' 클래스 정의: 확인됨")
 
         # Step 2: 필수 메서드 존재 확인
+        # user_code + hasattr 체크 코드를 재실행하여 metacode_has_{idx} 변수로 확인
+        # 주의: 변수명이 _로 시작하면 executor가 추출하지 않으므로 metacode_ 접두사 사용
         method_passed = 0
-        for method_name in required_methods:
-            if hasattr(cls, method_name) and callable(getattr(cls, method_name)):
-                method_passed += 1
-                details.append(f"메서드 '{method_name}': 존재")
-            else:
-                details.append(f"메서드 '{method_name}': 없음")
+        if required_methods:
+            method_check_lines = []
+            for idx, method_name in enumerate(required_methods):
+                # hasattr로 메서드 존재 여부를 변수에 저장
+                # 변수명에 인덱스 사용: 메서드명에 특수문자 없어도 일관성 유지
+                method_check_lines.append(
+                    f"metacode_has_{idx} = hasattr({class_name}, '{method_name}') "
+                    f"and callable(getattr({class_name}, '{method_name}', None))"
+                )
+            combined_code = user_code + "\n" + "\n".join(method_check_lines) + "\n"
+            check_result = self.executor.execute(combined_code)
+            check_vars = check_result.get("variables", {})
+
+            for idx, method_name in enumerate(required_methods):
+                has_method = check_vars.get(f"metacode_has_{idx}", False)
+                if has_method:
+                    method_passed += 1
+                    details.append(f"메서드 '{method_name}': 존재")
+                else:
+                    details.append(f"메서드 '{method_name}': 없음")
 
         # Step 3: 테스트케이스 실행
+        # user_code + 인스턴스 생성 + 메서드 호출 코드를 재실행
         tc_passed = 0
         tc_total = len(test_cases)
 
@@ -581,30 +732,58 @@ class Grader:
             expected = tc.get("expected")
 
             try:
-                # 인스턴스 생성
-                instance = cls(*init_args)
+                # 인스턴스 생성 코드
+                init_args_repr = ", ".join(repr(a) for a in init_args)
+                args_repr = ", ".join(repr(a) for a in args)
+                kwargs_repr = ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
+                call_args = ", ".join(filter(None, [args_repr, kwargs_repr]))
 
-                # 메서드 호출
-                method = getattr(instance, method_name)
-                actual = method(*args, **kwargs)
+                # metacode_obj, metacode_result: _로 시작하지 않아야 executor 추출에 포함됨
+                test_snippet = (
+                    f"metacode_obj = {class_name}({init_args_repr})\n"
+                    f"metacode_result = metacode_obj.{method_name}({call_args})\n"
+                )
+                combined_code = user_code + "\n" + test_snippet
+                exec_result = self.executor.execute(combined_code)
+
+                # 에러 확인
+                if exec_result.get("error_type"):
+                    details.append(
+                        f"테스트 {i} ({method_name}): 실행 오류 "
+                        f"({exec_result.get('stderr', '')[:80]})"
+                    )
+                    continue
+
+                # metacode_result 변수 추출
+                actual = exec_result.get("variables", {}).get("metacode_result")
 
                 # 결과 비교
-                if isinstance(expected, (int, float)) and isinstance(actual, (int, float)):
-                    match = math.isclose(float(actual), float(expected), rel_tol=1e-6)
-                else:
-                    match = actual == expected
-
-                if match:
+                # expected가 None인 경우 (반환값 검사 없이 오류 없이 실행만 확인)
+                if expected is None:
                     tc_passed += 1
                     details.append(
                         f"테스트 {i} ({method_name}): 통과 "
-                        f"(결과: {actual})"
+                        f"(오류 없이 실행됨)"
                     )
+                elif isinstance(expected, (int, float)) and isinstance(actual, (int, float)):
+                    match = math.isclose(float(actual), float(expected), rel_tol=1e-6)
+                    if match:
+                        tc_passed += 1
+                        details.append(f"테스트 {i} ({method_name}): 통과 (결과: {actual})")
+                    else:
+                        details.append(
+                            f"테스트 {i} ({method_name}): 실패 "
+                            f"(기대: {expected!r}, 실제: {actual!r})"
+                        )
                 else:
-                    details.append(
-                        f"테스트 {i} ({method_name}): 실패 "
-                        f"(기대: {expected!r}, 실제: {actual!r})"
-                    )
+                    if actual == expected:
+                        tc_passed += 1
+                        details.append(f"테스트 {i} ({method_name}): 통과 (결과: {actual})")
+                    else:
+                        details.append(
+                            f"테스트 {i} ({method_name}): 실패 "
+                            f"(기대: {expected!r}, 실제: {actual!r})"
+                        )
 
             except Exception as e:
                 details.append(
@@ -703,12 +882,18 @@ class Grader:
         per_case_timeout = max(1.0, 10.0 / total)
 
         for i, tc in enumerate(test_cases, 1):
-            stdin = tc.get("stdin", "")
-            expected = tc.get("expected", "")
+            stdin = tc.get("input") or tc.get("stdin", "")
+            expected = tc.get("expected_output") or tc.get("expected", "")
 
             try:
+                if isinstance(stdin, list):
+                    preset_inputs = [str(s) for s in stdin]
+                elif stdin:
+                    preset_inputs = stdin.split("\n")
+                else:
+                    preset_inputs = None
                 exec_result = self.executor.execute(
-                    user_code, stdin=stdin, timeout=per_case_timeout
+                    user_code, preset_inputs=preset_inputs
                 )
 
                 actual = exec_result.get("stdout", "")
@@ -827,8 +1012,15 @@ class Grader:
                     ),
                 )
 
+        # expected가 문자열이면 숫자 추출
+        try:
+            expected_val = float(expected)
+        except (ValueError, TypeError):
+            nums = re.findall(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?", str(expected))
+            expected_val = float(nums[-1]) if nums else 0.0
+
         # 절대 오차 비교
-        if abs(actual - float(expected)) < epsilon:
+        if abs(actual - expected_val) < epsilon:
             return GradeResult(
                 passed=True,
                 score=1.0,
@@ -846,7 +1038,7 @@ class Grader:
                     f"계산 결과가 다릅니다.\n\n"
                     f"기대값: {expected}\n"
                     f"실제값: {actual}\n"
-                    f"차이: {abs(actual - float(expected)):.2e}\n\n"
+                    f"차이: {abs(actual - expected_val):.2e}\n\n"
                     f"수식과 계산 과정을 다시 확인해보세요."
                 ),
             )

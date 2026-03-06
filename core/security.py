@@ -180,15 +180,21 @@ class SecurityValidator(ast.NodeVisitor):
         """함수 호출 노드를 검사한다.
 
         위험한 내장 함수(exec, eval, open 등)의 직접 호출을 차단한다.
+        단, 챕터 6(파일 입출력)에서는 open()을 VirtualFileSystem으로 대체하므로
+        AST 단계에서 차단하지 않는다.
 
         Args:
             node: AST Call 노드
         """
         # 이름으로 직접 호출: exec("..."), open("file")
         if isinstance(node.func, ast.Name):
-            if node.func.id in self.BLOCKED_FUNCTIONS:
+            func_name = node.func.id
+            # 챕터 6에서는 open()을 VFS로 대체하므로 AST 차단에서 제외
+            if func_name == "open" and self._chapter_id == 6:
+                pass
+            elif func_name in self.BLOCKED_FUNCTIONS:
                 self.violations.append(
-                    f"'{node.func.id}()' 함수는 이 학습 환경에서 사용할 수 없습니다."
+                    f"'{func_name}()' 함수는 이 학습 환경에서 사용할 수 없습니다."
                 )
 
         self.generic_visit(node)
