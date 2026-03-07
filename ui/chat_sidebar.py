@@ -16,9 +16,6 @@ import streamlit as st
 def render_chat_panel(chapter_id: int = None, problem_title: str = None):
     """오른쪽 채팅 패널 레이아웃을 설정하고 콘텐츠 컬럼을 반환한다.
 
-    채팅이 열려 있으면 [콘텐츠 3 : 채팅 1.3] 비율로 분할하고,
-    닫혀 있으면 콘텐츠만 표시 + 오른쪽 하단에 열기 버튼을 배치한다.
-
     Args:
         chapter_id: 현재 챕터 번호 (1~8, None이면 일반 모드)
         problem_title: 현재 문제 제목 (선택)
@@ -52,22 +49,64 @@ def render_chat_panel(chapter_id: int = None, problem_title: str = None):
 
     # 채팅 열림/닫힘에 따라 레이아웃 분기
     if st.session_state["chat_open"]:
-        content_col, chat_col = st.columns([3, 1.3], gap="medium")
+        # 채팅 패널 오른쪽 컬럼 스타일 주입
+        _inject_chat_panel_css()
+        content_col, chat_col = st.columns([4, 1.5], gap="small")
         with chat_col:
             _render_chat_content(api_key, chapter_id, problem_title)
         return content_col
     else:
-        # 닫힌 상태: 우하단에 고정 HTML 버튼 (JS로 쿼리 파라미터 설정)
         _render_floating_button()
         return st.container()
 
 
-def _render_floating_button():
-    """오른쪽 하단 플로팅 채팅 버튼을 렌더링한다.
+def _inject_chat_panel_css():
+    """채팅 패널이 열려 있을 때만 오른쪽 컬럼에 스타일을 적용한다.
 
-    순수 HTML/CSS/JS로 구현하여 Streamlit 내부 구조에 의존하지 않는다.
-    클릭 시 ?chat=open 쿼리 파라미터를 추가하여 Streamlit이 감지한다.
+    첫 번째(최상위) stHorizontalBlock의 마지막 컬럼만 타겟한다.
+    채팅이 닫히면 이 CSS가 렌더링되지 않으므로 다른 컬럼에 영향 없음.
     """
+    st.markdown(
+        """
+        <style>
+        /* 최상위 컬럼 블록의 마지막 컬럼 = 채팅 패널 */
+        .main .block-container > div > div > div[data-testid="stHorizontalBlock"]
+        > div[data-testid="stColumn"]:last-child {
+            background: linear-gradient(180deg, #F8F9FE 0%, #F0F2FF 100%);
+            border-left: 2px solid #E2E8F0;
+            border-radius: 16px 0 0 16px;
+            padding: 16px 12px !important;
+            position: sticky;
+            top: 56px;
+            height: calc(100vh - 72px);
+            overflow-y: auto;
+        }
+
+        /* 채팅 패널 내 스크롤바 */
+        .main .block-container > div > div > div[data-testid="stHorizontalBlock"]
+        > div[data-testid="stColumn"]:last-child::-webkit-scrollbar {
+            width: 4px;
+        }
+        .main .block-container > div > div > div[data-testid="stHorizontalBlock"]
+        > div[data-testid="stColumn"]:last-child::-webkit-scrollbar-thumb {
+            background: rgba(108, 99, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        /* 채팅 열림 시 max-width 해제 */
+        .main .block-container {
+            max-width: 100% !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_floating_button():
+    """오른쪽 하단 플로팅 채팅 버튼을 렌더링한다."""
     st.markdown(
         """
         <div style="
@@ -113,22 +152,11 @@ def _render_chat_content(api_key: str, chapter_id: int = None,
         chapter_id: 현재 챕터 번호
         problem_title: 현재 문제 제목
     """
-    # 채팅 패널 배경 스타일
-    st.markdown(
-        '<div style="'
-        'background:#F8F9FE;'
-        'border-left:2px solid #E2E8F0;'
-        'border-radius:12px;'
-        'padding:12px 8px;'
-        '">',
-        unsafe_allow_html=True,
-    )
-
     # 헤더
-    col_title, col_close = st.columns([4, 1])
+    col_title, col_close = st.columns([5, 1])
     with col_title:
         st.markdown(
-            '<p style="font-weight:700;font-size:1.05em;margin:0;'
+            '<p style="font-weight:700;font-size:1.1em;margin:0 0 4px 0;'
             'color:#6C63FF;">💬 AI 튜터</p>',
             unsafe_allow_html=True,
         )
@@ -137,24 +165,27 @@ def _render_chat_content(api_key: str, chapter_id: int = None,
             st.session_state["chat_open"] = False
             st.rerun()
 
-    # 컨텍스트 표시
-    if chapter_id:
-        ctx = f"챕터 {chapter_id}"
-        if problem_title:
-            ctx += f" · {problem_title}"
-        st.caption(ctx)
-
-    # 남은 횟수
+    # 컨텍스트 + 남은 횟수
     remaining = max(0, 30 - st.session_state["chat_count"])
-    st.caption(f"남은 질문: {remaining}회")
+    info_parts = []
+    if chapter_id:
+        info_parts.append(f"챕터 {chapter_id}")
+        if problem_title:
+            info_parts[-1] += f" · {problem_title}"
+    info_parts.append(f"남은 질문 {remaining}회")
+    st.caption(" | ".join(info_parts))
+
+    st.divider()
 
     # 대화 기록
-    chat_container = st.container(height=350)
+    chat_container = st.container(height=320)
     with chat_container:
         if not st.session_state["sidebar_messages"]:
             st.markdown(
-                '<p style="color:#636E72;font-size:0.85em;text-align:center;'
-                'padding:40px 0;">Python 학습 중 궁금한 점을<br>물어보세요!</p>',
+                '<div style="text-align:center;padding:60px 8px;color:#9CA3AF;">'
+                '<div style="font-size:2em;margin-bottom:8px;">🤖</div>'
+                '<div style="font-size:0.88em;line-height:1.6;">'
+                'Python 학습 중 궁금한 점을<br>물어보세요!</div></div>',
                 unsafe_allow_html=True,
             )
         for msg in st.session_state["sidebar_messages"]:
@@ -164,36 +195,29 @@ def _render_chat_content(api_key: str, chapter_id: int = None,
     # 빠른 질문
     q1, q2 = st.columns(2)
     with q1:
-        if st.button("개념 질문", key="sq_concept", use_container_width=True):
+        if st.button("💡 개념 질문", key="sq_concept", use_container_width=True):
             _send_message(api_key, "이 부분 개념이 이해가 안 돼요",
                           chapter_id, problem_title)
     with q2:
-        if st.button("힌트 요청", key="sq_hint", use_container_width=True):
+        if st.button("🔍 힌트 요청", key="sq_hint", use_container_width=True):
             _send_message(api_key, "힌트를 주세요",
                           chapter_id, problem_title)
 
     # 입력
-    user_input = st.text_input(
-        "질문",
+    user_input = st.chat_input(
+        "질문을 입력하세요...",
         key="chat_input_right",
-        placeholder="질문을 입력하세요...",
-        label_visibility="collapsed",
     )
+    if user_input and user_input.strip():
+        _send_message(api_key, user_input.strip(),
+                      chapter_id, problem_title)
 
-    s_col, c_col = st.columns([3, 1])
-    with s_col:
-        if st.button("보내기", key="send_right", use_container_width=True,
-                     type="primary"):
-            if user_input and user_input.strip():
-                _send_message(api_key, user_input.strip(),
-                              chapter_id, problem_title)
-    with c_col:
-        if st.button("지우기", key="clear_right", use_container_width=True):
+    # 대화 초기화
+    if st.session_state["sidebar_messages"]:
+        if st.button("🗑 대화 지우기", key="clear_right",
+                     use_container_width=True):
             st.session_state["sidebar_messages"] = []
             st.rerun()
-
-    # 패널 닫기 태그
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _send_message(api_key: str, message: str,
