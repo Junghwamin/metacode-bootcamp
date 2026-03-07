@@ -21,6 +21,81 @@ from ui.components import (
 # 데이터 경로 설정
 _DATA_DIR = Path(__file__).parent.parent / "data"
 
+# What/Why/How 섹션 스타일 정의
+_WWH_STYLES = {
+    "what": {
+        "icon": "🔍",
+        "label": "What - 이게 뭔가요?",
+        "bg": "rgba(74, 144, 217, 0.06)",
+        "border": "#4A90D9",
+        "color": "#2B6CB0",
+    },
+    "why": {
+        "icon": "💡",
+        "label": "Why - 왜 필요한가요?",
+        "bg": "rgba(255, 185, 70, 0.08)",
+        "border": "#FFB946",
+        "color": "#B8860B",
+    },
+    "how": {
+        "icon": "🛠",
+        "label": "How - 어떻게 쓰나요?",
+        "bg": "rgba(0, 196, 140, 0.06)",
+        "border": "#00C48C",
+        "color": "#00865A",
+    },
+}
+
+
+def _render_wwh_content(content: str) -> None:
+    """What/Why/How 헤더가 있으면 색상 카드로 구분하여 렌더링한다.
+
+    content_md에 '## What', '## Why', '## How' 패턴이 있으면
+    각각 파란색/노란색/초록색 카드로 감싸서 표시한다.
+    패턴이 없으면 일반 마크다운으로 렌더링한다.
+
+    Args:
+        content: 섹션의 content_md 문자열
+    """
+    import re
+
+    # What/Why/How 패턴이 있는지 확인
+    pattern = r'##\s*(What|Why|How)\s*[-–—:]?\s*'
+    if not re.search(pattern, content, re.IGNORECASE):
+        # 패턴 없으면 일반 마크다운
+        st.markdown(content)
+        return
+
+    # What/Why/How 섹션으로 분할
+    parts = re.split(r'(##\s*(?:What|Why|How)\s*[-–—:]?\s*)', content, flags=re.IGNORECASE)
+
+    for i, part in enumerate(parts):
+        match = re.match(r'##\s*(What|Why|How)\s*[-–—:]?\s*', part, re.IGNORECASE)
+        if match:
+            # 헤더 부분 - 다음 파트가 본문
+            key = match.group(1).lower()
+            style = _WWH_STYLES.get(key, _WWH_STYLES["what"])
+
+            # 본문은 다음 파트
+            if i + 1 < len(parts):
+                body = parts[i + 1]
+                parts[i + 1] = ""  # 중복 렌더링 방지
+
+                st.markdown(
+                    f'<div style="background:{style["bg"]};'
+                    f'border-left:4px solid {style["border"]};'
+                    f'border-radius:0 12px 12px 0;'
+                    f'padding:14px 18px;margin:10px 0;">'
+                    f'<div style="font-weight:700;color:{style["color"]};'
+                    f'margin-bottom:8px;font-size:1.05em;">'
+                    f'{style["icon"]} {style["label"]}</div>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+                st.markdown(body)
+        elif part.strip():
+            st.markdown(part)
+
 
 def _load_json(path: Path) -> dict | list | None:
     """JSON 파일을 로드한다.
@@ -123,10 +198,10 @@ class ChapterRenderer:
         for section in sections:
             st.subheader(f"{section.get('section_id', '').upper()} - {section.get('title', '')}")
 
-            # 마크다운 내용
+            # 마크다운 내용 (What/Why/How 시각적 구분)
             content = section.get("content_md", "")
             if content:
-                st.markdown(content)
+                _render_wwh_content(content)
 
             # 코드 예제
             examples = section.get("code_examples", [])

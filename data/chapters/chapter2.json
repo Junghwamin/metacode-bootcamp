@@ -13,7 +13,7 @@
         {
             "section_id": "s1",
             "title": "숫자형 (int, float)",
-            "content_md": "## 숫자형이란?\n\n파이썬에는 두 가지 기본 숫자 타입이 있습니다.\n\n### 정수 (int)\n소수점이 없는 숫자입니다.\n```python\na = 10\nb = -5\nc = 0\n```\n\n### 실수 (float)\n소수점이 있는 숫자입니다.\n```python\npi = 3.14\nprice = 9.99\nnegative = -2.5\n```\n\n### 타입 확인\n```python\nprint(type(10))    # <class 'int'>\nprint(type(3.14))  # <class 'float'>\n```\n\n### 타입 변환\n```python\nint(3.7)    # 3 (소수점 버림)\nfloat(5)    # 5.0\n```",
+            "content_md": "## What - int와 float가 뭔가요?\n\n파이썬의 숫자형에는 두 종류가 있어요. **int(정수)**는 `1`, `-5`, `100`처럼 소수점 없는 숫자이고, **float(실수)**는 `3.14`, `9.99`처럼 소수점이 있는 숫자입니다. 현실의 '개수'는 int, '무게나 가격' 같은 정밀한 값은 float라고 생각하면 쉬워요.\n\n## Why - 왜 두 종류로 나누나요?\n\n컴퓨터가 정수와 실수를 저장하는 방식이 달라서 나눠놓았어요. 덕분에 정수끼리 계산하면 정확하게 처리되고, 메모리도 효율적으로 씁니다. 예를 들어 사람 수(`int`)와 평균 점수(`float`)를 구별하면 코드의 의도가 명확해집니다.\n\n## How - 어떻게 사용하나요?\n\n소수점 유무로 자동 구분됩니다. `type()` 함수로 타입을 확인하고, `int()`·`float()`로 변환할 수 있어요.\n\n```python\ncount = 10        # int\npi    = 3.14159   # float\n\nprint(type(count))  # <class 'int'>\nprint(type(pi))     # <class 'float'>\n\nprint(int(3.9))   # 3  ← 소수점 버림 (반올림 아님!)\nprint(float(5))   # 5.0\n```",
             "code_examples": [
                 {
                     "title": "정수와 실수",
@@ -40,7 +40,7 @@
         {
             "section_id": "s2",
             "title": "산술 연산자",
-            "content_md": "## 산술 연산자\n\n파이썬에서 사용할 수 있는 산술 연산자입니다.\n\n| 연산자 | 의미 | 예시 | 결과 |\n|--------|------|------|------|\n| `+` | 더하기 | 5 + 3 | 8 |\n| `-` | 빼기 | 5 - 3 | 2 |\n| `*` | 곱하기 | 5 * 3 | 15 |\n| `/` | 나누기 | 5 / 3 | 1.666... |\n| `//` | 정수 나누기 | 5 // 3 | 1 |\n| `%` | 나머지 | 5 % 3 | 2 |\n| `**` | 거듭제곱 | 5 ** 3 | 125 |\n\n### 복합 대입 연산자\n```python\nx = 10\nx += 5   # x = x + 5 와 동일\nx -= 3   # x = x - 3 과 동일\nx *= 2   # x = x * 2 와 동일\n```",
+            "content_md": "## What - 산술 연산자가 뭔가요?\n\n산술 연산자(arithmetic operator)는 숫자를 계산하는 기호들입니다. 수학에서 쓰는 `+`, `-`, `*`, `/` 외에도 나머지(`%`)나 거듭제곱(`**`) 같은 편리한 연산자가 더 있어요.\n\n## Why - 왜 알아야 하나요?\n\n쇼핑몰 결제 금액, 게임 점수, 성적 평균 계산 등 프로그래밍의 거의 모든 곳에 수식이 등장합니다. 특히 `//`(몫)과 `%`(나머지)는 짝수/홀수 판별, 페이지 계산 등 실무에서 자주 활용되는 핵심 연산자예요.\n\n## How - 어떻게 사용하나요?\n\n| 연산자 | 의미 | 예시 | 결과 |\n|--------|------|------|------|\n| `+` | 더하기 | 5 + 3 | 8 |\n| `-` | 빼기 | 5 - 3 | 2 |\n| `*` | 곱하기 | 5 * 3 | 15 |\n| `/` | 나누기 | 5 / 3 | 1.666... |\n| `//` | 정수 나누기(몫) | 5 // 3 | 1 |\n| `%` | 나머지 | 5 % 3 | 2 |\n| `**` | 거듭제곱 | 5 ** 3 | 125 |\n\n자주 쓰는 복합 대입 연산자도 알아두세요.\n\n```python\nx = 10\nx += 5   # x = x + 5, 결과: 15\nx -= 3   # x = x - 3, 결과: 12\nx *= 2   # x = x * 2, 결과: 24\n```",
             "code_examples": [
                 {
                     "title": "기본 산술 연산",
@@ -68,7 +68,7 @@
         {
             "section_id": "s3",
             "title": "비교/논리 연산자",
-            "content_md": "## 비교 연산자\n\n두 값을 비교하여 True 또는 False를 반환합니다.\n\n| 연산자 | 의미 | 예시 |\n|--------|------|------|\n| `==` | 같다 | 5 == 5 → True |\n| `!=` | 다르다 | 5 != 3 → True |\n| `>` | 크다 | 5 > 3 → True |\n| `<` | 작다 | 5 < 3 → False |\n| `>=` | 크거나 같다 | 5 >= 5 → True |\n| `<=` | 작거나 같다 | 5 <= 3 → False |\n\n## 논리 연산자\n\n| 연산자 | 의미 | 예시 |\n|--------|------|------|\n| `and` | 그리고 (둘 다 True) | True and True → True |\n| `or` | 또는 (하나라도 True) | False or True → True |\n| `not` | 반대 | not True → False |",
+            "content_md": "## What - 비교/논리 연산자가 뭔가요?\n\n**비교 연산자**는 두 값을 비교해서 `True`(참) 또는 `False`(거짓)를 돌려주는 기호입니다. **논리 연산자**는 여러 조건을 묶어주는 `and`, `or`, `not`이에요. 수학의 '조건식'을 코드로 표현하는 도구라고 생각하면 됩니다.\n\n## Why - 왜 필요한가요?\n\n\"나이가 18세 이상이면 입장 가능\", \"아이디와 비밀번호가 모두 맞아야 로그인\" 같은 조건 판단 없이는 어떤 프로그램도 만들 수 없어요. 다음 챕터에서 배울 `if` 문과 반복문도 전부 이 연산자들을 기반으로 동작합니다.\n\n## How - 어떻게 사용하나요?\n\n**비교 연산자** (결과는 항상 True 또는 False)\n\n| 연산자 | 의미 | 예시 |\n|--------|------|------|\n| `==` | 같다 | 5 == 5 → True |\n| `!=` | 다르다 | 5 != 3 → True |\n| `>` / `<` | 크다 / 작다 | 5 > 3 → True |\n| `>=` / `<=` | 이상 / 이하 | 5 >= 5 → True |\n\n**논리 연산자**\n\n```python\nage = 25\nhas_id = True\n\nprint(age >= 18 and has_id)  # 둘 다 True → True\nprint(age < 18 or has_id)    # 하나라도 True → True\nprint(not has_id)            # 반전 → False\n```\n\n`==`(비교)와 `=`(대입)을 헷갈리지 않도록 주의하세요!",
             "code_examples": [
                 {
                     "title": "비교 연산자",
@@ -95,7 +95,7 @@
         {
             "section_id": "s4",
             "title": "문자열 (String)",
-            "content_md": "## 문자열이란?\n\n문자열은 문자들의 나열입니다. 작은따옴표(')나 큰따옴표(\")로 감쌉니다.\n\n### 문자열 생성\n```python\nname = '홍길동'\ngreeting = \"안녕하세요\"\nmultiline = '''여러\n줄 문자열'''\n```\n\n### 인덱싱 (Indexing)\n```python\ns = 'Python'\nprint(s[0])   # 'P' (첫 번째 문자)\nprint(s[-1])  # 'n' (마지막 문자)\n```\n\n### 슬라이싱 (Slicing)\n```python\ns = 'Python'\nprint(s[0:3])   # 'Pyt'\nprint(s[2:])    # 'thon'\nprint(s[:3])    # 'Pyt'\n```\n\n### 주요 메소드\n- `upper()`: 대문자 변환\n- `lower()`: 소문자 변환\n- `strip()`: 앞뒤 공백 제거\n- `replace(a, b)`: a를 b로 교체\n- `split(구분자)`: 문자열 분리\n- `join(리스트)`: 문자열 합치기\n- `find(s)`: 위치 찾기\n- `count(s)`: 개수 세기",
+            "content_md": "## What - 문자열(String)이 뭔가요?\n\n문자열(string)은 글자들을 순서대로 줄 세운 것입니다. 따옴표로 감싸기만 하면 문자열이 돼요. `'안녕'`, `\"Python\"` 모두 문자열입니다. 글자 하나하나에 번호(인덱스)가 붙어 있어서 특정 글자를 꺼내거나 잘라낼 수 있어요.\n\n## Why - 왜 중요한가요?\n\n이름, 주소, 메시지, 검색어... 실제 프로그램이 다루는 데이터 대부분은 문자열입니다. 인덱싱과 슬라이싱을 알면 이메일에서 아이디만 추출하거나, 긴 텍스트의 일부만 잘라내는 등 실용적인 작업을 쉽게 할 수 있어요.\n\n## How - 어떻게 사용하나요?\n\n**인덱싱**: 대괄호에 번호를 넣어 글자 하나를 꺼냅니다. 번호는 0부터 시작하고, 음수는 뒤에서부터 셉니다.\n\n```python\ns = 'Python'\nprint(s[0])    # 'P'  (첫 번째)\nprint(s[-1])   # 'n'  (마지막)\n```\n\n**슬라이싱**: `[시작:끝]`으로 일부를 잘라냅니다. 끝 인덱스는 포함되지 않아요.\n\n```python\nprint(s[0:3])  # 'Pyt'\nprint(s[2:])   # 'thon'\n```\n\n**주요 메소드**: 문자열을 다양하게 가공할 수 있습니다.\n- `upper()` / `lower()`: 대/소문자 변환\n- `strip()`: 앞뒤 공백 제거\n- `replace(a, b)`: a를 b로 교체\n- `split(구분자)`: 문자열을 잘라서 리스트로\n- `join(리스트)`: 리스트를 합쳐서 문자열로",
             "code_examples": [
                 {
                     "title": "문자열 인덱싱과 슬라이싱",
@@ -130,7 +130,7 @@
         {
             "section_id": "s5",
             "title": "Boolean (불리언)",
-            "content_md": "## Boolean이란?\n\nBoolean은 참(True) 또는 거짓(False) 두 가지 값만 가지는 타입입니다.\n\n### Boolean 값\n```python\nis_student = True\nis_adult = False\n```\n\n### Falsy 값 (False로 취급되는 값)\n- `False`\n- `0`, `0.0`\n- `''` (빈 문자열)\n- `None`\n- `[]`, `{}`, `()` (빈 컨테이너)\n\n### bool() 함수\n```python\nbool(0)     # False\nbool(1)     # True\nbool('')    # False\nbool('hi')  # True\n```",
+            "content_md": "## What - Boolean(불리언)이 뭔가요?\n\nBoolean은 `True`(참) 또는 `False`(거짓), 딱 두 가지 값만 가지는 타입입니다. 전등의 ON/OFF 스위치처럼 두 가지 상태만 존재해요. 파이썬에서 `True`와 `False`는 대문자로 시작해야 합니다.\n\n## Why - 왜 Boolean이 필요한가요?\n\n프로그램은 항상 선택을 합니다. \"로그인 됐나?\", \"게임 오버인가?\", \"값이 비어있나?\" 이런 Yes/No 판단이 없으면 조건 분기가 불가능해요. `if` 문, `while` 루프 등 모든 제어 흐름의 핵심이 Boolean입니다.\n\n## How - 어떻게 사용하나요?\n\n직접 `True`/`False`를 쓰거나, 비교 연산의 결과로 얻을 수 있어요.\n\n```python\nis_student = True\nis_adult   = False\n\nx = 10\nprint(x > 5)   # True  ← 비교 연산 결과\nprint(x == 20) # False\n```\n\n`bool()` 함수로 다른 값을 변환할 수도 있습니다. **Falsy 값**(False로 취급되는 값)을 기억하세요!\n\n```python\nbool(0)      # False  ← 0은 False\nbool(1)      # True   ← 0이 아닌 숫자는 True\nbool('')     # False  ← 빈 문자열은 False\nbool('hi')   # True\nbool(None)   # False\n```",
             "code_examples": [
                 {
                     "title": "Boolean 기본",

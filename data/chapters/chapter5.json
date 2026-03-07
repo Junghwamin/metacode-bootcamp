@@ -13,7 +13,7 @@
         {
             "section_id": "s1",
             "title": "함수 정의하기 (def, return)",
-            "content_md": "## 함수란 무엇인가요?\n\n함수(function)는 특정 작업을 수행하는 코드 묶음입니다. 한 번 정의해두면 여러 번 재사용할 수 있어 코드를 간결하게 만들어줍니다.\n\n### 함수 기본 구조\n\n```python\ndef 함수이름(매개변수):\n    실행할 코드\n    return 반환값\n```\n\n- `def`: 함수를 정의할 때 사용하는 키워드\n- `함수이름`: 함수를 부를 때 사용할 이름\n- `매개변수`: 함수에 전달할 입력값 (없어도 됨)\n- `return`: 함수가 결과값을 돌려줄 때 사용",
+            "content_md": "## What - 함수는 나만의 명령어예요\n\n함수(function)는 특정 작업을 수행하는 코드 묶음입니다. 마치 전자레인지의 '1분 데우기' 버튼처럼, 복잡한 동작을 이름 하나로 실행할 수 있게 해줍니다. `def` 키워드로 함수를 정의하고, `return`으로 결과를 돌려줄 수 있어요.\n\n## Why - 반복을 줄이고 실수를 막아줘요\n\n같은 코드를 여러 곳에 복사-붙여넣기 하다 보면, 한 곳을 고칠 때 다른 곳을 빠뜨리는 실수가 생깁니다. 함수로 만들어두면 한 곳만 수정해도 전체가 바뀌어요. 계산기 앱, 게임 점수 처리, 회원가입 검사 등 실제 프로그램 어디서나 함수가 쓰입니다.\n\n## How - def와 return으로 만들어요\n\n`def` 키워드로 함수를 정의하고, 괄호 안에 입력값(매개변수)을 넣습니다. `return`으로 결과값을 돌려줄 수 있어요.\n\n```python\ndef 함수이름(매개변수):\n    실행할 코드\n    return 반환값\n```\n\n- `def`: 함수를 정의할 때 사용하는 키워드\n- `함수이름`: 함수를 부를 때 사용할 이름\n- `매개변수`: 함수에 전달할 입력값 (없어도 됨)\n- `return`: 함수가 결과값을 돌려줄 때 사용",
             "code_examples": [
                 {
                     "title": "기본 함수 만들기",
@@ -40,7 +40,7 @@
         {
             "section_id": "s2",
             "title": "매개변수 활용하기 (기본값, *args, **kwargs)",
-            "content_md": "## 다양한 매개변수 방식\n\n파이썬 함수는 매개변수를 매우 유연하게 사용할 수 있습니다.\n\n### 기본값 매개변수\n\n```python\ndef greet(name, greeting='안녕하세요'):\n    print(f'{greeting}, {name}!')\n\ngreet('민준')          # 안녕하세요, 민준!\ngreet('서연', '반가워요')  # 반가워요, 서연!\n```\n\n### *args - 여러 개의 위치 인자\n\n```python\ndef total(*numbers):\n    return sum(numbers)\n\nprint(total(1, 2, 3))     # 6\nprint(total(1, 2, 3, 4))  # 10\n```\n\n### **kwargs - 여러 개의 키워드 인자\n\n```python\ndef profile(**info):\n    for key, value in info.items():\n        print(f'{key}: {value}')\n\nprofile(이름='김파이', 나이=20, 취미='코딩')\n```",
+            "content_md": "## What - 입력값을 유연하게 받는 방법들이에요\n\n함수에 전달하는 값(인자)을 더 유연하게 다루는 세 가지 방법이 있습니다. 기본값 매개변수, `*args`, `**kwargs`인데요, 이것들을 쓰면 함수를 훨씬 다양하게 활용할 수 있어요.\n\n## Why - 모든 상황에 딱 맞는 함수를 만들 수 있어요\n\n매번 인자 개수가 달라지는 상황이 있습니다. 예를 들어 주문 수량이 1개일 수도, 10개일 수도 있죠. `*args`와 `**kwargs`를 사용하면 몇 개의 값을 넘겨도 처리할 수 있는 유연한 함수를 만들 수 있어요. 라이브러리 함수나 API 설계에서 자주 쓰이는 패턴입니다.\n\n## How - 기본값, *args, **kwargs 세 가지를 기억하세요\n\n### 기본값 매개변수\n\n```python\ndef greet(name, greeting='안녕하세요'):\n    print(f'{greeting}, {name}!')\n\ngreet('민준')          # 안녕하세요, 민준!\ngreet('서연', '반가워요')  # 반가워요, 서연!\n```\n\n### *args - 여러 개의 위치 인자\n\n```python\ndef total(*numbers):\n    return sum(numbers)\n\nprint(total(1, 2, 3))     # 6\nprint(total(1, 2, 3, 4))  # 10\n```\n\n### **kwargs - 여러 개의 키워드 인자\n\n```python\ndef profile(**info):\n    for key, value in info.items():\n        print(f'{key}: {value}')\n\nprofile(이름='김파이', 나이=20, 취미='코딩')\n```",
             "code_examples": [
                 {
                     "title": "*args 사용하기",
@@ -67,7 +67,7 @@
         {
             "section_id": "s3",
             "title": "변수 범위 (지역 변수와 전역 변수)",
-            "content_md": "## 변수가 살아있는 범위, 스코프(Scope)\n\n변수는 어디서 만들어졌느냐에 따라 사용할 수 있는 범위가 달라집니다.\n\n### 지역 변수 (Local Variable)\n함수 안에서 만든 변수는 그 함수 안에서만 사용할 수 있습니다.\n\n```python\ndef my_func():\n    local_var = '나는 지역 변수'  # 함수 안에서만 존재\n    print(local_var)\n\nmy_func()\n# print(local_var)  # 오류! 함수 밖에서는 사용 불가\n```\n\n### 전역 변수 (Global Variable)\n함수 밖에서 만든 변수는 어디서든 읽을 수 있습니다.\n\n```python\nglobal_var = '나는 전역 변수'\n\ndef my_func():\n    print(global_var)  # 읽기는 가능\n\nmy_func()\n```",
+            "content_md": "## What - 변수에도 살 수 있는 구역이 있어요\n\n변수는 어디서 만들어졌느냐에 따라 사용할 수 있는 범위(스코프, Scope)가 달라집니다. 함수 안에서 태어난 변수는 그 함수 안에서만 살 수 있고, 함수 밖에서 태어난 변수는 어디서든 볼 수 있어요.\n\n## Why - 변수 충돌을 막고 코드를 안전하게 해줘요\n\n만약 모든 변수가 전부 공유된다면, 함수 안에서 변수 값을 바꿀 때 다른 곳에도 영향이 생겨 예상치 못한 버그가 생깁니다. 스코프 덕분에 함수 안의 변수는 독립적으로 동작하고, 코드가 더 안전해집니다.\n\n## How - 지역 변수와 전역 변수를 구분하세요\n\n### 지역 변수 (Local Variable)\n함수 안에서 만든 변수는 그 함수 안에서만 사용할 수 있습니다.\n\n```python\ndef my_func():\n    local_var = '나는 지역 변수'  # 함수 안에서만 존재\n    print(local_var)\n\nmy_func()\n# print(local_var)  # 오류! 함수 밖에서는 사용 불가\n```\n\n### 전역 변수 (Global Variable)\n함수 밖에서 만든 변수는 어디서든 읽을 수 있습니다.\n\n```python\nglobal_var = '나는 전역 변수'\n\ndef my_func():\n    print(global_var)  # 읽기는 가능\n\nmy_func()\n```",
             "code_examples": [
                 {
                     "title": "지역/전역 변수 차이",
@@ -87,7 +87,7 @@
         {
             "section_id": "s4",
             "title": "클래스 기초 (__init__, 메소드)",
-            "content_md": "## 클래스(Class)란?\n\n클래스는 데이터(속성)와 기능(메소드)을 하나로 묶은 설계도입니다. 클래스로부터 실제 객체(인스턴스)를 만들 수 있습니다.\n\n### 클래스 기본 구조\n\n```python\nclass 클래스이름:\n    def __init__(self, 매개변수):\n        self.속성 = 값\n    \n    def 메소드(self):\n        동작\n```\n\n- `__init__`: 객체가 만들어질 때 자동으로 호출되는 초기화 메소드\n- `self`: 현재 객체 자신을 가리키는 참조\n- 메소드: 클래스 안에 정의된 함수",
+            "content_md": "## What - 클래스는 객체를 만드는 설계도예요\n\n클래스(class)는 데이터(속성)와 기능(메소드)을 하나로 묶은 설계도입니다. 붕어빵 틀처럼, 클래스 하나로 같은 구조의 객체(인스턴스)를 여러 개 찍어낼 수 있어요.\n\n## Why - 비슷한 것들을 하나의 틀로 관리할 수 있어요\n\n강아지 정보를 여러 개 다룰 때, 변수를 따로따로 만들면 금방 복잡해집니다. 클래스로 만들면 강아지마다 이름, 나이, 짖기 같은 정보와 기능을 하나의 묶음으로 깔끔하게 관리할 수 있어요. 게임 캐릭터, 쇼핑몰 상품, 사용자 계정 등 실제 앱 어디서나 클래스가 사용됩니다.\n\n## How - class, __init__, self로 만들어요\n\n```python\nclass 클래스이름:\n    def __init__(self, 매개변수):\n        self.속성 = 값\n    \n    def 메소드(self):\n        동작\n```\n\n- `__init__`: 객체가 만들어질 때 자동으로 호출되는 초기화 메소드\n- `self`: 현재 객체 자신을 가리키는 참조\n- 메소드: 클래스 안에 정의된 함수",
             "code_examples": [
                 {
                     "title": "강아지 클래스 만들기",
@@ -107,7 +107,7 @@
         {
             "section_id": "s5",
             "title": "상속 (Inheritance)",
-            "content_md": "## 상속이란?\n\n상속은 기존 클래스(부모 클래스)의 기능을 물려받아 새 클래스(자식 클래스)를 만드는 것입니다. 코드를 재사용하고 확장할 때 유용합니다.\n\n```python\nclass 자식클래스(부모클래스):\n    def __init__(self, ...):\n        super().__init__(...)  # 부모 초기화\n        # 자식만의 속성\n```\n\n### super() 함수\n`super()`는 부모 클래스를 가리킵니다. 부모의 `__init__`을 호출할 때 사용합니다.",
+            "content_md": "## What - 상속은 기존 클래스를 물려받는 것이에요\n\n상속(inheritance)은 기존 클래스(부모 클래스)의 속성과 기능을 그대로 물려받아 새로운 클래스(자식 클래스)를 만드는 것입니다. 부모님께 집을 물려받고, 거기에 내 방식대로 꾸미는 것과 비슷해요!\n\n## Why - 중복 코드 없이 기능을 확장할 수 있어요\n\n개, 고양이, 새처럼 공통점이 있는 클래스들을 만들 때, 공통 코드를 Animal이라는 부모 클래스에 한 번만 작성하고 각각 상속받으면 됩니다. 코드 중복이 줄어들고, 나중에 공통 기능을 수정할 때도 부모 클래스 한 곳만 고치면 돼서 유지보수가 훨씬 쉬워집니다.\n\n## How - 괄호 안에 부모 클래스를 넣고, super()로 초기화해요\n\n```python\nclass 자식클래스(부모클래스):\n    def __init__(self, ...):\n        super().__init__(...)  # 부모 초기화\n        # 자식만의 속성\n```\n\n### super() 함수\n`super()`는 부모 클래스를 가리킵니다. 부모의 `__init__`을 호출할 때 사용합니다.",
             "code_examples": [
                 {
                     "title": "동물 상속 예시",

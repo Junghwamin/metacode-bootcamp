@@ -12,7 +12,7 @@
         {
             "section_id": "s1",
             "title": "NumPy 배열 생성하기",
-            "content_md": "## NumPy란?\n\nNumPy(Numerical Python)는 수치 계산을 위한 파이썬 라이브러리입니다. 빠른 배열 연산이 핵심 기능입니다.\n\n### 배열 생성\n\n```python\nimport numpy as np\n\n# 리스트로 배열 생성\narr = np.array([1, 2, 3, 4, 5])\nprint(arr)        # [1 2 3 4 5]\nprint(arr.shape)  # (5,)\nprint(arr.dtype)  # int64\n\n# zeros: 모두 0인 배열\nzeros = np.zeros((3, 4))  # 3행 4열\n\n# ones: 모두 1인 배열\nones = np.ones((2, 3))\n\n# arange: 연속된 숫자\nrng = np.arange(0, 10, 2)  # [0 2 4 6 8]\n```",
+            "content_md": "## What - NumPy가 뭔가요?\n\nNumPy(Numerical Python)는 수치 계산을 위한 파이썬 라이브러리입니다. 핵심은 '배열(ndarray)'이라는 자료구조인데, 파이썬 리스트와 비슷하지만 훨씬 빠르고 수학 계산에 특화되어 있습니다. 마치 일반 계산기 대신 공학용 계산기를 쓰는 것과 같습니다.\n\n## Why - 왜 NumPy를 써야 하나요?\n\n파이썬 리스트로도 숫자를 다룰 수 있지만, 데이터가 수천~수만 개가 되면 속도가 매우 느려집니다. NumPy는 내부적으로 C 언어로 구현되어 있어 대규모 수치 계산을 엄청나게 빠르게 처리합니다. 머신러닝, 이미지 처리, 과학 시뮬레이션 등 데이터를 다루는 거의 모든 분야에서 NumPy가 기반으로 사용됩니다.\n\n## How - 어떻게 배열을 만드나요?\n\n`import numpy as np`로 불러온 뒤, `np.array()`에 리스트를 넣으면 배열이 만들어집니다.\n\n```python\nimport numpy as np\n\n# 리스트로 배열 생성\narr = np.array([1, 2, 3, 4, 5])\nprint(arr)        # [1 2 3 4 5]\nprint(arr.shape)  # (5,)\nprint(arr.dtype)  # int64\n\n# zeros: 모두 0인 배열\nzeros = np.zeros((3, 4))  # 3행 4열\n\n# ones: 모두 1인 배열\nones = np.ones((2, 3))\n\n# arange: 연속된 숫자\nrng = np.arange(0, 10, 2)  # [0 2 4 6 8]\n```",
             "code_examples": [
                 {
                     "title": "NumPy 배열 기초",
@@ -39,7 +39,7 @@
         {
             "section_id": "s2",
             "title": "배열 연산과 인덱싱",
-            "content_md": "## NumPy의 강점: 벡터화 연산\n\nNumPy는 배열 전체에 한 번에 연산을 적용할 수 있습니다.\n\n```python\nimport numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([4, 5, 6])\n\nprint(a + b)   # [5 7 9]\nprint(a * 2)   # [2 4 6]\nprint(a ** 2)  # [1 4 9]\n```\n\n### 인덱싱과 슬라이싱\n\n```python\narr = np.array([10, 20, 30, 40, 50])\n\nprint(arr[0])    # 10\nprint(arr[-1])   # 50\nprint(arr[1:4])  # [20 30 40]\nprint(arr[arr > 25])  # [30 40 50] (불리언 인덱싱)\n```",
+            "content_md": "## What - 벡터화 연산이 뭔가요?\n\nNumPy의 가장 강력한 특징은 '벡터화 연산'입니다. 배열에 `+`나 `*`를 쓰면, 반복문 없이도 배열의 모든 원소에 한 번에 연산이 적용됩니다. 마치 10개의 상자에 스티커를 하나씩 붙이는 대신, 도장 하나로 10개를 동시에 찍는 것과 같습니다.\n\n## Why - 왜 벡터화 연산을 써야 하나요?\n\n파이썬 `for` 반복문으로 같은 작업을 할 수 있지만, NumPy 벡터화 연산은 수십~수백 배 빠릅니다. 또한 코드도 훨씬 짧고 읽기 쉬워집니다. 백만 개의 데이터를 처리할 때 반복문과 NumPy의 속도 차이는 극적으로 나타납니다.\n\n## How - 어떻게 사용하나요?\n\n배열끼리 또는 배열과 숫자 사이에 일반 연산자를 그대로 사용합니다. 인덱싱과 슬라이싱도 리스트와 동일한 문법을 씁니다.\n\n```python\nimport numpy as np\n\na = np.array([1, 2, 3])\nb = np.array([4, 5, 6])\n\nprint(a + b)   # [5 7 9]\nprint(a * 2)   # [2 4 6]\nprint(a ** 2)  # [1 4 9]\n```\n\n```python\narr = np.array([10, 20, 30, 40, 50])\n\nprint(arr[0])    # 10\nprint(arr[-1])   # 50\nprint(arr[1:4])  # [20 30 40]\nprint(arr[arr > 25])  # [30 40 50] (불리언 인덱싱)\n```",
             "code_examples": [
                 {
                     "title": "배열 연산",
@@ -59,7 +59,7 @@
         {
             "section_id": "s3",
             "title": "Pandas Series",
-            "content_md": "## Pandas란?\n\nPandas는 표 형태의 데이터를 다루는 라이브러리입니다. Excel과 유사하게 작동합니다.\n\n### Series - 1차원 데이터\n\nSeries는 인덱스가 있는 1차원 데이터 구조입니다.\n\n```python\nimport pandas as pd\n\n# 리스트로 Series 생성\ns = pd.Series([10, 20, 30, 40])\nprint(s)\n# 0    10\n# 1    20\n# 2    30\n# 3    40\n\n# 인덱스 지정\nscores = pd.Series([90, 85, 92], index=['수학', '영어', '과학'])\nprint(scores['수학'])  # 90\nprint(scores.mean())  # 89.0\n```",
+            "content_md": "## What - Pandas Series가 뭔가요?\n\nPandas는 표 형태의 데이터를 다루는 라이브러리이고, Series는 그 안에서 '인덱스가 붙은 1차원 데이터'를 뜻합니다. 엑셀에서 하나의 열(column)을 떼어낸 것과 비슷합니다. 숫자 인덱스(0, 1, 2...) 대신 의미 있는 이름(수학, 영어, 과학)을 붙일 수 있다는 점이 일반 리스트와 다릅니다.\n\n## Why - 왜 Series를 써야 하나요?\n\n리스트로도 데이터를 저장할 수 있지만, Series는 레이블로 데이터에 접근할 수 있고 평균, 합계, 최댓값 같은 통계 메서드를 바로 쓸 수 있습니다. 학생 점수 데이터를 다룰 때 `scores[1]`보다 `scores['영어']`가 훨씬 직관적이죠.\n\n## How - 어떻게 만드나요?\n\n`pd.Series(리스트)`로 생성하고, `index` 매개변수로 레이블을 지정합니다.\n\n```python\nimport pandas as pd\n\n# 리스트로 Series 생성\ns = pd.Series([10, 20, 30, 40])\nprint(s)\n# 0    10\n# 1    20\n# 2    30\n# 3    40\n\n# 인덱스 지정\nscores = pd.Series([90, 85, 92], index=['수학', '영어', '과학'])\nprint(scores['수학'])  # 90\nprint(scores.mean())  # 89.0\n```",
             "code_examples": [
                 {
                     "title": "Pandas Series 기초",
@@ -79,7 +79,7 @@
         {
             "section_id": "s4",
             "title": "Pandas DataFrame",
-            "content_md": "## DataFrame - 표 형태 데이터\n\nDataFrame은 행과 열이 있는 2차원 데이터 구조입니다. Excel 시트와 비슷합니다.\n\n```python\nimport pandas as pd\n\n# 딕셔너리로 DataFrame 생성\ndata = {\n    '이름': ['김파이', '이넘파이', '박판다'],\n    '나이': [20, 21, 19],\n    '점수': [90, 85, 92]\n}\ndf = pd.DataFrame(data)\n\nprint(df)\n```\n\n### 기본 조작\n```python\nprint(df['이름'])    # 이름 열\nprint(df.shape)      # (3, 3) - 3행 3열\nprint(df.describe()) # 통계 요약\n```",
+            "content_md": "## What - DataFrame이 뭔가요?\n\nDataFrame은 행(row)과 열(column)이 있는 2차원 표 형태의 데이터 구조입니다. 엑셀 시트 한 장을 파이썬으로 가져왔다고 생각하면 정확합니다. 여러 종류의 정보(이름, 나이, 점수 등)를 한꺼번에 담아서 관리할 수 있습니다.\n\n## Why - 왜 DataFrame을 써야 하나요?\n\n현실의 데이터는 대부분 표 형태입니다. CSV 파일, 데이터베이스, 엑셀 파일 모두 행과 열로 이루어져 있죠. DataFrame은 이런 데이터를 불러와서 필터링, 정렬, 통계 분석을 단 몇 줄로 처리할 수 있게 해줍니다. 데이터 분석의 시작점이 바로 DataFrame입니다.\n\n## How - 어떻게 만드나요?\n\n열 이름을 키(key)로, 각 열의 데이터를 값(value)으로 하는 딕셔너리를 `pd.DataFrame()`에 넣으면 됩니다.\n\n```python\nimport pandas as pd\n\n# 딕셔너리로 DataFrame 생성\ndata = {\n    '이름': ['김파이', '이넘파이', '박판다'],\n    '나이': [20, 21, 19],\n    '점수': [90, 85, 92]\n}\ndf = pd.DataFrame(data)\n\nprint(df)\n```\n\n```python\nprint(df['이름'])    # 이름 열\nprint(df.shape)      # (3, 3) - 3행 3열\nprint(df.describe()) # 통계 요약\n```",
             "code_examples": [
                 {
                     "title": "DataFrame 기초",

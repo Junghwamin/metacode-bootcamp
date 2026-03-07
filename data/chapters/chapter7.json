@@ -12,7 +12,7 @@
         {
             "section_id": "s1",
             "title": "try/except 기초",
-            "content_md": "## 예외(Exception)란?\n\n예외는 프로그램 실행 중에 발생하는 오류입니다. 예외 처리 없이는 오류가 발생하면 프로그램이 즉시 종료됩니다.\n\n### try/except 기본 구조\n\n```python\ntry:\n    위험할 수 있는 코드\nexcept 오류종류:\n    오류 발생 시 실행할 코드\n```\n\n### 예시\n```python\ntry:\n    number = int(input('숫자를 입력하세요: '))\n    print(f'입력한 숫자: {number}')\nexcept ValueError:\n    print('숫자를 입력해야 합니다!')\n```\n\n숫자가 아닌 문자를 입력해도 프로그램이 종료되지 않고 안내 메시지를 보여줍니다.",
+            "content_md": "## What - 예외 처리가 뭔가요?\n\n예외(Exception)는 프로그램이 실행되는 도중 갑자기 발생하는 오류입니다. 마치 자동차 운전 중에 갑자기 타이어가 펑크 나는 것처럼, 예상치 못한 상황이 발생했을 때 프로그램이 멈춰버립니다. `try/except`는 바로 이런 상황에 대비하는 '안전장치'입니다.\n\n## Why - 왜 예외 처리가 필요한가요?\n\n예외 처리 없이는 오류가 발생하는 순간 프로그램이 즉시 강제 종료됩니다. 사용자가 숫자 입력란에 문자를 입력했다고 해서 앱 전체가 꺼져버리면 안 되겠죠? 예외 처리를 하면 오류가 생겨도 프로그램이 멈추지 않고, 사용자에게 친절한 안내 메시지를 보여주며 계속 실행될 수 있습니다.\n\n## How - 어떻게 사용하나요?\n\n`try` 블록에 오류가 날 수 있는 코드를 넣고, `except` 블록에 오류가 났을 때 실행할 코드를 넣습니다.\n\n```python\ntry:\n    위험할 수 있는 코드\nexcept 오류종류:\n    오류 발생 시 실행할 코드\n```\n\n```python\ntry:\n    number = int(input('숫자를 입력하세요: '))\n    print(f'입력한 숫자: {number}')\nexcept ValueError:\n    print('숫자를 입력해야 합니다!')\n```\n\n숫자가 아닌 문자를 입력해도 프로그램이 종료되지 않고 안내 메시지를 보여줍니다.",
             "code_examples": [
                 {
                     "title": "기본 try/except",
@@ -32,7 +32,7 @@
         {
             "section_id": "s2",
             "title": "여러 예외 처리하기",
-            "content_md": "## 주요 예외 종류\n\n| 예외 | 발생 상황 |\n|------|---------|\n| `ValueError` | 잘못된 값 (예: int('abc')) |\n| `TypeError` | 타입 불일치 (예: 1 + '2') |\n| `ZeroDivisionError` | 0으로 나누기 |\n| `IndexError` | 리스트 범위 초과 |\n| `KeyError` | 딕셔너리에 없는 키 |\n| `FileNotFoundError` | 파일 없음 |\n\n### 여러 예외 처리\n\n```python\ntry:\n    코드\nexcept ValueError:\n    print('값 오류')\nexcept TypeError:\n    print('타입 오류')\nexcept Exception as e:\n    print(f'다른 오류: {e}')\n```",
+            "content_md": "## What - 예외의 종류가 다양한가요?\n\n파이썬에는 상황마다 다른 이름의 예외가 존재합니다. 마치 병원에서 감기와 골절을 다른 방식으로 치료하듯, 오류의 종류를 구분해서 각각 알맞게 대응할 수 있습니다.\n\n| 예외 | 발생 상황 |\n|------|---------|\n| `ValueError` | 잘못된 값 (예: int('abc')) |\n| `TypeError` | 타입 불일치 (예: 1 + '2') |\n| `ZeroDivisionError` | 0으로 나누기 |\n| `IndexError` | 리스트 범위 초과 |\n| `KeyError` | 딕셔너리에 없는 키 |\n| `FileNotFoundError` | 파일 없음 |\n\n## Why - 왜 여러 예외를 따로 처리해야 하나요?\n\n오류 종류마다 사용자에게 전달해야 하는 메시지와 대처 방법이 다릅니다. 모든 오류를 똑같이 처리하면 \"무언가 잘못됐어요\"라는 모호한 메시지밖에 못 줍니다. 예외를 구분하면 \"0으로는 나눌 수 없어요\", \"숫자만 입력해주세요\" 처럼 정확한 안내를 줄 수 있어 훨씬 좋은 프로그램이 됩니다.\n\n## How - 어떻게 여러 예외를 처리하나요?\n\n`except`를 여러 개 붙이면 됩니다. 더 구체적인 예외를 먼저 작성하고, 마지막에 `Exception as e`로 나머지를 모두 잡을 수 있습니다.\n\n```python\ntry:\n    코드\nexcept ValueError:\n    print('값 오류')\nexcept TypeError:\n    print('타입 오류')\nexcept Exception as e:\n    print(f'다른 오류: {e}')\n```",
             "code_examples": [
                 {
                     "title": "여러 예외 처리",
@@ -52,7 +52,7 @@
         {
             "section_id": "s3",
             "title": "else와 finally",
-            "content_md": "## try/except의 완전한 구조\n\n```python\ntry:\n    위험한 코드\nexcept 예외종류:\n    예외 발생 시 실행\nelse:\n    예외가 없었을 때만 실행\nfinally:\n    항상 실행 (예외 발생 여부 무관)\n```\n\n### else 절\n예외가 발생하지 않았을 때만 실행됩니다.\n\n### finally 절\n예외 발생 여부와 관계없이 항상 실행됩니다. 파일 닫기, 연결 해제 등 정리 작업에 사용합니다.",
+            "content_md": "## What - else와 finally는 뭔가요?\n\n`try/except`에는 선택적으로 `else`와 `finally`를 붙일 수 있습니다. `else`는 오류가 전혀 없었을 때만 실행되는 '성공 구역'이고, `finally`는 오류가 나든 안 나든 무조건 실행되는 '마무리 구역'입니다. 레스토랑으로 비유하면, 요리가 성공했을 때만 서빙하는 것이 `else`, 손님이 왔다 가든 안 가든 반드시 하는 청소가 `finally`입니다.\n\n## Why - 왜 else와 finally가 필요한가요?\n\n`else`가 없으면 성공했을 때의 코드를 `try` 블록 안에 함께 써야 해서 어떤 코드가 오류를 유발하는지 구분이 어렵습니다. `finally`는 파일 닫기, 네트워크 연결 해제처럼 오류 여부와 관계없이 반드시 실행해야 하는 정리 작업에 꼭 필요합니다. 이 두 가지가 있어야 코드가 안전하고 깔끔해집니다.\n\n## How - 어떻게 사용하나요?\n\n`try/except` 뒤에 `else`와 `finally`를 순서대로 붙입니다.\n\n```python\ntry:\n    위험한 코드\nexcept 예외종류:\n    예외 발생 시 실행\nelse:\n    예외가 없었을 때만 실행\nfinally:\n    항상 실행 (예외 발생 여부 무관)\n```\n\n- `else`: 예외가 발생하지 않았을 때만 실행됩니다.\n- `finally`: 예외 발생 여부와 관계없이 항상 실행됩니다. 파일 닫기, 연결 해제 등 정리 작업에 사용합니다.",
             "code_examples": [
                 {
                     "title": "else와 finally 사용",
@@ -72,7 +72,7 @@
         {
             "section_id": "s4",
             "title": "raise와 사용자 정의 예외",
-            "content_md": "## 예외를 직접 발생시키기\n\n`raise` 키워드로 예외를 직접 발생시킬 수 있습니다.\n\n```python\ndef check_age(age):\n    if age < 0:\n        raise ValueError('나이는 0 이상이어야 합니다')\n    return age\n```\n\n## 사용자 정의 예외\n\n`Exception` 클래스를 상속하여 나만의 예외를 만들 수 있습니다.\n\n```python\nclass InsufficientFundsError(Exception):\n    \"\"\"잔액 부족 예외\"\"\"\n    pass\n\ndef withdraw(balance, amount):\n    if amount > balance:\n        raise InsufficientFundsError('잔액이 부족합니다')\n    return balance - amount\n```",
+            "content_md": "## What - raise와 사용자 정의 예외가 뭔가요?\n\n`raise`는 오류를 직접 만들어서 던지는 키워드입니다. 파이썬이 자동으로 오류를 내는 것이 아니라, 내가 원하는 조건에서 의도적으로 오류를 발생시킬 수 있습니다. 또한 `Exception`을 상속해서 나만의 예외 클래스를 직접 만들 수도 있습니다.\n\n## Why - 왜 예외를 직접 발생시키나요?\n\n파이썬이 자동으로 잡아주지 못하는 논리적 오류를 방어할 때 필요합니다. 예를 들어 나이에 음수를 입력하거나, 은행 잔액보다 많은 금액을 출금하려는 경우 파이썬은 오류를 내지 않지만, 이런 상황은 분명히 잘못된 것입니다. `raise`로 직접 오류를 던지면 이런 논리적 실수를 조기에 차단할 수 있습니다.\n\n## How - 어떻게 사용하나요?\n\n`raise 예외클래스('메시지')` 형태로 사용합니다. 나만의 예외가 필요하면 `Exception`을 상속한 클래스를 만들면 됩니다.\n\n```python\ndef check_age(age):\n    if age < 0:\n        raise ValueError('나이는 0 이상이어야 합니다')\n    return age\n```\n\n```python\nclass InsufficientFundsError(Exception):\n    \"\"\"잔액 부족 예외\"\"\"\n    pass\n\ndef withdraw(balance, amount):\n    if amount > balance:\n        raise InsufficientFundsError('잔액이 부족합니다')\n    return balance - amount\n```",
             "code_examples": [
                 {
                     "title": "raise로 예외 발생",

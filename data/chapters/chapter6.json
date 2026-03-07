@@ -12,7 +12,7 @@
         {
             "section_id": "s1",
             "title": "파일 열기와 쓰기 (open, write)",
-            "content_md": "## 파일을 다루는 기본\n\n파이썬에서 파일을 다루려면 먼저 파일을 `open()`으로 열어야 합니다.\n\n### 파일 쓰기\n\n```python\n# 'w' 모드: 쓰기 모드 (파일이 없으면 생성, 있으면 덮어쓰기)\nfile = open('hello.txt', 'w', encoding='utf-8')\nfile.write('안녕하세요\\n')  # \\n은 줄바꿈\nfile.write('파이썬 파일 쓰기')\nfile.close()  # 반드시 닫아야 함!\n```\n\n### 주의사항\n- `encoding='utf-8'`: 한국어 문자를 올바르게 처리하기 위해 필수\n- `file.close()`: 파일 작업 후 반드시 닫아야 합니다 (with 문 사용 권장)",
+            "content_md": "## What - 파일 열기는 서랍을 여는 것과 같아요\n\n파이썬에서 파일을 다루려면 먼저 `open()`으로 파일을 열어야 합니다. 마치 서랍을 열어야 물건을 꺼내거나 넣을 수 있는 것처럼요. 열었으면 다 쓰고 나서 반드시 `close()`로 닫아야 합니다.\n\n## Why - 프로그램이 꺼져도 데이터를 남길 수 있어요\n\n변수에 저장한 데이터는 프로그램이 종료되면 사라집니다. 하지만 파일에 저장하면 영구적으로 남아요. 메모장 앱, 게임 저장 기능, 쇼핑몰 주문 내역 저장 등 데이터를 유지해야 하는 모든 곳에서 파일 쓰기가 사용됩니다.\n\n## How - open()으로 열고, write()로 쓰고, close()로 닫아요\n\n```python\n# 'w' 모드: 쓰기 모드 (파일이 없으면 생성, 있으면 덮어쓰기)\nfile = open('hello.txt', 'w', encoding='utf-8')\nfile.write('안녕하세요\\n')  # \\n은 줄바꿈\nfile.write('파이썬 파일 쓰기')\nfile.close()  # 반드시 닫아야 함!\n```\n\n### 주의사항\n- `encoding='utf-8'`: 한국어 문자를 올바르게 처리하기 위해 필수\n- `file.close()`: 파일 작업 후 반드시 닫아야 합니다 (with 문 사용 권장)",
             "code_examples": [
                 {
                     "title": "파일 쓰기 기본",
@@ -32,7 +32,7 @@
         {
             "section_id": "s2",
             "title": "파일 읽기 (read, readline, readlines)",
-            "content_md": "## 파일 읽기 세 가지 방법\n\n### read() - 전체를 한 번에\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    content = f.read()  # 파일 전체를 하나의 문자열로\n```\n\n### readline() - 한 줄씩\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    line = f.readline()  # 한 줄만 읽기\n```\n\n### readlines() - 모든 줄을 리스트로\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    lines = f.readlines()  # ['줄1\\n', '줄2\\n', ...]\n    for line in lines:\n        print(line.strip())  # strip()으로 \\n 제거\n```",
+            "content_md": "## What - 파일을 읽는 방법은 세 가지예요\n\n파일 내용을 가져오는 방법은 목적에 따라 세 가지로 나뉩니다. `read()`는 파일 전체를 한 번에, `readline()`은 한 줄씩, `readlines()`는 모든 줄을 리스트로 가져옵니다.\n\n## Why - 파일 크기와 용도에 따라 적합한 방법이 달라요\n\n작은 파일은 `read()`로 한 번에 읽으면 편합니다. 반면 수백만 줄짜리 로그 파일을 `read()`로 읽으면 메모리가 꽉 찰 수 있어요. `readline()`으로 한 줄씩 처리하거나 `readlines()`로 리스트에 담아 정렬, 검색 등 가공할 때 유용합니다.\n\n## How - 상황에 맞는 read 함수를 골라 쓰세요\n\n### read() - 전체를 한 번에\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    content = f.read()  # 파일 전체를 하나의 문자열로\n```\n\n### readline() - 한 줄씩\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    line = f.readline()  # 한 줄만 읽기\n```\n\n### readlines() - 모든 줄을 리스트로\n```python\nwith open('data.txt', 'r', encoding='utf-8') as f:\n    lines = f.readlines()  # ['줄1\\n', '줄2\\n', ...]\n    for line in lines:\n        print(line.strip())  # strip()으로 \\n 제거\n```",
             "code_examples": [
                 {
                     "title": "readlines()로 줄별 처리",
@@ -52,7 +52,7 @@
         {
             "section_id": "s3",
             "title": "with 문으로 안전하게 파일 다루기",
-            "content_md": "## with 문이 왜 더 좋을까요?\n\n`with` 문을 사용하면 파일을 자동으로 닫아줍니다. `close()` 호출을 잊어도 안전합니다.\n\n```python\n# with 문 사용 (권장)\nwith open('data.txt', 'w', encoding='utf-8') as f:\n    f.write('파이썬은 재미있다!')\n# with 블록이 끝나면 자동으로 close() 호출!\n```\n\n### with 문의 장점\n1. 파일이 자동으로 닫힌다\n2. 오류가 발생해도 파일이 안전하게 닫힌다\n3. 코드가 더 간결하고 읽기 쉽다",
+            "content_md": "## What - with 문은 파일을 알아서 닫아주는 자동 잠금 장치예요\n\n`with` 문을 사용하면 블록이 끝날 때 파일을 자동으로 닫아줍니다. 마치 냉장고 문이 자동으로 닫히는 것처럼, `close()` 호출을 깜빡해도 안전하게 처리해줍니다.\n\n## Why - close()를 빠뜨리면 파일이 손상될 수 있어요\n\n파일을 `close()`하지 않으면, 작성한 내용이 저장되지 않거나 다른 프로그램이 해당 파일을 사용하지 못하는 문제가 생길 수 있습니다. 특히 오류가 발생했을 때 `close()`가 실행되지 않으면 더 큰 문제가 됩니다. `with` 문은 오류가 나도 반드시 파일을 닫아줘서 안전합니다.\n\n## How - with open(...) as f: 형태로 쓰세요\n\n```python\n# with 문 사용 (권장)\nwith open('data.txt', 'w', encoding='utf-8') as f:\n    f.write('파이썬은 재미있다!')\n# with 블록이 끝나면 자동으로 close() 호출!\n```\n\n### with 문의 장점\n1. 파일이 자동으로 닫힌다\n2. 오류가 발생해도 파일이 안전하게 닫힌다\n3. 코드가 더 간결하고 읽기 쉽다",
             "code_examples": [
                 {
                     "title": "with 문 사용 예시",
@@ -72,7 +72,7 @@
         {
             "section_id": "s4",
             "title": "파일 모드 (r, w, a)",
-            "content_md": "## 파일 모드의 종류\n\n| 모드 | 의미 | 파일 없으면 | 기존 내용 |\n|------|------|------------|----------|\n| 'r' | 읽기 | 오류 발생 | 유지 |\n| 'w' | 쓰기 | 새로 생성 | 덮어쓰기 |\n| 'a' | 추가 | 새로 생성 | 유지하고 뒤에 추가 |\n\n### 추가 모드 'a' 예시\n```python\n# 기존 파일에 내용 추가\nwith open('log.txt', 'a', encoding='utf-8') as f:\n    f.write('새로운 내용 추가\\n')\n```",
+            "content_md": "## What - 파일 모드는 파일을 어떻게 열지 알려주는 설정이에요\n\n파일을 열 때 `'r'`, `'w'`, `'a'` 중 하나를 선택해야 합니다. 읽기 전용인지, 새로 쓸지, 기존 내용에 추가할지를 파이썬에 알려주는 역할을 해요.\n\n## Why - 잘못된 모드를 쓰면 데이터가 사라질 수 있어요\n\n`'w'` 모드로 열면 기존 파일 내용이 모두 지워집니다! 로그 기록이나 일기처럼 내용을 누적해야 하는 파일에 `'w'`를 쓰면 큰일 나요. 상황에 맞는 모드를 선택하는 것이 매우 중요합니다.\n\n## How - r, w, a 세 글자를 외우면 충분해요\n\n| 모드 | 의미 | 파일 없으면 | 기존 내용 |\n|------|------|------------|----------|\n| 'r' | 읽기 | 오류 발생 | 유지 |\n| 'w' | 쓰기 | 새로 생성 | 덮어쓰기 |\n| 'a' | 추가 | 새로 생성 | 유지하고 뒤에 추가 |\n\n### 추가 모드 'a' 예시\n```python\n# 기존 파일에 내용 추가\nwith open('log.txt', 'a', encoding='utf-8') as f:\n    f.write('새로운 내용 추가\\n')\n```",
             "code_examples": [
                 {
                     "title": "추가 모드(a) 사용",
