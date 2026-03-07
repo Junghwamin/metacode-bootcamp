@@ -7,6 +7,7 @@
 import streamlit as st
 from ui.chapter_renderer import ChapterRenderer
 from ui.theme import apply_theme
+from ui.chat_sidebar import render_chat_sidebar
 
 st.set_page_config(
     page_title="챕터 1 - Python 소개",
@@ -15,6 +16,7 @@ st.set_page_config(
 )
 
 apply_theme()
+render_chat_sidebar(chapter_id=1)
 
 renderer = ChapterRenderer(chapter_id=1)
 renderer.render()

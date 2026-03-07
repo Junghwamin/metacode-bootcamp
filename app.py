@@ -26,6 +26,10 @@ st.set_page_config(
 from ui.theme import apply_theme
 apply_theme()
 
+# AI 튜터 채팅 사이드바 (모든 페이지 공통)
+from ui.chat_sidebar import render_chat_sidebar
+render_chat_sidebar()
+
 # 온보딩 체크 (처음 방문자에게 안내)
 from ui.onboarding import show_onboarding
 show_onboarding()
