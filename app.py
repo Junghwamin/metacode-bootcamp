@@ -26,11 +26,11 @@ st.set_page_config(
 from ui.theme import apply_theme
 apply_theme()
 
-# AI 튜터 채팅 사이드바 (모든 페이지 공통)
-from ui.chat_sidebar import render_chat_sidebar
-render_chat_sidebar()
+# AI 튜터 채팅 패널 (오른쪽 컬럼, 모든 페이지 공통)
+from ui.chat_sidebar import render_chat_panel
+content = render_chat_panel()
 
-# 온보딩 체크 (처음 방문자에게 안내)
+# 온보딩 체크 (처음 방문자에게 안내 - 사이드바 사용이므로 content 밖에서 실행)
 from ui.onboarding import show_onboarding
 show_onboarding()
 
@@ -320,4 +320,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    with content:
+        main()

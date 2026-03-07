@@ -8,7 +8,7 @@ NumPy(수치 계산)와 Pandas(데이터 분석) 라이브러리의
 import streamlit as st
 from ui.chapter_renderer import ChapterRenderer
 from ui.theme import apply_theme
-from ui.chat_sidebar import render_chat_sidebar
+from ui.chat_sidebar import render_chat_panel
 
 st.set_page_config(
     page_title="챕터 8 - NumPy와 Pandas",
@@ -17,7 +17,8 @@ st.set_page_config(
 )
 
 apply_theme()
-render_chat_sidebar(chapter_id=8)
+content = render_chat_panel(chapter_id=8)
 
-renderer = ChapterRenderer(chapter_id=8)
-renderer.render()
+with content:
+    renderer = ChapterRenderer(chapter_id=8)
+    renderer.render()

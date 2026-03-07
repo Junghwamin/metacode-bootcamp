@@ -9,7 +9,7 @@ import streamlit as st
 from core.progress import ProgressManager
 from ui.components import render_progress_bar
 from ui.theme import apply_theme
-from ui.chat_sidebar import render_chat_sidebar
+from ui.chat_sidebar import render_chat_panel
 
 st.set_page_config(
     page_title="진행현황 - 메타코드 파이썬 기초",
@@ -18,7 +18,7 @@ st.set_page_config(
 )
 
 apply_theme()
-render_chat_sidebar()
+content = render_chat_panel()
 
 
 def render_progress_page() -> None:
@@ -225,4 +225,5 @@ def render_progress_page() -> None:
                 )
 
 
-render_progress_page()
+with content:
+    render_progress_page()

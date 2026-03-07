@@ -7,7 +7,7 @@ List, Tuple, Set, Dictionary 등 파이썬의 자료형을 배우고
 import streamlit as st
 from ui.chapter_renderer import ChapterRenderer
 from ui.theme import apply_theme
-from ui.chat_sidebar import render_chat_sidebar
+from ui.chat_sidebar import render_chat_panel
 
 st.set_page_config(
     page_title="챕터 3 - 자료형",
@@ -16,7 +16,8 @@ st.set_page_config(
 )
 
 apply_theme()
-render_chat_sidebar(chapter_id=3)
+content = render_chat_panel(chapter_id=3)
 
-renderer = ChapterRenderer(chapter_id=3)
-renderer.render()
+with content:
+    renderer = ChapterRenderer(chapter_id=3)
+    renderer.render()
