@@ -7,6 +7,9 @@ streamlit-code-editor>=0.1.0
 # Browser localStorage (progress save)
 streamlit-local-storage>=0.0.22
 
+# OpenAI GPT API (AI tutor chatbot)
+openai>=1.0.0
+
 # Chapter 8: data analysis libraries
 numpy>=1.26.0
 pandas>=2.2.0

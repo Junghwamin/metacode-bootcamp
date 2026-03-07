@@ -3,6 +3,11 @@
 전체 학습 진행도, 챕터별 완료율, 스트릭, 일일 목표를 표시한다.
 챕터 카드 그리드로 빠른 이동을 지원하고,
 진행도 내보내기/가져오기로 데이터를 보존할 수 있다.
+
+디자인 시스템: Claymorphism + Minimal Swiss
+- 커스텀 HTML 메트릭 카드 (st.metric 대신)
+- 그라디언트 헤더
+- 클리너 챕터 그리드
 """
 
 import streamlit as st
@@ -30,39 +35,126 @@ from core.progress import ProgressManager
 from ui.components import render_chapter_card, render_progress_bar
 
 
+def render_metric_cards(stats: dict) -> None:
+    """커스텀 HTML 메트릭 카드 3개를 렌더링한다.
+
+    st.metric 대신 커스텀 HTML을 사용하여 Claymorphism 스타일 적용.
+    호버 리프트 효과 + 그라디언트 값 색상.
+
+    Args:
+        stats: ProgressManager.get_overall_stats() 반환값 딕셔너리
+    """
+    col1, col2, col3 = st.columns(3)
+
+    metrics = [
+        {
+            "label": "완료한 문제",
+            "value": f"{stats['solved_problems']}/{stats['total_problems']}",
+            "sub": "지금까지 풀고 통과한 문제",
+            "color": "#4A90D9",
+            "bg": "rgba(74, 144, 217, 0.06)",
+            "border": "rgba(74, 144, 217, 0.2)",
+        },
+        {
+            "label": "연속 학습",
+            "value": f"{stats['streak_days']}일",
+            "sub": "오늘 포함 매일 학습한 연속 일수",
+            "color": "#6C63FF",
+            "bg": "rgba(108, 99, 255, 0.06)",
+            "border": "rgba(108, 99, 255, 0.2)",
+        },
+        {
+            "label": "오늘 목표",
+            "value": f"{stats['daily_solved']}/3",
+            "sub": "오늘 목표: 문제 3개 풀기",
+            "color": "#00C48C",
+            "bg": "rgba(0, 196, 140, 0.06)",
+            "border": "rgba(0, 196, 140, 0.2)",
+        },
+    ]
+
+    for col, m in zip([col1, col2, col3], metrics):
+        with col:
+            st.markdown(
+                f"""
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px 24px;
+                    border: 1px solid {m['border']};
+                    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.08);
+                    transition: all 0.2s ease;
+                    background: {m['bg']};
+                "
+                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)';"
+                onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.08)';"
+                >
+                    <div style="
+                        font-size: 0.72em;
+                        font-weight: 600;
+                        color: #636E72;
+                        text-transform: uppercase;
+                        letter-spacing: 0.07em;
+                        font-family: 'Inter', sans-serif;
+                        margin-bottom: 8px;
+                    ">{m['label']}</div>
+                    <div style="
+                        font-size: 2rem;
+                        font-weight: 700;
+                        color: {m['color']};
+                        font-family: 'Inter', sans-serif;
+                        line-height: 1.1;
+                        margin-bottom: 6px;
+                    ">{m['value']}</div>
+                    <div style="
+                        font-size: 0.78em;
+                        color: #636E72;
+                        line-height: 1.4;
+                    ">{m['sub']}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+
 def main() -> None:
     """메인 대시보드를 렌더링한다.
 
     전체 진행도 통계, 챕터 카드 그리드, 진행도 내보내기/가져오기를 표시한다.
     """
-    st.title("메타코드 파이썬 기초")
-    st.markdown("프로그래밍을 처음 시작하는 당신을 위한 인터랙티브 학습 플랫폼")
+    # ============================================================
+    # 헤더: 그라디언트 서브타이틀 + 깔끔한 타이포그래피
+    # ============================================================
+    st.markdown(
+        """
+        <div style="margin-bottom: 8px;">
+            <h1 style="
+                font-size: 1.875rem;
+                font-weight: 700;
+                color: #2D3436;
+                margin: 0 0 6px 0;
+                line-height: 1.3;
+            ">메타코드 파이썬 기초</h1>
+            <p style="
+                font-size: 1rem;
+                color: #636E72;
+                margin: 0;
+                line-height: 1.6;
+            ">프로그래밍을 처음 시작하는 당신을 위한 인터랙티브 학습 플랫폼</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     progress = ProgressManager()
     stats = progress.get_overall_stats()
 
     # ============================================================
-    # 전체 현황 지표 3개: 완료 문제, 연속 학습, 일일 목표
+    # 전체 현황 지표 3개: 커스텀 HTML 메트릭 카드
     # ============================================================
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric(
-            label="완료한 문제",
-            value=f"{stats['solved_problems']}/{stats['total_problems']}",
-            help="지금까지 풀고 통과한 문제 수입니다.",
-        )
-    with col2:
-        st.metric(
-            label="연속 학습",
-            value=f"{stats['streak_days']}일",
-            help="오늘 포함 매일 학습한 연속 일수입니다.",
-        )
-    with col3:
-        st.metric(
-            label="오늘 목표",
-            value=f"{stats['daily_solved']}/3",
-            help="오늘 목표는 문제 3개 풀기입니다.",
-        )
+    st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+    render_metric_cards(stats)
+    st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
 
     # 전체 진행도 바
     render_progress_bar(stats["overall_completion"], "전체 진행도")
@@ -72,7 +164,19 @@ def main() -> None:
     # ============================================================
     # 챕터 카드 그리드 (4열 × 2행)
     # ============================================================
-    st.subheader("챕터별 학습")
+    st.markdown(
+        """
+        <div style="margin-bottom: 16px;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #2D3436; margin: 0 0 4px 0;">
+                챕터별 학습
+            </h2>
+            <p style="font-size: 0.85em; color: #636E72; margin: 0;">
+                챕터를 선택하여 학습을 시작하세요. 순서대로 학습을 권장합니다.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     # 챕터 정보: (id, 제목, 한 줄 설명)
     chapters = [
@@ -96,10 +200,61 @@ def main() -> None:
     st.divider()
 
     # ============================================================
+    # AI 튜터 링크 배너
+    # ============================================================
+    st.markdown(
+        """
+        <div style="
+            background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(74,144,217,0.08));
+            border: 1.5px solid rgba(108,99,255,0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        ">
+            <div style="
+                background: linear-gradient(135deg, #6C63FF, #4A90D9);
+                border-radius: 10px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            ">
+                <span style="color:white;font-size:1.2em;">AI</span>
+            </div>
+            <div>
+                <div style="font-weight: 700; color: #2D3436; margin-bottom: 2px; font-size: 0.95em;">
+                    AI 튜터와 함께 학습하기
+                </div>
+                <div style="font-size: 0.82em; color: #636E72;">
+                    왼쪽 사이드바에서 AI 튜터 페이지를 열어 질문하고 개념을 확인하세요.
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # ============================================================
     # 진행도 내보내기 / 가져오기
     # ============================================================
-    st.subheader("진행도 관리")
-    st.caption("브라우저가 바뀌거나 초기화되어도 진행도를 보존할 수 있습니다.")
+    st.markdown(
+        """
+        <div style="margin-bottom: 12px;">
+            <h2 style="font-size: 1.1rem; font-weight: 700; color: #2D3436; margin: 0 0 4px 0;">
+                진행도 관리
+            </h2>
+            <p style="font-size: 0.82em; color: #636E72; margin: 0;">
+                브라우저가 바뀌거나 초기화되어도 진행도를 보존할 수 있습니다.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     col_exp, col_imp = st.columns(2)
 
