@@ -157,7 +157,7 @@ def apply_theme() -> None:
     .main .block-container {{
         padding-top: var(--space-3);
         padding-bottom: var(--space-6);
-        max-width: 900px;
+        max-width: 1200px;
     }}
 
     /* ===== 헤더 스타일 ===== */

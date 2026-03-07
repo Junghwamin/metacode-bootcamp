@@ -16,7 +16,7 @@ import streamlit as st
 def render_chat_panel(chapter_id: int = None, problem_title: str = None):
     """오른쪽 채팅 패널 레이아웃을 설정하고 콘텐츠 컬럼을 반환한다.
 
-    채팅이 열려 있으면 [콘텐츠 4 : 채팅 1.5] 비율로 분할하고,
+    채팅이 열려 있으면 [콘텐츠 3 : 채팅 1.3] 비율로 분할하고,
     닫혀 있으면 콘텐츠만 표시 + 오른쪽 하단에 열기 버튼을 배치한다.
 
     Args:
@@ -37,9 +37,18 @@ def render_chat_panel(chapter_id: int = None, problem_title: str = None):
     if "chat_count" not in st.session_state:
         st.session_state["chat_count"] = 0
 
-    # API 키 없으면 채팅 비활성화 → 전체 너비 컨텐츠
+    # API 키 없으면 채팅 비활성화 -> 전체 너비 컨텐츠
     if not api_key:
         return st.container()
+
+    # 쿼리 파라미터로 채팅 열기 감지
+    qp = st.query_params
+    if qp.get("chat") == "open":
+        st.session_state["chat_open"] = True
+        st.query_params.clear()
+    elif qp.get("chat") == "close":
+        st.session_state["chat_open"] = False
+        st.query_params.clear()
 
     # 채팅 열림/닫힘에 따라 레이아웃 분기
     if st.session_state["chat_open"]:
@@ -48,47 +57,51 @@ def render_chat_panel(chapter_id: int = None, problem_title: str = None):
             _render_chat_content(api_key, chapter_id, problem_title)
         return content_col
     else:
-        # 닫힌 상태: 오른쪽 하단 플로팅 버튼
-        _inject_floating_button_css()
-        content_col, btn_col = st.columns([20, 1])
-        with btn_col:
-            if st.button("💬", key="chat_open_btn", help="AI 튜터 열기"):
-                st.session_state["chat_open"] = True
-                st.rerun()
-        return content_col
+        # 닫힌 상태: 우하단에 고정 HTML 버튼 (JS로 쿼리 파라미터 설정)
+        _render_floating_button()
+        return st.container()
 
 
-def _inject_floating_button_css():
-    """플로팅 버튼 스타일을 주입한다."""
-    st.markdown("""
-    <style>
-    /* 오른쪽 열기 버튼 고정 */
-    [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:last-child button[kind="secondary"]) > [data-testid="stColumn"]:last-child {
-        position: fixed;
-        right: 24px;
-        bottom: 24px;
-        z-index: 999;
-        width: auto !important;
-        flex: none !important;
-    }
-    [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:last-child button[kind="secondary"]) > [data-testid="stColumn"]:last-child button {
-        background: linear-gradient(135deg, #6C63FF, #4A90D9) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 50% !important;
-        width: 56px !important;
-        height: 56px !important;
-        font-size: 24px !important;
-        box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4) !important;
-        padding: 0 !important;
-        min-height: 0 !important;
-    }
-    [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:last-child button[kind="secondary"]) > [data-testid="stColumn"]:last-child button:hover {
-        transform: scale(1.1) !important;
-        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.6) !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+def _render_floating_button():
+    """오른쪽 하단 플로팅 채팅 버튼을 렌더링한다.
+
+    순수 HTML/CSS/JS로 구현하여 Streamlit 내부 구조에 의존하지 않는다.
+    클릭 시 ?chat=open 쿼리 파라미터를 추가하여 Streamlit이 감지한다.
+    """
+    st.markdown(
+        """
+        <div style="
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 999;
+        ">
+            <a href="?chat=open" target="_self" style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: linear-gradient(135deg, #6C63FF, #4A90D9);
+                color: white;
+                text-decoration: none;
+                border-radius: 28px;
+                padding: 12px 20px;
+                font-size: 15px;
+                font-weight: 600;
+                font-family: 'Noto Sans KR', 'Inter', sans-serif;
+                box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+                transition: all 0.2s ease;
+                user-select: none;
+            "
+            onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 6px 20px rgba(108,99,255,0.6)';"
+            onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 15px rgba(108,99,255,0.4)';"
+            >
+                <span style="font-size:20px;">💬</span>
+                AI 튜터
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def _render_chat_content(api_key: str, chapter_id: int = None,
@@ -100,29 +113,23 @@ def _render_chat_content(api_key: str, chapter_id: int = None,
         chapter_id: 현재 챕터 번호
         problem_title: 현재 문제 제목
     """
-    # 패널 스타일
-    st.markdown("""
-    <style>
-    /* 오른쪽 채팅 패널 스타일 */
-    [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:last-child {
-        background: #F8F9FE;
-        border-left: 1px solid #E2E8F0;
-        border-radius: 12px 0 0 12px;
-        padding: 8px;
-        position: sticky;
-        top: 60px;
-        height: calc(100vh - 80px);
-        overflow-y: auto;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # 채팅 패널 배경 스타일
+    st.markdown(
+        '<div style="'
+        'background:#F8F9FE;'
+        'border-left:2px solid #E2E8F0;'
+        'border-radius:12px;'
+        'padding:12px 8px;'
+        '">',
+        unsafe_allow_html=True,
+    )
 
     # 헤더
     col_title, col_close = st.columns([4, 1])
     with col_title:
         st.markdown(
-            '<p style="font-weight:700;font-size:1em;margin:0;'
-            'color:#6C63FF;">AI 튜터</p>',
+            '<p style="font-weight:700;font-size:1.05em;margin:0;'
+            'color:#6C63FF;">💬 AI 튜터</p>',
             unsafe_allow_html=True,
         )
     with col_close:
@@ -184,6 +191,9 @@ def _render_chat_content(api_key: str, chapter_id: int = None,
         if st.button("지우기", key="clear_right", use_container_width=True):
             st.session_state["sidebar_messages"] = []
             st.rerun()
+
+    # 패널 닫기 태그
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _send_message(api_key: str, message: str,
