@@ -69,32 +69,49 @@ def _inject_chat_panel_css():
     st.markdown(
         """
         <style>
+        /* 최상위 컬럼 블록: flex-start로 변경하여 sticky 작동 허용 */
+        div[data-testid="stMainBlockContainer"]
+        > div[data-testid="stVerticalBlock"]
+        > div[data-testid="stLayoutWrapper"]
+        > div[data-testid="stHorizontalBlock"] {
+            align-items: flex-start !important;
+        }
+
         /* 최상위 컬럼 블록의 마지막 컬럼 = 채팅 패널 */
-        .main .block-container > div > div > div[data-testid="stHorizontalBlock"]
+        div[data-testid="stMainBlockContainer"]
+        > div[data-testid="stVerticalBlock"]
+        > div[data-testid="stLayoutWrapper"]
+        > div[data-testid="stHorizontalBlock"]
         > div[data-testid="stColumn"]:last-child {
             background: linear-gradient(180deg, #F8F9FE 0%, #F0F2FF 100%);
             border-left: 2px solid #E2E8F0;
             border-radius: 16px 0 0 16px;
             padding: 16px 12px !important;
             position: sticky;
-            top: 56px;
+            top: 0;
             height: calc(100vh - 72px);
             overflow-y: auto;
         }
 
         /* 채팅 패널 내 스크롤바 */
-        .main .block-container > div > div > div[data-testid="stHorizontalBlock"]
+        div[data-testid="stMainBlockContainer"]
+        > div[data-testid="stVerticalBlock"]
+        > div[data-testid="stLayoutWrapper"]
+        > div[data-testid="stHorizontalBlock"]
         > div[data-testid="stColumn"]:last-child::-webkit-scrollbar {
             width: 4px;
         }
-        .main .block-container > div > div > div[data-testid="stHorizontalBlock"]
+        div[data-testid="stMainBlockContainer"]
+        > div[data-testid="stVerticalBlock"]
+        > div[data-testid="stLayoutWrapper"]
+        > div[data-testid="stHorizontalBlock"]
         > div[data-testid="stColumn"]:last-child::-webkit-scrollbar-thumb {
             background: rgba(108, 99, 255, 0.2);
             border-radius: 2px;
         }
 
         /* 채팅 열림 시 max-width 해제 */
-        .main .block-container {
+        div[data-testid="stMainBlockContainer"] {
             max-width: 100% !important;
             padding-left: 1rem !important;
             padding-right: 1rem !important;
