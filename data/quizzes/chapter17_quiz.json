@@ -1,114 +1,119 @@
 {
     "chapter_id": 17,
-    "quiz_title": "챕터 17 확인 퀴즈 - 마케팅 데이터 분석 실전",
+    "title": "챕터 17 확인 퀴즈 - 마케팅 데이터 분석 실전",
     "passing_score": 0.6,
     "questions": [
         {
-            "question_id": "ch17_q01",
             "type": "multiple_choice",
             "question": "ROAS(Return On Ad Spend)의 올바른 계산 공식은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "광고 지출 / 광고 수익"},
-                {"label": "B", "text": "광고 수익 / 광고 지출"},
-                {"label": "C", "text": "(광고 수익 - 광고 지출) / 광고 수익"},
-                {"label": "D", "text": "클릭 수 / 노출 수"}
+                "광고 지출 / 광고 수익",
+                "광고 수익 / 광고 지출",
+                "(광고 수익 - 광고 지출) / 광고 수익",
+                "클릭 수 / 노출 수"
             ],
-            "correct_answer": "B",
-            "explanation": "ROAS = 광고 수익 / 광고 지출 입니다. ROAS가 3이면 1원을 지출해 3원의 수익이 발생했다는 의미입니다. ROAS < 1이면 손실입니다."
+            "correct_answer": "광고 수익 / 광고 지출",
+            "explanation": "ROAS = 광고 수익 / 광고 지출 입니다. ROAS가 3이면 1원을 지출해 3원의 수익이 발생했다는 의미입니다. ROAS < 1이면 손실입니다.",
+            "id": "ch17_q01"
         },
         {
-            "question_id": "ch17_q02",
             "type": "multiple_choice",
             "question": "라스트터치(Last Touch) 기여 모델을 pandas로 구현할 때 사용하는 메서드 조합은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "groupby().first()"},
-                {"label": "B", "text": "groupby().last()"},
-                {"label": "C", "text": "groupby().sum()"},
-                {"label": "D", "text": "groupby().mean()"}
+                "groupby().first()",
+                "groupby().last()",
+                "groupby().sum()",
+                "groupby().mean()"
             ],
-            "correct_answer": "B",
-            "explanation": "라스트터치는 사용자별 마지막 접촉 채널을 추출해야 합니다. sort_values()로 시간순 정렬 후 groupby().last()를 사용합니다. first()는 퍼스트터치에 해당합니다."
+            "correct_answer": "groupby().last()",
+            "explanation": "라스트터치는 사용자별 마지막 접촉 채널을 추출해야 합니다. sort_values()로 시간순 정렬 후 groupby().last()를 사용합니다. first()는 퍼스트터치에 해당합니다.",
+            "id": "ch17_q02"
         },
         {
-            "question_id": "ch17_q03",
             "type": "ox",
             "question": "전환 윈도우(Conversion Window)가 길수록 더 많은 전환을 포함할 수 있지만, 관련 없는 접촉까지 기여로 인정될 수 있다.",
-            "correct_answer": true,
-            "explanation": "맞습니다. 윈도우가 길면 완전성(더 많은 전환 포함)은 높아지지만, 시간이 오래된 접촉을 기여로 인정하는 적시성 문제가 생깁니다. 완전성 vs 적시성의 트레이드오프입니다."
+            "correct_answer": "O",
+            "explanation": "맞습니다. 윈도우가 길면 완전성(더 많은 전환 포함)은 높아지지만, 시간이 오래된 접촉을 기여로 인정하는 적시성 문제가 생깁니다. 완전성 vs 적시성의 트레이드오프입니다.",
+            "id": "ch17_q03"
         },
         {
-            "question_id": "ch17_q04",
             "type": "fill_blank",
             "question": "pandas에서 timedelta 컬럼을 일(day) 단위 숫자로 변환하려면 .dt.total_seconds()를 호출한 후 어떤 숫자로 나눠야 하나요?",
             "correct_answer": "86400",
-            "accept_answers": ["86400", "86,400", "24*3600", "3600*24"],
-            "explanation": "1일 = 24시간 × 3600초 = 86400초 입니다. dt.total_seconds() / 86400으로 일 단위로 변환합니다."
+            "accept_answers": [
+                "86400",
+                "86,400",
+                "24*3600",
+                "3600*24"
+            ],
+            "explanation": "1일 = 24시간 × 3600초 = 86400초 입니다. dt.total_seconds() / 86400으로 일 단위로 변환합니다.",
+            "id": "ch17_q04"
         },
         {
-            "question_id": "ch17_q05",
             "type": "multiple_choice",
             "question": "CPC(Cost Per Click)의 올바른 계산 공식은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "클릭 수 / 광고 지출"},
-                {"label": "B", "text": "광고 수익 / 클릭 수"},
-                {"label": "C", "text": "광고 지출 / 클릭 수"},
-                {"label": "D", "text": "전환 수 / 광고 지출"}
+                "클릭 수 / 광고 지출",
+                "광고 수익 / 클릭 수",
+                "광고 지출 / 클릭 수",
+                "전환 수 / 광고 지출"
             ],
-            "correct_answer": "C",
-            "explanation": "CPC = 광고 지출 / 클릭 수 입니다. CPC가 낮을수록 같은 예산으로 더 많은 클릭을 얻을 수 있어 효율적입니다."
+            "correct_answer": "광고 지출 / 클릭 수",
+            "explanation": "CPC = 광고 지출 / 클릭 수 입니다. CPC가 낮을수록 같은 예산으로 더 많은 클릭을 얻을 수 있어 효율적입니다.",
+            "id": "ch17_q05"
         },
         {
-            "question_id": "ch17_q06",
             "type": "multiple_choice",
             "question": "pandas에서 날짜 컬럼에서 ISO 주차(week number)를 추출하는 올바른 방법은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "df['date'].dt.week"},
-                {"label": "B", "text": "df['date'].dt.isocalendar().week"},
-                {"label": "C", "text": "df['date'].week_number"},
-                {"label": "D", "text": "df['date'].dt.weekofyear"}
+                "df['date'].dt.week",
+                "df['date'].dt.isocalendar().week",
+                "df['date'].week_number",
+                "df['date'].dt.weekofyear"
             ],
-            "correct_answer": "B",
-            "explanation": "dt.isocalendar().week로 ISO 주차를 추출합니다. dt.week와 dt.weekofyear는 최신 pandas에서 deprecated(사용 중단 예정)됩니다."
+            "correct_answer": "df['date'].dt.isocalendar().week",
+            "explanation": "dt.isocalendar().week로 ISO 주차를 추출합니다. dt.week와 dt.weekofyear는 최신 pandas에서 deprecated(사용 중단 예정)됩니다.",
+            "id": "ch17_q06"
         },
         {
-            "question_id": "ch17_q07",
             "type": "ox",
             "question": "멀티터치(Multi Touch) 균등 기여 모델에서 4번의 터치 중 하나의 터치에 부여되는 가중치는 0.25이다.",
-            "correct_answer": true,
-            "explanation": "맞습니다. 균등 분배 멀티터치 모델에서 n번의 터치가 있다면 각 터치의 가중치는 1/n입니다. 4번 터치의 경우 각 0.25(= 1/4)씩 배분됩니다."
+            "correct_answer": "O",
+            "explanation": "맞습니다. 균등 분배 멀티터치 모델에서 n번의 터치가 있다면 각 터치의 가중치는 1/n입니다. 4번 터치의 경우 각 0.25(= 1/4)씩 배분됩니다.",
+            "id": "ch17_q07"
         },
         {
-            "question_id": "ch17_q08",
             "type": "multiple_choice",
             "question": "pandas의 pivot_table()에서 행(index)에 'week', 열(columns)에 'campaign', 집계값에 'roas'를 설정하려면 어떻게 작성해야 하나요?",
             "options": [
-                {"label": "A", "text": "pivot_table(values='roas', rows='week', cols='campaign')"},
-                {"label": "B", "text": "pivot_table(values='roas', index='week', columns='campaign')"},
-                {"label": "C", "text": "pivot_table(x='week', y='campaign', z='roas')"},
-                {"label": "D", "text": "pivot_table(data='roas', by=['week', 'campaign'])"}
+                "pivot_table(values='roas', rows='week', cols='campaign')",
+                "pivot_table(values='roas', index='week', columns='campaign')",
+                "pivot_table(x='week', y='campaign', z='roas')",
+                "pivot_table(data='roas', by=['week', 'campaign'])"
             ],
-            "correct_answer": "B",
-            "explanation": "pivot_table()은 values(집계값), index(행), columns(열), aggfunc(집계 함수)를 파라미터로 받습니다."
+            "correct_answer": "pivot_table(values='roas', index='week', columns='campaign')",
+            "explanation": "pivot_table()은 values(집계값), index(행), columns(열), aggfunc(집계 함수)를 파라미터로 받습니다.",
+            "id": "ch17_q08"
         },
         {
-            "question_id": "ch17_q09",
             "type": "multiple_choice",
             "question": "두 DataFrame을 'campaign'과 'date' 두 컬럼을 기준으로 병합할 때 올바른 merge() 호출은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "df1.merge(df2, on='campaign, date')"},
-                {"label": "B", "text": "df1.merge(df2, on=['campaign', 'date'])"},
-                {"label": "C", "text": "df1.merge(df2, keys=['campaign', 'date'])"},
-                {"label": "D", "text": "df1.merge(df2, by=['campaign', 'date'])"}
+                "df1.merge(df2, on='campaign, date')",
+                "df1.merge(df2, on=['campaign', 'date'])",
+                "df1.merge(df2, keys=['campaign', 'date'])",
+                "df1.merge(df2, by=['campaign', 'date'])"
             ],
-            "correct_answer": "B",
-            "explanation": "복수 컬럼으로 병합할 때는 on 파라미터에 리스트로 전달합니다: merge(df2, on=['campaign', 'date'])"
+            "correct_answer": "df1.merge(df2, on=['campaign', 'date'])",
+            "explanation": "복수 컬럼으로 병합할 때는 on 파라미터에 리스트로 전달합니다: merge(df2, on=['campaign', 'date'])",
+            "id": "ch17_q09"
         },
         {
-            "question_id": "ch17_q10",
             "type": "ox",
             "question": "ROAS가 1.5인 캠페인은 광고비 대비 1.5배의 수익을 올렸으므로, 광고비보다 수익이 더 크다.",
-            "correct_answer": true,
-            "explanation": "맞습니다. ROAS = 수익 / 지출이므로 ROAS가 1.5라면 100원 지출 시 150원의 수익이 발생했다는 의미입니다. 다만 ROAS = 1은 손익분기점이고, 비용 구조에 따라 실제 이익은 다를 수 있습니다."
+            "correct_answer": "O",
+            "explanation": "맞습니다. ROAS = 수익 / 지출이므로 ROAS가 1.5라면 100원 지출 시 150원의 수익이 발생했다는 의미입니다. 다만 ROAS = 1은 손익분기점이고, 비용 구조에 따라 실제 이익은 다를 수 있습니다.",
+            "id": "ch17_q10"
         }
     ]
 }

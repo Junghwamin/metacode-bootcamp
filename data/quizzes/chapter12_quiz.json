@@ -1,114 +1,119 @@
 {
     "chapter_id": 12,
-    "quiz_title": "챕터 12 확인 퀴즈",
+    "title": "챕터 12 확인 퀴즈",
     "passing_score": 0.6,
     "questions": [
         {
-            "question_id": "ch12_q01",
             "type": "multiple_choice",
             "question": "불편추정량(unbiased estimator)의 정의로 올바른 것은?",
             "options": [
-                {"label": "A", "text": "추정값이 항상 모수와 같은 추정량"},
-                {"label": "B", "text": "평균적으로 모수와 일치하는 추정량"},
-                {"label": "C", "text": "분산이 가장 작은 추정량"},
-                {"label": "D", "text": "계산이 가장 간단한 추정량"}
+                "추정값이 항상 모수와 같은 추정량",
+                "평균적으로 모수와 일치하는 추정량",
+                "분산이 가장 작은 추정량",
+                "계산이 가장 간단한 추정량"
             ],
-            "correct_answer": "B",
-            "explanation": "불편추정량은 E[추정량] = 모수 인 추정량입니다. 개별 추정값이 모수와 반드시 일치하지는 않지만, 반복 추정하면 평균적으로 모수에 수렴합니다. 표본분산의 (n-1) 보정이 불편성을 보장합니다."
+            "correct_answer": "평균적으로 모수와 일치하는 추정량",
+            "explanation": "불편추정량은 E[추정량] = 모수 인 추정량입니다. 개별 추정값이 모수와 반드시 일치하지는 않지만, 반복 추정하면 평균적으로 모수에 수렴합니다. 표본분산의 (n-1) 보정이 불편성을 보장합니다.",
+            "id": "ch12_q01"
         },
         {
-            "question_id": "ch12_q02",
             "type": "ox",
             "question": "numpy에서 np.var(data, ddof=1)은 불편 표본분산(n-1로 나눔)을 계산한다.",
-            "correct_answer": true,
-            "explanation": "맞습니다. ddof(delta degrees of freedom)=1로 설정하면 n-1로 나누어 불편 표본분산을 계산합니다. ddof=0(기본값)은 n으로 나누는 편향 분산(MLE)입니다."
+            "correct_answer": "O",
+            "explanation": "맞습니다. ddof(delta degrees of freedom)=1로 설정하면 n-1로 나누어 불편 표본분산을 계산합니다. ddof=0(기본값)은 n으로 나누는 편향 분산(MLE)입니다.",
+            "id": "ch12_q02"
         },
         {
-            "question_id": "ch12_q03",
             "type": "multiple_choice",
             "question": "모분산 σ²을 모를 때 모평균의 신뢰구간 계산에 사용하는 분포는?",
             "options": [
-                {"label": "A", "text": "표준정규분포 N(0,1)"},
-                {"label": "B", "text": "카이제곱분포 χ²"},
-                {"label": "C", "text": "t분포"},
-                {"label": "D", "text": "F분포"}
+                "표준정규분포 N(0,1)",
+                "카이제곱분포 χ²",
+                "t분포",
+                "F분포"
             ],
-            "correct_answer": "C",
-            "explanation": "모분산 σ²이 알려지지 않은 경우(실무에서 대부분) t분포를 사용합니다. 표본표준편차 S를 이용하여 T = (x̄ - μ)/(S/√n) ~ t(n-1)로 검정통계량을 구성합니다."
+            "correct_answer": "t분포",
+            "explanation": "모분산 σ²이 알려지지 않은 경우(실무에서 대부분) t분포를 사용합니다. 표본표준편차 S를 이용하여 T = (x̄ - μ)/(S/√n) ~ t(n-1)로 검정통계량을 구성합니다.",
+            "id": "ch12_q03"
         },
         {
-            "question_id": "ch12_q04",
             "type": "multiple_choice",
             "question": "신뢰수준 95%에서 99%로 높이면 신뢰구간의 너비는?",
             "options": [
-                {"label": "A", "text": "좁아진다"},
-                {"label": "B", "text": "넓어진다"},
-                {"label": "C", "text": "변하지 않는다"},
-                {"label": "D", "text": "표본크기에 따라 다르다"}
+                "좁아진다",
+                "넓어진다",
+                "변하지 않는다",
+                "표본크기에 따라 다르다"
             ],
-            "correct_answer": "B",
-            "explanation": "신뢰수준이 높아지면 임계값이 커지므로 신뢰구간이 넓어집니다. 95%는 z=1.96, 99%는 z=2.576을 사용하기 때문입니다. 정밀도(좁은 구간)와 신뢰도(높은 확률) 사이에는 트레이드오프가 있습니다."
+            "correct_answer": "넓어진다",
+            "explanation": "신뢰수준이 높아지면 임계값이 커지므로 신뢰구간이 넓어집니다. 95%는 z=1.96, 99%는 z=2.576을 사용하기 때문입니다. 정밀도(좁은 구간)와 신뢰도(높은 확률) 사이에는 트레이드오프가 있습니다.",
+            "id": "ch12_q04"
         },
         {
-            "question_id": "ch12_q05",
             "type": "fill_blank",
             "question": "가설검정에서 H₀가 참인데도 기각하는 오류를 무엇이라 하나요? (숫자로 입력: 제_종 오류)",
             "correct_answer": "1",
-            "accept_answers": ["제1종", "1종", "제1종 오류", "Type I"],
-            "explanation": "제1종 오류(Type I error)는 H₀가 참임에도 기각하는 오류로, 유의수준 α로 제어합니다. 반대로 H₀가 거짓인데 채택하는 오류는 제2종 오류(Type II error, β)입니다."
+            "accept_answers": [
+                "제1종",
+                "1종",
+                "제1종 오류",
+                "Type I"
+            ],
+            "explanation": "제1종 오류(Type I error)는 H₀가 참임에도 기각하는 오류로, 유의수준 α로 제어합니다. 반대로 H₀가 거짓인데 채택하는 오류는 제2종 오류(Type II error, β)입니다.",
+            "id": "ch12_q05"
         },
         {
-            "question_id": "ch12_q06",
             "type": "ox",
             "question": "p-value가 0.03이고 유의수준이 0.05라면 귀무가설을 기각한다.",
-            "correct_answer": true,
-            "explanation": "맞습니다. p-value(0.03) < 유의수준(0.05)이므로 귀무가설을 기각합니다. p-value는 H₀가 참일 때 현재 이상의 극단적 결과가 나올 확률로, 이 값이 작을수록 H₀에 반하는 증거가 강합니다."
+            "correct_answer": "O",
+            "explanation": "맞습니다. p-value(0.03) < 유의수준(0.05)이므로 귀무가설을 기각합니다. p-value는 H₀가 참일 때 현재 이상의 극단적 결과가 나올 확률로, 이 값이 작을수록 H₀에 반하는 증거가 강합니다.",
+            "id": "ch12_q06"
         },
         {
-            "question_id": "ch12_q07",
             "type": "multiple_choice",
             "question": "scipy.stats.ttest_1samp(data, popmean=50)은 어떤 검정을 수행하나요?",
             "options": [
-                {"label": "A", "text": "두 집단의 평균이 같은지 비교하는 검정"},
-                {"label": "B", "text": "모집단 분산이 50인지 검정"},
-                {"label": "C", "text": "표본 평균이 50과 같은지 단일 표본 t검정"},
-                {"label": "D", "text": "표본이 정규분포인지 적합도 검정"}
+                "두 집단의 평균이 같은지 비교하는 검정",
+                "모집단 분산이 50인지 검정",
+                "표본 평균이 50과 같은지 단일 표본 t검정",
+                "표본이 정규분포인지 적합도 검정"
             ],
-            "correct_answer": "C",
-            "explanation": "ttest_1samp(data, popmean=50)은 H₀: μ = 50 을 검정하는 단일 표본 t검정입니다. 표본 데이터와 귀무가설의 모평균값(popmean)을 비교합니다."
+            "correct_answer": "표본 평균이 50과 같은지 단일 표본 t검정",
+            "explanation": "ttest_1samp(data, popmean=50)은 H₀: μ = 50 을 검정하는 단일 표본 t검정입니다. 표본 데이터와 귀무가설의 모평균값(popmean)을 비교합니다.",
+            "id": "ch12_q07"
         },
         {
-            "question_id": "ch12_q08",
             "type": "multiple_choice",
             "question": "모비율 신뢰구간 공식 p̂ ± z√(p̂(1-p̂)/n)을 적용하기 위한 조건으로 옳은 것은?",
             "options": [
-                {"label": "A", "text": "np̂ ≥ 5 이고 n(1-p̂) ≥ 5"},
-                {"label": "B", "text": "n ≥ 100"},
-                {"label": "C", "text": "p̂ = 0.5 인 경우에만 사용"},
-                {"label": "D", "text": "모집단이 정규분포를 따를 때"}
+                "np̂ ≥ 5 이고 n(1-p̂) ≥ 5",
+                "n ≥ 100",
+                "p̂ = 0.5 인 경우에만 사용",
+                "모집단이 정규분포를 따를 때"
             ],
-            "correct_answer": "A",
-            "explanation": "모비율의 정규근사 신뢰구간을 사용하려면 np̂ ≥ 5이고 n(1-p̂) ≥ 5를 만족해야 합니다. 이는 성공 횟수와 실패 횟수가 모두 충분해야 이항분포가 정규분포로 근사 가능하다는 조건입니다."
+            "correct_answer": "np̂ ≥ 5 이고 n(1-p̂) ≥ 5",
+            "explanation": "모비율의 정규근사 신뢰구간을 사용하려면 np̂ ≥ 5이고 n(1-p̂) ≥ 5를 만족해야 합니다. 이는 성공 횟수와 실패 횟수가 모두 충분해야 이항분포가 정규분포로 근사 가능하다는 조건입니다.",
+            "id": "ch12_q08"
         },
         {
-            "question_id": "ch12_q09",
             "type": "ox",
             "question": "모비율 추정에서 p가 알려지지 않은 경우 표본크기 결정 공식에 p=0.5를 사용하면 표본크기가 가장 작게 나온다.",
-            "correct_answer": false,
-            "explanation": "틀립니다. p=0.5일 때 p(1-p)가 최대(0.25)가 되므로 표본크기가 가장 크게 나옵니다. p=0.5 사용은 최대(보수적) 표본크기를 보장하여, 어떤 실제 비율이든 원하는 정밀도를 달성할 수 있게 합니다."
+            "correct_answer": "X",
+            "explanation": "틀립니다. p=0.5일 때 p(1-p)가 최대(0.25)가 되므로 표본크기가 가장 크게 나옵니다. p=0.5 사용은 최대(보수적) 표본크기를 보장하여, 어떤 실제 비율이든 원하는 정밀도를 달성할 수 있게 합니다.",
+            "id": "ch12_q09"
         },
         {
-            "question_id": "ch12_q10",
             "type": "multiple_choice",
             "question": "검정력(power)에 대한 설명으로 올바른 것은?",
             "options": [
-                {"label": "A", "text": "H₀가 참일 때 채택할 확률"},
-                {"label": "B", "text": "H₀가 거짓일 때 기각할 확률 (1-β)"},
-                {"label": "C", "text": "유의수준 α와 항상 같다"},
-                {"label": "D", "text": "표본크기가 커지면 감소한다"}
+                "H₀가 참일 때 채택할 확률",
+                "H₀가 거짓일 때 기각할 확률 (1-β)",
+                "유의수준 α와 항상 같다",
+                "표본크기가 커지면 감소한다"
             ],
-            "correct_answer": "B",
-            "explanation": "검정력 = 1 - β = P(H₀ 기각 | H₁이 참)입니다. 검정이 실제로 존재하는 효과를 탐지할 수 있는 능력을 나타냅니다. 표본크기가 클수록, 실제 효과 크기가 클수록 검정력이 높아집니다."
+            "correct_answer": "H₀가 거짓일 때 기각할 확률 (1-β)",
+            "explanation": "검정력 = 1 - β = P(H₀ 기각 | H₁이 참)입니다. 검정이 실제로 존재하는 효과를 탐지할 수 있는 능력을 나타냅니다. 표본크기가 클수록, 실제 효과 크기가 클수록 검정력이 높아집니다.",
+            "id": "ch12_q10"
         }
     ]
 }

@@ -1,115 +1,123 @@
 {
     "chapter_id": 10,
-    "quiz_title": "챕터 10 확인 퀴즈",
+    "title": "챕터 10 확인 퀴즈",
     "passing_score": 0.6,
     "questions": [
         {
-            "question_id": "ch10_q01",
             "type": "multiple_choice",
             "question": "확률의 콜모고로프 공리 중 '전체 표본공간의 확률은 1이다'를 수식으로 올바르게 나타낸 것은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "P(A) ≥ 0"},
-                {"label": "B", "text": "P(∅) = 0"},
-                {"label": "C", "text": "P(S) = 1"},
-                {"label": "D", "text": "P(A∪B) = P(A) + P(B)"}
+                "P(A) ≥ 0",
+                "P(∅) = 0",
+                "P(S) = 1",
+                "P(A∪B) = P(A) + P(B)"
             ],
-            "correct_answer": "C",
-            "explanation": "P(S) = 1은 콜모고로프의 두 번째 공리로, 전체 표본공간(S)의 확률은 반드시 1이어야 함을 나타냅니다. P(A) ≥ 0은 첫 번째 공리(비음성), D는 세 번째 공리(가산성, 배반사건에 한함)입니다."
+            "correct_answer": "P(S) = 1",
+            "explanation": "P(S) = 1은 콜모고로프의 두 번째 공리로, 전체 표본공간(S)의 확률은 반드시 1이어야 함을 나타냅니다. P(A) ≥ 0은 첫 번째 공리(비음성), D는 세 번째 공리(가산성, 배반사건에 한함)입니다.",
+            "id": "ch10_q01"
         },
         {
-            "question_id": "ch10_q02",
             "type": "multiple_choice",
             "question": "카드 52장에서 1장을 뽑을 때 '스페이드이거나 킹'일 확률은 얼마인가요?\n(스페이드 13장, 킹 4장, 스페이드 킹 1장)",
             "options": [
-                {"label": "A", "text": "17/52"},
-                {"label": "B", "text": "16/52"},
-                {"label": "C", "text": "17/52 - 1/52 = 16/52"},
-                {"label": "D", "text": "B와 C 모두 정답"}
+                "17/52",
+                "16/52",
+                "17/52 - 1/52 = 16/52",
+                "B와 C 모두 정답"
             ],
-            "correct_answer": "D",
-            "explanation": "P(스페이드 ∪ 킹) = P(스페이드) + P(킹) - P(스페이드 ∩ 킹) = 13/52 + 4/52 - 1/52 = 16/52. B(직접 계산)와 C(포함-배제 원리 적용) 모두 같은 답 16/52를 줍니다."
+            "correct_answer": "B와 C 모두 정답",
+            "explanation": "P(스페이드 ∪ 킹) = P(스페이드) + P(킹) - P(스페이드 ∩ 킹) = 13/52 + 4/52 - 1/52 = 16/52. B(직접 계산)와 C(포함-배제 원리 적용) 모두 같은 답 16/52를 줍니다.",
+            "id": "ch10_q02"
         },
         {
-            "question_id": "ch10_q03",
             "type": "ox",
             "question": "두 사건 A, B가 P(A∩B) = P(A) × P(B)를 만족하면, 두 사건은 독립이다.",
-            "correct_answer": true,
-            "explanation": "맞습니다. 독립사건의 정의가 바로 P(A∩B) = P(A) × P(B)입니다. 이는 P(A|B) = P(A)와 동치로, B가 발생했다는 정보가 A의 확률에 영향을 주지 않음을 의미합니다. 복원 추출은 독립, 비복원 추출은 종속입니다."
+            "correct_answer": "O",
+            "explanation": "맞습니다. 독립사건의 정의가 바로 P(A∩B) = P(A) × P(B)입니다. 이는 P(A|B) = P(A)와 동치로, B가 발생했다는 정보가 A의 확률에 영향을 주지 않음을 의미합니다. 복원 추출은 독립, 비복원 추출은 종속입니다.",
+            "id": "ch10_q03"
         },
         {
-            "question_id": "ch10_q04",
             "type": "fill_blank",
             "question": "조건부확률 P(A|B)를 구하는 공식은 P(A|B) = P(A∩B) / ______ 입니다.",
             "correct_answer": "P(B)",
-            "accept_answers": ["P(B)", "p(b)", "P(B) (단, P(B)>0)"],
-            "explanation": "조건부확률 공식: P(A|B) = P(A∩B) / P(B) (단, P(B) > 0). B가 주어졌을 때 A의 확률은 A와 B가 동시에 일어날 확률을 B가 일어날 확률로 나눈 것입니다. 이 공식은 표본공간을 S에서 B로 좁힌 것으로 해석할 수 있습니다."
+            "accept_answers": [
+                "P(B)",
+                "p(b)",
+                "P(B) (단, P(B)>0)"
+            ],
+            "explanation": "조건부확률 공식: P(A|B) = P(A∩B) / P(B) (단, P(B) > 0). B가 주어졌을 때 A의 확률은 A와 B가 동시에 일어날 확률을 B가 일어날 확률로 나눈 것입니다. 이 공식은 표본공간을 S에서 B로 좁힌 것으로 해석할 수 있습니다.",
+            "id": "ch10_q04"
         },
         {
-            "question_id": "ch10_q05",
             "type": "multiple_choice",
             "question": "베이즈 정리에서 '사후확률(posterior probability)'은 무엇을 의미하나요?",
             "options": [
-                {"label": "A", "text": "새로운 데이터(증거)를 보기 전의 초기 확률"},
-                {"label": "B", "text": "새로운 데이터(증거)를 반영하여 업데이트된 확률"},
-                {"label": "C", "text": "특정 가설이 참일 때 관측된 데이터가 나올 확률"},
-                {"label": "D", "text": "표본공간의 전체 확률"}
+                "새로운 데이터(증거)를 보기 전의 초기 확률",
+                "새로운 데이터(증거)를 반영하여 업데이트된 확률",
+                "특정 가설이 참일 때 관측된 데이터가 나올 확률",
+                "표본공간의 전체 확률"
             ],
-            "correct_answer": "B",
-            "explanation": "사후확률(posterior)은 새로운 증거를 본 후 업데이트된 확률입니다. 반면 A는 사전확률(prior), C는 우도(likelihood)를 설명합니다. 베이즈 정리: posterior = (likelihood × prior) / evidence."
+            "correct_answer": "새로운 데이터(증거)를 반영하여 업데이트된 확률",
+            "explanation": "사후확률(posterior)은 새로운 증거를 본 후 업데이트된 확률입니다. 반면 A는 사전확률(prior), C는 우도(likelihood)를 설명합니다. 베이즈 정리: posterior = (likelihood × prior) / evidence.",
+            "id": "ch10_q05"
         },
         {
-            "question_id": "ch10_q06",
             "type": "multiple_choice",
             "question": "이산 확률변수 X의 확률분포가 다음과 같을 때, E(X)는 얼마인가요?\nP(X=1)=0.2, P(X=2)=0.5, P(X=3)=0.3",
             "options": [
-                {"label": "A", "text": "2.0"},
-                {"label": "B", "text": "2.1"},
-                {"label": "C", "text": "2.5"},
-                {"label": "D", "text": "1.8"}
+                "2.0",
+                "2.1",
+                "2.5",
+                "1.8"
             ],
-            "correct_answer": "B",
-            "explanation": "E(X) = Σ x·P(X=x) = 1×0.2 + 2×0.5 + 3×0.3 = 0.2 + 1.0 + 0.9 = 2.1. 기대값은 각 값에 확률을 곱한 것의 합입니다."
+            "correct_answer": "2.1",
+            "explanation": "E(X) = Σ x·P(X=x) = 1×0.2 + 2×0.5 + 3×0.3 = 0.2 + 1.0 + 0.9 = 2.1. 기대값은 각 값에 확률을 곱한 것의 합입니다.",
+            "id": "ch10_q06"
         },
         {
-            "question_id": "ch10_q07",
             "type": "ox",
             "question": "확률밀도함수(PDF) f(x)에서 특정 값 x=3에서의 f(3)은 P(X=3)과 같다.",
-            "correct_answer": false,
-            "explanation": "틀립니다. 연속 확률변수에서는 특정 점에서의 확률 P(X=정확히 3)은 항상 0입니다. f(3)은 확률밀도(probability density)이지 확률 자체가 아닙니다. 구간의 면적 ∫f(x)dx가 확률을 나타냅니다. 이산 확률변수의 PMF와 달리 PDF의 함수값이 1을 초과할 수도 있습니다."
+            "correct_answer": "X",
+            "explanation": "틀립니다. 연속 확률변수에서는 특정 점에서의 확률 P(X=정확히 3)은 항상 0입니다. f(3)은 확률밀도(probability density)이지 확률 자체가 아닙니다. 구간의 면적 ∫f(x)dx가 확률을 나타냅니다. 이산 확률변수의 PMF와 달리 PDF의 함수값이 1을 초과할 수도 있습니다.",
+            "id": "ch10_q07"
         },
         {
-            "question_id": "ch10_q08",
             "type": "multiple_choice",
             "question": "선형변환 Y = 2X + 5에서 E(X) = 3, Var(X) = 4일 때, Var(Y)는 얼마인가요?",
             "options": [
-                {"label": "A", "text": "13"},
-                {"label": "B", "text": "16"},
-                {"label": "C", "text": "21"},
-                {"label": "D", "text": "8"}
+                "13",
+                "16",
+                "21",
+                "8"
             ],
-            "correct_answer": "B",
-            "explanation": "Var(aX+b) = a²·Var(X). Var(2X+5) = 2²×4 = 4×4 = 16. 상수 b(=5)는 분산에 영향을 주지 않습니다. 이는 상수 b가 모든 값을 동일하게 이동시켜 퍼짐 정도를 바꾸지 않기 때문입니다."
+            "correct_answer": "16",
+            "explanation": "Var(aX+b) = a²·Var(X). Var(2X+5) = 2²×4 = 4×4 = 16. 상수 b(=5)는 분산에 영향을 주지 않습니다. 이는 상수 b가 모든 값을 동일하게 이동시켜 퍼짐 정도를 바꾸지 않기 때문입니다.",
+            "id": "ch10_q08"
         },
         {
-            "question_id": "ch10_q09",
             "type": "fill_blank",
             "question": "정규분포에서 평균±1 표준편차 구간에는 전체 데이터의 약 ______%가 포함됩니다. (68-95-99.7 법칙)",
             "correct_answer": "68",
-            "accept_answers": ["68%", "약 68", "68.27"],
-            "explanation": "정규분포의 68-95-99.7 규칙: μ±1σ에 약 68.27%, μ±2σ에 약 95.45%, μ±3σ에 약 99.73%의 데이터가 포함됩니다. 이 규칙은 데이터가 정규분포를 따를 때 이상치 판별에도 활용됩니다."
+            "accept_answers": [
+                "68%",
+                "약 68",
+                "68.27"
+            ],
+            "explanation": "정규분포의 68-95-99.7 규칙: μ±1σ에 약 68.27%, μ±2σ에 약 95.45%, μ±3σ에 약 99.73%의 데이터가 포함됩니다. 이 규칙은 데이터가 정규분포를 따를 때 이상치 판별에도 활용됩니다.",
+            "id": "ch10_q09"
         },
         {
-            "question_id": "ch10_q10",
             "type": "multiple_choice",
             "question": "다음 중 베이즈 정리에 대한 설명으로 옳지 않은 것은 무엇인가요?",
             "options": [
-                {"label": "A", "text": "사전확률(prior)에 새로운 증거를 반영하여 사후확률(posterior)을 구한다"},
-                {"label": "B", "text": "유병률이 낮은 질병은 검사 양성이어도 실제 질병일 확률이 낮을 수 있다"},
-                {"label": "C", "text": "사후확률은 항상 사전확률보다 높다"},
-                {"label": "D", "text": "스팸 필터, 의료 진단 등 실생활 AI 시스템에서 널리 활용된다"}
+                "사전확률(prior)에 새로운 증거를 반영하여 사후확률(posterior)을 구한다",
+                "유병률이 낮은 질병은 검사 양성이어도 실제 질병일 확률이 낮을 수 있다",
+                "사후확률은 항상 사전확률보다 높다",
+                "스팸 필터, 의료 진단 등 실생활 AI 시스템에서 널리 활용된다"
             ],
-            "correct_answer": "C",
-            "explanation": "C가 틀렸습니다. 사후확률이 사전확률보다 항상 높지는 않습니다. 증거가 해당 가설에 반하는 내용이면 사후확률이 사전확률보다 낮아집니다. 예를 들어 암 검사에서 음성 결과가 나오면 암일 사후확률은 사전확률(유병률)보다 낮아집니다."
+            "correct_answer": "사후확률은 항상 사전확률보다 높다",
+            "explanation": "C가 틀렸습니다. 사후확률이 사전확률보다 항상 높지는 않습니다. 증거가 해당 가설에 반하는 내용이면 사후확률이 사전확률보다 낮아집니다. 예를 들어 암 검사에서 음성 결과가 나오면 암일 사후확률은 사전확률(유병률)보다 낮아집니다.",
+            "id": "ch10_q10"
         }
     ]
 }
