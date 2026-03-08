@@ -228,11 +228,11 @@
                 "기울기(β₁)의 신뢰구간 하한과 상한을 소수점 4자리로 출력하세요"
             ],
             "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 4, 6, 8, 10, 12, 14, 16], dtype=float)\ny = np.array([5, 9, 14, 18, 23, 28, 32, 37], dtype=float)\n\n# 회귀계수의 신뢰구간을 구하세요\n",
-            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 4, 6, 8, 10, 12, 14, 16], dtype=float)\ny = np.array([5, 9, 14, 18, 23, 28, 32, 37], dtype=float)\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\nci = model.conf_int(alpha=0.05)\n\nprint(f'{ci.iloc[1, 0]:.4f}')\nprint(f'{ci.iloc[1, 1]:.4f}')",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 4, 6, 8, 10, 12, 14, 16], dtype=float)\ny = np.array([5, 9, 14, 18, 23, 28, 32, 37], dtype=float)\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\nci = model.conf_int(alpha=0.05)\n\nprint(f'{ci[1, 0]:.4f}')\nprint(f'{ci[1, 1]:.4f}')",
             "hints": [
                 {"level": 1, "text": "model.conf_int()는 [하한, 상한] 형태의 DataFrame을 반환합니다"},
-                {"level": 2, "text": "ci.iloc[0, :]은 절편 신뢰구간, ci.iloc[1, :]은 기울기 신뢰구간입니다"},
-                {"level": 3, "text": "ci = model.conf_int(alpha=0.05)\\nprint(f'{ci.iloc[1, 0]:.4f}')\\nprint(f'{ci.iloc[1, 1]:.4f}')"}
+                {"level": 2, "text": "ci[0, :]은 절편 신뢰구간, ci[1, :]은 기울기 신뢰구간입니다"},
+                {"level": 3, "text": "ci = model.conf_int(alpha=0.05)\\nprint(f'{ci[1, 0]:.4f}')\\nprint(f'{ci[1, 1]:.4f}')"}
             ],
             "grading": {
                 "method": "numeric_output",
