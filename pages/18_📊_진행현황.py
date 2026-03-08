@@ -43,7 +43,7 @@ def render_progress_page() -> None:
         st.metric(
             "전체 완료율",
             f"{pct}%",
-            help="전체 120문제 중 풀고 통과한 비율",
+            help=f"전체 {stats['total_problems']}문제 중 풀고 통과한 비율",
         )
     with col2:
         st.metric(
@@ -82,6 +82,15 @@ def render_progress_page() -> None:
         (6, "파일 다루기"),
         (7, "예외 처리"),
         (8, "라이브러리"),
+        (9, "통계의 기초와 데이터"),
+        (10, "확률과 확률변수"),
+        (11, "확률분포"),
+        (12, "통계적 추정과 검정"),
+        (13, "두 모집단 비교와 분산분석"),
+        (14, "회귀분석"),
+        (15, "Pandas 데이터 분석"),
+        (16, "데이터 시각화 with Plotly"),
+        (17, "마케팅 데이터 분석 실전"),
     ]
 
     for ch_id, ch_title in chapter_info:
@@ -167,7 +176,7 @@ def render_progress_page() -> None:
 
     data_dir = Path(__file__).parent.parent / "data" / "problems"
 
-    for ch_id in range(1, 9):
+    for ch_id in range(1, 18):
         problems_file = data_dir / f"chapter{ch_id}_problems.json"
         if problems_file.exists():
             try:
@@ -187,19 +196,19 @@ def render_progress_page() -> None:
         st.metric(
             "기초 문제",
             f"{difficulty_counts['basic']}개 완료",
-            help="각 챕터당 기초 5문제 × 8챕터 = 40문제",
+            help="각 챕터당 기초 5문제 × 17챕터 = 85문제",
         )
     with diff_col2:
         st.metric(
             "중급 문제",
             f"{difficulty_counts['intermediate']}개 완료",
-            help="각 챕터당 중급 5문제 × 8챕터 = 40문제",
+            help="각 챕터당 중급 5문제 × 17챕터 = 85문제",
         )
     with diff_col3:
         st.metric(
             "심화 문제",
             f"{difficulty_counts['advanced']}개 완료",
-            help="각 챕터당 심화 5문제 × 8챕터 = 40문제",
+            help="각 챕터당 심화 5문제 × 17챕터 = 85문제",
         )
 
     st.divider()
