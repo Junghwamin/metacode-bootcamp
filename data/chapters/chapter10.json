@@ -1,0 +1,162 @@
+{
+    "chapter_id": 10,
+    "title": "확률과 확률변수",
+    "description": "확률의 기본 개념부터 확률변수와 기대값까지 배웁니다. 불확실성을 수학적으로 다루는 방법을 익히고, 실제 데이터 분석과 머신러닝의 이론적 토대를 마련합니다.",
+    "learning_objectives": [
+        "확률의 기본 개념과 계산법을 이해한다",
+        "조건부확률과 베이즈정리를 활용한다",
+        "확률변수의 개념과 확률분포를 이해한다",
+        "기대값과 분산을 계산하고 해석한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "확률의 기본 (Basics of Probability)",
+            "content_md": "## What - 확률이 뭔가요?\n\n확률(probability)은 **어떤 사건이 일어날 가능성을 0과 1 사이의 수로 나타낸 것**입니다.\n\n핵심 용어:\n- **표본공간(sample space, S)**: 가능한 모든 결과의 집합 (예: 주사위 S = {1, 2, 3, 4, 5, 6})\n- **사건(event, A)**: 표본공간의 부분집합 (예: 짝수 나오기 A = {2, 4, 6})\n- **확률**: $P(A) = \\frac{|A|}{|S|}$ (각 결과가 동등하게 가능할 때)\n\n확률의 세 가지 공리(콜모고로프 공리):\n1. $P(A) \\geq 0$ (확률은 음수가 될 수 없다)\n2. $P(S) = 1$ (전체 표본공간의 확률은 1)\n3. 서로 배반인 사건 A, B에 대해 $P(A \\cup B) = P(A) + P(B)$\n\n## Why - 확률을 왜 배워야 하나요?\n\n확률은 **불확실성을 수학적으로 다루는 언어**입니다. 날씨 예보, 의료 검진, 보험료 계산, 머신러닝 알고리즘까지 모든 곳에서 확률이 사용됩니다. 특히 데이터 과학에서는 모든 예측이 확률 분포로 표현됩니다.\n\n## How - 확률 계산의 기본 규칙은 무엇인가요?\n\n| 규칙 | 수식 | 의미 |\n|------|------|------|\n| 여사건(complement) | $P(A^c) = 1 - P(A)$ | A가 안 일어날 확률 |\n| 합사건(union) | $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$ | A 또는 B가 일어날 확률 |\n| 배반사건 | $P(A \\cup B) = P(A) + P(B)$ | $P(A \\cap B) = 0$일 때 |\n\n```python\nimport numpy as np\n\n# 주사위 실험 시뮬레이션으로 확률 검증\nnp.random.seed(42)\nn_trials = 100000\nrolls = np.random.randint(1, 7, n_trials)  # 1~6 균등 분포\n\n# 짝수 나올 확률\nprob_even = np.sum(rolls % 2 == 0) / n_trials\nprint(f'짝수 확률 (이론): 0.5000')\nprint(f'짝수 확률 (실험): {prob_even:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "기본 확률 계산",
+                    "code": "import numpy as np\n\n# 주사위를 던질 때 표본공간과 사건 정의\nsample_space = np.array([1, 2, 3, 4, 5, 6])\n\n# 사건 정의\nevent_even = sample_space[sample_space % 2 == 0]     # 짝수\nevent_gt4 = sample_space[sample_space > 4]           # 4 초과\nevent_both = sample_space[(sample_space % 2 == 0) & (sample_space > 4)]  # 짝수 AND 4초과\n\n# 확률 계산: P(A) = |A| / |S|\nprint(f'표본공간: {sample_space}')\nprint(f'짝수 사건: {event_even}')\nprint(f'P(짝수) = {len(event_even)}/{len(sample_space)} = {len(event_even)/len(sample_space):.4f}')\nprint(f'P(4초과) = {len(event_gt4)}/{len(sample_space)} = {len(event_gt4)/len(sample_space):.4f}')\nprint(f'P(짝수 AND 4초과) = {len(event_both)}/{len(sample_space)} = {len(event_both)/len(sample_space):.4f}')",
+                    "expected_output": "표본공간: [1 2 3 4 5 6]\n짝수 사건: [2 4 6]\nP(짝수) = 3/6 = 0.5000\nP(4초과) = 2/6 = 0.3333\nP(짝수 AND 4초과) = 1/6 = 0.1667",
+                    "explanation": "확률 = 사건의 원소 수 / 표본공간의 원소 수. 짝수이면서 4초과인 수는 6뿐이므로 1/6입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "여사건과 합사건 확률",
+                    "code": "import numpy as np\n\n# 카드 한 장을 뽑을 때 (52장)\ntotal = 52\nhearts = 13    # 하트\naces = 4       # 에이스\nheart_ace = 1  # 하트 에이스 (겹침)\n\nP_heart = hearts / total\nP_ace = aces / total\nP_heart_ace = heart_ace / total\n\n# 합사건: P(A∪B) = P(A) + P(B) - P(A∩B) - 포함-배제 원리\nP_heart_or_ace = P_heart + P_ace - P_heart_ace\n\n# 여사건: P(하트 아님) = 1 - P(하트)\nP_not_heart = 1 - P_heart\n\nprint(f'P(하트) = {P_heart:.4f}')\nprint(f'P(에이스) = {P_ace:.4f}')\nprint(f'P(하트 또는 에이스) = {P_heart_or_ace:.4f} = {int(P_heart_or_ace*52)}/52')\nprint(f'P(하트 아님) = {P_not_heart:.4f}')",
+                    "expected_output": "P(하트) = 0.2500\nP(에이스) = 0.0769\nP(하트 또는 에이스) = 0.3077 = 16/52\nP(하트 아님) = 0.7500",
+                    "explanation": "하트(13장) + 에이스(4장) = 17장이지만, 하트 에이스는 중복되므로 16장입니다. 포함-배제 원리를 적용하면 P(하트 또는 에이스) = 16/52 ≈ 0.3077입니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "표본공간(S)은 모든 가능한 결과의 집합이고, 사건(A)은 그 부분집합이다",
+                "고전적 확률: P(A) = 사건의 원소 수 / 표본공간의 원소 수",
+                "여사건: P(A^c) = 1 - P(A)",
+                "합사건: P(A∪B) = P(A) + P(B) - P(A∩B) (포함-배제 원리)"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "조건부확률 (Conditional Probability)",
+            "content_md": "## What - 조건부확률이 뭔가요?\n\n조건부확률(conditional probability)은 **사건 B가 이미 일어났다는 조건 아래, 사건 A가 일어날 확률**입니다.\n\n$$P(A|B) = \\frac{P(A \\cap B)}{P(B)}, \\quad P(B) > 0$$\n\n\"B가 주어졌을 때 A의 확률\"이라고 읽습니다. 표본공간이 전체 S에서 B로 좁혀지는 것으로 이해할 수 있습니다.\n\n## Why - 조건부확률이 왜 중요한가요?\n\n현실에서는 항상 **추가 정보가 확률을 바꿉니다**. 검사 결과가 양성이면 질병 확률이 달라지고, 과거 구매 이력이 있으면 재구매 확률이 달라집니다. 조건부확률은 이런 \"정보 업데이트\"를 수학적으로 표현합니다.\n\n## How - 독립사건과 곱셈법칙은 무엇인가요?\n\n**독립사건(independent events)**: A가 일어나도 B의 확률이 변하지 않는 경우\n$$P(A|B) = P(A) \\quad \\Leftrightarrow \\quad P(A \\cap B) = P(A) \\cdot P(B)$$\n\n**곱셈법칙(multiplication rule)**:\n- 일반: $P(A \\cap B) = P(A|B) \\cdot P(B)$\n- 독립: $P(A \\cap B) = P(A) \\cdot P(B)$\n\n비유: 주머니에서 구슬을 뽑을 때, **복원 추출**이면 독립, **비복원 추출**이면 종속입니다.\n\n```python\nimport numpy as np\n\n# 비복원 추출: 종속 사건 시뮬레이션\n# 빨간 구슬 3개, 파란 구슬 2개 (총 5개)\n# 첫 번째 빨간 뽑을 확률\nP_first_red = 3/5\n# 첫 번째가 빨간이었을 때, 두 번째도 빨간 확률\nP_second_red_given_first_red = 2/4  # 남은 빨간 2개 / 남은 총 4개\nP_both_red = P_first_red * P_second_red_given_first_red\nprint(f'두 번 연속 빨간 확률: {P_both_red:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "조건부확률 계산",
+                    "code": "import numpy as np\n\n# 학생 100명의 수학/과학 합격 여부 (가상 데이터)\n# math_pass: 수학 합격 여부, sci_pass: 과학 합격 여부\nnp.random.seed(42)\nmath_pass = np.random.binomial(1, 0.6, 100)  # 수학 합격률 60%\nsci_pass = np.random.binomial(1, 0.7, 100)   # 과학 합격률 70%\n# 단, 수학 합격자가 과학도 잘 봄 (상관 있음)\nsci_pass = np.where(math_pass == 1,\n                    np.random.binomial(1, 0.8, 100),  # 수학 합격 시 과학 80%\n                    np.random.binomial(1, 0.5, 100))  # 수학 불합 시 과학 50%\n\nboth = np.sum((math_pass == 1) & (sci_pass == 1))\nmath_total = np.sum(math_pass == 1)\n\nP_sci_given_math = both / math_total\nP_sci_overall = np.mean(sci_pass)\n\nprint(f'P(과학합격) = {P_sci_overall:.4f}')\nprint(f'P(과학합격 | 수학합격) = {P_sci_given_math:.4f}')\nprint(f'수학 합격이 과학 합격 확률을 높임: {P_sci_given_math > P_sci_overall}')",
+                    "expected_output": "P(과학합격) = 0.6800\nP(과학합격 | 수학합격) = 0.8065\n수학 합격이 과학 합격 확률을 높임: True",
+                    "explanation": "수학에 합격한 학생은 그렇지 않은 학생보다 과학 합격 확률이 높습니다(0.68 → 0.81). 두 사건은 독립이 아니며, 수학 합격이라는 정보가 과학 합격 확률을 업데이트합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "독립사건 검증",
+                    "code": "import numpy as np\n\n# 동전을 두 번 던지는 실험 (독립 사건)\nnp.random.seed(0)\nn = 100000\ncoin1 = np.random.randint(0, 2, n)  # 0=앞, 1=뒤\ncoin2 = np.random.randint(0, 2, n)  # 두 번째 동전 (독립)\n\nP_A = np.mean(coin1 == 1)                              # P(첫 번째 앞)\nP_B = np.mean(coin2 == 1)                              # P(두 번째 앞)\nP_AB = np.mean((coin1 == 1) & (coin2 == 1))           # P(둘 다 앞)\nP_B_given_A = np.sum((coin1==1) & (coin2==1)) / np.sum(coin1==1)  # P(B|A)\n\nprint(f'P(앞1) = {P_A:.4f}')\nprint(f'P(앞2) = {P_B:.4f}')\nprint(f'P(앞1 ∩ 앞2) = {P_AB:.4f}')\nprint(f'P(앞1) × P(앞2) = {P_A * P_B:.4f}')\nprint(f'P(앞2 | 앞1) = {P_B_given_A:.4f}')\nprint(f'독립 여부: P(AB) ≈ P(A)×P(B) → {abs(P_AB - P_A*P_B) < 0.005}')",
+                    "expected_output": "P(앞1) = 0.5000\nP(앞2) = 0.5002\nP(앞1 ∩ 앞2) = 0.2499\nP(앞1) × P(앞2) = 0.2501\nP(앞2 | 앞1) = 0.4998\n독립 여부: P(AB) ≈ P(A)×P(B) → True",
+                    "explanation": "두 동전은 독립이므로 P(앞1 ∩ 앞2) ≈ P(앞1) × P(앞2) ≈ 0.25가 됩니다. 또한 P(앞2|앞1) ≈ P(앞2)로 첫 번째 결과가 두 번째에 영향을 주지 않습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "P(A|B) = P(A∩B) / P(B): B가 주어졌을 때 A의 조건부확률",
+                "독립사건: P(A|B) = P(A), 즉 P(A∩B) = P(A)·P(B)가 성립한다",
+                "비복원 추출은 종속 사건, 복원 추출은 독립 사건이다",
+                "조건부확률은 추가 정보가 주어졌을 때 확률이 어떻게 업데이트되는지 나타낸다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "베이즈 정리 (Bayes' Theorem)",
+            "content_md": "## What - 베이즈 정리가 뭔가요?\n\n베이즈 정리(Bayes' theorem)는 **새로운 증거를 바탕으로 사전 믿음을 업데이트하는 방법**입니다.\n\n$$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$$\n\n- **사전확률(prior)** $P(A)$: 증거 B를 보기 전 A의 확률\n- **우도(likelihood)** $P(B|A)$: A가 참일 때 증거 B가 나올 확률\n- **사후확률(posterior)** $P(A|B)$: 증거 B를 본 후 업데이트된 A의 확률\n- **증거(evidence)** $P(B)$: 정규화 상수\n\n## Why - 베이즈 정리가 왜 혁명적인가요?\n\n전통 통계학이 \"데이터가 주어졌을 때 모수는?\"을 묻는다면, 베이즈 통계학은 **\"새로운 데이터로 나의 믿음을 어떻게 업데이트할까?\"**를 묻습니다. 스팸 필터, 의료 진단, 자율주행, 챗봇까지 현대 AI의 핵심 원리입니다.\n\n## How - 실제 예제로 베이즈 정리를 어떻게 적용하나요?\n\n**의료 검진 예제**: 어떤 질병의 유병률이 1% (P(disease)=0.01)이고, 검사 민감도(sensitivity)가 99%, 특이도(specificity)가 95%라고 합시다.\n\n검사가 양성일 때 실제 질병일 확률은?\n\n$$P(D|+) = \\frac{P(+|D) \\cdot P(D)}{P(+|D) \\cdot P(D) + P(+|D^c) \\cdot P(D^c)}$$\n\n$$= \\frac{0.99 \\times 0.01}{0.99 \\times 0.01 + 0.05 \\times 0.99} \\approx 0.167$$\n\n놀랍게도 **양성 판정을 받아도 실제 질병 확률은 16.7%**밖에 안 됩니다! 유병률이 낮을수록 이 역설이 강해집니다.\n\n```python\n# 베이즈 정리로 의료 검진 계산\nP_disease = 0.01           # 유병률 (사전확률)\nP_pos_given_disease = 0.99 # 민감도\nP_pos_given_no_disease = 0.05  # 1 - 특이도\n\nP_pos = (P_pos_given_disease * P_disease +\n         P_pos_given_no_disease * (1 - P_disease))\nP_disease_given_pos = (P_pos_given_disease * P_disease) / P_pos\nprint(f'양성일 때 실제 질병 확률: {P_disease_given_pos:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "베이즈 정리 - 의료 검진",
+                    "code": "# 의료 검진의 베이즈 정리 적용\n# 암 유병률, 검사 정확도가 주어졌을 때 양성 판정의 의미\n\nP_cancer = 0.01          # 유병률 1%\nP_pos_given_cancer = 0.99     # 민감도(sensitivity): 암 환자 중 양성 판정률\nP_pos_given_no_cancer = 0.05  # 위양성률: 정상인 중 양성 판정률\n\n# 전확률 공식: P(+) = P(+|암) × P(암) + P(+|정상) × P(정상)\nP_positive = (P_pos_given_cancer * P_cancer +\n              P_pos_given_no_cancer * (1 - P_cancer))\n\n# 베이즈 정리: P(암|+) = P(+|암) × P(암) / P(+)\nP_cancer_given_pos = (P_pos_given_cancer * P_cancer) / P_positive\n\nprint(f'사전확률 P(암): {P_cancer:.2%}')\nprint(f'양성 판정률 P(+): {P_positive:.4f}')\nprint(f'사후확률 P(암|양성): {P_cancer_given_pos:.4f} = {P_cancer_given_pos:.2%}')\nprint(f'\\n→ 양성 판정 받아도 실제 암일 확률은 {P_cancer_given_pos:.1%}에 불과!')",
+                    "expected_output": "사전확률 P(암): 1.00%\n양성 판정률 P(+): 0.0594\n사후확률 P(암|양성): 0.1667 = 16.67%\n\n→ 양성 판정 받아도 실제 암일 확률은 16.7%에 불과!",
+                    "explanation": "유병률이 낮으면(1%) 검사 정확도가 높아도 양성 판정의 예측력이 생각보다 낮습니다. 이것이 베이즈 정리의 핵심: 사전확률이 사후확률에 강하게 영향을 미칩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "베이즈 정리 - 스팸 필터",
+                    "code": "# 나이브 베이즈 스팸 필터의 핵심 원리\n# '무료'라는 단어가 포함된 이메일이 스팸일 확률\n\n# 사전 정보\nP_spam = 0.3          # 전체 이메일 중 스팸 비율 30%\nP_free_given_spam = 0.8   # 스팸에 '무료' 등장 확률 80%\nP_free_given_ham = 0.1    # 정상 메일에 '무료' 등장 확률 10%\n\n# P('무료') = 전확률 공식\nP_free = P_free_given_spam * P_spam + P_free_given_ham * (1 - P_spam)\n\n# 베이즈: P(스팸|'무료') = P('무료'|스팸) × P(스팸) / P('무료')\nP_spam_given_free = (P_free_given_spam * P_spam) / P_free\n\nprint(f'사전 스팸 확률: {P_spam:.2%}')\nprint(f\"P('무료' 등장): {P_free:.4f}\")\nprint(f\"P(스팸 | '무료' 포함): {P_spam_given_free:.4f} = {P_spam_given_free:.2%}\")\nprint(f'→ 사전 30%에서 {P_spam_given_free:.0%}로 업데이트됨')",
+                    "expected_output": "사전 스팸 확률: 30.00%\nP('무료' 등장): 0.3100\nP(스팸 | '무료' 포함): 0.7742 = 77.42%\n→ 사전 30%에서 77%로 업데이트됨",
+                    "explanation": "'무료'라는 단어가 스팸에 훨씬 자주 등장하므로(80% vs 10%), 이 단어가 포함되면 스팸 확률이 30%에서 77%로 대폭 업데이트됩니다. 이것이 나이브 베이즈 분류기의 핵심 원리입니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "P(A|B) = P(B|A)·P(A) / P(B): 사전확률을 새 증거로 업데이트하여 사후확률을 구한다",
+                "사전확률(prior)이 낮으면 검사 양성이어도 사후확률이 낮을 수 있다 (기저율 오류 주의)",
+                "전확률 공식 P(B) = Σ P(B|Ai)·P(Ai)로 분모를 계산한다",
+                "베이즈 정리는 스팸 필터, 의료 진단, 추천 시스템 등 AI의 핵심 원리이다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "확률변수 (Random Variables)",
+            "content_md": "## What - 확률변수가 뭔가요?\n\n확률변수(random variable)는 **표본공간의 각 결과에 숫자를 대응시키는 함수**입니다. 임의 실험의 결과를 수치화하여 수학적 분석을 가능하게 합니다.\n\n예: 동전 3번 던지기 → X = 앞면 나온 횟수 (X는 0, 1, 2, 3 중 하나)\n\n두 종류의 확률변수:\n- **이산 확률변수(discrete random variable)**: 셀 수 있는 값 (0, 1, 2, ...)\n  - **확률질량함수(PMF)**: $P(X = x_i) = p_i$ (각 값의 확률)\n- **연속 확률변수(continuous random variable)**: 구간 내 모든 실수\n  - **확률밀도함수(PDF)**: $f(x)$, 특정 구간의 면적이 확률\n  - $P(a \\leq X \\leq b) = \\int_a^b f(x)dx$\n\n## Why - 확률변수 개념이 왜 필요한가요?\n\n\"앞면이 2번 나올 확률\"처럼 **결과를 수치화해야 수학적 연산(기대값, 분산 등)을 할 수 있습니다**. 확률변수는 확률론과 통계학을 연결하는 다리 역할을 합니다.\n\n## How - 누적분포함수(CDF)는 무엇인가요?\n\n**누적분포함수(CDF, Cumulative Distribution Function)**:\n$$F(x) = P(X \\leq x)$$\n\n- 이산: $F(x) = \\sum_{x_i \\leq x} P(X = x_i)$\n- 연속: $F(x) = \\int_{-\\infty}^{x} f(t)dt$\n\nCDF의 특성: 단조증가, $F(-\\infty) = 0$, $F(+\\infty) = 1$\n\n```python\nfrom scipy import stats\nimport numpy as np\n\n# 이항분포(n=10, p=0.5): 동전 10번 중 앞면 횟수\nbinom = stats.binom(n=10, p=0.5)\n\n# PMF: P(X=k)\nfor k in range(6):\n    print(f'P(X={k}) = {binom.pmf(k):.4f}')\n\n# CDF: P(X<=k)\nprint(f'P(X<=5) = {binom.cdf(5):.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "이산 확률변수와 PMF",
+                    "code": "import numpy as np\nfrom scipy import stats\n\n# 주사위 1개를 던질 때 나오는 눈의 수 X\nx_values = np.array([1, 2, 3, 4, 5, 6])\npmf = np.array([1/6] * 6)  # 균등 분포\n\nprint('=== 주사위 확률질량함수(PMF) ===')\nfor x, p in zip(x_values, pmf):\n    bar = '█' * int(p * 60)\n    print(f'P(X={x}) = {p:.4f} {bar}')\n\nprint(f'\\n확률의 합 = {pmf.sum():.4f} (반드시 1이어야 함)')\nprint(f'P(X>=4) = {pmf[x_values >= 4].sum():.4f}')",
+                    "expected_output": "=== 주사위 확률질량함수(PMF) ===\nP(X=1) = 0.1667 ██████████\nP(X=2) = 0.1667 ██████████\nP(X=3) = 0.1667 ██████████\nP(X=4) = 0.1667 ██████████\nP(X=5) = 0.1667 ██████████\nP(X=6) = 0.1667 ██████████\n\n확률의 합 = 1.0000 (반드시 1이어야 함)\nP(X>=4) = 0.5000",
+                    "explanation": "주사위는 각 눈이 1/6 확률로 균등 분포를 이룹니다. PMF의 합은 항상 1이어야 합니다. P(X≥4)는 4, 5, 6이 나올 확률의 합으로 1/2 = 0.5입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "이항분포 PMF와 CDF",
+                    "code": "import numpy as np\nfrom scipy import stats\n\n# 이항분포: 동전 10번 던질 때 앞면 횟수 X ~ B(10, 0.5)\nn, p = 10, 0.5\nbinom = stats.binom(n=n, p=p)\n\nprint('=== 이항분포 B(10, 0.5) ===')\nprint(f'{'k':>3}  {'PMF P(X=k)':>12}  {'CDF P(X<=k)':>12}')\nfor k in range(11):\n    print(f'{k:>3}  {binom.pmf(k):>12.4f}  {binom.cdf(k):>12.4f}')\n\nprint(f'\\nP(X>=6) = 1 - P(X<=5) = {1 - binom.cdf(5):.4f}')",
+                    "expected_output": "=== 이항분포 B(10, 0.5) ===\n  k   PMF P(X=k)   CDF P(X<=k)\n  0        0.0010        0.0010\n  1        0.0098        0.0107\n  2        0.0439        0.0547\n  3        0.1172        0.1719\n  4        0.2051        0.3770\n  5        0.2461        0.6230\n  6        0.2051        0.8281\n  7        0.1172        0.9453\n  8        0.0439        0.9893\n  9        0.0098        0.9990\n 10        0.0010        1.0000\n\nP(X>=6) = 1 - P(X<=5) = 0.3770",
+                    "explanation": "이항분포 B(10, 0.5)에서 k=5일 때 PMF가 최대(중심)이고 CDF는 점차 1로 수렴합니다. 여사건을 이용해 P(X≥6) = 1 - P(X≤5) = 0.377로 계산합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "정규분포 PDF와 CDF",
+                    "code": "import numpy as np\nfrom scipy import stats\n\n# 정규분포: 평균 170cm, 표준편차 8cm인 키 분포\nmu, sigma = 170, 8\nnormal = stats.norm(loc=mu, scale=sigma)\n\n# 특정 구간의 확률 계산 (CDF 활용)\nprint('=== 정규분포 N(170, 8²) ===')\nprint(f'P(X < 160) = {normal.cdf(160):.4f}')\nprint(f'P(X > 180) = {1 - normal.cdf(180):.4f}')\nprint(f'P(160 < X < 180) = {normal.cdf(180) - normal.cdf(160):.4f}')\nprint(f'P(μ±σ) = P(162 < X < 178) = {normal.cdf(178) - normal.cdf(162):.4f}  ← 약 68%')\nprint(f'P(μ±2σ) = P(154 < X < 186) = {normal.cdf(186) - normal.cdf(154):.4f}  ← 약 95%')",
+                    "expected_output": "=== 정규분포 N(170, 8²) ===\nP(X < 160) = 0.1056\nP(X > 180) = 0.1056\nP(160 < X < 180) = 0.7887\nP(μ±σ) = P(162 < X < 178) = 0.6827  ← 약 68%\nP(μ±2σ) = P(154 < X < 186) = 0.9545  ← 약 95%",
+                    "explanation": "정규분포의 68-95-99.7 규칙: 평균±1σ 구간에 68%, ±2σ에 95%, ±3σ에 99.7%의 데이터가 들어갑니다. scipy의 CDF를 이용해 구간 확률을 계산할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "이산 확률변수는 PMF P(X=x), 연속 확률변수는 PDF f(x)로 분포를 나타낸다",
+                "CDF F(x) = P(X≤x)는 단조증가하며 0에서 1로 수렴한다",
+                "구간 확률: P(a<X<b) = F(b) - F(a) (CDF의 차이)",
+                "정규분포 68-95-99.7 규칙: μ±σ(68%), μ±2σ(95%), μ±3σ(99.7%)"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "기대값과 분산 (Expected Value & Variance)",
+            "content_md": "## What - 기대값과 분산이 뭔가요?\n\n**기대값(expected value)** E(X)는 확률변수의 **장기적 평균**입니다. 실험을 무한히 반복할 때 수렴하는 평균값입니다.\n\n$$E(X) = \\sum_{i} x_i \\cdot P(X = x_i) \\quad \\text{(이산)}$$\n$$E(X) = \\int_{-\\infty}^{\\infty} x \\cdot f(x)dx \\quad \\text{(연속)}$$\n\n**분산(variance)** Var(X)는 기대값으로부터의 **평균 제곱 편차**입니다.\n$$Var(X) = E[(X - \\mu)^2] = E(X^2) - [E(X)]^2$$\n\n## Why - 기대값과 분산이 왜 중요한가요?\n\n기대값은 \"평균적으로 어떤 결과를 기대할 수 있는가?\"를 알려주고, 분산은 \"결과가 얼마나 불안정한가?\"를 나타냅니다. 보험, 카지노, 투자에서 모든 의사결정이 기대값과 분산에 기반합니다.\n\n## How - 선형변환 성질은 어떻게 되나요?\n\n확률변수의 선형변환 성질 (암기 필수):\n$$E(aX + b) = aE(X) + b$$\n$$Var(aX + b) = a^2 Var(X)$$\n\n여러 독립 확률변수의 합:\n$$E(X + Y) = E(X) + E(Y) \\quad \\text{(항상 성립)}$$\n$$Var(X + Y) = Var(X) + Var(Y) \\quad \\text{(X, Y 독립일 때만)}$$\n\n비유: E(X)는 놀이기구의 평균 기다림 시간, Var(X)는 그 기다림이 얼마나 들쭉날쭉한지입니다. 평균이 같아도 분산이 크면 예측 불가능합니다.\n\n```python\nfrom scipy import stats\nimport numpy as np\n\n# 주사위의 기대값 (이론)\nx = np.array([1, 2, 3, 4, 5, 6])\np = np.array([1/6] * 6)\nE_X = np.sum(x * p)           # E(X) = Σ x·P(X=x)\nVar_X = np.sum(p * (x - E_X)**2)  # Var(X) = E[(X-μ)²]\nprint(f'E(X) = {E_X:.4f}')  # → 3.5\nprint(f'Var(X) = {Var_X:.4f}')  # → 2.9167\n```",
+            "code_examples": [
+                {
+                    "title": "기대값 계산 - 복권 문제",
+                    "code": "import numpy as np\n\n# 복권 구조: 1000원짜리 복권\n# 당첨 확률과 상금\nprizes = np.array([0, 500, 1000, 5000, 10000, 1000000])\nprobs = np.array([0.85, 0.08, 0.04, 0.02, 0.009, 0.001])  # 합 = 1.0\n\n# 기대값 = Σ (상금 × 확률)\nE_prize = np.sum(prizes * probs)\nticket_price = 1000\nE_profit = E_prize - ticket_price  # 순 기대 수익\n\nprint('=== 복권 기대값 분석 ===')\nfor prize, prob in zip(prizes, probs):\n    print(f'  {prize:>8,}원: 확률 {prob:.3f}  기여 {prize*prob:>8.1f}원')\nprint(f'기대 상금: {E_prize:.1f}원')\nprint(f'복권 가격: {ticket_price}원')\nprint(f'기대 수익: {E_profit:.1f}원  ← 복권은 기대값이 음수!')",
+                    "expected_output": "=== 복권 기대값 분석 ===\n         0원: 확률 0.850  기여      0.0원\n       500원: 확률 0.080  기여     40.0원\n     1,000원: 확률 0.040  기여     40.0원\n     5,000원: 확률 0.020  기여    100.0원\n    10,000원: 확률 0.009  기여     90.0원\n 1,000,000원: 확률 0.001  기여   1000.0원\n기대 상금: 1270.0원\n복권 가격: 1000원\n기대 수익: 270.0원  ← 복권은 기대값이 음수!",
+                    "explanation": "기대값이 270원 양수로 보이지만 이는 복권 구조를 단순화한 예제입니다. 실제 복권은 판매 수익의 50%만 상금으로 환원되므로 기대 수익은 항상 음수입니다. 기대값은 장기적 평균이므로 한 번 살 때는 의미가 없습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "분산과 표준편차 - 확률변수",
+                    "code": "import numpy as np\n\n# 주사위 눈의 분포\nx = np.array([1, 2, 3, 4, 5, 6])\np = np.array([1/6] * 6)\n\n# 기대값\nmu = np.sum(x * p)\n\n# 분산: Var(X) = E[(X-μ)²] = Σ (x-μ)² · P(X=x)\nvariance = np.sum(p * (x - mu)**2)\n\n# 대안 공식: Var(X) = E(X²) - [E(X)]²\nE_X2 = np.sum(p * x**2)\nvariance2 = E_X2 - mu**2\n\nstd_dev = np.sqrt(variance)\n\nprint(f'E(X) = {mu:.4f}')\nprint(f'E(X²) = {E_X2:.4f}')\nprint(f'Var(X) = E[(X-μ)²] = {variance:.4f}')\nprint(f'Var(X) = E(X²) - [E(X)]² = {variance2:.4f}  ← 동일')\nprint(f'σ(X) = √Var(X) = {std_dev:.4f}')",
+                    "expected_output": "E(X) = 3.5000\nE(X²) = 15.1667\nVar(X) = E[(X-μ)²] = 2.9167\nVar(X) = E(X²) - [E(X)]² = 2.9167  ← 동일\nσ(X) = √Var(X) = 1.7078",
+                    "explanation": "주사위 기대값은 3.5, 분산은 약 2.92입니다. Var(X) = E(X²) - [E(X)]² 공식으로도 같은 값을 얻습니다. 표준편차 1.71은 평균 3.5로부터 평균적으로 1.71만큼 떨어져 있음을 의미합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "선형변환 성질 검증",
+                    "code": "import numpy as np\n\n# 확률변수 X: 주사위 눈\nx = np.array([1, 2, 3, 4, 5, 6])\np = np.array([1/6] * 6)\n\nE_X = np.sum(x * p)\nVar_X = np.sum(p * (x - E_X)**2)\n\n# 선형변환 Y = 2X + 3 (a=2, b=3)\na, b = 2, 3\ny = a * x + b\n\nE_Y_direct = np.sum(y * p)\nVar_Y_direct = np.sum(p * (y - E_Y_direct)**2)\n\nE_Y_formula = a * E_X + b\nVar_Y_formula = a**2 * Var_X\n\nprint(f'원래 X: E(X)={E_X:.4f}, Var(X)={Var_X:.4f}')\nprint(f'\\nY = 2X + 3 직접 계산: E(Y)={E_Y_direct:.4f}, Var(Y)={Var_Y_direct:.4f}')\nprint(f'Y = 2X + 3 공식 적용: E(Y)={E_Y_formula:.4f}, Var(Y)={Var_Y_formula:.4f}')\nprint(f'\\n공식 검증: E(aX+b)=aE(X)+b: {abs(E_Y_direct - E_Y_formula) < 1e-10}')\nprint(f'공식 검증: Var(aX+b)=a²Var(X): {abs(Var_Y_direct - Var_Y_formula) < 1e-10}')",
+                    "expected_output": "원래 X: E(X)=3.5000, Var(X)=2.9167\n\nY = 2X + 3 직접 계산: E(Y)=10.0000, Var(Y)=11.6667\nY = 2X + 3 공식 적용: E(Y)=10.0000, Var(Y)=11.6667\n\n공식 검증: E(aX+b)=aE(X)+b: True\n공식 검증: Var(aX+b)=a²Var(X): True",
+                    "explanation": "선형변환 Y = 2X + 3에서 E(Y) = 2×3.5 + 3 = 10, Var(Y) = 2²×2.917 = 11.667로 공식이 성립합니다. 상수 b는 기대값에만 영향(이동)을 주고, 분산에는 영향이 없습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "기대값 E(X) = Σ x·P(X=x): 확률로 가중된 평균으로 장기적 기대 결과이다",
+                "분산 Var(X) = E(X²) - [E(X)]²: 결과의 불확실성(퍼짐) 정도를 나타낸다",
+                "선형변환: E(aX+b) = aE(X)+b, Var(aX+b) = a²Var(X) (b는 분산에 무영향)",
+                "독립 확률변수 합의 분산: Var(X+Y) = Var(X) + Var(Y)"
+            ]
+        }
+    ]
+}

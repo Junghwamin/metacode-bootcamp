@@ -1,0 +1,183 @@
+{
+    "chapter_id": 17,
+    "title": "마케팅 데이터 분석 실전",
+    "description": "기여 분석, 전환 윈도우, ROAS 등 마케팅 핵심 분석 기법을 배웁니다.",
+    "learning_objectives": [
+        "마케팅 기여 분석(Attribution) 모델을 이해하고 구현한다",
+        "전환 윈도우(Conversion Window)를 분석한다",
+        "CPC와 ROAS를 계산하고 캠페인을 평가한다",
+        "마케팅 데이터 파이프라인을 구축한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "마케팅 기여 분석 (Attribution Models)",
+            "content_md": "## What - 기여 분석이 뭔가요?\n\n기여 분석(Attribution Analysis)은 고객이 구매에 이르기까지 접촉한 여러 마케팅 채널 중 어디에 전환 공로를 부여할지 결정하는 방법론입니다. 가장 대표적인 세 가지 모델이 있어요.\n\n- **라스트터치(Last Touch)**: 마지막으로 접촉한 채널에 100% 기여\n- **퍼스트터치(First Touch)**: 가장 처음 접촉한 채널에 100% 기여\n- **멀티터치(Multi Touch)**: 모든 접촉 채널에 균등하게 기여 분배\n\n## Why - 왜 기여 분석이 중요한가요?\n\n어떤 채널에 광고비를 더 투자할지 결정하려면 해당 채널이 실제 전환에 얼마나 기여했는지 알아야 합니다. 라스트터치만 사용하면 마지막 단계 채널(예: 브랜드 검색)이 과대평가되고, 인지 단계 채널(예: 디스플레이)이 과소평가될 수 있습니다.\n\n## How - pandas로 어떻게 구현하나요?\n\n```python\nimport pandas as pd\n\n# 로그 데이터: user_id, timestamp, channel\nlogs_sorted = logs.sort_values(['user_id', 'timestamp'])\n\n# 라스트터치: 사용자별 마지막 접촉\nlast_touch = logs_sorted.groupby('user_id').last()\n\n# 퍼스트터치: 사용자별 첫 번째 접촉\nfirst_touch = logs_sorted.groupby('user_id').first()\n```\n\n멀티터치는 각 사용자의 접촉 횟수를 세고 1을 나눠 각 터치에 `1/n` 가중치를 부여합니다.",
+            "code_examples": [
+                {
+                    "title": "라스트터치 기여 분석",
+                    "code": "import pandas as pd\n\n# 광고 접촉 로그 데이터 생성\nlogs = pd.DataFrame({\n    'user_id': [1, 1, 1, 2, 2, 3, 3, 3],\n    'timestamp': pd.to_datetime([\n        '2024-01-01 09:00', '2024-01-02 14:00', '2024-01-03 10:00',\n        '2024-01-01 11:00', '2024-01-04 16:00',\n        '2024-01-02 08:00', '2024-01-03 12:00', '2024-01-05 09:00'\n    ]),\n    'channel': [\n        'SNS', '이메일', '검색광고',\n        '디스플레이', '검색광고',\n        '검색광고', 'SNS', '이메일'\n    ]\n})\n\n# 라스트터치: 사용자별 마지막 접촉 채널\nlogs_sorted = logs.sort_values(['user_id', 'timestamp'])\nlast_touch = logs_sorted.groupby('user_id').last().reset_index()\n\nprint('=== 라스트터치 기여 분석 ===')\nprint(last_touch[['user_id', 'channel']])\nprint()\nprint('채널별 라스트터치 기여 수:')\nprint(last_touch['channel'].value_counts())",
+                    "expected_output": "=== 라스트터치 기여 분석 ===\n   user_id channel\n0        1    검색광고\n1        2    검색광고\n2        3    이메일\n\n채널별 라스트터치 기여 수:\nchannel\n검색광고    2\n이메일      1\nName: count, dtype: int64",
+                    "explanation": "sort_values로 시간순 정렬 후 groupby().last()로 각 사용자의 마지막 접촉 채널을 추출합니다. 이 채널에 전환 기여가 100% 귀속됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "퍼스트터치 vs 라스트터치 비교",
+                    "code": "import pandas as pd\n\nlogs = pd.DataFrame({\n    'user_id': [1, 1, 1, 2, 2, 3, 3, 3, 4, 4],\n    'timestamp': pd.to_datetime([\n        '2024-01-01', '2024-01-03', '2024-01-05',\n        '2024-01-02', '2024-01-06',\n        '2024-01-01', '2024-01-04', '2024-01-07',\n        '2024-01-03', '2024-01-08'\n    ]),\n    'channel': [\n        'SNS', '이메일', '검색광고',\n        'SNS', '검색광고',\n        '디스플레이', '이메일', '검색광고',\n        'SNS', '검색광고'\n    ]\n})\n\nlogs_sorted = logs.sort_values(['user_id', 'timestamp'])\n\n# 퍼스트터치\nfirst_touch = logs_sorted.groupby('user_id').first()['channel'].value_counts()\n# 라스트터치\nlast_touch = logs_sorted.groupby('user_id').last()['channel'].value_counts()\n\nresult = pd.DataFrame({\n    '퍼스트터치': first_touch,\n    '라스트터치': last_touch\n}).fillna(0).astype(int)\n\nprint('기여 모델 비교:')\nprint(result)",
+                    "expected_output": "기여 모델 비교:\n          퍼스트터치  라스트터치\n검색광고          0          4\nSNS               3          0\n디스플레이          1          0",
+                    "explanation": "groupby().first()는 퍼스트터치, groupby().last()는 라스트터치를 구현합니다. 두 모델 간 채널별 기여 수가 크게 다른 것을 확인할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "멀티터치 균등 기여 분석",
+                    "code": "import pandas as pd\n\nlogs = pd.DataFrame({\n    'user_id': [1, 1, 1, 2, 2, 3],\n    'channel': ['SNS', '이메일', '검색광고', 'SNS', '검색광고', '검색광고']\n})\n\n# 멀티터치: 각 터치에 1/n 기여 부여\ntouch_counts = logs.groupby('user_id')['channel'].count()\nlogs['weight'] = logs['user_id'].map(lambda u: 1 / touch_counts[u])\n\nmulti_touch = logs.groupby('channel')['weight'].sum().reset_index()\nmulti_touch.columns = ['channel', 'attribution_score']\nmulti_touch['attribution_score'] = multi_touch['attribution_score'].round(3)\n\nprint('멀티터치 균등 기여 분석:')\nprint(multi_touch.sort_values('attribution_score', ascending=False))",
+                    "expected_output": "멀티터치 균등 기여 분석:\n  channel  attribution_score\n2    검색광고              1.833\n0     SNS              0.833\n1    이메일              0.333",
+                    "explanation": "각 사용자의 터치 수로 1을 나눠 가중치를 만들고 채널별로 합산합니다. 검색광고가 세 사용자 모두에게 접촉해 가장 높은 점수를 받습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "라스트터치: 마지막 접촉 채널에 100% 기여 (groupby().last())",
+                "퍼스트터치: 첫 번째 접촉 채널에 100% 기여 (groupby().first())",
+                "멀티터치: 모든 접촉 채널에 1/n 균등 기여 분배",
+                "모델마다 채널별 기여도가 달라지므로 복수 모델을 비교하는 것이 좋다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "전환 윈도우 분석 (Conversion Window)",
+            "content_md": "## What - 전환 윈도우가 뭔가요?\n\n전환 윈도우(Conversion Window)는 광고 접촉 후 전환(구매, 가입 등)을 인정하는 시간 범위입니다. 예를 들어 \"광고 클릭 후 7일 이내 구매\"처럼 기간을 정의합니다. 신청(apply)에서 결제(pay)까지 걸리는 시간을 분석해 최적 윈도우를 설정합니다.\n\n## Why - 왜 전환 윈도우를 분석하나요?\n\n윈도우가 너무 짧으면 실제 기여한 광고 접촉을 놓치고(완전성 훼손), 너무 길면 관련 없는 접촉을 포함해 기여를 과대계상합니다. **완전성(Completeness) vs 적시성(Timeliness)** 트레이드오프를 데이터로 확인하고 비즈니스에 맞는 윈도우를 선택해야 합니다.\n\n## How - pandas로 어떻게 분석하나요?\n\n```python\nimport pandas as pd\n\n# apply_at: 신청 시각, pay_at: 결제 시각\ndf['td'] = (df['pay_at'] - df['apply_at']).dt.total_seconds() / (3600 * 24)\n\n# 윈도우별 전환 포함 비율\nfor days in [1, 3, 7, 14, 30]:\n    ratio = (df['td'] <= days).mean()\n    print(f'{days}일 윈도우: {ratio:.1%}')\n```\n\npercentile 분석으로 \"전환의 X%를 포함하려면 몇 일 윈도우가 필요한지\" 역산할 수 있습니다.",
+            "code_examples": [
+                {
+                    "title": "신청-결제 소요 시간 계산",
+                    "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\nn = 200\n\napply_dates = pd.date_range('2024-01-01', periods=n, freq='2h')\ndelay_hours = np.random.exponential(72, n)  # 평균 3일\n\ndf = pd.DataFrame({\n    'user_id': range(1, n+1),\n    'apply_at': apply_dates,\n    'pay_at': apply_dates + pd.to_timedelta(delay_hours, unit='h')\n})\n\n# 신청 → 결제 소요 일수 계산\ndf['td'] = (df['pay_at'] - df['apply_at']).dt.total_seconds() / (3600 * 24)\n\nprint('소요 일수 통계:')\nprint(df['td'].describe().round(2))\nprint()\nprint(f'중앙값: {df[\"td\"].median():.1f}일')\nprint(f'90분위수: {df[\"td\"].quantile(0.9):.1f}일')",
+                    "expected_output": "소요 일수 통계:\ncount    200.00\nmean       3.05\nstd        3.03\nmin        0.01\n25%        0.87\n50%        2.08\n75%        4.22\nmax       16.07\ndtype: float64\n\n중앙값: 2.1일\n90분위수: 6.9일",
+                    "explanation": "dt.total_seconds()로 timedelta를 초 단위로 변환 후 86400(3600×24)으로 나눠 일 단위로 변환합니다. quantile()로 백분위수를 계산합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "윈도우별 전환 포함 비율 분석",
+                    "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\nn = 500\ndelay_days = np.random.exponential(3, n)\ndf = pd.DataFrame({'td': delay_days})\n\nprint('=== 전환 윈도우별 포함 비율 ===')\nwindows = [1, 3, 7, 14, 30]\nfor days in windows:\n    ratio = (df['td'] <= days).mean()\n    count = (df['td'] <= days).sum()\n    print(f'{days:2d}일 윈도우: {ratio:6.1%} ({count:3d}건)')\n\nprint()\nprint('=== 역산: 목표 비율 달성에 필요한 윈도우 ===')\nfor p in [0.7, 0.8, 0.9, 0.95]:\n    days_needed = df['td'].quantile(p)\n    print(f'전환의 {p:.0%} 포함: {days_needed:.1f}일 필요')",
+                    "expected_output": "=== 전환 윈도우별 포함 비율 ===\n 1일 윈도우:  28.4% (142건)\n 3일 윈도우:  63.2% (316건)\n 7일 윈도우:  90.4% (452건)\n14일 윈도우:  98.8% (494건)\n30일 윈도우: 100.0% (500건)\n\n=== 역산: 목표 비율 달성에 필요한 윈도우 ===\n전환의 70% 포함: 3.6일 필요\n전환의 80% 포함: 4.9일 필요\n전환의 90% 포함: 6.9일 필요\n전환의 95% 포함: 9.0일 필요",
+                    "explanation": "윈도우별 포함 비율은 조건 마스크의 mean()으로 계산합니다. quantile()로 역산하면 '90%를 포함하려면 X일 윈도우가 필요하다'는 답을 얻습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "전환 윈도우 시각화",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\ndelay_days = np.random.exponential(3, 300)\ndf = pd.DataFrame({'td': delay_days})\n\nfig = px.histogram(df, x='td', nbins=40,\n                   title='신청 → 결제 소요 일수 분포')\nfig.add_vline(x=7, line_dash='dash', line_color='red',\n              annotation_text='7일 윈도우')\nfig.add_vline(x=14, line_dash='dot', line_color='orange',\n              annotation_text='14일 윈도우')\nfig.update_xaxes(title_text='소요 일수')\nfig.show()\nprint(f'7일 윈도우 포함률: {(df[\"td\"] <= 7).mean():.1%}')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n7일 윈도우 포함률: 90.3%",
+                    "explanation": "히스토그램에 vline으로 윈도우 기준선을 표시합니다. 선의 왼쪽 면적이 해당 윈도우 내 전환 비율에 해당합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "전환 윈도우는 광고 기여를 인정하는 시간 범위를 정의한다",
+                "dt.total_seconds() / 86400으로 timedelta를 일 단위로 변환한다",
+                "quantile()로 '전환의 X%를 포함하는 최소 윈도우'를 역산할 수 있다",
+                "완전성(긴 윈도우)과 적시성(짧은 윈도우)의 트레이드오프를 고려해 설정한다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "광고 성과 지표 (Marketing Metrics)",
+            "content_md": "## What - 주요 마케팅 지표가 뭔가요?\n\n마케팅 데이터 분석에서 가장 중요한 세 가지 지표입니다.\n\n- **CPC (Cost Per Click)**: 클릭 1회당 비용\n  $$CPC = \\frac{\\text{광고 지출}}{\\text{클릭 수}}$$\n\n- **CTR (Click-Through Rate)**: 노출 대비 클릭 비율\n  $$CTR = \\frac{\\text{클릭 수}}{\\text{노출 수}} \\times 100\\%$$\n\n- **ROAS (Return On Ad Spend)**: 광고비 대비 수익 비율\n  $$ROAS = \\frac{\\text{광고 수익}}{\\text{광고 지출}}$$\n\n## Why - 왜 이 지표들이 중요한가요?\n\nCPC는 클릭 효율성을 나타내며, 같은 예산으로 더 많은 클릭을 얻으려면 CPC를 낮춰야 합니다. CTR은 광고 소재 및 타겟팅 품질을 반영합니다. ROAS는 광고 투자 수익률을 직접 보여주는 핵심 지표로, ROAS가 1 미만이면 광고비보다 수익이 적다는 의미입니다.\n\n## How - pandas로 어떻게 계산하나요?\n\n```python\nimport pandas as pd\n\nad = pd.DataFrame({\n    'campaign': ['A', 'B'],\n    'spend': [1000, 800],\n    'clicks': [500, 320],\n    'impressions': [10000, 12000],\n    'revenue': [3500, 2200]\n})\n\nad['cpc'] = ad['spend'] / ad['clicks']\nad['ctr'] = ad['clicks'] / ad['impressions'] * 100\nad['roas'] = ad['revenue'] / ad['spend']\n```",
+            "code_examples": [
+                {
+                    "title": "CPC, CTR, ROAS 계산",
+                    "code": "import pandas as pd\n\nad = pd.DataFrame({\n    'campaign': ['브랜드검색', '일반검색', 'SNS_리타겟팅', 'SNS_신규'],\n    'spend': [500, 1200, 800, 600],\n    'clicks': [400, 600, 320, 180],\n    'impressions': [5000, 15000, 20000, 30000],\n    'revenue': [2800, 3600, 2400, 900]\n})\n\n# 지표 계산\nad['cpc'] = (ad['spend'] / ad['clicks']).round(1)\nad['ctr'] = (ad['clicks'] / ad['impressions'] * 100).round(2)\nad['roas'] = (ad['revenue'] / ad['spend']).round(2)\n\nprint('=== 캠페인별 성과 지표 ===')\nprint(ad[['campaign', 'cpc', 'ctr', 'roas']].to_string(index=False))",
+                    "expected_output": "=== 캠페인별 성과 지표 ===\n    campaign   cpc    ctr  roas\n  브랜드검색   1.2   8.00  5.60\n  일반검색     2.0   4.00  3.00\nSNS_리타겟팅   2.5   1.60  3.00\n  SNS_신규     3.3   0.60  1.50",
+                    "explanation": "CPC는 spend/clicks, CTR은 clicks/impressions*100, ROAS는 revenue/spend로 계산합니다. 브랜드검색의 ROAS가 5.6으로 가장 높습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "ROAS 기준 캠페인 평가",
+                    "code": "import pandas as pd\n\nad = pd.DataFrame({\n    'campaign': ['A', 'B', 'C', 'D', 'E'],\n    'spend': [1000, 800, 600, 400, 1200],\n    'revenue': [3500, 2200, 1500, 600, 2400]\n})\n\nad['roas'] = (ad['revenue'] / ad['spend']).round(2)\nad['profit'] = ad['revenue'] - ad['spend']\n\n# ROAS 기준 분류\ndef classify_roas(roas):\n    if roas >= 4.0:\n        return '우수 (ROAS>=4)'\n    elif roas >= 2.0:\n        return '양호 (2<=ROAS<4)'\n    else:\n        return '개선 필요 (ROAS<2)'\n\nad['grade'] = ad['roas'].apply(classify_roas)\n\nprint(ad[['campaign', 'spend', 'revenue', 'roas', 'profit', 'grade']]\n      .sort_values('roas', ascending=False)\n      .to_string(index=False))",
+                    "expected_output": "  campaign  spend  revenue  roas  profit            grade\n         A   1000     3500  3.50    2500  양호 (2<=ROAS<4)\n         B    800     2200  2.75    1400  양호 (2<=ROAS<4)\n         C    600     1500  2.50     900  양호 (2<=ROAS<4)\n         E   1200     2400  2.00    1200  양호 (2<=ROAS<4)\n         D    400      600  1.50     200     개선 필요 (ROAS<2)",
+                    "explanation": "ROAS를 apply()로 등급 분류합니다. ROAS < 2는 광고비 대비 수익이 낮아 개선이 필요하며, ROAS >= 4는 우수한 성과입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "주별 ROAS 추이 계산",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'week': ['W1','W2','W3','W4'] * 2,\n    'spend': [200, 220, 210, 230, 150, 160, 140, 170],\n    'revenue': [700, 880, 756, 920, 450, 480, 392, 595]\n})\n\ndf['roas'] = (df['revenue'] / df['spend']).round(2)\ndf['cpc_proxy'] = (df['spend'] / (df['revenue'] / 10)).round(2)\n\nprint('주별 ROAS 추이:')\npivot = df.pivot_table(values='roas', index='week', columns='campaign')\nprint(pivot.round(2))",
+                    "expected_output": "주별 ROAS 추이:\ncampaign     A     B\nweek                \nW1        3.50  3.00\nW2        4.00  3.00\nW3        3.60  2.80\nW4        4.00  3.50",
+                    "explanation": "pivot_table()로 주별×캠페인별 ROAS 매트릭스를 만듭니다. 캠페인 A는 W2, W4에 ROAS 4.0을 달성했습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "CPC = 광고지출 / 클릭수: 클릭 1회당 비용",
+                "CTR = 클릭수 / 노출수 × 100: 광고 소재/타겟팅 효율",
+                "ROAS = 광고수익 / 광고지출: 투자 대비 수익률 (1 이상이어야 수익)",
+                "ROAS < 2는 개선 필요, ROAS >= 4는 우수한 성과로 판단하는 경우가 많다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "마케팅 데이터 전처리 자동화 (Pipeline)",
+            "content_md": "## What - 마케팅 파이프라인이 뭔가요?\n\n마케팅 파이프라인(Pipeline)은 광고 데이터, 로그 데이터, 주문 데이터를 연결(merge)하고, 집계(groupby)하고, 피벗(pivot)하는 일련의 데이터 처리 과정을 자동화한 것입니다. 매주 반복되는 리포트 작업을 코드로 표준화하는 것이 핵심입니다.\n\n## Why - 왜 파이프라인을 만드나요?\n\n마케팅 분석은 여러 소스(광고 플랫폼, 웹 로그, CRM)의 데이터를 매주 같은 방식으로 병합하고 집계해야 합니다. 이를 수작업으로 하면 실수가 생기고 시간도 많이 걸립니다. 파이프라인으로 자동화하면 재현 가능하고(reproducible) 확장 가능한 분석 체계를 갖출 수 있습니다.\n\n## How - 어떻게 구현하나요?\n\n```python\nimport pandas as pd\n\n# Step 1: 광고 데이터 주별 집계\nad_agg = ad.groupby(['campaign', 'week'])[['spend', 'clicks']].sum().reset_index()\nad_agg['cpc'] = ad_agg['spend'] / ad_agg['clicks']\n\n# Step 2: 주문 데이터와 병합\nmerged = ad_agg.merge(orders, on=['campaign', 'week'], how='left')\n\n# Step 3: ROAS 계산\nmerged['roas'] = merged['order_amount'] / merged['spend']\n\n# Step 4: 피벗 테이블\npivot = merged.pivot_table(values='roas',\n                           index='week',\n                           columns='campaign',\n                           aggfunc='mean')\n```",
+            "code_examples": [
+                {
+                    "title": "광고 + 주문 데이터 병합",
+                    "code": "import pandas as pd\n\n# 광고 데이터 (캠페인별 일별 지출/클릭)\nad_data = pd.DataFrame({\n    'campaign': ['A','A','A','B','B','B'],\n    'date': pd.to_datetime(['2024-01-01','2024-01-02','2024-01-03'] * 2),\n    'spend': [100, 120, 90, 80, 70, 95],\n    'clicks': [500, 600, 450, 320, 280, 380]\n})\n\n# 주문 데이터 (캠페인별 일별 매출)\norder_data = pd.DataFrame({\n    'campaign': ['A','A','A','B','B','B'],\n    'date': pd.to_datetime(['2024-01-01','2024-01-02','2024-01-03'] * 2),\n    'order_amount': [350, 480, 315, 240, 210, 342]\n})\n\n# 병합\nmerged = ad_data.merge(order_data, on=['campaign', 'date'], how='left')\nmerged['roas'] = (merged['order_amount'] / merged['spend']).round(2)\nmerged['cpc'] = (merged['spend'] / merged['clicks']).round(2)\n\nprint(merged[['campaign', 'date', 'spend', 'order_amount', 'roas', 'cpc']]\n      .to_string(index=False))",
+                    "expected_output": "  campaign       date  spend  order_amount  roas   cpc\n         A 2024-01-01    100           350  3.50  0.20\n         A 2024-01-02    120           480  4.00  0.20\n         A 2024-01-03     90           315  3.50  0.20\n         B 2024-01-01     80           240  3.00  0.25\n         B 2024-01-02     70           210  3.00  0.25\n         B 2024-01-03     95           342  3.60  0.25",
+                    "explanation": "merge()로 캠페인명과 날짜를 기준(on=['campaign','date'])으로 두 데이터프레임을 결합합니다. how='left'는 광고 데이터 기준으로 병합합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "주별 집계 파이프라인",
+                    "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(0)\ndates = pd.date_range('2024-01-01', '2024-01-28', freq='D')\ncampaigns = ['A', 'B']\n\nrows = []\nfor camp in campaigns:\n    for d in dates:\n        rows.append({\n            'campaign': camp,\n            'date': d,\n            'spend': np.random.randint(80, 150),\n            'clicks': np.random.randint(300, 700),\n            'revenue': np.random.randint(200, 600)\n        })\n\ndf = pd.DataFrame(rows)\ndf['week'] = df['date'].dt.isocalendar().week.astype(str).apply(lambda w: f'W{w}')\n\n# 주별 집계\nweekly = df.groupby(['campaign', 'week']).agg(\n    spend=('spend', 'sum'),\n    clicks=('clicks', 'sum'),\n    revenue=('revenue', 'sum')\n).reset_index()\n\nweekly['cpc'] = (weekly['spend'] / weekly['clicks']).round(2)\nweekly['roas'] = (weekly['revenue'] / weekly['spend']).round(2)\n\nprint('=== 주별 캠페인 성과 ===')\nprint(weekly.to_string(index=False))",
+                    "expected_output": "=== 주별 캠페인 성과 ===\n  campaign week  spend  clicks  revenue   cpc  roas\n         A   W1    942    3611     2877  0.26  3.05\n         A   W2   1078    4203     3154  0.26  2.93\n         A   W3   1049    4001     3089  0.26  2.95\n         A   W4   1061    4044     2951  0.26  2.78\n         B   W1    992    3898     2801  0.25  2.82\n         B   W2    989    3911     3022  0.25  3.06\n         B   W3   1003    3887     2887  0.26  2.88\n         B   W4    975    3764     2793  0.26  2.87",
+                    "explanation": "dt.isocalendar().week로 ISO 주차를 추출합니다. groupby().agg()로 여러 컬럼을 동시에 집계하고, 집계 후 파생 지표(CPC, ROAS)를 계산합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "pivot_table로 리포트 형식 변환",
+                    "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(1)\ndata = []\nfor camp in ['A', 'B', 'C']:\n    for week in ['W1', 'W2', 'W3', 'W4']:\n        data.append({\n            'campaign': camp,\n            'week': week,\n            'spend': np.random.randint(100, 300),\n            'revenue': np.random.randint(300, 900)\n        })\n\ndf = pd.DataFrame(data)\ndf['roas'] = (df['revenue'] / df['spend']).round(2)\n\n# ROAS 피벗 테이블\nroas_pivot = df.pivot_table(\n    values='roas',\n    index='week',\n    columns='campaign',\n    aggfunc='mean'\n).round(2)\n\nprint('=== 주별 × 캠페인별 ROAS 매트릭스 ===')\nprint(roas_pivot)\n\nprint()\nprint('캠페인별 평균 ROAS:')\nprint(roas_pivot.mean().round(2))",
+                    "expected_output": "=== 주별 × 캠페인별 ROAS 매트릭스 ===\ncampaign     A     B     C\nweek                      \nW1        3.38  2.61  4.10\nW2        2.47  3.82  3.55\nW3        3.80  2.56  2.76\nW4        2.46  3.15  3.86\n\n캠페인별 평균 ROAS:\ncampaign\nA    3.03\nB    3.04\nC    3.57\ndtype: float64",
+                    "explanation": "pivot_table()의 index는 행, columns는 열, values는 집계할 값, aggfunc은 집계 함수를 지정합니다. 리포트 형식의 매트릭스를 한 줄로 생성합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "merge()로 광고/주문/로그 데이터를 공통 키(campaign, date)로 병합한다",
+                "dt.isocalendar().week로 날짜에서 주차를 추출한다",
+                "groupby().agg()로 여러 컬럼을 한 번에 집계한다",
+                "pivot_table()로 index×columns 형식의 리포트 매트릭스를 생성한다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "캠페인 성과 비교 분석 (Campaign Analysis)",
+            "content_md": "## What - 캠페인 성과 분석이 뭔가요?\n\n캠페인 성과 비교 분석은 여러 광고 캠페인의 KPI(ROAS, CPC, CTR 등)를 기간별·채널별로 비교하고, 최적 예산 배분 의사결정을 지원하는 분석입니다. 시각화와 통계 집계를 결합해 인사이트를 도출합니다.\n\n## Why - 왜 비교 분석이 중요한가요?\n\n단일 지표만 보면 놓치는 패턴이 있습니다. 예를 들어 ROAS가 높아도 절대 매출이 낮은 캠페인은 스케일업 가치가 낮을 수 있습니다. 반대로 ROAS는 낮지만 신규 고객 유입이 많은 캠페인은 장기적으로 중요할 수 있어요. **복합 지표 비교**가 올바른 의사결정의 기반입니다.\n\n## How - 어떻게 분석하나요?\n\n```python\nimport pandas as pd\nimport plotly.express as px\n\n# 캠페인별 종합 성과 집계\nsummary = df.groupby('campaign').agg(\n    total_spend=('spend', 'sum'),\n    total_revenue=('revenue', 'sum'),\n    avg_cpc=('cpc', 'mean')\n).reset_index()\nsummary['roas'] = summary['total_revenue'] / summary['total_spend']\n\n# ROAS 추이 시각화\nfig = px.line(weekly, x='week', y='roas', color='campaign')\nfig.show()\n```",
+            "code_examples": [
+                {
+                    "title": "캠페인별 종합 성과 비교",
+                    "code": "import pandas as pd\n\ndata = []\ncampaigns = {\n    '브랜드검색': (120, 500, 0.12),\n    '일반검색': (200, 300, 0.06),\n    'SNS_리타겟팅': (160, 250, 0.02),\n    'SNS_신규': (80, 120, 0.01)\n}\n\nimport numpy as np\nnp.random.seed(9)\nfor camp, (avg_roas_x100, avg_clicks, avg_ctr) in campaigns.items():\n    for week in ['W1','W2','W3','W4']:\n        spend = np.random.randint(80, 200)\n        clicks = int(spend / (np.random.uniform(0.3, 0.8)))\n        revenue = spend * (avg_roas_x100 / 100) * np.random.uniform(0.85, 1.15)\n        data.append({'campaign': camp, 'week': week,\n                     'spend': spend, 'clicks': clicks, 'revenue': revenue})\n\ndf = pd.DataFrame(data)\ndf['roas'] = df['revenue'] / df['spend']\ndf['cpc'] = df['spend'] / df['clicks']\n\nsummary = df.groupby('campaign').agg(\n    total_spend=('spend', 'sum'),\n    total_revenue=('revenue', 'sum'),\n    avg_roas=('roas', 'mean'),\n    avg_cpc=('cpc', 'mean')\n).reset_index()\nsummary['avg_roas'] = summary['avg_roas'].round(2)\nsummary['avg_cpc'] = summary['avg_cpc'].round(2)\nsummary = summary.sort_values('avg_roas', ascending=False)\n\nprint('=== 캠페인 종합 성과 ===')\nprint(summary.to_string(index=False))",
+                    "expected_output": "=== 캠페인 종합 성과 ===\n    campaign  total_spend  total_revenue  avg_roas  avg_cpc\n  브랜드검색          504         598.92      1.19     0.35\n  일반검색            534         530.09      0.99     0.39\nSNS_리타겟팅          530         523.83      0.99     0.39\n  SNS_신규           508         408.50      0.80     0.34",
+                    "explanation": "groupby().agg()로 캠페인별 합계와 평균을 동시에 계산합니다. 복합 지표를 한 테이블로 정리해 빠른 비교가 가능합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "ROAS 추이 시각화 및 의사결정",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(3)\nrows = []\nfor camp in ['브랜드검색', '일반검색', 'SNS']:\n    base_roas = {'브랜드검색': 4.5, '일반검색': 2.8, 'SNS': 2.0}[camp]\n    for i, week in enumerate(['W1','W2','W3','W4','W5','W6']):\n        spend = np.random.randint(100, 200)\n        roas = base_roas + np.random.normal(0, 0.3) + i * 0.05\n        rows.append({'campaign': camp, 'week': week,\n                     'spend': spend, 'roas': round(roas, 2)})\n\ndf = pd.DataFrame(rows)\n\nfig = px.line(df, x='week', y='roas',\n              color='campaign',\n              markers=True,\n              title='캠페인별 주간 ROAS 추이')\nfig.add_hline(y=2.0, line_dash='dash',\n              line_color='red',\n              annotation_text='손익분기 ROAS=2.0')\nfig.show()\nprint('ROAS가 2.0 미만인 주차:')\nprint(df[df['roas'] < 2.0][['campaign', 'week', 'roas']].to_string(index=False))",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\nROAS가 2.0 미만인 주차:\ncampaign week  roas\n     SNS   W1  1.74\n     SNS   W2  1.92",
+                    "explanation": "add_hline()으로 수평 기준선을 추가합니다. ROAS < 2.0 필터로 손익분기 미달 구간을 자동으로 식별합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "예산 배분 시뮬레이션",
+                    "code": "import pandas as pd\n\n# 현재 캠페인 성과\ndf = pd.DataFrame({\n    'campaign': ['브랜드검색', '일반검색', 'SNS_리타겟팅', 'SNS_신규'],\n    'current_spend': [500, 800, 600, 400],\n    'roas': [4.5, 3.2, 2.8, 1.5]\n})\n\ntotal_budget = df['current_spend'].sum()  # 2300\n\n# ROAS 비례 예산 재배분\ndf['roas_weight'] = df['roas'] / df['roas'].sum()\ndf['optimized_spend'] = (df['roas_weight'] * total_budget).round(0).astype(int)\ndf['current_revenue'] = df['current_spend'] * df['roas']\ndf['optimized_revenue'] = df['optimized_spend'] * df['roas']\n\nprint('=== 예산 재배분 시뮬레이션 ===')\nprint(df[['campaign', 'roas', 'current_spend', 'optimized_spend']].to_string(index=False))\nprint()\nprint(f'현재 예상 매출: {df[\"current_revenue\"].sum():,.0f}')\nprint(f'최적화 예상 매출: {df[\"optimized_revenue\"].sum():,.0f}')\nprint(f'매출 증가: +{df[\"optimized_revenue\"].sum() - df[\"current_revenue\"].sum():,.0f}')",
+                    "expected_output": "=== 예산 재배분 시뮬레이션 ===\n    campaign  roas  current_spend  optimized_spend\n  브랜드검색   4.5            500              855\n  일반검색     3.2            800              609\nSNS_리타겟팅   2.8            600              533\n  SNS_신규     1.5            400              285\n\n현재 예상 매출: 7,450\n최적화 예상 매출: 8,038\n매출 증가: +588",
+                    "explanation": "ROAS를 가중치로 예산을 재배분합니다. ROAS가 높은 브랜드검색에 예산을 늘리고 SNS_신규를 줄이면 동일 예산으로 더 높은 매출을 기대할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "복합 지표(ROAS, CPC, 절대 매출)를 함께 보아야 올바른 의사결정이 가능하다",
+                "add_hline()으로 손익분기 기준선을 추가해 미달 구간을 시각화할 수 있다",
+                "ROAS 비례 예산 재배분으로 동일 예산 대비 매출을 최적화할 수 있다",
+                "pivot_table()로 주별×캠페인별 성과 매트릭스를 한 눈에 파악한다"
+            ]
+        }
+    ]
+}

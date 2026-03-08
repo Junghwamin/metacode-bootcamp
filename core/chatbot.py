@@ -80,6 +80,15 @@ def get_context_prompt(chapter_id: int = None, problem_title: str = None,
         6: "파일 다루기 (open, read, write)",
         7: "예외 처리 (try, except, finally)",
         8: "라이브러리 (NumPy, Pandas)",
+        9: "통계의 기초와 데이터 (평균, 분산, 상관계수, 기술통계)",
+        10: "확률과 확률변수 (확률, 조건부확률, 베이즈정리, 기대값)",
+        11: "확률분포 (이항분포, 정규분포, CLT, t분포)",
+        12: "통계적 추정과 검정 (신뢰구간, 가설검정, p-value)",
+        13: "두 모집단 비교와 분산분석 (t검정, ANOVA)",
+        14: "회귀분석 (최소제곱법, R², 잔차분석)",
+        15: "Pandas 데이터 분석 (DataFrame, groupby, merge, pivot)",
+        16: "데이터 시각화 with Plotly (bar, line, histogram, scatter)",
+        17: "마케팅 데이터 분석 (기여분석, 전환윈도우, ROAS, CPC)",
     }
 
     parts = []

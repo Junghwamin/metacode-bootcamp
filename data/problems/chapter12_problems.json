@@ -1,0 +1,395 @@
+{
+    "chapter_id": 12,
+    "problems": [
+        {
+            "problem_id": "ch12_p01",
+            "title": "점추정: 표본통계량 계산",
+            "difficulty": "basic",
+            "description": "다음 데이터의 표본평균과 불편 표본분산을 계산하세요.\n\ndata = [12, 15, 14, 10, 13, 16, 11, 14, 15, 12]\n\n표본평균을 mean_val, 불편 표본분산을 var_val에 저장하고 각각 소수점 2자리로 출력하세요.",
+            "instructions": [
+                "import numpy as np 를 사용하세요",
+                "np.mean(data)로 표본평균, np.var(data, ddof=1)로 불편 분산 계산",
+                "mean_val, var_val 변수에 저장하세요",
+                "print(round(mean_val, 2), round(var_val, 2)) 로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = [12, 15, 14, 10, 13, 16, 11, 14, 15, 12]\n\n# 표본평균\nmean_val = None\n\n# 불편 표본분산 (ddof=1)\nvar_val = None\n\nprint(round(mean_val, 2), round(var_val, 2))\n",
+            "solution_code": "import numpy as np\n\ndata = [12, 15, 14, 10, 13, 16, 11, 14, 15, 12]\n\nmean_val = np.mean(data)\nvar_val = np.var(data, ddof=1)\n\nprint(round(mean_val, 2), round(var_val, 2))",
+            "hints": [
+                {"level": 1, "text": "np.mean()으로 평균을, np.var(ddof=1)로 불편 분산을 계산합니다."},
+                {"level": 2, "text": "mean_val = np.mean(data), var_val = np.var(data, ddof=1)"},
+                {"level": 3, "text": "mean_val = np.mean(data)\nvar_val = np.var(data, ddof=1)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "13.2 3.07",
+                "normalize_whitespace": true
+            },
+            "tags": ["점추정", "표본평균", "불편분산"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch12_p02",
+            "title": "모평균 95% 신뢰구간 계산",
+            "difficulty": "basic",
+            "description": "표본평균 48.5, 표본표준편차 6.2, 표본크기 n=25일 때 모평균의 95% 신뢰구간을 계산하세요.\n\n`scipy.stats.t.interval()`을 사용하고 구간의 하한과 상한을 각각 소수점 4자리로 출력하세요 (2줄).",
+            "instructions": [
+                "from scipy.stats import t, import numpy as np 를 사용하세요",
+                "표준오차 se = s / sqrt(n) 를 계산하세요",
+                "ci = t.interval(0.95, df=n-1, loc=x_bar, scale=se) 사용",
+                "print(round(ci[0], 4)), print(round(ci[1], 4)) 로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import t\nimport numpy as np\n\nx_bar = 48.5\ns = 6.2\nn = 25\n\n# 표준오차 계산\nse = s / np.sqrt(n)\n\n# 95% 신뢰구간\nci = t.interval(0.95, df=n-1, loc=x_bar, scale=se)\n\nprint(round(ci[0], 4))\nprint(round(ci[1], 4))\n",
+            "solution_code": "from scipy.stats import t\nimport numpy as np\n\nx_bar = 48.5\ns = 6.2\nn = 25\n\nse = s / np.sqrt(n)\nci = t.interval(0.95, df=n-1, loc=x_bar, scale=se)\n\nprint(round(ci[0], 4))\nprint(round(ci[1], 4))",
+            "hints": [
+                {"level": 1, "text": "표준오차 se = s/√n을 먼저 계산한 후 t.interval()에 scale 인자로 전달합니다."},
+                {"level": 2, "text": "se = 6.2/√25 = 1.24, t.interval(0.95, df=24, loc=48.5, scale=1.24)"},
+                {"level": 3, "text": "se = s / np.sqrt(n)\nci = t.interval(0.95, df=24, loc=48.5, scale=se)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "45.9396\n51.0604",
+                "normalize_whitespace": true
+            },
+            "tags": ["신뢰구간", "t분포", "표준오차"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch12_p03",
+            "title": "표본크기 결정",
+            "difficulty": "basic",
+            "description": "모비율을 추정할 때 오차한계 ±3%, 신뢰수준 95%를 원합니다. 필요한 최소 표본크기를 계산하세요.\n\n모비율 p가 알려지지 않았으므로 p=0.5를 사용합니다.\n\n결과를 정수로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import norm 으로 z값을 구하세요",
+                "z = norm.ppf(0.975) ≈ 1.96",
+                "n = ceil(z^2 * 0.5 * 0.5 / E^2), E = 0.03",
+                "import math; print(int(math.ceil(n)))으로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import norm\nimport math\n\nE = 0.03  # 오차한계 3%\nz = norm.ppf(0.975)\n\n# 표본크기 공식: n = z^2 * p*(1-p) / E^2  (p=0.5 사용)\nn = None\n\nprint(int(math.ceil(n)))\n",
+            "solution_code": "from scipy.stats import norm\nimport math\n\nE = 0.03\nz = norm.ppf(0.975)\nn = z**2 * 0.5 * 0.5 / E**2\n\nprint(int(math.ceil(n)))",
+            "hints": [
+                {"level": 1, "text": "표본크기 공식: n = z² × p(1-p) / E²"},
+                {"level": 2, "text": "n = (1.96)² × 0.25 / (0.03)² 를 계산하고 올림(ceil)하세요."},
+                {"level": 3, "text": "n = z**2 * 0.5 * 0.5 / E**2\nprint(int(math.ceil(n)))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1068",
+                "normalize_whitespace": true
+            },
+            "tags": ["표본크기", "모비율", "신뢰구간"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch12_p04",
+            "title": "가설 설정 판별",
+            "difficulty": "basic",
+            "description": "다음 연구 상황에 맞는 귀무가설(H0)과 대립가설(H1)을 변수에 저장하고 출력하세요.\n\n상황: '새로운 교육 방법이 기존 평균 점수 70점보다 높은지 검정한다.'\n\n변수 h0와 h1에 아래 형식으로 저장하세요:\n- h0 = 'mu = 70'\n- h1 = 'mu > 70'",
+            "instructions": [
+                "h0 변수에 귀무가설 문자열을 저장하세요",
+                "h1 변수에 대립가설 문자열을 저장하세요",
+                "print(h0)와 print(h1)으로 출력하세요"
+            ],
+            "initial_code": "# 귀무가설: '차이 없음' 또는 '기존과 같음' 가정\nh0 = None\n\n# 대립가설: '더 높다', '더 낮다', '다르다' 등 입증하려는 주장\nh1 = None\n\nprint(h0)\nprint(h1)\n",
+            "solution_code": "h0 = 'mu = 70'\nh1 = 'mu > 70'\n\nprint(h0)\nprint(h1)",
+            "hints": [
+                {"level": 1, "text": "귀무가설은 '변화 없음', 대립가설은 '입증하려는 주장'입니다."},
+                {"level": 2, "text": "'높은지 검정'이므로 대립가설은 mu > 70 (단측)입니다."},
+                {"level": 3, "text": "h0 = 'mu = 70'\nh1 = 'mu > 70'"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "mu = 70\nmu > 70",
+                "normalize_whitespace": true
+            },
+            "tags": ["가설검정", "귀무가설", "대립가설"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch12_p05",
+            "title": "p-value 판단",
+            "difficulty": "basic",
+            "description": "주어진 p-value에 대해 α=0.05에서 귀무가설 기각 여부를 출력하세요.\n\np_values = [0.032, 0.128, 0.001, 0.051, 0.049]\n\n각 p-value에 대해 '기각' 또는 '채택' 중 하나를 출력하세요 (5줄).",
+            "instructions": [
+                "alpha = 0.05 로 설정하세요",
+                "for 루프로 각 p_value를 순회하세요",
+                "p < alpha이면 '기각', 그렇지 않으면 '채택'을 출력하세요"
+            ],
+            "initial_code": "p_values = [0.032, 0.128, 0.001, 0.051, 0.049]\nalpha = 0.05\n\nfor p in p_values:\n    # p < alpha이면 '기각', 아니면 '채택'\n    pass\n",
+            "solution_code": "p_values = [0.032, 0.128, 0.001, 0.051, 0.049]\nalpha = 0.05\n\nfor p in p_values:\n    if p < alpha:\n        print('기각')\n    else:\n        print('채택')",
+            "hints": [
+                {"level": 1, "text": "p < alpha이면 통계적으로 유의(H0 기각), 그렇지 않으면 H0를 채택(기각 실패)입니다."},
+                {"level": 2, "text": "if p < 0.05: print('기각') else: print('채택')"},
+                {"level": 3, "text": "for p in p_values:\n    print('기각' if p < alpha else '채택')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "기각\n채택\n기각\n채택\n기각",
+                "normalize_whitespace": true
+            },
+            "tags": ["p-value", "가설검정", "유의수준"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch12_p06",
+            "title": "t 신뢰구간 실습",
+            "difficulty": "intermediate",
+            "description": "numpy random seed(10)을 사용해 N(80, 12²)에서 n=20 표본을 추출하고, 이 표본으로 모평균의 90%와 99% 신뢰구간을 계산하세요.\n\n90% CI 하한과 상한, 99% CI 하한과 상한을 각각 소수점 2자리로 출력하세요 (4줄).",
+            "instructions": [
+                "np.random.seed(10), data = np.random.normal(80, 12, 20)",
+                "se = np.std(data, ddof=1) / np.sqrt(20) 으로 표준오차 계산",
+                "t.interval(0.90, ...) 과 t.interval(0.99, ...) 으로 각각 계산",
+                "ci90[0], ci90[1], ci99[0], ci99[1] 순으로 출력"
+            ],
+            "initial_code": "from scipy.stats import t\nimport numpy as np\n\nnp.random.seed(10)\ndata = np.random.normal(80, 12, 20)\n\nn = len(data)\nx_bar = np.mean(data)\nse = np.std(data, ddof=1) / np.sqrt(n)\n\n# 90% 신뢰구간\nci90 = t.interval(0.90, df=n-1, loc=x_bar, scale=se)\n\n# 99% 신뢰구간\nci99 = t.interval(0.99, df=n-1, loc=x_bar, scale=se)\n\nprint(round(ci90[0], 2))\nprint(round(ci90[1], 2))\nprint(round(ci99[0], 2))\nprint(round(ci99[1], 2))\n",
+            "solution_code": "from scipy.stats import t\nimport numpy as np\n\nnp.random.seed(10)\ndata = np.random.normal(80, 12, 20)\n\nn = len(data)\nx_bar = np.mean(data)\nse = np.std(data, ddof=1) / np.sqrt(n)\n\nci90 = t.interval(0.90, df=n-1, loc=x_bar, scale=se)\nci99 = t.interval(0.99, df=n-1, loc=x_bar, scale=se)\n\nprint(round(ci90[0], 2))\nprint(round(ci90[1], 2))\nprint(round(ci99[0], 2))\nprint(round(ci99[1], 2))",
+            "hints": [
+                {"level": 1, "text": "t.interval의 첫 번째 인자가 신뢰수준(0.90, 0.99)이며, scale에 표준오차를 전달합니다."},
+                {"level": 2, "text": "se = std(ddof=1) / sqrt(n), 그 후 t.interval(0.90, df=19, loc=x_bar, scale=se)"},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "75.97\n84.17\n73.35\n86.79",
+                "normalize_whitespace": true
+            },
+            "tags": ["신뢰구간", "t분포", "표준오차"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch12_p07",
+            "title": "모비율 신뢰구간",
+            "difficulty": "intermediate",
+            "description": "800명에게 설문 조사를 했더니 320명이 '찬성'이라고 답했습니다. 모비율의 95% 신뢰구간을 계산하세요.\n\n하한과 상한을 각각 소수점 4자리로 출력하세요 (2줄).",
+            "instructions": [
+                "p_hat = 320 / 800 으로 표본 비율 계산",
+                "z = norm.ppf(0.975) 로 임계값 계산",
+                "me = z * sqrt(p_hat * (1-p_hat) / n) 으로 오차한계 계산",
+                "print(round(p_hat - me, 4)), print(round(p_hat + me, 4)) 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import norm\n\nn = 800\nx = 320\np_hat = x / n\n\n# 95% 신뢰구간 계산\nz = norm.ppf(0.975)\nme = z * np.sqrt(p_hat * (1 - p_hat) / n)\n\nprint(round(p_hat - me, 4))\nprint(round(p_hat + me, 4))\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import norm\n\nn = 800\nx = 320\np_hat = x / n\n\nz = norm.ppf(0.975)\nme = z * np.sqrt(p_hat * (1 - p_hat) / n)\n\nprint(round(p_hat - me, 4))\nprint(round(p_hat + me, 4))",
+            "hints": [
+                {"level": 1, "text": "모비율 신뢰구간: p̂ ± z×√(p̂(1-p̂)/n)"},
+                {"level": 2, "text": "p_hat = 0.4, se = sqrt(0.4*0.6/800), ci = p_hat ± 1.96*se"},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.3661\n0.4339",
+                "normalize_whitespace": true
+            },
+            "tags": ["모비율", "신뢰구간", "정규분포"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch12_p08",
+            "title": "단일 표본 가설검정",
+            "difficulty": "intermediate",
+            "description": "어느 제조업체의 제품 평균 수명이 1000시간이라고 주장합니다. 40개 제품을 표본 조사한 결과 평균 980시간, 표준편차 80시간이었습니다.\n\n유의수준 α=0.05에서 모평균이 1000시간과 다른지 양측 t검정을 수행하고 t통계량, p-value, 결론('기각' 또는 '채택')을 출력하세요 (3줄).",
+            "instructions": [
+                "t통계량: t_stat = (x_bar - mu_0) / (s / sqrt(n))",
+                "from scipy.stats import t 사용",
+                "p_value = 2 * t.sf(abs(t_stat), df=n-1) 로 양측 p-value",
+                "round(t_stat, 4), round(p_value, 4), 결론 순으로 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import t\n\nx_bar = 980\nmu_0 = 1000\ns = 80\nn = 40\nalpha = 0.05\n\n# t통계량 계산\nt_stat = (x_bar - mu_0) / (s / np.sqrt(n))\n\n# 양측 p-value (t.sf = 1 - t.cdf)\np_value = 2 * t.sf(abs(t_stat), df=n-1)\n\nprint(round(t_stat, 4))\nprint(round(p_value, 4))\nprint('기각' if p_value < alpha else '채택')\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import t\n\nx_bar = 980\nmu_0 = 1000\ns = 80\nn = 40\nalpha = 0.05\n\nt_stat = (x_bar - mu_0) / (s / np.sqrt(n))\np_value = 2 * t.sf(abs(t_stat), df=n-1)\n\nprint(round(t_stat, 4))\nprint(round(p_value, 4))\nprint('기각' if p_value < alpha else '채택')",
+            "hints": [
+                {"level": 1, "text": "t통계량 = (표본평균 - 귀무가설 값) / 표준오차"},
+                {"level": 2, "text": "t_stat = (980-1000)/(80/√40) = -1.5811, p_value = 2*t.sf(|t_stat|, df=39)"},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "-1.5811\n0.1215\n채택",
+                "normalize_whitespace": true
+            },
+            "tags": ["t검정", "가설검정", "p-value"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch12_p09",
+            "title": "Z검정 (모분산 알 때)",
+            "difficulty": "intermediate",
+            "description": "모표준편차 σ=15가 알려진 상황에서, n=50의 표본을 수집하여 표본평균이 108.5였습니다.\n\nH0: μ=105 vs H1: μ≠105 (양측, α=0.05)를 검정하고\nZ통계량과 p-value, 결론('기각' 또는 '채택')을 출력하세요 (3줄).",
+            "instructions": [
+                "from scipy.stats import norm 사용",
+                "z_stat = (x_bar - mu_0) / (sigma / sqrt(n))",
+                "p_value = 2 * (1 - norm.cdf(abs(z_stat))) 로 양측",
+                "round(z_stat, 4), round(p_value, 4), 결론 순으로 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import norm\n\nx_bar = 108.5\nmu_0 = 105\nsigma = 15\nn = 50\nalpha = 0.05\n\n# Z통계량 계산\nz_stat = (x_bar - mu_0) / (sigma / np.sqrt(n))\n\n# 양측 p-value\np_value = 2 * (1 - norm.cdf(abs(z_stat)))\n\nprint(round(z_stat, 4))\nprint(round(p_value, 4))\nprint('기각' if p_value < alpha else '채택')\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import norm\n\nx_bar = 108.5\nmu_0 = 105\nsigma = 15\nn = 50\nalpha = 0.05\n\nz_stat = (x_bar - mu_0) / (sigma / np.sqrt(n))\np_value = 2 * (1 - norm.cdf(abs(z_stat)))\n\nprint(round(z_stat, 4))\nprint(round(p_value, 4))\nprint('기각' if p_value < alpha else '채택')",
+            "hints": [
+                {"level": 1, "text": "모분산이 알려진 경우 Z검정을 사용합니다. Z = (x̄ - μ₀) / (σ/√n)"},
+                {"level": 2, "text": "z_stat = (108.5-105) / (15/√50) ≈ 1.650"},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "1.6499\n0.099\n채택",
+                "normalize_whitespace": true
+            },
+            "tags": ["Z검정", "가설검정", "모분산"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch12_p10",
+            "title": "scipy t검정 활용",
+            "difficulty": "intermediate",
+            "description": "numpy seed(5)를 사용해 N(55, 10²)에서 n=25 표본을 생성하고, H0: μ=50 vs H1: μ≠50을 scipy.stats.ttest_1samp으로 검정하세요.\n\nt통계량과 p-value를 소수점 4자리로 출력하세요 (2줄).",
+            "instructions": [
+                "np.random.seed(5), data = np.random.normal(55, 10, 25)",
+                "from scipy.stats import ttest_1samp",
+                "t_stat, p_val = ttest_1samp(data, popmean=50)",
+                "print(round(t_stat, 4)), print(round(p_val, 4)) 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import ttest_1samp\n\nnp.random.seed(5)\ndata = np.random.normal(55, 10, 25)\n\n# 단일 표본 t검정\nt_stat, p_val = ttest_1samp(data, popmean=50)\n\nprint(round(t_stat, 4))\nprint(round(p_val, 4))\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import ttest_1samp\n\nnp.random.seed(5)\ndata = np.random.normal(55, 10, 25)\n\nt_stat, p_val = ttest_1samp(data, popmean=50)\n\nprint(round(t_stat, 4))\nprint(round(p_val, 4))",
+            "hints": [
+                {"level": 1, "text": "scipy.stats.ttest_1samp(data, popmean)은 단일 표본 t검정을 수행합니다."},
+                {"level": 2, "text": "t통계량과 p-value를 자동으로 반환합니다. 튜플로 풀면 됩니다."},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "3.2303\n0.0035",
+                "normalize_whitespace": true
+            },
+            "tags": ["t검정", "scipy", "가설검정"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch12_p11",
+            "title": "검정력 분석",
+            "difficulty": "advanced",
+            "description": "H0: μ=100 vs H1: μ=105 (단측, α=0.05, σ=20, n=30)에서 검정력(power = 1-β)을 계산하세요.\n\n검정력 = P(기각역에 들어올 확률 | H1이 참)\n\n계산 절차:\n1. H0 하에서 기각역 임계값 x_c = μ0 + z_α × (σ/√n)\n2. H1 하에서 x_c 이상일 확률 = 1 - norm.cdf(x_c, loc=μ1, scale=σ/√n)\n\n검정력을 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "mu0=100, mu1=105, sigma=20, n=30, alpha=0.05",
+                "z_alpha = norm.ppf(1-alpha) = norm.ppf(0.95)",
+                "se = sigma/sqrt(n), x_c = mu0 + z_alpha * se",
+                "power = 1 - norm.cdf(x_c, loc=mu1, scale=se) → round(power, 4) 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import norm\n\nmu0 = 100\nmu1 = 105\nsigma = 20\nn = 30\nalpha = 0.05\n\nse = sigma / np.sqrt(n)\n\n# H0 기각역 임계값: 귀무가설 하에서 상위 5% 경계\nz_alpha = norm.ppf(1 - alpha)\nx_c = mu0 + z_alpha * se\n\n# 검정력: H1이 참일 때 기각역(x >= x_c)에 들어올 확률\npower = 1 - norm.cdf(x_c, loc=mu1, scale=se)\n\nprint(round(power, 4))\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import norm\n\nmu0 = 100\nmu1 = 105\nsigma = 20\nn = 30\nalpha = 0.05\n\nse = sigma / np.sqrt(n)\nz_alpha = norm.ppf(1 - alpha)\nx_c = mu0 + z_alpha * se\npower = 1 - norm.cdf(x_c, loc=mu1, scale=se)\n\nprint(round(power, 4))",
+            "hints": [
+                {"level": 1, "text": "검정력 = 실제로 H1이 참일 때 H0를 기각할 확률. 기각역 임계값을 먼저 구합니다."},
+                {"level": 2, "text": "x_c = 100 + 1.645 × (20/√30) ≈ 106.01, 그 이상일 확률을 mu1=105 기준으로 계산"},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.4258",
+                "tolerance": 0.005,
+                "test_input": []
+            },
+            "tags": ["검정력", "제2종오류", "가설검정"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch12_p12",
+            "title": "검정력 기반 표본크기 설계",
+            "difficulty": "advanced",
+            "description": "H0: μ=50 vs H1: μ=55 (단측, σ=12)에서 α=0.05, 검정력=0.8(β=0.2)을 원합니다.\n\n표본크기 공식: n = ((z_α + z_β) × σ / Δ)²\n여기서 Δ = μ1 - μ0 = 5, z_α = norm.ppf(0.95), z_β = norm.ppf(0.80)\n\n필요한 최소 표본크기를 정수로 출력하세요.",
+            "instructions": [
+                "z_alpha = norm.ppf(0.95), z_beta = norm.ppf(0.80) 계산",
+                "delta = mu1 - mu0 = 55 - 50 = 5",
+                "n = ((z_alpha + z_beta) * sigma / delta) ** 2",
+                "import math; print(int(math.ceil(n))) 으로 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import norm\nimport math\n\nmu0, mu1 = 50, 55\nsigma = 12\nalpha = 0.05\nbeta = 0.20  # 검정력 = 1 - beta = 0.80\n\nz_alpha = norm.ppf(1 - alpha)\nz_beta = norm.ppf(1 - beta)\ndelta = mu1 - mu0\n\nn = ((z_alpha + z_beta) * sigma / delta) ** 2\n\nprint(int(math.ceil(n)))\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import norm\nimport math\n\nmu0, mu1 = 50, 55\nsigma = 12\nalpha = 0.05\nbeta = 0.20\n\nz_alpha = norm.ppf(1 - alpha)\nz_beta = norm.ppf(1 - beta)\ndelta = mu1 - mu0\n\nn = ((z_alpha + z_beta) * sigma / delta) ** 2\n\nprint(int(math.ceil(n)))",
+            "hints": [
+                {"level": 1, "text": "표본크기 공식: n = ((z_α + z_β) × σ / Δ)²"},
+                {"level": 2, "text": "z_α = 1.645, z_β = 0.842, Δ = 5, σ = 12를 공식에 대입하세요."},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "38",
+                "normalize_whitespace": true
+            },
+            "tags": ["표본크기", "검정력", "가설검정 설계"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch12_p13",
+            "title": "독립 2표본 t검정",
+            "difficulty": "advanced",
+            "description": "두 그룹의 데이터가 있습니다:\n- 그룹 A (seed=1): np.random.normal(50, 8, 30)\n- 그룹 B (seed=2): np.random.normal(54, 9, 30)\n\nH0: μA = μB vs H1: μA ≠ μB (양측, α=0.05)를 독립 2표본 t검정으로 수행하고\nt통계량, p-value, 결론('기각' 또는 '채택')을 출력하세요 (3줄).",
+            "instructions": [
+                "from scipy.stats import ttest_ind 사용",
+                "np.random.seed(1)로 A, np.random.seed(2)로 B 생성",
+                "t_stat, p_val = ttest_ind(group_A, group_B)",
+                "round(t_stat, 4), round(p_val, 4), 결론 순으로 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import ttest_ind\n\nnp.random.seed(1)\ngroup_A = np.random.normal(50, 8, 30)\n\nnp.random.seed(2)\ngroup_B = np.random.normal(54, 9, 30)\n\n# 독립 2표본 t검정\nt_stat, p_val = ttest_ind(group_A, group_B)\n\nalpha = 0.05\nprint(round(t_stat, 4))\nprint(round(p_val, 4))\nprint('기각' if p_val < alpha else '채택')\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import ttest_ind\n\nnp.random.seed(1)\ngroup_A = np.random.normal(50, 8, 30)\n\nnp.random.seed(2)\ngroup_B = np.random.normal(54, 9, 30)\n\nt_stat, p_val = ttest_ind(group_A, group_B)\n\nalpha = 0.05\nprint(round(t_stat, 4))\nprint(round(p_val, 4))\nprint('기각' if p_val < alpha else '채택')",
+            "hints": [
+                {"level": 1, "text": "ttest_ind()는 두 독립 표본의 평균 차이를 검정합니다."},
+                {"level": 2, "text": "두 그룹을 따로 생성한 뒤 ttest_ind(group_A, group_B)로 검정합니다."},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "-2.2827\n0.0257\n기각",
+                "normalize_whitespace": true
+            },
+            "tags": ["t검정", "독립2표본", "가설검정"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch12_p14",
+            "title": "시뮬레이션으로 신뢰구간 검증",
+            "difficulty": "advanced",
+            "description": "N(60, 8²)에서 n=20 표본을 1000번 추출하여 각 표본의 95% 신뢰구간이 모평균 60을 포함하는 비율을 계산하세요.\n\nnp.random.seed(99) 사용. 포함 비율을 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "np.random.seed(99), true_mu=60, true_sigma=8, n=20",
+                "1000번 반복하며 t.interval(0.95, ...)로 신뢰구간 계산",
+                "ci[0] <= true_mu <= ci[1] 조건으로 포함 여부 집계",
+                "포함 횟수 / 1000 을 round(결과, 4)로 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import t\n\nnp.random.seed(99)\ntrue_mu = 60\ntrue_sigma = 8\nn = 20\nN = 1000\n\ncontains = 0\nfor _ in range(N):\n    sample = np.random.normal(true_mu, true_sigma, n)\n    ci = t.interval(0.95, df=n-1,\n                    loc=np.mean(sample),\n                    scale=np.std(sample, ddof=1)/np.sqrt(n))\n    if ci[0] <= true_mu <= ci[1]:\n        contains += 1\n\nprint(round(contains / N, 4))\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import t\n\nnp.random.seed(99)\ntrue_mu = 60\ntrue_sigma = 8\nn = 20\nN = 1000\n\ncontains = 0\nfor _ in range(N):\n    sample = np.random.normal(true_mu, true_sigma, n)\n    ci = t.interval(0.95, df=n-1,\n                    loc=np.mean(sample),\n                    scale=np.std(sample, ddof=1)/np.sqrt(n))\n    if ci[0] <= true_mu <= ci[1]:\n        contains += 1\n\nprint(round(contains / N, 4))",
+            "hints": [
+                {"level": 1, "text": "95% 신뢰구간은 1000번 중 약 950번 모평균을 포함해야 합니다."},
+                {"level": 2, "text": "t.interval()을 매번 호출하고, ci[0] <= true_mu <= ci[1]로 포함 여부를 확인합니다."},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.954",
+                "tolerance": 0.02,
+                "test_input": []
+            },
+            "tags": ["신뢰구간", "시뮬레이션", "검증"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch12_p15",
+            "title": "추정과 검정 종합",
+            "difficulty": "advanced",
+            "description": "다음을 순서대로 계산하고 출력하세요 (3줄):\n\nA) N(75, 10²)에서 seed=7로 n=36 표본을 추출하여 95% 신뢰구간 너비(상한-하한)를 소수점 4자리로 출력\nB) 위 표본으로 H0: μ=72 vs H1: μ≠72 t검정, p-value를 소수점 4자리로 출력\nC) α=0.05에서 결론 출력 ('기각' 또는 '채택')",
+            "instructions": [
+                "np.random.seed(7), n=36, data = np.random.normal(75, 10, 36)",
+                "ci = t.interval(0.95, df=35, loc=mean, scale=se), width = ci[1] - ci[0]",
+                "t_stat, p_val = ttest_1samp(data, popmean=72)",
+                "round(width, 4), round(p_val, 4), 결론 순으로 3줄 출력"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy.stats import t, ttest_1samp\n\nnp.random.seed(7)\ndata = np.random.normal(75, 10, 36)\nn = len(data)\n\n# A: 95% 신뢰구간 너비\nse = np.std(data, ddof=1) / np.sqrt(n)\nci = t.interval(0.95, df=n-1, loc=np.mean(data), scale=se)\nwidth = ci[1] - ci[0]\n\n# B&C: H0: μ=72 검정\nt_stat, p_val = ttest_1samp(data, popmean=72)\nalpha = 0.05\n\nprint(round(width, 4))\nprint(round(p_val, 4))\nprint('기각' if p_val < alpha else '채택')\n",
+            "solution_code": "import numpy as np\nfrom scipy.stats import t, ttest_1samp\n\nnp.random.seed(7)\ndata = np.random.normal(75, 10, 36)\nn = len(data)\n\nse = np.std(data, ddof=1) / np.sqrt(n)\nci = t.interval(0.95, df=n-1, loc=np.mean(data), scale=se)\nwidth = ci[1] - ci[0]\n\nt_stat, p_val = ttest_1samp(data, popmean=72)\nalpha = 0.05\n\nprint(round(width, 4))\nprint(round(p_val, 4))\nprint('기각' if p_val < alpha else '채택')",
+            "hints": [
+                {"level": 1, "text": "신뢰구간 너비 = 상한 - 하한 = 2 × 오차한계"},
+                {"level": 2, "text": "ttest_1samp(data, popmean=72)로 검정하고 p-value를 확인하세요."},
+                {"level": 3, "text": "코드가 이미 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "6.5694\n0.0048\n기각",
+                "normalize_whitespace": true
+            },
+            "tags": ["종합", "신뢰구간", "t검정", "p-value"],
+            "related_section": "s5"
+        }
+    ]
+}

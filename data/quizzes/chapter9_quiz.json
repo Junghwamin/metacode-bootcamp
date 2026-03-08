@@ -1,0 +1,109 @@
+{
+    "chapter_id": 9,
+    "quiz_title": "챕터 9 확인 퀴즈",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch9_q01",
+            "type": "multiple_choice",
+            "question": "다음 중 '모수(parameter)'에 대한 설명으로 가장 올바른 것은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "표본에서 계산된 평균, 분산 같은 수치"},
+                {"label": "B", "text": "모집단의 특성을 나타내는 수치로, 그리스 문자로 표기한다"},
+                {"label": "C", "text": "데이터를 수집하는 과정"},
+                {"label": "D", "text": "표본에서 무작위로 추출한 값"}
+            ],
+            "correct_answer": "B",
+            "explanation": "모수(parameter)는 모집단의 특성을 나타내는 수치입니다. 모평균 μ, 모표준편차 σ처럼 그리스 문자로 표기합니다. 반면 표본에서 계산된 수치는 통계량(statistic)이라 하며, x̄, s 등 라틴 문자로 표기합니다."
+        },
+        {
+            "question_id": "ch9_q02",
+            "type": "multiple_choice",
+            "question": "다음 자료 중 '서열 척도(ordinal scale)'에 해당하는 것은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "혈액형 (A, B, O, AB)"},
+                {"label": "B", "text": "키 (cm)"},
+                {"label": "C", "text": "성적 등급 (A, B, C, D, F)"},
+                {"label": "D", "text": "섭씨 온도"}
+            ],
+            "correct_answer": "C",
+            "explanation": "서열 척도는 순서가 있지만 간격이 균등하지 않은 자료입니다. 성적 등급(A>B>C...)은 순서가 있지만 A와 B의 차이가 C와 D의 차이와 같다고 말할 수 없으므로 서열 척도입니다. 혈액형은 명목, 키는 비율, 섭씨 온도는 구간 척도입니다."
+        },
+        {
+            "question_id": "ch9_q03",
+            "type": "ox",
+            "question": "이상치(outlier)가 포함된 데이터에서는 중앙값(median)보다 평균(mean)이 더 신뢰할 수 있는 대표값이다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. 이상치가 있을 때는 평균이 크게 왜곡되지만, 중앙값은 이상치의 영향을 받지 않습니다. 예를 들어 99명이 3000만원, 1명이 100억원을 버는 집단의 평균은 수억원이지만, 중앙값은 3000만원으로 실제 상황을 더 잘 반영합니다."
+        },
+        {
+            "question_id": "ch9_q04",
+            "type": "fill_blank",
+            "question": "표본 분산을 계산할 때 n으로 나누지 않고 (n-1)로 나누는 이유는 표본 분산이 모분산을 체계적으로 과소추정하는 것을 보정하기 위해서입니다. 이 보정 방법을 '______ 보정'이라고 합니다.",
+            "correct_answer": "베셀",
+            "accept_answers": ["베셀 보정", "Bessel", "베쎌"],
+            "explanation": "베셀 보정(Bessel's correction)은 표본 분산을 n이 아닌 n-1로 나눔으로써 표본 분산이 모분산의 불편추정량(unbiased estimator)이 되도록 하는 방법입니다. numpy에서는 ddof=1 옵션으로 적용합니다."
+        },
+        {
+            "question_id": "ch9_q05",
+            "type": "multiple_choice",
+            "question": "numpy로 표본 표준편차를 올바르게 계산하는 코드는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "np.std(data)"},
+                {"label": "B", "text": "np.std(data, ddof=1)"},
+                {"label": "C", "text": "np.var(data, ddof=1)"},
+                {"label": "D", "text": "np.std(data, n=1)"}
+            ],
+            "correct_answer": "B",
+            "explanation": "np.std(data, ddof=1)이 표본 표준편차를 계산합니다. ddof=1은 자유도(degrees of freedom)를 1로 설정하여 n-1로 나누는 베셀 보정을 적용합니다. ddof=0(기본값)이면 모표준편차, np.var()는 분산을 반환합니다."
+        },
+        {
+            "question_id": "ch9_q06",
+            "type": "ox",
+            "question": "변동계수(CV, Coefficient of Variation)는 단위가 없어서 단위가 다른 두 집단의 산포도를 비교할 때 사용할 수 있다.",
+            "correct_answer": true,
+            "explanation": "맞습니다. 변동계수 CV = (표준편차/평균) × 100%는 표준편차를 평균으로 나누어 단위를 제거한 상대적 산포도입니다. 키(cm)와 몸무게(kg)처럼 단위가 다른 변수들의 변동성을 비교할 때 유용합니다."
+        },
+        {
+            "question_id": "ch9_q07",
+            "type": "multiple_choice",
+            "question": "피어슨 상관계수(Pearson correlation coefficient)가 -0.85일 때 올바른 해석은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "두 변수 사이에 약한 양의 선형 관계가 있다"},
+                {"label": "B", "text": "두 변수 사이에 강한 음의 선형 관계가 있다"},
+                {"label": "C", "text": "두 변수 사이에 인과관계가 있다"},
+                {"label": "D", "text": "한 변수가 증가할 때 다른 변수도 증가한다"}
+            ],
+            "correct_answer": "B",
+            "explanation": "-0.85는 강한 음의 선형 상관관계를 나타냅니다. |r| ≥ 0.7이면 강한 상관, 부호가 음수이면 한 변수가 증가할 때 다른 변수가 감소하는 음의 관계입니다. 상관관계는 인과관계를 의미하지 않으며, 혼란변수가 존재할 수 있습니다."
+        },
+        {
+            "question_id": "ch9_q08",
+            "type": "fill_blank",
+            "question": "IQR(사분위수 범위)은 제3사분위수(Q3)에서 제1사분위수(Q1)를 뺀 값으로, 전체 데이터에서 중간 _____%의 범위를 나타냅니다.",
+            "correct_answer": "50",
+            "accept_answers": ["50%", "50 퍼센트"],
+            "explanation": "IQR = Q3 - Q1은 하위 25%와 상위 25%를 제외한 중간 50%의 데이터가 포함된 범위입니다. 이상치의 영향을 받지 않아 이상치가 있는 데이터에서 로버스트한 산포도 측도로 활용됩니다. 박스플롯의 박스 높이가 IQR입니다."
+        },
+        {
+            "question_id": "ch9_q09",
+            "type": "multiple_choice",
+            "question": "다음 코드의 실행 결과로 올바른 것은 무엇인가요?\n\nimport numpy as np\ndata = np.array([1, 2, 3, 4, 100])\nprint(np.mean(data), np.median(data))",
+            "options": [
+                {"label": "A", "text": "3.0 3.0"},
+                {"label": "B", "text": "22.0 3.0"},
+                {"label": "C", "text": "22.0 22.0"},
+                {"label": "D", "text": "3.0 22.0"}
+            ],
+            "correct_answer": "B",
+            "explanation": "평균 = (1+2+3+4+100)/5 = 110/5 = 22.0. 중앙값 = 정렬 후 중간값 = [1,2,3,4,100]에서 3번째 값 = 3.0. 이상치(100)가 평균을 크게 올렸지만 중앙값은 영향받지 않은 것을 볼 수 있습니다."
+        },
+        {
+            "question_id": "ch9_q10",
+            "type": "ox",
+            "question": "두 변수 사이의 상관계수가 0에 가까우면 두 변수 사이에 아무런 관계도 없다고 결론 내릴 수 있다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. 피어슨 상관계수는 선형 관계의 강도만 측정합니다. 상관계수가 0이어도 비선형 관계(예: 이차함수 U자형)가 있을 수 있습니다. 예를 들어 X = [-3,-2,-1,0,1,2,3], Y = X²의 경우 상관계수는 0이지만 강한 비선형 관계가 있습니다."
+        }
+    ]
+}

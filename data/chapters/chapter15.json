@@ -1,0 +1,187 @@
+{
+    "chapter_id": 15,
+    "title": "Pandas 데이터 분석",
+    "description": "Pandas를 활용한 데이터 전처리와 분석 기법을 배웁니다. 실제 마케팅 데이터를 다루듯이 CSV 로드부터 groupby 집계, 병합, 피벗 테이블까지 데이터 분석의 핵심 흐름을 익힙니다.",
+    "learning_objectives": [
+        "CSV 파일을 읽고 DataFrame을 다루는 법을 배운다",
+        "데이터 인덱싱, 필터링, 정렬을 수행한다",
+        "groupby와 집계 함수로 데이터를 분석한다",
+        "데이터 결합과 피벗 테이블을 활용한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "DataFrame 기초 (DataFrame Basics)",
+            "content_md": "## What - DataFrame이 뭔가요?\n\nDataFrame은 Pandas의 핵심 자료구조로, 엑셀 스프레드시트처럼 **행(row)과 열(column)로 구성된 2차원 표**입니다. 각 열은 Series라고 부르며, 하나의 변수를 나타냅니다. 실무에서 데이터 분석을 할 때 거의 모든 작업이 DataFrame을 통해 이루어집니다.\n\n## Why - 왜 DataFrame을 써야 하나요?\n\n수천, 수만 행의 데이터를 파이썬 리스트로 다루면 코드가 복잡해지고 느려집니다. DataFrame은 **벡터 연산(vectorized operation)**으로 전체 열을 한 번에 처리하고, SQL처럼 직관적인 문법으로 데이터를 탐색할 수 있습니다. 마케팅 데이터 분석, 재무 분석, 머신러닝 전처리 등 모든 데이터 작업의 기반이 됩니다.\n\n## How - 어떻게 사용하나요?\n\nCSV 파일은 `pd.read_csv('파일.csv')`로 불러오고, 딕셔너리로 직접 만들 수도 있습니다.\n\n```python\nimport pandas as pd\n\n# 딕셔너리로 DataFrame 생성\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Carol'],\n    'score': [85, 92, 78],\n    'grade': ['B', 'A', 'C']\n})\n\nprint(df.shape)      # (3, 3) — 행 수, 열 수\nprint(df.dtypes)     # 각 열의 데이터 타입\ndf.head(2)           # 상위 2행 확인\ndf.describe()        # 수치형 열 통계 요약\n```\n\n`df.info()`는 결측값(NA) 유무와 메모리 사용량까지 한눈에 보여주어 데이터 탐색의 첫 단계로 항상 실행하는 습관을 들이는 것이 좋습니다.",
+            "code_examples": [
+                {
+                    "title": "DataFrame 생성과 기본 탐색",
+                    "code": "import pandas as pd\n\n# 딕셔너리로 DataFrame 생성\ndf = pd.DataFrame({\n    'product': ['노트북', '스마트폰', '태블릿', '모니터', '키보드'],\n    'price': [1200000, 800000, 500000, 350000, 80000],\n    'stock': [15, 30, 20, 12, 50]\n})\n\nprint('=== shape ===')\nprint(df.shape)\n\nprint('\\n=== 상위 3행 ===')\nprint(df.head(3))\n\nprint('\\n=== 데이터 타입 ===')\nprint(df.dtypes)",
+                    "expected_output": "=== shape ===\n(5, 3)\n\n=== 상위 3행 ===\n  product    price  stock\n0     노트북  1200000     15\n1   스마트폰   800000     30\n2     태블릿   500000     20\n\n=== 데이터 타입 ===\nproduct    object\nprice       int64\nstock       int64\ndtype: object",
+                    "explanation": "pd.DataFrame()에 딕셔너리를 넘기면 키가 열 이름이 됩니다. shape은 (행 수, 열 수) 튜플을 반환하고, dtypes로 각 열의 자료형을 확인합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "describe()와 info()로 데이터 요약",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Carol', 'Dave'],\n    'age': [25, 30, 28, None],\n    'salary': [3000, 4500, 3800, 4200]\n})\n\nprint('=== describe() ===')\nprint(df.describe())\n\nprint('\\n=== 결측값 확인 ===')\nprint(df.isna().sum())",
+                    "expected_output": "=== describe() ===\n             age       salary\ncount   3.000000     4.000000\nmean   27.666667  3875.000000\nstd     2.516611   632.455532\nmin    25.000000  3000.000000\n25%    26.500000  3650.000000\n50%    28.000000  3900.000000\n75%    29.000000  4275.000000\nmax    30.000000  4500.000000\n\n=== 결측값 확인 ===\nname      0\nage       1\nsalary    0\ndtype: int64",
+                    "explanation": "describe()는 수치형 열에 대해 count, mean, std, min, 사분위수, max를 자동으로 계산합니다. isna().sum()으로 각 열의 결측값 개수를 빠르게 파악할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "tail()과 열 이름 확인",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'month': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],\n    'revenue': [1200, 1500, 1800, 1600, 2100, 2300],\n    'cost': [800, 900, 1100, 1000, 1300, 1400]\n})\n\nprint('=== 하위 3행 ===')\nprint(df.tail(3))\n\nprint('\\n=== 열 이름 목록 ===')\nprint(df.columns.tolist())",
+                    "expected_output": "=== 하위 3행 ===\n  month  revenue  cost\n3   Apr     1600  1000\n4   May     2100  1300\n5   Jun     2300  1400\n\n=== 열 이름 목록 ===\n['month', 'revenue', 'cost']",
+                    "explanation": "tail(n)은 마지막 n행을 반환합니다. df.columns는 열 이름 인덱스 객체이며, .tolist()로 파이썬 리스트로 변환할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "pd.DataFrame(딕셔너리)로 DataFrame을 직접 생성할 수 있다",
+                "pd.read_csv('파일.csv')로 외부 CSV 파일을 불러온다",
+                "df.shape은 (행 수, 열 수) 튜플을 반환한다",
+                "df.head(), df.tail()로 상하위 행을 빠르게 확인한다",
+                "df.describe()는 수치형 열의 통계 요약, df.info()는 전체 구조를 보여준다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "데이터 선택과 필터링 (Indexing & Filtering)",
+            "content_md": "## What - 인덱싱과 필터링이 뭔가요?\n\n인덱싱(indexing)은 DataFrame에서 원하는 행/열을 꺼내는 작업이고, 필터링(filtering)은 조건에 맞는 행만 선택하는 작업입니다. 엑셀의 '열 선택'과 '자동 필터'에 해당합니다.\n\n## Why - 왜 중요한가요?\n\n실제 데이터는 수십 개의 열과 수만 개의 행으로 구성됩니다. 분석에 필요한 열만 골라내고, 특정 조건(예: 매출 > 100만원, 지역 == '서울')에 맞는 행만 추출해야 효율적인 분석이 가능합니다. 잘못된 인덱싱은 흔한 버그의 원인이므로 `loc`와 `iloc`의 차이를 명확히 이해해야 합니다.\n\n## How - 어떻게 사용하나요?\n\n```python\n# 열 선택\ndf['name']           # 단일 열 → Series 반환\ndf[['name', 'age']]  # 복수 열 → DataFrame 반환\n\n# 위치 기반 인덱싱 (iloc: integer location)\ndf.iloc[0]           # 0번째 행\ndf.iloc[1:4, 0:2]    # 1~3행, 0~1열\n\n# 레이블 기반 인덱싱 (loc: label)\ndf.loc[0, 'name']    # 인덱스 0, 'name' 열\n\n# 조건 필터링\ndf[df['score'] > 80]             # score가 80 초과인 행\ndf[(df['age'] >= 25) & (df['city'] == '서울')]  # 복합 조건\n```\n\n`iloc`는 0-based 정수 위치, `loc`는 인덱스 레이블을 사용한다는 차이를 기억하세요. 복합 조건에서는 `and` 대신 `&`, `or` 대신 `|`를 사용합니다.",
+            "code_examples": [
+                {
+                    "title": "열 선택과 iloc/loc 인덱싱",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Carol', 'Dave'],\n    'dept': ['마케팅', '개발', '마케팅', '영업'],\n    'salary': [3500, 4800, 3200, 4100],\n    'years': [3, 5, 2, 4]\n})\n\n# 단일 열 선택\nprint('=== 이름 열 ===')\nprint(df['name'].tolist())\n\n# iloc: 2번째 행(인덱스 1)\nprint('\\n=== iloc[1] ===')\nprint(df.iloc[1])\n\n# loc: 인덱스 2, salary 열\nprint('\\n=== loc[2, salary] ===')\nprint(df.loc[2, 'salary'])",
+                    "expected_output": "=== 이름 열 ===\n['Alice', 'Bob', 'Carol', 'Dave']\n\n=== iloc[1] ===\nname      Bob\ndept       개발\nsalary    4800\nyears        5\nName: 1, dtype: object\n\n=== loc[2, salary] ===\n3200",
+                    "explanation": "df['col']은 Series를 반환합니다. iloc은 정수 위치, loc은 인덱스 레이블로 데이터에 접근합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "조건 필터링과 정렬",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Carol', 'Dave', 'Eve'],\n    'dept': ['마케팅', '개발', '마케팅', '영업', '개발'],\n    'salary': [3500, 4800, 3200, 4100, 5200]\n})\n\n# 단일 조건 필터링\nprint('=== 급여 4000 초과 ===')\nprint(df[df['salary'] > 4000][['name', 'salary']])\n\n# 복합 조건\nprint('\\n=== 마케팅 부서 AND 급여 3000 이상 ===')\nmask = (df['dept'] == '마케팅') & (df['salary'] >= 3000)\nprint(df[mask][['name', 'dept', 'salary']])\n\n# 내림차순 정렬\nprint('\\n=== 급여 내림차순 ===')\nprint(df.sort_values('salary', ascending=False)[['name', 'salary']])",
+                    "expected_output": "=== 급여 4000 초과 ===\n   name  salary\n1   Bob    4800\n3  Dave    4100\n4   Eve    5200\n\n=== 마케팅 부서 AND 급여 3000 이상 ===\n    name dept  salary\n0  Alice   마케팅    3500\n2  Carol   마케팅    3200\n\n=== 급여 내림차순 ===\n    name  salary\n4    Eve    5200\n1    Bob    4800\n3   Dave    4100\n0  Alice    3500\n2  Carol    3200",
+                    "explanation": "조건 필터링은 Boolean Series를 대괄호 안에 넣습니다. 복합 조건은 괄호로 묶고 &(AND), |(OR)를 사용합니다. sort_values()에서 ascending=False는 내림차순입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "value_counts()로 빈도 분석",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['SNS', '검색광고', 'SNS', '이메일', '검색광고', 'SNS', '이메일', '검색광고'],\n    'conversion': [1, 0, 1, 1, 0, 0, 1, 1]\n})\n\n# 채널별 빈도 수\nprint('=== 채널별 건수 ===')\nprint(df['channel'].value_counts())\n\n# 정규화 (비율)\nprint('\\n=== 채널별 비율 ===')\nprint(df['channel'].value_counts(normalize=True).round(2))",
+                    "expected_output": "=== 채널별 건수 ===\nchannel\nSNS      3\n검색광고    3\n이메일     2\nName: count, dtype: int64\n\n=== 채널별 비율 ===\nchannel\nSNS      0.38\n검색광고    0.38\n이메일     0.25\nName: proportion, dtype: float64",
+                    "explanation": "value_counts()는 각 고유값의 등장 횟수를 내림차순으로 반환합니다. normalize=True를 주면 비율(0~1)로 반환하여 분포를 빠르게 파악할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "df['col']은 Series, df[['col1','col2']]는 DataFrame을 반환한다",
+                "iloc은 정수 위치 기반, loc은 레이블 기반 인덱싱이다",
+                "조건 필터링은 df[df['col'] > 값] 형태로 사용한다",
+                "복합 조건은 and/or 대신 &/|를 사용하고 각 조건을 괄호로 묶는다",
+                "sort_values()로 정렬하고 value_counts()로 빈도를 분석한다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "날짜와 시간 데이터 (Dates & Times)",
+            "content_md": "## What - 날짜 데이터를 왜 따로 다루나요?\n\n날짜 문자열 '2024-01-15'는 파이썬이 보기엔 그냥 텍스트입니다. `pd.to_datetime()`으로 변환하면 **datetime 타입**이 되어, 연도/월/일 추출, 날짜 간 차이 계산, 기간(period)별 집계 등이 가능해집니다.\n\n## Why - 날짜 타입으로 바꿔야 하는 이유가 있나요?\n\n마케팅 분석에서 '월별 매출 추이', '요일별 클릭률', '주차별 전환 수'처럼 시간 축 분석이 필수입니다. 날짜가 문자열이면 '2024-02' > '2024-01' 비교조차 안 됩니다. datetime으로 변환한 뒤 `dt` 접근자를 통해 연산하면 시계열 분석이 훨씬 간단해집니다.\n\n## How - 어떻게 사용하나요?\n\n```python\n# 문자열을 datetime으로 변환\ndf['date'] = pd.to_datetime(df['date'])\n\n# dt 접근자로 날짜 요소 추출\ndf['year']  = df['date'].dt.year\ndf['month'] = df['date'].dt.month\ndf['day']   = df['date'].dt.day\ndf['weekday'] = df['date'].dt.day_name()  # 'Monday', 'Tuesday', ...\n\n# 날짜 차이 계산\ndf['days_since'] = (pd.Timestamp('2024-12-31') - df['date']).dt.days\n\n# 기간으로 변환 (월 단위: 'M', 주 단위: 'W')\ndf['period_month'] = df['date'].dt.to_period('M')\n```\n\n`to_period('W')`는 날짜를 주차(예: 2024-01-01/2024-01-07)로 변환하여 주별 집계에 유용합니다.",
+            "code_examples": [
+                {
+                    "title": "pd.to_datetime()과 dt 접근자",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'order_date': ['2024-01-05', '2024-02-14', '2024-03-20', '2024-01-22'],\n    'amount': [150000, 230000, 180000, 95000]\n})\n\n# 날짜 타입으로 변환\ndf['order_date'] = pd.to_datetime(df['order_date'])\n\n# 연도, 월 추출\ndf['year'] = df['order_date'].dt.year\ndf['month'] = df['order_date'].dt.month\n\nprint('=== 날짜 요소 추출 ===')\nprint(df[['order_date', 'year', 'month', 'amount']])\n\nprint('\\n=== 데이터 타입 ===')\nprint(df['order_date'].dtype)",
+                    "expected_output": "=== 날짜 요소 추출 ===\n  order_date  year  month  amount\n0 2024-01-05  2024      1  150000\n1 2024-02-14  2024      2  230000\n2 2024-03-20  2024      3  180000\n3 2024-01-22  2024      1   95000\n\n=== 데이터 타입 ===\ndatetime64[ns]",
+                    "explanation": "pd.to_datetime()으로 변환한 열의 dtype은 datetime64[ns]가 됩니다. .dt.year, .dt.month, .dt.day 등으로 날짜 구성 요소를 새 열로 추출할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "to_period()로 월별 그룹화",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'date': ['2024-01-10', '2024-01-25', '2024-02-08', '2024-02-20', '2024-03-05'],\n    'sales': [200000, 150000, 320000, 280000, 410000]\n})\n\ndf['date'] = pd.to_datetime(df['date'])\ndf['month'] = df['date'].dt.to_period('M')\n\nprint('=== 월 기간 열 ===')\nprint(df[['date', 'month', 'sales']])\n\n# 월별 합계\nprint('\\n=== 월별 매출 합계 ===')\nprint(df.groupby('month')['sales'].sum().reset_index())",
+                    "expected_output": "=== 월 기간 열 ===\n        date   month   sales\n0 2024-01-10  2024-01  200000\n1 2024-01-25  2024-01  150000\n2 2024-02-08  2024-02  320000\n3 2024-02-20  2024-02  280000\n4 2024-03-05  2024-03  410000\n\n=== 월별 매출 합계 ===\n     month   sales\n0  2024-01  350000\n1  2024-02  600000\n2  2024-03  410000",
+                    "explanation": "dt.to_period('M')은 날짜를 '2024-01' 형식의 Period 객체로 변환합니다. 이를 groupby 키로 사용하면 월별 집계가 간편합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "요일과 날짜 차이 계산",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'event_date': ['2024-03-04', '2024-03-06', '2024-03-09', '2024-03-11'],\n    'clicks': [1200, 850, 2300, 1750]\n})\n\ndf['event_date'] = pd.to_datetime(df['event_date'])\ndf['weekday'] = df['event_date'].dt.day_name()\n\nprint('=== 요일 정보 ===')\nprint(df[['event_date', 'weekday', 'clicks']])",
+                    "expected_output": "=== 요일 정보 ===\n  event_date  weekday  clicks\n0 2024-03-04   Monday    1200\n1 2024-03-06  Wednesday    850\n2 2024-03-09   Saturday    2300\n3 2024-03-11     Monday    1750",
+                    "explanation": "dt.day_name()은 'Monday', 'Tuesday' 등 요일 이름을 영문으로 반환합니다. 요일별 클릭 패턴 분석 등 시계열 분석에 활용합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "pd.to_datetime()으로 문자열을 datetime64 타입으로 변환한다",
+                ".dt 접근자로 .year, .month, .day, .day_name() 등 날짜 요소를 추출한다",
+                "dt.to_period('M')은 월 단위, to_period('W')는 주 단위로 변환한다",
+                "datetime 타입끼리 뺄셈하면 timedelta가 되고, .dt.days로 정수 일수를 얻는다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "그룹화와 집계 (Groupby & Aggregation)",
+            "content_md": "## What - groupby가 뭔가요?\n\n`groupby`는 **특정 열의 값을 기준으로 행을 묶고, 각 그룹에 대해 집계(합계, 평균, 개수 등)를 계산**하는 기능입니다. SQL의 `GROUP BY`와 동일한 개념입니다.\n\n## Why - groupby가 왜 중요한가요?\n\n\"채널별 평균 전환율은?\", \"지역별 총 매출은?\", \"상품 카테고리별 주문 건수는?\" — 데이터 분석 질문의 대부분은 **그룹별 집계**로 답합니다. groupby를 잘 사용하면 수만 개의 행에서 핵심 인사이트를 수 초 안에 뽑아낼 수 있습니다.\n\n## How - 어떻게 사용하나요?\n\n```python\n# 기본 패턴: groupby → 집계 → reset_index()\ndf.groupby('channel')['revenue'].sum().reset_index()\n\n# agg()로 여러 집계를 한 번에\ndf.groupby('channel').agg(\n    total_revenue=('revenue', 'sum'),\n    avg_revenue=('revenue', 'mean'),\n    order_count=('order_id', 'count')\n).reset_index()\n\n# 다중 그룹화 (두 열 기준)\ndf.groupby(['region', 'channel'])['sales'].sum().reset_index()\n```\n\n`reset_index()`를 마지막에 호출하면 그룹 키가 인덱스가 아닌 일반 열로 돌아와 이후 작업이 편리합니다. `nunique()`는 고유값 개수를 세어 '몇 종류?'를 답할 때 씁니다.",
+            "code_examples": [
+                {
+                    "title": "기본 groupby + sum/mean",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['SNS', '검색광고', 'SNS', '이메일', '검색광고', 'SNS'],\n    'revenue': [150000, 230000, 80000, 120000, 310000, 200000],\n    'clicks': [1200, 900, 650, 400, 1100, 870]\n})\n\n# 채널별 매출 합계\nprint('=== 채널별 매출 합계 ===')\nresult = df.groupby('channel')['revenue'].sum().reset_index()\nprint(result)\n\n# 채널별 클릭 평균\nprint('\\n=== 채널별 평균 클릭 ===')\nprint(df.groupby('channel')['clicks'].mean().reset_index())",
+                    "expected_output": "=== 채널별 매출 합계 ===\n  channel  revenue\n0      SNS   430000\n1    검색광고   540000\n2     이메일   120000\n\n=== 채널별 평균 클릭 ===\n  channel       clicks\n0      SNS   906.666667\n1    검색광고  1000.000000\n2     이메일   400.000000",
+                    "explanation": "groupby('col')['target'].sum()은 col 기준으로 묶어 target의 합계를 구합니다. reset_index()로 그룹 키가 일반 열이 됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "agg()로 여러 집계 한 번에",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'region': ['서울', '부산', '서울', '대구', '부산', '서울', '대구'],\n    'order_id': [1001, 1002, 1003, 1004, 1005, 1006, 1007],\n    'amount': [85000, 120000, 65000, 95000, 210000, 140000, 75000]\n})\n\n# agg()로 복수 집계\nresult = df.groupby('region').agg(\n    total_amount=('amount', 'sum'),\n    avg_amount=('amount', 'mean'),\n    order_count=('order_id', 'count')\n).reset_index()\n\nprint(result)",
+                    "expected_output": "  region  total_amount    avg_amount  order_count\n0     대구        170000  85000.000000            2\n1     부산        330000  165000.000000            2\n2     서울        290000  96666.666667            3",
+                    "explanation": "agg()에서 키워드 인수 형태 agg(새열명=('원본열', '함수명'))으로 여러 집계를 동시에 수행합니다. 가독성이 높고 결과 열 이름을 직접 지정할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "다중 그룹화와 nunique()",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'region': ['서울', '서울', '부산', '부산', '서울', '부산'],\n    'channel': ['SNS', '검색광고', 'SNS', '이메일', 'SNS', '검색광고'],\n    'customer_id': ['C001', 'C002', 'C001', 'C003', 'C004', 'C002'],\n    'revenue': [50000, 80000, 60000, 40000, 90000, 70000]\n})\n\n# 지역 + 채널 기준 집계\nprint('=== 지역 x 채널별 매출 ===')\nprint(df.groupby(['region', 'channel'])['revenue'].sum().reset_index())\n\n# 지역별 고유 고객 수\nprint('\\n=== 지역별 고유 고객 수 ===')\nprint(df.groupby('region')['customer_id'].nunique().reset_index())",
+                    "expected_output": "=== 지역 x 채널별 매출 ===\n  region channel  revenue\n0     부산     SNS    60000\n1     부산    검색광고    70000\n2     부산    이메일    40000\n3     서울     SNS   140000\n4     서울    검색광고    80000\n\n=== 지역별 고유 고객 수 ===\n  region  customer_id\n0     부산            3\n1     서울            3",
+                    "explanation": "groupby에 리스트를 전달하면 여러 열을 동시에 그룹 키로 사용합니다. nunique()는 중복을 제거한 고유값의 개수를 반환하여 고객 수 집계에 유용합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "groupby('col')['target'].집계함수().reset_index() 패턴을 기억한다",
+                "agg(새열명=('원본열', '함수명'))으로 여러 집계를 한 번에 수행한다",
+                "sum, mean, count, max, min, nunique 등 집계 함수를 상황에 맞게 선택한다",
+                "다중 그룹화는 groupby(['col1', 'col2'])처럼 리스트를 전달한다",
+                "reset_index()를 호출해야 그룹 키가 일반 열로 돌아온다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "데이터 결합과 변환 (Merge, Pivot & NA)",
+            "content_md": "## What - 데이터 결합이 뭔가요?\n\n`pd.merge()`는 두 DataFrame을 공통 키(key)로 연결하는 **관계형 조인(join)**입니다. `pd.concat()`은 위아래로 쌓거나 좌우로 붙입니다. `pivot_table()`은 데이터를 요약 테이블(크로스탭) 형태로 재구조화합니다.\n\n## Why - 왜 필요한가요?\n\n현실의 데이터는 한 파일에 다 들어있지 않습니다. 주문 테이블, 고객 테이블, 상품 테이블이 따로 존재하고, 이를 연결해야 '고객별 구매 금액'을 계산할 수 있습니다. 결측값(NA) 처리는 분석 오류를 방지하기 위해 항상 전처리 단계에서 수행해야 합니다.\n\n## How - 어떻게 사용하나요?\n\n```python\n# merge: SQL JOIN과 동일\npd.merge(orders, customers, how='left', on='customer_id')\n# how: 'inner'(교집합), 'left'(왼쪽 전체), 'right', 'outer'\n\n# pivot_table: 행/열/값 구조로 재구성\ndf.pivot_table(index='region', columns='channel', values='revenue', aggfunc='sum')\n\n# 결측값 처리\ndf.isna().sum()          # 결측값 개수 확인\ndf['col'].fillna(0)      # 0으로 채우기\ndf['col'].fillna(df['col'].mean())  # 평균으로 채우기\ndf.dropna(subset=['col'])           # 해당 열에 NA 있는 행 제거\n```\n\n`merge`의 `how='left'`는 왼쪽 DataFrame의 모든 행을 유지하며, 오른쪽에 매칭이 없으면 NaN이 채워집니다.",
+            "code_examples": [
+                {
+                    "title": "pd.merge()로 두 테이블 결합",
+                    "code": "import pandas as pd\n\norders = pd.DataFrame({\n    'order_id': [1001, 1002, 1003, 1004],\n    'customer_id': ['C001', 'C002', 'C001', 'C003'],\n    'amount': [85000, 120000, 65000, 95000]\n})\n\ncustomers = pd.DataFrame({\n    'customer_id': ['C001', 'C002', 'C003'],\n    'name': ['Alice', 'Bob', 'Carol'],\n    'region': ['서울', '부산', '서울']\n})\n\n# left join: 주문 테이블 기준으로 고객 정보 붙이기\nresult = pd.merge(orders, customers, how='left', on='customer_id')\nprint(result)",
+                    "expected_output": "   order_id customer_id  amount   name region\n0      1001        C001   85000  Alice     서울\n1      1002        C002  120000    Bob     부산\n2      1003        C001   65000  Alice     서울\n3      1004        C003   95000  Carol     서울",
+                    "explanation": "pd.merge()의 on='customer_id'는 양쪽 DataFrame에서 공통으로 사용할 키 열입니다. how='left'는 왼쪽(orders)의 모든 행을 유지하고 오른쪽(customers) 정보를 붙입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "pivot_table()로 크로스탭 생성",
+                    "code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'region': ['서울', '서울', '부산', '부산', '서울', '부산'],\n    'channel': ['SNS', '검색광고', 'SNS', '이메일', '검색광고', 'SNS'],\n    'revenue': [150000, 230000, 80000, 120000, 310000, 200000]\n})\n\n# 지역(행) x 채널(열) 매출 피벗\nresult = df.pivot_table(\n    index='region',\n    columns='channel',\n    values='revenue',\n    aggfunc='sum',\n    fill_value=0\n)\n\nprint(result)",
+                    "expected_output": "channel   SNS    이메일   검색광고\nregion                       \n부산      280000  120000       0\n서울      150000       0  540000",
+                    "explanation": "pivot_table에서 index는 행, columns는 열, values는 집계할 값, aggfunc는 집계 방식입니다. fill_value=0은 데이터 없는 셀을 0으로 채웁니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "결측값 처리 (fillna / dropna)",
+                    "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Carol', 'Dave'],\n    'channel': ['SNS', None, 'SNS', '검색광고'],\n    'revenue': [150000, 230000, None, 95000]\n})\n\nprint('=== 결측값 개수 ===')\nprint(df.isna().sum())\n\n# 문자열 열: '미확인'으로 채우기\ndf['channel'] = df['channel'].fillna('미확인')\n\n# 수치 열: 평균으로 채우기\ndf['revenue'] = df['revenue'].fillna(df['revenue'].mean())\n\nprint('\\n=== 처리 후 DataFrame ===')\nprint(df)",
+                    "expected_output": "=== 결측값 개수 ===\nname       0\nchannel    1\nrevenue    1\ndtype: int64\n\n=== 처리 후 DataFrame ===\n    name channel    revenue\n0  Alice     SNS   150000.0\n1    Bob     미확인   230000.0\n2  Carol     SNS   158333.333333\n3   Dave    검색광고    95000.0",
+                    "explanation": "isna().sum()으로 열별 결측값을 파악한 뒤, fillna()로 적절한 값으로 대체합니다. 범주형은 '미확인' 같은 문자열로, 수치형은 평균/중앙값으로 채우는 것이 일반적입니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "pd.merge(df1, df2, how='left', on='key')는 SQL LEFT JOIN과 동일하다",
+                "how 옵션: 'inner'(교집합), 'left'(왼쪽 전체), 'right', 'outer'(합집합)",
+                "pivot_table은 index(행), columns(열), values(값), aggfunc(집계 방식)을 지정한다",
+                "isna().sum()으로 결측값 현황을 파악하고, fillna() 또는 dropna()로 처리한다",
+                "pd.concat([df1, df2])은 행 방향으로 DataFrame을 이어 붙인다"
+            ]
+        }
+    ]
+}

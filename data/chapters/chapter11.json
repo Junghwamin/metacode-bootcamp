@@ -1,0 +1,162 @@
+{
+    "chapter_id": 11,
+    "title": "확률분포",
+    "description": "주요 확률분포의 특성과 활용법을 배웁니다.",
+    "learning_objectives": [
+        "이항분포와 포아송분포를 이해하고 활용한다",
+        "정규분포와 표준정규분포를 이해한다",
+        "중심극한정리(CLT)를 이해하고 활용한다",
+        "카이제곱, t, F 분포를 이해한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "이산 확률분포 (Discrete Distributions)",
+            "content_md": "## What - 이산 확률분포가 뭔가요?\n\n이산 확률분포(discrete probability distribution)는 셀 수 있는 값들에 확률을 대응시킨 분포입니다. 동전 던지기, 제품 불량 개수, 1시간 안에 오는 고객 수처럼 '몇 번', '몇 개'로 세는 상황에 등장합니다.\n\n**이항분포 B(n, p)**는 동일한 실험을 n번 반복할 때 성공 횟수 X가 따르는 분포입니다.\n\n$$P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$$\n\n- 기대값(평균): $E[X] = np$\n- 분산: $Var(X) = np(1-p)$\n\n**포아송분포 Poi(λ)**는 단위 시간/공간에서 평균 λ번 발생하는 사건의 횟수 분포입니다.\n\n$$P(X=k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$\n\n- 기대값 = 분산 = $\\lambda$\n\n## Why - 왜 이 분포들을 배워야 하나요?\n\n이항분포는 품질 검사, A/B 테스트, 선거 예측 등 '성공/실패'가 반복되는 거의 모든 상황에 쓰입니다. 포아송분포는 콜센터 수신 건수, 교통사고 발생 횟수, 방사성 붕괴처럼 희귀 사건의 발생 빈도를 모델링할 때 필수입니다. 두 분포를 이해하면 실무 데이터 분석의 절반은 해결됩니다.\n\n## How - scipy.stats로 어떻게 계산하나요?\n\n`scipy.stats.binom`과 `scipy.stats.poisson`을 사용합니다.\n\n- `pmf(k, n, p)`: P(X=k) 확률질량함수(probability mass function)\n- `cdf(k, n, p)`: P(X≤k) 누적분포함수\n- `rvs(n, p, size)`: 난수 생성\n\n```python\nfrom scipy.stats import binom, poisson\n\n# 이항분포: n=10, p=0.3일 때 X=3인 확률\nprob = binom.pmf(3, n=10, p=0.3)\nprint(f'P(X=3) = {prob:.4f}')  # 0.2668\n\n# 포아송분포: λ=4일 때 X=2인 확률\nprob2 = poisson.pmf(2, mu=4)\nprint(f'P(X=2) = {prob2:.4f}')  # 0.1465\n```",
+            "code_examples": [
+                {
+                    "title": "이항분포 확률 계산",
+                    "code": "from scipy.stats import binom\nimport numpy as np\n\n# 동전 10번 던졌을 때 앞면이 정확히 5번 나올 확률\nn, p = 10, 0.5\nprob_exact = binom.pmf(5, n, p)\nprint(f'P(X=5) = {prob_exact:.4f}')\n\n# 앞면이 3번 이하일 확률 (누적)\nprob_cum = binom.cdf(3, n, p)\nprint(f'P(X<=3) = {prob_cum:.4f}')\n\n# 기대값과 분산\nmean, var = binom.stats(n, p)\nprint(f'기대값: {mean}, 분산: {var}')",
+                    "expected_output": "P(X=5) = 0.2461\nP(X<=3) = 0.1719\n기대값: 5.0, 분산: 2.5",
+                    "explanation": "binom.pmf()는 정확히 k번 성공할 확률, cdf()는 k번 이하일 누적 확률을 반환합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "포아송분포 확률 계산",
+                    "code": "from scipy.stats import poisson\n\n# 시간당 평균 3건 오는 콜센터에서 정확히 5건일 확률\nlambda_ = 3\nprob = poisson.pmf(5, mu=lambda_)\nprint(f'P(X=5) = {prob:.4f}')\n\n# 2건 이하일 확률\nprob_le2 = poisson.cdf(2, mu=lambda_)\nprint(f'P(X<=2) = {prob_le2:.4f}')\n\n# 포아송: 기대값 = 분산 = λ\nmean, var = poisson.stats(mu=lambda_)\nprint(f'기대값: {mean}, 분산: {var}')",
+                    "expected_output": "P(X=5) = 0.1008\nP(X<=2) = 0.4232\n기대값: 3.0, 분산: 3.0",
+                    "explanation": "포아송분포에서는 기대값과 분산이 모두 λ로 동일한 것이 중요한 특징입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "이항분포 시각화",
+                    "code": "import matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfrom scipy.stats import binom\nimport numpy as np\n\nn, p = 20, 0.4\nx = np.arange(0, n+1)\nprobs = binom.pmf(x, n, p)\n\nplt.figure(figsize=(8, 4))\nplt.bar(x, probs, color='steelblue', alpha=0.7)\nplt.xlabel('성공 횟수 k')\nplt.ylabel('확률 P(X=k)')\nplt.title(f'이항분포 B({n}, {p})')\nplt.axvline(n*p, color='red', linestyle='--', label=f'평균={n*p}')\nplt.legend()\nplt.tight_layout()\nplt.savefig('binom_dist.png', dpi=72)\nprint('이항분포 B(20, 0.4) 시각화 완료')\nprint(f'최빈값(mode): {x[probs.argmax()]}')",
+                    "expected_output": "이항분포 B(20, 0.4) 시각화 완료\n최빈값(mode): 8",
+                    "explanation": "이항분포는 n이 클수록, p가 0.5에 가까울수록 정규분포에 근사합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "이항분포 B(n,p)의 기대값은 np, 분산은 np(1-p)이다",
+                "포아송분포 Poi(λ)는 기대값과 분산이 모두 λ로 동일하다",
+                "scipy.stats.binom.pmf(k, n, p)로 P(X=k)를 계산한다",
+                "cdf()는 누적확률 P(X≤k)를 계산한다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "정규분포 (Normal Distribution)",
+            "content_md": "## What - 정규분포가 뭔가요?\n\n정규분포(normal distribution) $N(\\mu, \\sigma^2)$는 평균 $\\mu$를 중심으로 좌우 대칭인 종 모양(bell curve) 분포입니다. 자연에서 가장 흔히 나타나는 분포로, 키, 몸무게, 시험 점수 등 수많은 현상이 정규분포를 따릅니다.\n\n확률밀도함수(PDF):\n$$f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$$\n\n**68-95-99.7 법칙 (경험적 규칙)**:\n- $\\mu \\pm 1\\sigma$ 구간: 전체 데이터의 약 **68.3%**\n- $\\mu \\pm 2\\sigma$ 구간: 전체 데이터의 약 **95.4%**\n- $\\mu \\pm 3\\sigma$ 구간: 전체 데이터의 약 **99.7%**\n\n## Why - 왜 정규분포가 중요한가요?\n\n통계학에서 정규분포는 중심적 위치를 차지합니다. 중심극한정리에 의해 표본 크기가 커지면 거의 모든 분포의 표본평균이 정규분포에 수렴하기 때문입니다. 또한 많은 통계 검정(t검정, F검정 등)이 정규분포 가정 위에서 개발되었습니다.\n\n## How - scipy.stats.norm으로 계산하나요?\n\n```python\nfrom scipy.stats import norm\n\n# 평균 170, 표준편차 10인 키 분포\n# 175cm 이하일 확률\nprob = norm.cdf(175, loc=170, scale=10)\nprint(f'P(X<=175) = {prob:.4f}')  # 0.6915\n\n# 상위 10%의 키 기준값\ncutoff = norm.ppf(0.9, loc=170, scale=10)\nprint(f'상위 10% 기준: {cutoff:.2f}cm')  # 182.82cm\n```\n\n`cdf(x)`: P(X≤x) 계산, `ppf(q)`: q분위수(역함수) 계산",
+            "code_examples": [
+                {
+                    "title": "정규분포 확률 계산",
+                    "code": "from scipy.stats import norm\n\n# 평균 70, 표준편차 10인 시험 점수 분포\nmu, sigma = 70, 10\n\n# 80점 이하일 확률\nprob1 = norm.cdf(80, loc=mu, scale=sigma)\nprint(f'P(X<=80) = {prob1:.4f}')\n\n# 60~80점 사이일 확률\nprob2 = norm.cdf(80, mu, sigma) - norm.cdf(60, mu, sigma)\nprint(f'P(60<X<80) = {prob2:.4f}')\n\n# 90점 이상일 확률 (상위 확률)\nprob3 = 1 - norm.cdf(90, mu, sigma)\nprint(f'P(X>=90) = {prob3:.4f}')",
+                    "expected_output": "P(X<=80) = 0.8413\nP(60<X<80) = 0.6827\nP(X>=90) = 0.0228",
+                    "explanation": "norm.cdf()로 누적확률을 계산합니다. P(a<X<b) = cdf(b) - cdf(a)를 이용합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "68-95-99.7 법칙 확인",
+                    "code": "from scipy.stats import norm\n\nmu, sigma = 0, 1  # 표준정규분포로 확인\n\n# 각 범위의 확률 계산\np1 = norm.cdf(mu + sigma) - norm.cdf(mu - sigma)\np2 = norm.cdf(mu + 2*sigma) - norm.cdf(mu - 2*sigma)\np3 = norm.cdf(mu + 3*sigma) - norm.cdf(mu - 3*sigma)\n\nprint(f'μ±1σ 범위: {p1*100:.2f}%')  # 68.27%\nprint(f'μ±2σ 범위: {p2*100:.2f}%')  # 95.45%\nprint(f'μ±3σ 범위: {p3*100:.2f}%')  # 99.73%",
+                    "expected_output": "μ±1σ 범위: 68.27%\nμ±2σ 범위: 95.45%\nμ±3σ 범위: 99.73%",
+                    "explanation": "68-95-99.7 법칙을 코드로 직접 검증합니다. 이 수치는 통계 분석에서 이상치 탐지 등에 자주 활용됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "정규분포 시각화",
+                    "code": "import matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nimport numpy as np\nfrom scipy.stats import norm\n\nx = np.linspace(-4, 4, 300)\ny = norm.pdf(x)  # 표준정규분포 PDF\n\nplt.figure(figsize=(8, 4))\nplt.plot(x, y, 'b-', linewidth=2, label='N(0,1)')\n# 1σ 영역 색칠\nplt.fill_between(x, y, where=(x>=-1)&(x<=1), alpha=0.3, color='blue', label='68%')\nplt.fill_between(x, y, where=((x>=-2)&(x<-1))|((x>1)&(x<=2)), alpha=0.2, color='green', label='+13.6%')\nplt.xlabel('x')\nplt.ylabel('밀도')\nplt.title('표준정규분포 N(0,1)')\nplt.legend()\nplt.tight_layout()\nplt.savefig('normal_dist.png', dpi=72)\nprint('정규분포 시각화 완료')",
+                    "expected_output": "정규분포 시각화 완료",
+                    "explanation": "정규분포의 종 모양 곡선과 σ 구간별 확률 면적을 시각화합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "정규분포 N(μ, σ²)는 평균 μ를 중심으로 좌우 대칭인 종 모양이다",
+                "68-95-99.7 법칙: μ±1σ/2σ/3σ 범위에 각각 68%/95%/99.7%의 데이터가 있다",
+                "norm.cdf(x)로 누적확률, norm.ppf(q)로 분위수를 계산한다",
+                "정규분포는 중심극한정리의 핵심이며 많은 통계 기법의 기반이다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "표준정규분포와 표준화 (Standard Normal)",
+            "content_md": "## What - 표준화가 뭔가요?\n\n표준화(standardization)는 서로 다른 단위·척도를 가진 변수들을 하나의 공통 기준으로 변환하는 과정입니다. 확률변수 X ~ N(μ, σ²)를 **Z점수(Z-score)**로 변환하면 표준정규분포 N(0, 1)을 따릅니다.\n\n$$Z = \\frac{X - \\mu}{\\sigma}$$\n\nZ점수는 '평균으로부터 몇 표준편차 떨어졌는가'를 나타냅니다.\n- Z = 1.0 → 평균보다 1σ 위\n- Z = -2.0 → 평균보다 2σ 아래\n\n## Why - 왜 표준화가 필요한가요?\n\n키(cm)와 몸무게(kg)처럼 단위가 다른 변수를 직접 비교할 수 없습니다. Z점수로 변환하면 '키 기준 상위 몇 %' vs '몸무게 기준 상위 몇 %'를 동일 기준에서 비교할 수 있습니다. 또한 모든 정규분포 확률을 하나의 Z표(standard normal table)로 계산 가능합니다.\n\n## How - Z점수로 확률을 계산하나요?\n\n```python\nfrom scipy.stats import norm\n\n# 평균 170, 표준편차 10인 키 분포에서 180cm인 사람의 Z점수\nz = (180 - 170) / 10   # Z = 1.0\nprob = norm.cdf(z)     # P(Z <= 1.0) = 0.8413\nprint(f'Z점수: {z}, 확률: {prob:.4f}')\n\n# 역방향: 상위 5%의 Z점수와 원래 값\nz_95 = norm.ppf(0.95)          # Z = 1.6449\nx_95 = 170 + z_95 * 10         # X = 186.45\nprint(f'상위 5% 기준: Z={z_95:.4f}, X={x_95:.2f}cm')\n```",
+            "code_examples": [
+                {
+                    "title": "Z점수 계산과 해석",
+                    "code": "from scipy.stats import norm\n\n# 수학 점수: 평균 65, 표준편차 12\n# 영어 점수: 평균 70, 표준편차 8\nmath_score = 80\nenglish_score = 84\n\n# Z점수 계산\nz_math = (math_score - 65) / 12\nz_english = (english_score - 70) / 8\n\nprint(f'수학 Z점수: {z_math:.4f}')\nprint(f'영어 Z점수: {z_english:.4f}')\n\n# 어느 과목이 상대적으로 더 잘했나?\nprint(f'수학 상위: {(1-norm.cdf(z_math))*100:.1f}%')\nprint(f'영어 상위: {(1-norm.cdf(z_english))*100:.1f}%')",
+                    "expected_output": "수학 Z점수: 1.2500\n영어 Z점수: 1.7500\n수학 상위: 10.6%\n영어 상위: 4.0%",
+                    "explanation": "Z점수가 클수록 평균에서 더 멀리 있습니다. 영어 Z점수가 더 높으므로 영어를 상대적으로 더 잘한 것입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "표준화와 역변환",
+                    "code": "from scipy.stats import norm\n\n# 표준화: X -> Z\ndef standardize(x, mu, sigma):\n    return (x - mu) / sigma\n\n# 역변환: Z -> X  \ndef unstandardize(z, mu, sigma):\n    return z * sigma + mu\n\nmu, sigma = 170, 10\n\n# 180cm의 Z점수\nz = standardize(180, mu, sigma)\nprint(f'180cm의 Z점수: {z:.2f}')\n\n# P(X <= 180) 계산 (두 가지 방법 비교)\nprob1 = norm.cdf(180, loc=mu, scale=sigma)\nprob2 = norm.cdf(z)  # 표준정규분포 이용\nprint(f'P(X<=180): {prob1:.4f}')\nprint(f'P(Z<={z:.2f}): {prob2:.4f}')\n\n# 상위 10% 기준값\nz_90 = norm.ppf(0.90)\nx_90 = unstandardize(z_90, mu, sigma)\nprint(f'상위 10% 기준: {x_90:.2f}cm')",
+                    "expected_output": "180cm의 Z점수: 1.00\nP(X<=180): 0.8413\nP(Z<=1.00): 0.8413\n상위 10% 기준: 182.82cm",
+                    "explanation": "직접 norm.cdf(x, loc, scale)을 쓰거나 Z변환 후 표준정규분포를 써도 결과가 동일합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "Z점수 공식: Z = (X - μ) / σ, '평균으로부터 몇 표준편차 떨어졌는가'",
+                "표준화 후 norm.cdf(z)로 확률 계산 가능",
+                "norm.ppf(q)는 누적확률 q에 해당하는 분위수(Z값)를 반환",
+                "Z점수로 단위가 다른 변수들의 상대적 위치를 비교할 수 있다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "중심극한정리 (Central Limit Theorem)",
+            "content_md": "## What - 중심극한정리가 뭔가요?\n\n중심극한정리(Central Limit Theorem, CLT)는 통계학의 가장 중요한 정리 중 하나입니다.\n\n**원래 분포에 관계없이**, 모집단에서 크기 n인 표본을 반복해서 추출할 때, **표본평균 $\\bar{X}$의 분포는 n이 충분히 크면 정규분포에 근사**합니다.\n\n$$\\bar{X} \\approx N\\left(\\mu, \\frac{\\sigma^2}{n}\\right)$$\n\n- 표본평균의 기대값: $E[\\bar{X}] = \\mu$ (모평균과 동일)\n- 표본평균의 표준편차(표준오차): $SE = \\frac{\\sigma}{\\sqrt{n}}$\n- 실무 기준: 보통 $n \\geq 30$이면 CLT 적용 가능\n\n## Why - 왜 CLT가 혁명적인가요?\n\nCLT 덕분에 원래 분포가 무엇인지 몰라도 표본만 충분하면 정규분포 기반의 통계 추론이 가능해집니다. 지수분포, 균일분포, 포아송분포 등 어떤 분포에서 출발해도 표본평균은 결국 정규분포를 따릅니다. 이것이 모든 가설검정과 신뢰구간 계산의 이론적 근거입니다.\n\n## How - 시뮬레이션으로 CLT를 확인하나요?\n\n```python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 지수분포(비정규)에서 CLT 확인\nnp.random.seed(42)\nN_simul = 10000\nn_sample = 30\n\n# 개별 관측값은 지수분포\nraw = np.random.exponential(scale=1, size=1000)\n# 표본평균은 정규분포 근사\nsample_means = [np.random.exponential(1, n_sample).mean() for _ in range(N_simul)]\nprint(f'표본평균의 평균: {np.mean(sample_means):.4f}')  # 모평균 1에 근사\nprint(f'표본평균의 표준편차: {np.std(sample_means):.4f}')  # 이론값: 1/√30 ≈ 0.1826\n```",
+            "code_examples": [
+                {
+                    "title": "CLT 시뮬레이션 - 균일분포",
+                    "code": "import numpy as np\n\nnp.random.seed(42)\n\n# 균일분포 U(0,1)의 모수: 평균=0.5, 분산=1/12\n# 이론적 표준오차 = sqrt(1/12) / sqrt(n)\nn_sizes = [1, 5, 30, 100]\nN_simul = 5000\n\nfor n in n_sizes:\n    means = [np.random.uniform(0, 1, n).mean() for _ in range(N_simul)]\n    print(f'n={n:3d}: 표본평균 평균={np.mean(means):.4f}, '\n          f'표준편차={np.std(means):.4f} '\n          f'(이론={1/np.sqrt(12*n):.4f})')",
+                    "expected_output": "n=  1: 표본평균 평균=0.5001, 표준편차=0.2887 (이론=0.2887)\nn=  5: 표본평균 평균=0.5003, 표준편차=0.1291 (이론=0.1291)\nn= 30: 표본평균 평균=0.5000, 표준편차=0.0527 (이론=0.0527)\nn=100: 표본평균 평균=0.4999, 표준편차=0.0288 (이론=0.0289)",
+                    "explanation": "n이 커질수록 표본평균의 표준편차(표준오차)가 작아지고, 이론값 σ/√n에 수렴합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "CLT 시뮬레이션 - 지수분포",
+                    "code": "import numpy as np\nfrom scipy.stats import shapiro\n\nnp.random.seed(0)\n\n# 지수분포(강하게 치우침)에서 표본평균의 정규성 확인\n# 지수분포: 평균=1, 분산=1\nn_sample = 30\nN_simul = 1000\n\nsample_means = np.array(\n    [np.random.exponential(1.0, n_sample).mean() for _ in range(N_simul)]\n)\n\n# Shapiro-Wilk 정규성 검정 (p > 0.05면 정규분포 기각 못함)\nstat, p_value = shapiro(sample_means)\nprint(f'표본평균 분포 통계: mean={sample_means.mean():.4f}, std={sample_means.std():.4f}')\nprint(f'이론값: mean=1.0000, std={1/30**0.5:.4f}')\nprint(f'Shapiro-Wilk: 통계량={stat:.4f}, p-value={p_value:.4f}')\nprint('정규분포에 근사' if p_value > 0.05 else '정규분포 아님')",
+                    "expected_output": "표본평균 분포 통계: mean=0.9987, std=0.1815\n이론값: mean=1.0000, std=0.1826\nShapiro-Wilk: 통계량=0.9982, p-value=0.3558\n정규분포에 근사",
+                    "explanation": "지수분포처럼 비대칭 분포에서도 n=30이면 표본평균이 정규분포에 충분히 근사합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "CLT: 원래 분포에 상관없이 n≥30이면 표본평균은 정규분포에 근사한다",
+                "표본평균의 기대값 = 모평균 μ, 표준오차(SE) = σ/√n",
+                "n이 클수록 표준오차가 작아져 표본평균이 모평균에 집중된다",
+                "CLT는 모든 가설검정과 신뢰구간 계산의 이론적 토대이다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "표본분포 (Sampling Distributions)",
+            "content_md": "## What - 표본분포가 뭔가요?\n\n표본분포는 통계적 추론(가설검정, 신뢰구간)에서 검정통계량이 따르는 분포입니다. 정규분포에서 파생된 세 가지 핵심 분포를 배웁니다.\n\n**카이제곱분포 $\\chi^2(k)$**: 표준정규 확률변수 k개의 제곱합\n$$\\chi^2 = \\sum_{i=1}^{k} Z_i^2, \\quad Z_i \\sim N(0,1)$$\n- 자유도(degrees of freedom) k에 의해 모양 결정\n- 항상 양수, 오른쪽으로 치우진 분포 → k가 커질수록 정규분포 근사\n- 주로 **분산 검정**, **적합도 검정**에 사용\n\n**t분포 $t(k)$**: 표본이 작고 모분산을 모를 때 사용\n$$T = \\frac{\\bar{X} - \\mu}{S/\\sqrt{n}} \\sim t(n-1)$$\n- 자유도 k → ∞이면 표준정규분포에 수렴\n- 정규분포보다 꼬리가 두꺼움(heavy tail)\n\n**F분포 $F(d_1, d_2)$**: 두 분산의 비율\n$$F = \\frac{\\chi^2_{d_1}/d_1}{\\chi^2_{d_2}/d_2}$$\n- 분산분석(ANOVA), 회귀분석에서 사용\n\n## Why - 왜 이 분포들이 필요한가요?\n\n실제 데이터 분석에서 모분산을 아는 경우는 드뭅니다. t분포는 모분산 미지 상황에서 평균 검정을 가능하게 합니다. 카이제곱·F분포는 분산과 집단 간 차이를 검정하는 ANOVA 등에 필수입니다.\n\n## How - scipy.stats로 계산하나요?\n\n```python\nfrom scipy.stats import chi2, t, f\n\n# 자유도 5인 카이제곱분포에서 P(X <= 11.07) ≈ 0.95\nprint(chi2.cdf(11.07, df=5))   # 0.9499\n\n# 자유도 10인 t분포에서 P(T <= 2.228) ≈ 0.975\nprint(t.cdf(2.228, df=10))     # 0.9748\n\n# t분포 95% 양측 임계값 (α=0.05)\nprint(t.ppf(0.975, df=10))     # 2.2281\n```",
+            "code_examples": [
+                {
+                    "title": "카이제곱분포와 t분포",
+                    "code": "from scipy.stats import chi2, t\n\n# 카이제곱분포: 자유도별 95% 임계값\nprint('=== 카이제곱분포 95% 임계값 ===')\nfor df in [1, 5, 10, 20]:\n    critical = chi2.ppf(0.95, df=df)\n    print(f'df={df:2d}: χ²={critical:.4f}')\n\nprint()\nprint('=== t분포 95% 양측 임계값 (α=0.05) ===')\nfor df in [5, 10, 20, 30, 100]:\n    critical = t.ppf(0.975, df=df)  # 양측이므로 0.975\n    print(f'df={df:3d}: t={critical:.4f}')",
+                    "expected_output": "=== 카이제곱분포 95% 임계값 ===\ndf= 1: χ²=3.8415\ndf= 5: χ²=11.0705\ndf=10: χ²=18.3070\ndf=20: χ²=31.4104\n\n=== t분포 95% 양측 임계값 (α=0.05) ===\ndf=  5: t=2.5706\ndf= 10: t=2.2281\ndf= 20: t=2.0860\ndf= 30: t=2.0423\ndf=100: t=1.9840",
+                    "explanation": "자유도가 커질수록 t분포의 임계값이 표준정규분포의 1.96에 가까워짐을 확인할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "F분포",
+                    "code": "from scipy.stats import f\nimport numpy as np\n\n# F분포: 두 집단의 분산 비교\n# F = (s1^2 / σ1^2) / (s2^2 / σ2^2) ~ F(n1-1, n2-1) under H0: σ1=σ2\n\n# 두 그룹: n1=11, n2=16 → 자유도 d1=10, d2=15\nd1, d2 = 10, 15\n\n# 95% 임계값 (단측)\ncritical = f.ppf(0.95, dfn=d1, dfd=d2)\nprint(f'F(10,15)의 95% 임계값: {critical:.4f}')\n\n# 특정 F값의 p-value\nF_stat = 2.85\np_value = 1 - f.cdf(F_stat, dfn=d1, dfd=d2)\nprint(f'F통계량 {F_stat}의 p-value: {p_value:.4f}')\nprint('귀무가설 기각 (분산 다름)' if p_value < 0.05 else '귀무가설 채택 (분산 같음)')",
+                    "expected_output": "F(10,15)의 95% 임계값: 2.5437\nF통계량 2.85의 p-value: 0.0369\n귀무가설 기각 (분산 다름)",
+                    "explanation": "F통계량이 임계값을 초과하거나 p-value < 0.05면 두 집단의 분산이 다르다고 결론 내립니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "카이제곱분포 χ²(k)는 표준정규 확률변수 k개의 제곱합으로 항상 양수이다",
+                "t분포는 모분산 미지, 소표본 상황에서 평균 검정에 사용되며 자유도가 클수록 정규분포에 수렴한다",
+                "F분포는 두 분산의 비율 검정(ANOVA 등)에 사용된다",
+                "세 분포 모두 자유도(degrees of freedom) 매개변수로 모양이 결정된다"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,391 @@
+{
+    "chapter_id": 9,
+    "problems": [
+        {
+            "problem_id": "ch9_p01",
+            "title": "평균과 중앙값 계산",
+            "difficulty": "basic",
+            "description": "다음 데이터의 평균(mean)과 중앙값(median)을 계산하세요.\n데이터: [4, 7, 13, 2, 1, 8, 6, 5, 10, 4]\n\n변수 mean_val에 평균을, median_val에 중앙값을 저장하고 각각 소수점 2자리로 출력하세요.",
+            "instructions": [
+                "numpy를 import하세요",
+                "np.mean()으로 평균을 계산하여 mean_val에 저장하세요",
+                "np.median()으로 중앙값을 계산하여 median_val에 저장하세요",
+                "f-string과 :.2f 포맷으로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([4, 7, 13, 2, 1, 8, 6, 5, 10, 4])\n\n# 평균을 mean_val에 저장하세요\n\n# 중앙값을 median_val에 저장하세요\n\n# 소수점 2자리로 출력하세요\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([4, 7, 13, 2, 1, 8, 6, 5, 10, 4])\nmean_val = np.mean(data)\nmedian_val = np.median(data)\nprint(f'평균: {mean_val:.2f}')\nprint(f'중앙값: {median_val:.2f}')",
+            "hints": [
+                {"level": 1, "text": "numpy의 np.mean()과 np.median() 함수를 사용하세요."},
+                {"level": 2, "text": "mean_val = np.mean(data), median_val = np.median(data)로 계산 후 f-string으로 출력하세요."},
+                {"level": 3, "text": "mean_val = np.mean(data)\nmedian_val = np.median(data)\nprint(f'평균: {mean_val:.2f}')\nprint(f'중앙값: {median_val:.2f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "평균: 6.00\n중앙값: 5.50",
+                "tolerance": 0.01
+            },
+            "tags": ["평균", "중앙값", "numpy", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch9_p02",
+            "title": "자료 종류 판별",
+            "difficulty": "basic",
+            "description": "다음 변수들의 측정 척도를 판별하는 코드를 작성하세요.\n\n- blood_type: 혈액형 데이터 ['A', 'B', 'O', 'AB', 'A']\n- satisfaction: 만족도 [1, 2, 3, 4, 5] (서열)\n- height_cm: 키 [165, 170, 175, 160, 180]\n\n각 변수에 대해 척도 이름을 출력하세요: '명목척도', '서열척도', '비율척도'",
+            "instructions": [
+                "blood_type은 범주로만 구분되는 '명목척도'입니다",
+                "satisfaction은 순서가 있는 '서열척도'입니다",
+                "height_cm는 절대 0이 있는 '비율척도'입니다",
+                "각각 print()로 출력하세요"
+            ],
+            "initial_code": "# 데이터 정의\nblood_type = ['A', 'B', 'O', 'AB', 'A']\nsatisfaction = [1, 2, 3, 4, 5]\nheight_cm = [165, 170, 175, 160, 180]\n\n# 각 변수의 척도를 출력하세요\nprint(f'blood_type: ')   # 명목척도\nprint(f'satisfaction: ')  # 서열척도\nprint(f'height_cm: ')    # 비율척도\n",
+            "solution_code": "blood_type = ['A', 'B', 'O', 'AB', 'A']\nsatisfaction = [1, 2, 3, 4, 5]\nheight_cm = [165, 170, 175, 160, 180]\n\nprint(f'blood_type: 명목척도')\nprint(f'satisfaction: 서열척도')\nprint(f'height_cm: 비율척도')",
+            "hints": [
+                {"level": 1, "text": "혈액형은 이름만 있고 순서가 없으므로 명목척도입니다."},
+                {"level": 2, "text": "만족도는 순서는 있지만 간격이 균등하지 않을 수 있어 서열척도, 키는 절대적 0(0cm)이 의미 있으므로 비율척도입니다."},
+                {"level": 3, "text": "print(f'blood_type: 명목척도')\nprint(f'satisfaction: 서열척도')\nprint(f'height_cm: 비율척도')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "blood_type: 명목척도\nsatisfaction: 서열척도\nheight_cm: 비율척도",
+                "normalize_whitespace": true
+            },
+            "tags": ["척도", "자료종류", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch9_p03",
+            "title": "범위(range) 구하기",
+            "difficulty": "basic",
+            "description": "다음 데이터에서 범위(range = 최댓값 - 최솟값)를 계산하세요.\n데이터: [23, 45, 12, 67, 34, 89, 56, 11, 78, 43]\n\nrange_val 변수에 범위를 저장하고 출력하세요.",
+            "instructions": [
+                "numpy를 사용하세요",
+                "np.max()와 np.min()으로 최댓값과 최솟값을 구하세요",
+                "범위 = 최댓값 - 최솟값",
+                "range_val에 저장하고 '범위: [값]' 형태로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([23, 45, 12, 67, 34, 89, 56, 11, 78, 43])\n\n# 범위를 계산하여 range_val에 저장하세요\n\n# 출력하세요\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([23, 45, 12, 67, 34, 89, 56, 11, 78, 43])\nrange_val = np.max(data) - np.min(data)\nprint(f'범위: {range_val}')",
+            "hints": [
+                {"level": 1, "text": "np.max()로 최댓값을, np.min()으로 최솟값을 구할 수 있습니다."},
+                {"level": 2, "text": "range_val = np.max(data) - np.min(data) 로 범위를 계산하세요."},
+                {"level": 3, "text": "range_val = np.max(data) - np.min(data)\nprint(f'범위: {range_val}')"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"range_val": 78},
+                "normalize_whitespace": true
+            },
+            "tags": ["범위", "산포도", "기초"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p04",
+            "title": "분산 계산 (표본 분산)",
+            "difficulty": "basic",
+            "description": "다음 데이터의 표본 분산(sample variance)을 계산하세요.\n데이터: [10, 14, 11, 13, 12, 15, 9, 16, 12, 14]\n\n표본 분산(n-1로 나눔)을 variance 변수에 저장하고 소수점 4자리로 출력하세요.\n힌트: numpy에서 ddof=1 옵션을 사용하세요.",
+            "instructions": [
+                "np.var(data, ddof=1)로 표본 분산을 계산하세요",
+                "ddof=1은 n-1로 나누는 베셀 보정을 적용합니다",
+                "variance 변수에 저장하고 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([10, 14, 11, 13, 12, 15, 9, 16, 12, 14])\n\n# 표본 분산을 계산하세요 (ddof=1 사용)\n\n# '표본 분산: [값]' 형태로 소수점 4자리 출력\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([10, 14, 11, 13, 12, 15, 9, 16, 12, 14])\nvariance = np.var(data, ddof=1)\nprint(f'표본 분산: {variance:.4f}')",
+            "hints": [
+                {"level": 1, "text": "np.var() 함수에 ddof=1 옵션을 추가하면 표본 분산(n-1로 나눔)을 계산합니다."},
+                {"level": 2, "text": "variance = np.var(data, ddof=1) 로 계산하고, f-string의 :.4f 포맷으로 출력하세요."},
+                {"level": 3, "text": "variance = np.var(data, ddof=1)\nprint(f'표본 분산: {variance:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "표본 분산: 4.4556",
+                "tolerance": 0.001
+            },
+            "tags": ["분산", "표본분산", "ddof", "기초"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p05",
+            "title": "표준편차 계산",
+            "difficulty": "basic",
+            "description": "학생 6명의 시험 점수 [72, 85, 91, 68, 79, 84]에서 표본 표준편차를 계산하세요.\n\nstd_val 변수에 저장하고 '표준편차: [값]점' 형태로 소수점 2자리 출력하세요.",
+            "instructions": [
+                "np.std(data, ddof=1)로 표본 표준편차를 계산하세요",
+                "std_val 변수에 저장하세요",
+                "소수점 2자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nscores = np.array([72, 85, 91, 68, 79, 84])\n\n# 표본 표준편차를 std_val에 저장하세요\n\n# '표준편차: [값]점' 형태로 출력하세요\n",
+            "solution_code": "import numpy as np\n\nscores = np.array([72, 85, 91, 68, 79, 84])\nstd_val = np.std(scores, ddof=1)\nprint(f'표준편차: {std_val:.2f}점')",
+            "hints": [
+                {"level": 1, "text": "np.std()는 표준편차를 계산합니다. 표본 표준편차를 구하려면 ddof=1을 추가하세요."},
+                {"level": 2, "text": "std_val = np.std(scores, ddof=1) 로 계산하고 :.2f 포맷으로 출력하세요."},
+                {"level": 3, "text": "std_val = np.std(scores, ddof=1)\nprint(f'표준편차: {std_val:.2f}점')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "표준편차: 8.23점",
+                "tolerance": 0.01
+            },
+            "tags": ["표준편차", "numpy", "기초"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p06",
+            "title": "IQR 계산",
+            "difficulty": "intermediate",
+            "description": "다음 데이터의 IQR(사분위수 범위)를 계산하세요.\n데이터: [15, 20, 35, 40, 50, 22, 28, 33, 45, 18, 55, 42]\n\nQ1, Q3, IQR을 각각 계산하여 출력하세요.\n- Q1: 25 퍼센타일\n- Q3: 75 퍼센타일\n- IQR = Q3 - Q1",
+            "instructions": [
+                "np.percentile(data, 25)로 Q1을 구하세요",
+                "np.percentile(data, 75)로 Q3을 구하세요",
+                "iqr = q3 - q1로 IQR을 계산하세요",
+                "각각 소수점 2자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([15, 20, 35, 40, 50, 22, 28, 33, 45, 18, 55, 42])\n\n# Q1 (25 퍼센타일)을 계산하세요\n\n# Q3 (75 퍼센타일)을 계산하세요\n\n# IQR = Q3 - Q1\n\n# 각각 출력하세요\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([15, 20, 35, 40, 50, 22, 28, 33, 45, 18, 55, 42])\nq1 = np.percentile(data, 25)\nq3 = np.percentile(data, 75)\niqr = q3 - q1\nprint(f'Q1: {q1:.2f}')\nprint(f'Q3: {q3:.2f}')\nprint(f'IQR: {iqr:.2f}')",
+            "hints": [
+                {"level": 1, "text": "np.percentile(data, 백분위수)로 원하는 백분위수를 구할 수 있습니다."},
+                {"level": 2, "text": "q1 = np.percentile(data, 25), q3 = np.percentile(data, 75), iqr = q3 - q1 순서로 계산하세요."},
+                {"level": 3, "text": "q1 = np.percentile(data, 25)\nq3 = np.percentile(data, 75)\niqr = q3 - q1\nprint(f'Q1: {q1:.2f}')\nprint(f'Q3: {q3:.2f}')\nprint(f'IQR: {iqr:.2f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "Q1: 21.50\nQ3: 43.75\nIQR: 22.25",
+                "tolerance": 0.01
+            },
+            "tags": ["IQR", "사분위수", "산포도", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p07",
+            "title": "변동계수(CV) 비교",
+            "difficulty": "intermediate",
+            "description": "두 반의 시험 점수를 비교하세요.\n- 반 A: [85, 87, 83, 86, 84, 88, 85, 82, 87, 83]\n- 반 B: [60, 90, 75, 95, 55, 80, 70, 100, 65, 85]\n\n각 반의 변동계수(CV = 표준편차/평균 × 100%)를 계산하여 어느 반이 더 균등한지 판별하세요.",
+            "instructions": [
+                "각 반의 np.std(ddof=1)와 np.mean()을 계산하세요",
+                "CV = 표준편차 / 평균 * 100으로 변동계수를 구하세요",
+                "CV가 작을수록 더 균등한 분포입니다",
+                "소수점 2자리로 출력하고 CV가 작은 반을 '더 균등한 반'으로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nclass_a = np.array([85, 87, 83, 86, 84, 88, 85, 82, 87, 83])\nclass_b = np.array([60, 90, 75, 95, 55, 80, 70, 100, 65, 85])\n\n# 각 반의 변동계수를 계산하세요\n# CV = 표준편차 / 평균 * 100\n\n# 결과를 출력하세요\n",
+            "solution_code": "import numpy as np\n\nclass_a = np.array([85, 87, 83, 86, 84, 88, 85, 82, 87, 83])\nclass_b = np.array([60, 90, 75, 95, 55, 80, 70, 100, 65, 85])\n\ncv_a = np.std(class_a, ddof=1) / np.mean(class_a) * 100\ncv_b = np.std(class_b, ddof=1) / np.mean(class_b) * 100\n\nprint(f'반 A CV: {cv_a:.2f}%')\nprint(f'반 B CV: {cv_b:.2f}%')\nprint(f'더 균등한 반: {\"A\" if cv_a < cv_b else \"B\"}')",
+            "hints": [
+                {"level": 1, "text": "변동계수(CV) = 표준편차 / 평균 × 100%. 단위가 없어 서로 다른 집단을 비교할 수 있습니다."},
+                {"level": 2, "text": "cv_a = np.std(class_a, ddof=1) / np.mean(class_a) * 100 으로 계산하세요. CV가 작을수록 데이터가 평균 주변에 몰려 있습니다."},
+                {"level": 3, "text": "cv_a = np.std(class_a, ddof=1) / np.mean(class_a) * 100\ncv_b = np.std(class_b, ddof=1) / np.mean(class_b) * 100\nprint(f'더 균등한 반: {\"A\" if cv_a < cv_b else \"B\"}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "반 A CV: 1.95%\n반 B CV: 19.94%\n더 균등한 반: A",
+                "normalize_whitespace": true
+            },
+            "tags": ["변동계수", "CV", "산포도비교", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p08",
+            "title": "피어슨 상관계수 계산",
+            "difficulty": "intermediate",
+            "description": "다음 두 변수의 피어슨 상관계수를 계산하세요.\n- 광고비(만원): [100, 150, 200, 250, 300, 350, 400]\n- 매출액(만원): [500, 650, 800, 900, 1100, 1200, 1400]\n\n상관계수 r을 corr_val에 저장하고 소수점 4자리로 출력하세요.\n상관 강도도 판별하여 출력하세요 (|r| >= 0.7이면 '강한 상관', 0.3 <= |r| < 0.7이면 '중간 상관', 미만이면 '약한 상관').",
+            "instructions": [
+                "np.corrcoef(x, y)로 상관행렬을 구하세요",
+                "상관행렬의 [0, 1] 인덱스가 두 변수 사이의 상관계수입니다",
+                "corr_val에 저장하고 소수점 4자리로 출력하세요",
+                "상관 강도 조건문을 작성하여 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nad_cost = np.array([100, 150, 200, 250, 300, 350, 400])\nsales = np.array([500, 650, 800, 900, 1100, 1200, 1400])\n\n# 상관계수를 계산하여 corr_val에 저장하세요\n\n# 상관계수와 강도를 출력하세요\n",
+            "solution_code": "import numpy as np\n\nad_cost = np.array([100, 150, 200, 250, 300, 350, 400])\nsales = np.array([500, 650, 800, 900, 1100, 1200, 1400])\n\ncorr_matrix = np.corrcoef(ad_cost, sales)\ncorr_val = corr_matrix[0, 1]\n\nif abs(corr_val) >= 0.7:\n    strength = '강한 상관'\nelif abs(corr_val) >= 0.3:\n    strength = '중간 상관'\nelse:\n    strength = '약한 상관'\n\nprint(f'상관계수: {corr_val:.4f}')\nprint(f'상관 강도: {strength}')",
+            "hints": [
+                {"level": 1, "text": "np.corrcoef(x, y)는 2×2 상관행렬을 반환합니다. [0,1] 원소가 x와 y의 상관계수입니다."},
+                {"level": 2, "text": "corr_matrix = np.corrcoef(ad_cost, sales), corr_val = corr_matrix[0, 1] 로 추출하세요."},
+                {"level": 3, "text": "corr_matrix = np.corrcoef(ad_cost, sales)\ncorr_val = corr_matrix[0, 1]\nif abs(corr_val) >= 0.7:\n    strength = '강한 상관'"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "상관계수: 0.9981\n상관 강도: 강한 상관",
+                "tolerance": 0.001
+            },
+            "tags": ["상관계수", "피어슨", "corrcoef", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch9_p09",
+            "title": "공분산 계산",
+            "difficulty": "intermediate",
+            "description": "키(cm)와 몸무게(kg) 데이터의 공분산을 계산하세요.\n- 키: [160, 165, 170, 175, 180, 185]\n- 몸무게: [52, 58, 65, 70, 75, 82]\n\nnp.cov()를 사용하여 공분산을 계산하고, 이를 통해 두 변수의 관계 방향(양의 관계/음의 관계)을 판단하세요.",
+            "instructions": [
+                "np.cov(height, weight)로 공분산 행렬을 구하세요",
+                "공분산 행렬의 [0, 1] 원소가 공분산입니다",
+                "cov_val 변수에 저장하고 소수점 4자리로 출력하세요",
+                "공분산 부호로 관계 방향을 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nheight = np.array([160, 165, 170, 175, 180, 185])\nweight = np.array([52, 58, 65, 70, 75, 82])\n\n# 공분산 행렬을 계산하세요\n\n# 공분산을 cov_val에 저장하세요\n\n# 공분산 값과 관계 방향을 출력하세요\n",
+            "solution_code": "import numpy as np\n\nheight = np.array([160, 165, 170, 175, 180, 185])\nweight = np.array([52, 58, 65, 70, 75, 82])\n\ncov_matrix = np.cov(height, weight)\ncov_val = cov_matrix[0, 1]\n\ndirection = '양의 관계' if cov_val > 0 else '음의 관계'\nprint(f'공분산: {cov_val:.4f}')\nprint(f'관계 방향: {direction}')",
+            "hints": [
+                {"level": 1, "text": "np.cov(x, y)는 2×2 공분산 행렬을 반환합니다. 대각선 원소는 각 변수의 분산, 나머지는 공분산입니다."},
+                {"level": 2, "text": "cov_matrix = np.cov(height, weight), cov_val = cov_matrix[0, 1]로 공분산을 추출하세요."},
+                {"level": 3, "text": "cov_matrix = np.cov(height, weight)\ncov_val = cov_matrix[0, 1]\ndirection = '양의 관계' if cov_val > 0 else '음의 관계'"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "공분산: 105.0000\n관계 방향: 양의 관계",
+                "tolerance": 0.1
+            },
+            "tags": ["공분산", "numpy", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch9_p10",
+            "title": "기술통계 요약 함수 만들기",
+            "difficulty": "intermediate",
+            "description": "데이터의 기술통계를 요약하는 코드를 작성하세요.\n데이터: [42, 38, 55, 61, 47, 53, 39, 68, 44, 51, 35, 72]\n\n다음을 순서대로 출력하세요:\n- 개수(n)\n- 평균 (소수점 2자리)\n- 중앙값 (소수점 2자리)\n- 표준편차 (소수점 2자리, ddof=1)\n- 최솟값\n- 최댓값\n- IQR (소수점 2자리)",
+            "instructions": [
+                "numpy의 len, mean, median, std(ddof=1), min, max, percentile을 활용하세요",
+                "각각 지정된 형식으로 출력하세요",
+                "IQR = Q3(75%) - Q1(25%)"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([42, 38, 55, 61, 47, 53, 39, 68, 44, 51, 35, 72])\n\n# 기술통계를 계산하고 출력하세요\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([42, 38, 55, 61, 47, 53, 39, 68, 44, 51, 35, 72])\n\nn = len(data)\nmean_val = np.mean(data)\nmedian_val = np.median(data)\nstd_val = np.std(data, ddof=1)\nmin_val = np.min(data)\nmax_val = np.max(data)\nq1 = np.percentile(data, 25)\nq3 = np.percentile(data, 75)\niqr = q3 - q1\n\nprint(f'개수(n): {n}')\nprint(f'평균: {mean_val:.2f}')\nprint(f'중앙값: {median_val:.2f}')\nprint(f'표준편차: {std_val:.2f}')\nprint(f'최솟값: {min_val}')\nprint(f'최댓값: {max_val}')\nprint(f'IQR: {iqr:.2f}')",
+            "hints": [
+                {"level": 1, "text": "len(), np.mean(), np.median(), np.std(ddof=1), np.min(), np.max(), np.percentile() 함수를 차례로 사용하세요."},
+                {"level": 2, "text": "IQR = np.percentile(data, 75) - np.percentile(data, 25) 로 계산하세요."},
+                {"level": 3, "text": "n = len(data)\nmean_val = np.mean(data)\nmedian_val = np.median(data)\nstd_val = np.std(data, ddof=1)\niqr = np.percentile(data, 75) - np.percentile(data, 25)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "개수(n): 12\n평균: 50.42\n중앙값: 49.00\n표준편차: 11.33\n최솟값: 35\n최댓값: 72\nIQR: 15.75",
+                "normalize_whitespace": true
+            },
+            "tags": ["기술통계", "요약통계", "중급"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch9_p11",
+            "title": "IQR을 이용한 이상치 탐지",
+            "difficulty": "advanced",
+            "description": "IQR 방법으로 이상치(outlier)를 탐지하세요.\n이상치 기준: Q1 - 1.5×IQR 미만 또는 Q3 + 1.5×IQR 초과\n\n데이터: [18, 22, 25, 19, 21, 200, 23, 20, -15, 24, 22, 21]\n\n이상치를 찾아 outliers 변수에 저장하고 출력하세요.",
+            "instructions": [
+                "Q1, Q3, IQR을 계산하세요",
+                "하한(lower_bound) = Q1 - 1.5 × IQR",
+                "상한(upper_bound) = Q3 + 1.5 × IQR",
+                "경계를 벗어난 값을 numpy 불린 인덱싱으로 찾아 outliers에 저장하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([18, 22, 25, 19, 21, 200, 23, 20, -15, 24, 22, 21])\n\n# Q1, Q3, IQR을 계산하세요\n\n# 이상치 기준: 하한 = Q1 - 1.5*IQR, 상한 = Q3 + 1.5*IQR\n\n# 이상치를 outliers에 저장하고 출력하세요\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([18, 22, 25, 19, 21, 200, 23, 20, -15, 24, 22, 21])\n\nq1 = np.percentile(data, 25)\nq3 = np.percentile(data, 75)\niqr = q3 - q1\n\nlower_bound = q1 - 1.5 * iqr\nupper_bound = q3 + 1.5 * iqr\n\noutliers = data[(data < lower_bound) | (data > upper_bound)]\n\nprint(f'Q1: {q1}, Q3: {q3}, IQR: {iqr}')\nprint(f'하한: {lower_bound}, 상한: {upper_bound}')\nprint(f'이상치: {outliers}')",
+            "hints": [
+                {"level": 1, "text": "IQR 방법: lower = Q1 - 1.5×IQR, upper = Q3 + 1.5×IQR. 이 범위를 벗어나면 이상치입니다."},
+                {"level": 2, "text": "outliers = data[(data < lower_bound) | (data > upper_bound)] 로 이상치를 추출하세요."},
+                {"level": 3, "text": "q1 = np.percentile(data, 25)\nq3 = np.percentile(data, 75)\niqr = q3 - q1\nlower_bound = q1 - 1.5 * iqr\nupper_bound = q3 + 1.5 * iqr\noutliers = data[(data < lower_bound) | (data > upper_bound)]"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "Q1: 19.75, Q3: 23.25, IQR: 3.5\n하한: 14.5, 상한: 28.5\n이상치: [-15 200]",
+                "normalize_whitespace": true
+            },
+            "tags": ["이상치", "IQR", "불린인덱싱", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p12",
+            "title": "상관행렬 분석",
+            "difficulty": "advanced",
+            "description": "다음 세 변수의 상관행렬을 계산하고 가장 강한 상관관계를 찾으세요.\n- 학습시간 (hours): [2, 3, 5, 4, 6, 7, 3, 5, 8, 4]\n- 시험점수 (score): [55, 60, 75, 70, 85, 90, 58, 78, 95, 65]\n- 수면시간 (sleep): [8, 7, 6, 7, 5, 5, 8, 6, 4, 7]\n\n상관행렬을 출력하고, 학습시간-점수, 학습시간-수면, 점수-수면 사이의 상관계수를 각각 출력하세요.",
+            "instructions": [
+                "np.vstack([hours, score, sleep])으로 데이터 행렬을 만드세요",
+                "np.corrcoef()로 상관행렬을 계산하세요",
+                "각 쌍의 상관계수를 추출하여 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nhours = np.array([2, 3, 5, 4, 6, 7, 3, 5, 8, 4])\nscore = np.array([55, 60, 75, 70, 85, 90, 58, 78, 95, 65])\nsleep = np.array([8, 7, 6, 7, 5, 5, 8, 6, 4, 7])\n\n# 상관행렬을 계산하세요\n\n# 각 쌍의 상관계수를 출력하세요\n",
+            "solution_code": "import numpy as np\n\nhours = np.array([2, 3, 5, 4, 6, 7, 3, 5, 8, 4])\nscore = np.array([55, 60, 75, 70, 85, 90, 58, 78, 95, 65])\nsleep = np.array([8, 7, 6, 7, 5, 5, 8, 6, 4, 7])\n\ndata_matrix = np.vstack([hours, score, sleep])\ncorr = np.corrcoef(data_matrix)\n\nprint(f'학습시간-점수 상관계수: {corr[0,1]:.4f}')\nprint(f'학습시간-수면 상관계수: {corr[0,2]:.4f}')\nprint(f'점수-수면 상관계수: {corr[1,2]:.4f}')",
+            "hints": [
+                {"level": 1, "text": "np.vstack()으로 여러 배열을 행으로 쌓아 행렬을 만들고, np.corrcoef()에 전달하세요."},
+                {"level": 2, "text": "data_matrix = np.vstack([hours, score, sleep]), corr = np.corrcoef(data_matrix). 인덱스 [0,1]은 첫 번째와 두 번째 행 사이의 상관계수입니다."},
+                {"level": 3, "text": "data_matrix = np.vstack([hours, score, sleep])\ncorr = np.corrcoef(data_matrix)\nprint(f'학습시간-점수: {corr[0,1]:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "학습시간-점수 상관계수: 0.9929\n학습시간-수면 상관계수: -0.9607\n점수-수면 상관계수: -0.9703",
+                "tolerance": 0.001
+            },
+            "tags": ["상관행렬", "corrcoef", "vstack", "심화"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch9_p13",
+            "title": "데이터 정규화 (Min-Max Scaling)",
+            "difficulty": "advanced",
+            "description": "Min-Max 정규화를 구현하세요.\n공식: $x_{norm} = \\frac{x - x_{min}}{x_{max} - x_{min}}$\n\n데이터: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]\n\n정규화된 데이터를 normalized 변수에 저장하고 소수점 4자리로 출력하세요.\n검증: 정규화 후 최솟값=0.0000, 최댓값=1.0000이어야 합니다.",
+            "instructions": [
+                "x_min = np.min(data), x_max = np.max(data)를 구하세요",
+                "normalized = (data - x_min) / (x_max - x_min) 공식을 적용하세요",
+                "결과를 소수점 4자리로 출력하세요",
+                "min과 max를 검증하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])\n\n# Min-Max 정규화를 구현하세요\n\n# 정규화된 데이터를 출력하세요\n\n# 검증: 최솟값과 최댓값 확인\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])\n\nx_min = np.min(data)\nx_max = np.max(data)\nnormalized = (data - x_min) / (x_max - x_min)\n\nprint('정규화된 데이터:')\nprint(np.round(normalized, 4))\nprint(f'검증 - 최솟값: {np.min(normalized):.4f}, 최댓값: {np.max(normalized):.4f}')",
+            "hints": [
+                {"level": 1, "text": "Min-Max 정규화 공식: (x - min) / (max - min). numpy의 벡터 연산을 활용하면 배열 전체에 한 번에 적용됩니다."},
+                {"level": 2, "text": "normalized = (data - np.min(data)) / (np.max(data) - np.min(data)) 로 한 줄에 계산할 수 있습니다."},
+                {"level": 3, "text": "normalized = (data - np.min(data)) / (np.max(data) - np.min(data))\nprint(np.round(normalized, 4))\nprint(f'검증 - 최솟값: {np.min(normalized):.4f}, 최댓값: {np.max(normalized):.4f}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "정규화된 데이터:\n[0.     0.1111 0.2222 0.3333 0.4444 0.5556 0.6667 0.7778 0.8889 1.    ]\n검증 - 최솟값: 0.0000, 최댓값: 1.0000",
+                "normalize_whitespace": true
+            },
+            "tags": ["정규화", "MinMax", "벡터연산", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p14",
+            "title": "z-score 표준화",
+            "difficulty": "advanced",
+            "description": "z-score 표준화를 구현하고 이상치를 탐지하세요.\n공식: $z = \\frac{x - \\bar{x}}{s}$\n\n데이터: [23, 25, 22, 24, 26, 80, 23, 25, 24, 22]\n\n1. z-score를 계산하여 z_scores 변수에 저장하세요 (표본 표준편차 사용, ddof=1)\n2. |z-score| > 2인 값을 이상치로 판별하여 출력하세요",
+            "instructions": [
+                "z = (data - np.mean(data)) / np.std(data, ddof=1) 공식을 사용하세요",
+                "z_scores 변수에 저장하세요",
+                "np.abs(z_scores) > 2 조건으로 이상치를 찾으세요",
+                "z-score와 이상치를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ndata = np.array([23, 25, 22, 24, 26, 80, 23, 25, 24, 22])\n\n# z-score를 계산하세요\n\n# |z| > 2인 이상치를 찾으세요\n\n# 결과를 출력하세요\n",
+            "solution_code": "import numpy as np\n\ndata = np.array([23, 25, 22, 24, 26, 80, 23, 25, 24, 22])\n\nz_scores = (data - np.mean(data)) / np.std(data, ddof=1)\noutlier_mask = np.abs(z_scores) > 2\noutliers = data[outlier_mask]\n\nprint('z-scores (소수점 2자리):')\nprint(np.round(z_scores, 2))\nprint(f'\\n이상치 (|z| > 2): {outliers}')",
+            "hints": [
+                {"level": 1, "text": "z-score = (값 - 평균) / 표준편차. numpy 벡터 연산으로 배열 전체에 한 번에 적용됩니다."},
+                {"level": 2, "text": "z_scores = (data - np.mean(data)) / np.std(data, ddof=1). 이상치: data[np.abs(z_scores) > 2]"},
+                {"level": 3, "text": "z_scores = (data - np.mean(data)) / np.std(data, ddof=1)\noutliers = data[np.abs(z_scores) > 2]\nprint(np.round(z_scores, 2))\nprint(f'이상치: {outliers}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "z-scores (소수점 2자리):\n[-0.51 -0.35 -0.59 -0.43 -0.28  2.86 -0.51 -0.35 -0.43 -0.59]\n\n이상치 (|z| > 2): [80]",
+                "normalize_whitespace": true
+            },
+            "tags": ["z-score", "표준화", "이상치", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch9_p15",
+            "title": "종합 통계 분석",
+            "difficulty": "advanced",
+            "description": "두 도시의 월 강수량(mm) 데이터를 종합 분석하세요.\n- 서울: [25, 38, 47, 75, 95, 130, 390, 280, 140, 52, 52, 18]\n- 부산: [45, 55, 80, 120, 150, 180, 250, 200, 130, 80, 55, 35]\n\n다음을 순서대로 출력하세요:\n1. 각 도시의 연간 총 강수량\n2. 각 도시의 월 평균 강수량 (소수점 1자리)\n3. 각 도시의 표준편차 (소수점 1자리, ddof=1)\n4. 두 도시 강수량의 상관계수 (소수점 4자리)\n5. 상관 강도 (강한/중간/약한 상관)",
+            "instructions": [
+                "np.sum()으로 총 강수량을 계산하세요",
+                "np.mean()으로 월 평균을 계산하세요",
+                "np.std(ddof=1)로 표준편차를 계산하세요",
+                "np.corrcoef()로 상관계수를 계산하세요"
+            ],
+            "initial_code": "import numpy as np\n\nseoul = np.array([25, 38, 47, 75, 95, 130, 390, 280, 140, 52, 52, 18])\nbusan = np.array([45, 55, 80, 120, 150, 180, 250, 200, 130, 80, 55, 35])\n\n# 1. 연간 총 강수량\n\n# 2. 월 평균 강수량\n\n# 3. 표준편차\n\n# 4. 상관계수\n\n# 5. 상관 강도\n",
+            "solution_code": "import numpy as np\n\nseoul = np.array([25, 38, 47, 75, 95, 130, 390, 280, 140, 52, 52, 18])\nbusan = np.array([45, 55, 80, 120, 150, 180, 250, 200, 130, 80, 55, 35])\n\nprint(f'서울 총 강수량: {np.sum(seoul)}mm')\nprint(f'부산 총 강수량: {np.sum(busan)}mm')\nprint(f'서울 월 평균: {np.mean(seoul):.1f}mm')\nprint(f'부산 월 평균: {np.mean(busan):.1f}mm')\nprint(f'서울 표준편차: {np.std(seoul, ddof=1):.1f}mm')\nprint(f'부산 표준편차: {np.std(busan, ddof=1):.1f}mm')\n\nr = np.corrcoef(seoul, busan)[0, 1]\nstrength = '강한 상관' if abs(r) >= 0.7 else ('중간 상관' if abs(r) >= 0.3 else '약한 상관')\nprint(f'상관계수: {r:.4f}')\nprint(f'상관 강도: {strength}')",
+            "hints": [
+                {"level": 1, "text": "np.sum(), np.mean(), np.std(ddof=1), np.corrcoef()를 순서대로 사용하세요."},
+                {"level": 2, "text": "상관계수는 np.corrcoef(seoul, busan)[0,1]로 추출하세요. 강도 판별: |r| >= 0.7이면 강한, 0.3 이상이면 중간입니다."},
+                {"level": 3, "text": "r = np.corrcoef(seoul, busan)[0, 1]\nstrength = '강한 상관' if abs(r) >= 0.7 else ('중간 상관' if abs(r) >= 0.3 else '약한 상관')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "서울 총 강수량: 1342mm\n부산 총 강수량: 1380mm\n서울 월 평균: 111.8mm\n부산 월 평균: 115.0mm\n서울 표준편차: 110.3mm\n부산 표준편차: 66.8mm\n상관계수: 0.9507\n상관 강도: 강한 상관",
+                "normalize_whitespace": true
+            },
+            "tags": ["종합분석", "기술통계", "상관관계", "심화"],
+            "related_section": "s5"
+        }
+    ]
+}

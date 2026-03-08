@@ -1,0 +1,183 @@
+{
+    "chapter_id": 16,
+    "title": "데이터 시각화 with Plotly",
+    "description": "Plotly를 활용한 인터랙티브 데이터 시각화를 배웁니다.",
+    "learning_objectives": [
+        "막대 차트와 선 차트를 만들고 커스터마이즈한다",
+        "히스토그램과 파이 차트로 분포를 시각화한다",
+        "산점도로 변수 간 관계를 탐색한다",
+        "차트 레이아웃과 서브플롯을 활용한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "막대 차트 (Bar Chart)",
+            "content_md": "## What - 막대 차트가 뭔가요?\n\n막대 차트(Bar Chart)는 범주형 데이터의 크기를 직사각형 막대의 길이로 비교하는 시각화 방법입니다. Plotly Express에서는 `px.bar()`로 한 줄에 인터랙티브 막대 차트를 생성할 수 있어요.\n\n## Why - 왜 막대 차트를 사용하나요?\n\n카테고리별 합계, 빈도, 평균 등 집계값을 비교할 때 막대 차트만큼 직관적인 시각화가 없습니다. 그룹별 비교(`barmode='group'`)나 누적 비교(`barmode='stack'`)까지 지원해서, 마케팅 채널별 성과나 월별 매출 비교 같은 현업 데이터 분석에 필수적으로 활용됩니다.\n\n## How - 어떻게 만드나요?\n\n`px.bar(df, x='카테고리컬럼', y='수치컬럼')` 기본 형태에 옵션을 추가합니다.\n\n```python\nimport plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['검색광고', 'SNS', '이메일', '디스플레이'],\n    'revenue': [450, 320, 180, 90]\n})\n\nfig = px.bar(df, x='channel', y='revenue',\n             color='channel',\n             title='채널별 매출')\nfig.show()\n```\n\n그룹별 비교는 `color` 파라미터로 그룹을 지정하고 `barmode='group'`을 추가합니다. `hover_data`로 마우스 오버 시 추가 정보를 표시할 수도 있습니다.",
+            "code_examples": [
+                {
+                    "title": "기본 막대 차트",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['검색광고', 'SNS', '이메일', '디스플레이'],\n    'revenue': [450, 320, 180, 90]\n})\n\nfig = px.bar(df, x='channel', y='revenue',\n             color='channel',\n             title='채널별 매출 (단위: 만원)')\nfig.show()\nprint('차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n차트 생성 완료",
+                    "explanation": "px.bar()의 x에 범주형 컬럼, y에 수치형 컬럼을 지정합니다. color='channel'로 각 막대에 다른 색상을 적용했습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "그룹별 막대 차트 (barmode='group')",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['검색광고', 'SNS', '이메일', '검색광고', 'SNS', '이메일'],\n    'revenue': [450, 320, 180, 500, 290, 210],\n    'quarter': ['Q1', 'Q1', 'Q1', 'Q2', 'Q2', 'Q2']\n})\n\nfig = px.bar(df, x='channel', y='revenue',\n             color='quarter',\n             barmode='group',\n             title='분기별 채널 매출 비교',\n             hover_data=['revenue'])\nfig.show()\nprint('그룹 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n그룹 차트 생성 완료",
+                    "explanation": "barmode='group'으로 같은 x값의 막대를 나란히 배치합니다. hover_data에 컬럼을 추가하면 마우스 오버 시 해당 정보가 툴팁에 표시됩니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "누적 막대 차트 (barmode='stack')",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'month': ['1월', '2월', '3월', '1월', '2월', '3월'],\n    'cost': [100, 120, 90, 80, 70, 110],\n    'type': ['클릭비용', '클릭비용', '클릭비용', '노출비용', '노출비용', '노출비용']\n})\n\nfig = px.bar(df, x='month', y='cost',\n             color='type',\n             barmode='stack',\n             title='월별 광고비용 구성')\nfig.show()\nprint('누적 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n누적 차트 생성 완료",
+                    "explanation": "barmode='stack'으로 막대를 수직으로 쌓아 전체 합계와 구성 비율을 동시에 파악할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "px.bar()의 x에 범주형, y에 수치형 컬럼을 지정한다",
+                "color 파라미터로 그룹별 색상을 구분한다",
+                "barmode='group'은 그룹별 나란히, barmode='stack'은 누적 막대를 만든다",
+                "hover_data로 마우스 오버 시 표시할 추가 컬럼을 지정할 수 있다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "선 차트와 면적 차트 (Line & Area)",
+            "content_md": "## What - 선 차트가 뭔가요?\n\n선 차트(Line Chart)는 연속적인 데이터 포인트를 선으로 연결하여 시간에 따른 변화나 추세를 보여주는 시각화입니다. Plotly Express의 `px.line()`으로 생성하며, `px.area()`로 면적 차트를 만들 수 있어요.\n\n## Why - 왜 선 차트가 필요한가요?\n\n시계열 데이터(일별 방문자, 월별 매출, 주별 전환율 등)의 트렌드를 파악하는 데 선 차트가 가장 적합합니다. `facet_row`나 `facet_col`로 여러 서브플롯을 한 번에 생성할 수 있어, 여러 캠페인의 성과를 나란히 비교할 때 매우 유용합니다.\n\n## How - 어떻게 사용하나요?\n\n`px.line(df, x='날짜컬럼', y='수치컬럼')` 기본 형태에 `color`로 다중 시리즈를 구분합니다.\n\n```python\nimport plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'week': ['W1','W2','W3','W4','W1','W2','W3','W4'],\n    'roas': [2.1, 2.4, 2.2, 2.8, 1.8, 2.0, 2.3, 2.5],\n    'campaign': ['A','A','A','A','B','B','B','B']\n})\n\nfig = px.line(df, x='week', y='roas',\n              color='campaign',\n              markers=True)\nfig.show()\n```\n\n`facet_col='컬럼'`을 추가하면 컬럼 값별로 자동으로 서브플롯을 나눠줍니다.",
+            "code_examples": [
+                {
+                    "title": "기본 선 차트",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'week': ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],\n    'visitors': [1200, 1450, 1380, 1600, 1750, 1820]\n})\n\nfig = px.line(df, x='week', y='visitors',\n              markers=True,\n              title='주별 방문자 수 추이')\nfig.show()\nprint('선 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n선 차트 생성 완료",
+                    "explanation": "markers=True로 각 데이터 포인트에 마커를 표시합니다. x축에 시간 순서 데이터, y축에 수치를 지정합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "다중 시리즈 선 차트",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'week': ['W1','W2','W3','W4','W1','W2','W3','W4'],\n    'roas': [2.1, 2.4, 2.2, 2.8, 1.8, 2.0, 2.3, 2.5],\n    'campaign': ['캠페인A','캠페인A','캠페인A','캠페인A',\n                 '캠페인B','캠페인B','캠페인B','캠페인B']\n})\n\nfig = px.line(df, x='week', y='roas',\n              color='campaign',\n              markers=True,\n              title='캠페인별 ROAS 추이')\nfig.show()\nprint('다중 선 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n다중 선 차트 생성 완료",
+                    "explanation": "color='campaign'으로 캠페인별 선을 다른 색상으로 구분합니다. 범례를 클릭해 특정 시리즈를 숨기거나 표시할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "facet_col로 서브플롯 생성",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'week': ['W1','W2','W3','W4'] * 2,\n    'clicks': [500, 620, 580, 710, 300, 350, 420, 390],\n    'spend': [100, 124, 116, 142, 60, 70, 84, 78],\n    'channel': ['검색광고'] * 4 + ['SNS'] * 4\n})\n\nfig = px.line(df, x='week', y='clicks',\n              facet_col='channel',\n              markers=True,\n              title='채널별 클릭 수 추이')\nfig.show()\nprint('facet 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\nfacet 차트 생성 완료",
+                    "explanation": "facet_col='channel'로 채널별 서브플롯을 자동 생성합니다. facet_row는 세로로, facet_col은 가로로 서브플롯을 배치합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "px.line()으로 선 차트, px.area()로 면적 차트를 생성한다",
+                "color 파라미터로 그룹별 다중 시리즈를 한 차트에 표시한다",
+                "facet_col/facet_row로 자동 서브플롯을 생성할 수 있다",
+                "markers=True로 각 데이터 포인트에 마커를 표시할 수 있다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "히스토그램 (Histogram)",
+            "content_md": "## What - 히스토그램이 뭔가요?\n\n히스토그램(Histogram)은 연속형 수치 데이터의 분포를 구간(bin)별 빈도로 시각화하는 차트입니다. `px.histogram()`으로 생성하며, 데이터가 어떤 값 범위에 집중되어 있는지 한눈에 파악할 수 있어요.\n\n## Why - 왜 히스토그램이 필요한가요?\n\n전환 시간 분포, 주문금액 분포, 광고 클릭비용 분포 등 연속형 데이터의 패턴을 이해하려면 히스토그램이 필수입니다. 평균만 보면 놓칠 수 있는 이상치나 다봉 분포(bimodal)를 시각적으로 발견할 수 있습니다. `add_vline()`으로 기준선을, `add_annotation()`으로 설명 텍스트를 추가할 수 있어요.\n\n## How - 어떻게 사용하나요?\n\n```python\nimport plotly.express as px\nimport pandas as pd\nimport numpy as np\n\ndata = np.random.normal(50, 10, 300)\ndf = pd.DataFrame({'value': data})\n\nfig = px.histogram(df, x='value', nbins=30)\nfig.add_vline(x=50, line_dash='dash', line_color='red')\nfig.add_annotation(x=50, y=30, text='평균선', showarrow=True)\nfig.show()\n```\n\n`nbins`로 구간 수를 조정하고, `update_xaxes()`로 축 레이블이나 범위를 커스터마이즈할 수 있습니다.",
+            "code_examples": [
+                {
+                    "title": "기본 히스토그램",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\norder_amounts = np.random.normal(85000, 20000, 500)\ndf = pd.DataFrame({'order_amount': order_amounts})\n\nfig = px.histogram(df, x='order_amount',\n                   nbins=30,\n                   title='주문금액 분포')\nfig.show()\nprint('히스토그램 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n히스토그램 생성 완료",
+                    "explanation": "px.histogram()의 x에 수치형 컬럼을 지정합니다. nbins로 구간 수를 조정해 분포의 세밀도를 바꿀 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "기준선과 주석 추가",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\nconversion_days = np.concatenate([\n    np.random.exponential(3, 400),\n    np.random.uniform(15, 30, 100)\n])\ndf = pd.DataFrame({'days': conversion_days})\n\nfig = px.histogram(df, x='days', nbins=40,\n                   title='전환 소요 일수 분포')\nfig.add_vline(x=7, line_dash='dash',\n              line_color='red',\n              annotation_text='7일 기준')\nfig.update_xaxes(title_text='전환 소요일')\nfig.show()\nprint('주석 히스토그램 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n주석 히스토그램 생성 완료",
+                    "explanation": "add_vline()으로 수직 기준선을 추가합니다. annotation_text 파라미터로 선에 라벨을 바로 붙일 수 있습니다. update_xaxes()로 축 제목을 설정합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "그룹별 히스토그램 비교",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(0)\ndf = pd.DataFrame({\n    'cpc': np.concatenate([\n        np.random.normal(500, 100, 200),\n        np.random.normal(800, 150, 200)\n    ]),\n    'channel': ['검색광고'] * 200 + ['SNS'] * 200\n})\n\nfig = px.histogram(df, x='cpc', color='channel',\n                   nbins=30, barmode='overlay',\n                   opacity=0.7,\n                   title='채널별 CPC 분포 비교')\nfig.show()\nprint('그룹 히스토그램 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n그룹 히스토그램 생성 완료",
+                    "explanation": "color로 그룹을 구분하고 barmode='overlay'와 opacity로 겹치는 분포를 투명하게 표시합니다. 두 채널의 CPC 분포 차이를 직관적으로 비교할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "px.histogram()의 x에 연속형 수치 컬럼을 지정한다",
+                "nbins로 구간 수를 조정해 분포의 세밀도를 제어한다",
+                "add_vline()으로 기준선을, add_annotation()으로 설명 텍스트를 추가한다",
+                "update_xaxes(), update_yaxes()로 축 레이블과 범위를 커스터마이즈한다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "파이 차트와 스트립 차트 (Pie & Strip)",
+            "content_md": "## What - 파이 차트와 스트립 차트가 뭔가요?\n\n파이 차트(Pie Chart)는 전체에서 각 범주의 비율을 부채꼴로 표현합니다. `hole` 파라미터로 가운데를 비워 도넛 차트(Donut Chart)를 만들 수 있어요. 스트립 차트(Strip Chart)는 수치형 데이터의 분포를 개별 점으로 보여주는 1차원 산점도입니다.\n\n## Why - 왜 이런 차트들이 필요한가요?\n\n파이 차트는 채널별 예산 비중, 매출 구성 등 부분-전체 관계를 직관적으로 보여줍니다. 도넛 차트는 중앙에 핵심 수치를 표시할 수 있어 대시보드에서 자주 활용됩니다. 스트립 차트는 히스토그램과 달리 개별 데이터 포인트를 모두 표시하기 때문에, 데이터 수가 적을 때 분포의 실제 모습을 정확히 보여줍니다.\n\n## How - 어떻게 사용하나요?\n\n```python\nimport plotly.express as px\nimport pandas as pd\n\n# 파이 차트\nfig = px.pie(df, values='spend', names='channel',\n             hole=0.4)  # 0 이면 파이, 0.4 이면 도넛\nfig.show()\n\n# 스트립 차트\nfig = px.strip(df, x='channel', y='cpc',\n               jitter=0.3)  # 점 겹침 방지\nfig.show()\n```",
+            "code_examples": [
+                {
+                    "title": "기본 파이 차트",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['검색광고', 'SNS', '이메일', '디스플레이', '제휴'],\n    'spend': [450, 280, 90, 120, 60]\n})\n\nfig = px.pie(df, values='spend', names='channel',\n             title='채널별 광고비 비중')\nfig.show()\nprint('파이 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n파이 차트 생성 완료",
+                    "explanation": "px.pie()의 values에 수치 컬럼, names에 범주 컬럼을 지정합니다. 클릭하면 해당 조각을 분리해서 볼 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "도넛 차트 (hole 파라미터)",
+                    "code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'stage': ['노출', '클릭', '방문', '가입', '구매'],\n    'count': [10000, 1200, 600, 180, 45]\n})\n\nfig = px.pie(df, values='count', names='stage',\n             hole=0.45,\n             title='퍼널 단계별 사용자 수')\nfig.update_traces(\n    textposition='inside',\n    textinfo='percent+label'\n)\nfig.show()\nprint('도넛 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n도넛 차트 생성 완료",
+                    "explanation": "hole=0.45로 가운데를 비워 도넛 차트를 만듭니다. update_traces()로 각 조각에 표시할 텍스트 형식을 지정합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "스트립 차트 (jitter로 점 분산)",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(1)\ndf = pd.DataFrame({\n    'cpc': np.concatenate([\n        np.random.normal(500, 80, 50),\n        np.random.normal(750, 120, 50),\n        np.random.normal(300, 60, 50)\n    ]),\n    'channel': ['검색광고'] * 50 + ['SNS'] * 50 + ['이메일'] * 50\n})\n\nfig = px.strip(df, x='channel', y='cpc',\n               color='channel',\n               jitter=0.3,\n               title='채널별 CPC 분포 (스트립 차트)')\nfig.show()\nprint('스트립 차트 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n스트립 차트 생성 완료",
+                    "explanation": "px.strip()은 개별 데이터 포인트를 점으로 표시합니다. jitter로 같은 x값의 점들이 겹치지 않도록 좌우로 분산합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "px.pie()의 values에 수치, names에 범주 컬럼을 지정한다",
+                "hole 파라미터(0~1)로 도넛 차트를 만든다 (0: 파이, 0.4: 도넛)",
+                "px.strip()은 개별 데이터 포인트를 점으로 시각화한다",
+                "jitter 파라미터로 점들이 겹치지 않도록 분산시킬 수 있다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "산점도 (Scatter Plot)",
+            "content_md": "## What - 산점도가 뭔가요?\n\n산점도(Scatter Plot)는 두 연속형 변수의 관계를 점으로 표현하는 차트입니다. `px.scatter()`로 생성하며, 각 점의 크기(`size`)와 색상(`color`)으로 추가 변수를 인코딩할 수 있어요.\n\n## Why - 왜 산점도를 사용하나요?\n\n광고 지출과 매출의 관계, 클릭 수와 전환율의 관계 등 두 변수 간 상관관계와 패턴을 탐색할 때 산점도가 가장 효과적입니다. `trendline='ols'`를 추가하면 최소제곱법(OLS, Ordinary Least Squares) 회귀선을 자동으로 그려줘서 선형 관계의 방향과 강도를 즉시 파악할 수 있습니다.\n\n## How - 어떻게 사용하나요?\n\n```python\nimport plotly.express as px\n\nfig = px.scatter(df, x='spend', y='revenue',\n                 size='clicks',     # 점 크기 = 클릭 수\n                 color='channel',   # 점 색상 = 채널\n                 trendline='ols',   # 추세선\n                 facet_col='quarter')  # 분기별 서브플롯\nfig.show()\n```\n\n`size`에 수치형 컬럼을 지정하면 버블 차트처럼 활용할 수 있습니다.",
+            "code_examples": [
+                {
+                    "title": "기본 산점도",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(7)\nspend = np.random.uniform(50, 500, 80)\nrevenue = spend * np.random.uniform(2.0, 4.5, 80)\n\ndf = pd.DataFrame({'spend': spend, 'revenue': revenue})\n\nfig = px.scatter(df, x='spend', y='revenue',\n                 title='광고비 vs 매출 산점도')\nfig.show()\nprint('산점도 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n산점도 생성 완료",
+                    "explanation": "px.scatter()의 x와 y에 두 수치형 컬럼을 지정합니다. 각 점이 하나의 데이터 레코드를 나타냅니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "size, color, trendline 활용",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(3)\nn = 60\ndf = pd.DataFrame({\n    'spend': np.random.uniform(50, 500, n),\n    'revenue': np.random.uniform(100, 1500, n),\n    'clicks': np.random.randint(100, 2000, n),\n    'channel': np.random.choice(['검색광고', 'SNS', '이메일'], n)\n})\n\nfig = px.scatter(df, x='spend', y='revenue',\n                 size='clicks',\n                 color='channel',\n                 trendline='ols',\n                 title='광고비 vs 매출 (버블 크기: 클릭수)',\n                 hover_data=['clicks'])\nfig.show()\nprint('버블 산점도 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n버블 산점도 생성 완료",
+                    "explanation": "size='clicks'로 버블 차트처럼 표현하고, trendline='ols'로 OLS 회귀 추세선을 추가합니다. 추세선 위에 마우스를 올리면 회귀 방정식과 R² 값을 확인할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "facet_col로 서브플롯 산점도",
+                    "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(5)\nn = 80\ndf = pd.DataFrame({\n    'spend': np.random.uniform(50, 300, n),\n    'revenue': np.random.uniform(100, 900, n),\n    'channel': np.random.choice(['검색광고', 'SNS'], n)\n})\n\nfig = px.scatter(df, x='spend', y='revenue',\n                 color='channel',\n                 facet_col='channel',\n                 trendline='ols',\n                 title='채널별 광고비-매출 관계')\nfig.show()\nprint('facet 산점도 생성 완료')",
+                    "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\nfacet 산점도 생성 완료",
+                    "explanation": "facet_col='channel'로 채널별 서브플롯을 만들고 각각 추세선을 그립니다. 채널마다 광고비-매출 관계의 기울기를 비교할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "px.scatter()의 x, y에 두 수치형 컬럼을 지정해 관계를 탐색한다",
+                "size 파라미터로 버블 차트처럼 세 번째 변수를 인코딩할 수 있다",
+                "trendline='ols'로 OLS 최소제곱법 회귀선을 자동 추가한다",
+                "color와 facet_col을 함께 쓰면 그룹별 패턴을 비교할 수 있다"
+            ]
+        }
+    ]
+}

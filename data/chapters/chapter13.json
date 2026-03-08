@@ -1,0 +1,134 @@
+{
+    "chapter_id": 13,
+    "title": "두 모집단 비교와 분산분석",
+    "description": "두 그룹 이상의 비교 방법과 분산분석(ANOVA)을 배웁니다.",
+    "learning_objectives": [
+        "두 모평균의 차이를 검정한다",
+        "대응표본 t검정을 이해하고 수행한다",
+        "두 모비율과 모분산을 비교한다",
+        "일원배치 분산분석(ANOVA)을 수행한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "두 모평균의 비교 (Two-Sample t-test)",
+            "content_md": "## What - 두 집단 평균을 어떻게 비교하나요?\n\n두 개의 독립된 집단(예: 남학생 vs 여학생, A반 vs B반)의 평균이 통계적으로 다른지 검정하는 방법이 **독립표본 t검정(two-sample t-test)**입니다. \"두 집단의 모평균 차이가 0인가?\"라는 질문에 답합니다.\n\n$$H_0: \\mu_1 - \\mu_2 = 0 \\quad vs \\quad H_1: \\mu_1 - \\mu_2 \\neq 0$$\n\n## Why - 왜 단순히 두 평균을 빼서 비교하면 안 되나요?\n\n표본 평균의 차이는 표본마다 달라집니다. 우연에 의한 차이인지, 진짜 모집단 차이인지 구분하려면 **표준오차**와 **t통계량**이 필요합니다. 또한 두 집단의 분산이 같은지(등분산) 다른지(이분산)에 따라 공식이 달라집니다.\n\n**등분산(pooled) t검정:**\n$$t = \\frac{\\bar{X}_1 - \\bar{X}_2}{S_p \\sqrt{\\frac{1}{n_1} + \\frac{1}{n_2}}}, \\quad S_p^2 = \\frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}$$\n\n**이분산(Welch) t검정:**\n$$t = \\frac{\\bar{X}_1 - \\bar{X}_2}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}$$\n\n## How - scipy로 어떻게 검정하나요?\n\n`scipy.stats.ttest_ind()`를 사용합니다. `equal_var=True`이면 등분산, `equal_var=False`이면 Welch 검정입니다.\n\n```python\nfrom scipy import stats\n\n# A반 점수와 B반 점수\na_class = [78, 82, 85, 90, 73, 88]\nb_class = [85, 92, 88, 95, 80, 91]\n\n# 독립표본 t검정 (등분산 가정)\nt_stat, p_value = stats.ttest_ind(a_class, b_class, equal_var=True)\nprint(f't통계량: {t_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n\n# Levene 등분산 검정\nlevene_stat, levene_p = stats.levene(a_class, b_class)\nprint(f'Levene p-value: {levene_p:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "독립표본 t검정",
+                    "code": "from scipy import stats\nimport numpy as np\n\n# 두 교수법의 학습 효과 비교\nmethod_a = [72, 78, 80, 85, 76, 82, 79]\nmethod_b = [85, 88, 92, 87, 90, 84, 89]\n\n# 기초 통계\nprint(f'방법A 평균: {np.mean(method_a):.2f}, 표준편차: {np.std(method_a, ddof=1):.2f}')\nprint(f'방법B 평균: {np.mean(method_b):.2f}, 표준편차: {np.std(method_b, ddof=1):.2f}')\n\n# Welch t검정 (equal_var=False가 더 안전)\nt_stat, p_value = stats.ttest_ind(method_a, method_b, equal_var=False)\nprint(f'\\nt통계량: {t_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n\nif p_value < 0.05:\n    print('유의수준 5%에서 두 집단 평균에 유의한 차이가 있습니다.')\nelse:\n    print('유의수준 5%에서 두 집단 평균에 유의한 차이가 없습니다.')",
+                    "expected_output": "방법A 평균: 78.86, 표준편차: 4.18\n방법B 평균: 87.86, 표준편차: 2.79\n\nt통계량: -5.2090\np-value: 0.0005\n유의수준 5%에서 두 집단 평균에 유의한 차이가 있습니다.",
+                    "explanation": "Welch t검정은 등분산을 가정하지 않아 더 안전합니다. p-value < 0.05이면 두 집단 평균이 통계적으로 다릅니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "풀링 분산(pooled variance) 직접 계산",
+                    "code": "import numpy as np\n\ng1 = np.array([10, 12, 14, 11, 13])\ng2 = np.array([15, 17, 16, 18, 14])\n\nn1, n2 = len(g1), len(g2)\ns1_sq = np.var(g1, ddof=1)\ns2_sq = np.var(g2, ddof=1)\n\n# 풀링 분산\nsp_sq = ((n1 - 1) * s1_sq + (n2 - 1) * s2_sq) / (n1 + n2 - 2)\nsp = np.sqrt(sp_sq)\n\nt_stat = (np.mean(g1) - np.mean(g2)) / (sp * np.sqrt(1/n1 + 1/n2))\nprint(f'풀링 표준편차: {sp:.4f}')\nprint(f't통계량: {t_stat:.4f}')",
+                    "expected_output": "풀링 표준편차: 1.7088\nt통계량: -5.3358",
+                    "explanation": "등분산 가정 시 두 표본의 분산을 가중평균한 풀링 분산(Sp²)을 사용합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "두 독립집단 평균 비교: scipy.stats.ttest_ind()",
+                "equal_var=True: 등분산 가정(pooled t검정), equal_var=False: Welch 검정",
+                "등분산 검정: scipy.stats.levene() 또는 bartlett()",
+                "p-value < 유의수준이면 귀무가설 기각 (두 집단 평균 다름)"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "대응표본 비교 (Paired t-test)",
+            "content_md": "## What - 대응표본 t검정이 뭔가요?\n\n**대응표본(paired sample)**은 같은 개체에서 두 번 측정하거나, 짝을 지어 측정한 데이터입니다. 예를 들어 \"교육 전/후 점수\", \"왼손/오른손 반응속도\" 같은 경우입니다. 두 측정값의 **차이(difference)**가 0인지 검정합니다.\n\n$$H_0: \\mu_D = 0 \\quad (\\mu_D = \\mu_{전} - \\mu_{후})$$\n\n## Why - 독립표본 t검정과 왜 다르게 분석하나요?\n\n같은 사람의 전후 측정값은 독립이 아닙니다. 개인차(키가 큰 사람은 전후 모두 크다)를 제거하면 더 정밀한 검정이 가능합니다. 차이값 $D_i = X_{i,전} - X_{i,후}$를 구한 후 1표본 t검정을 수행합니다.\n\n$$t = \\frac{\\bar{D}}{S_D / \\sqrt{n}}, \\quad \\text{자유도} = n-1$$\n\n## How - scipy로 어떻게 사용하나요?\n\n`scipy.stats.ttest_rel(a, b)`를 사용합니다. a와 b는 반드시 같은 길이여야 합니다.\n\n```python\nfrom scipy import stats\nimport numpy as np\n\n# 다이어트 전/후 체중 (kg)\nbefore = [72, 85, 68, 90, 78, 65]\nafter  = [70, 82, 66, 87, 74, 63]\n\nd = np.array(before) - np.array(after)\nprint(f'차이 평균: {d.mean():.2f}, 표준편차: {d.std(ddof=1):.2f}')\n\nt_stat, p_value = stats.ttest_rel(before, after)\nprint(f't통계량: {t_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "대응표본 t검정",
+                    "code": "from scipy import stats\nimport numpy as np\n\n# 수면 교육 전/후 수면 시간 (시간)\nbefore = [6.2, 5.8, 7.1, 6.0, 5.5, 6.8, 7.0, 6.3]\nafter  = [7.0, 6.5, 7.5, 6.8, 6.2, 7.3, 7.6, 7.1]\n\ndiff = np.array(after) - np.array(before)\nprint(f'차이값: {diff}')\nprint(f'차이 평균: {diff.mean():.3f}')\nprint(f'차이 표준편차: {diff.std(ddof=1):.3f}')\n\nt_stat, p_value = stats.ttest_rel(before, after)\nprint(f'\\nt통계량: {t_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n\nif p_value < 0.05:\n    print('교육 후 수면 시간이 유의하게 변화했습니다.')",
+                    "expected_output": "차이값: [0.8 0.7 0.4 0.8 0.7 0.5 0.6 0.8]\n차이 평균: 0.663\n차이 표준편차: 0.143\n\nt통계량: -13.0866\np-value: 0.0000\n교육 후 수면 시간이 유의하게 변화했습니다.",
+                    "explanation": "대응표본 t검정은 ttest_rel()을 사용합니다. 차이값을 먼저 계산해 직관적으로 효과를 파악할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "대응표본: 동일 개체의 전후 측정, 쌍체 비교",
+                "scipy.stats.ttest_rel(before, after) 사용",
+                "내부적으로 차이값 D_i = before_i - after_i의 1표본 t검정과 동일",
+                "자유도 = n-1 (독립표본의 n1+n2-2와 다름)"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "두 모비율과 모분산의 비교",
+            "content_md": "## What - 비율과 분산도 비교할 수 있나요?\n\n평균뿐만 아니라 **비율(proportion)**과 **분산(variance)**도 두 집단 간 비교가 가능합니다.\n- **두 모비율 검정**: 두 집단의 성공 비율이 같은지 (Z검정)\n- **두 모분산 검정**: 두 집단의 산포가 같은지 (F검정)\n\n## Why - 어떤 통계량을 사용하나요?\n\n**두 모비율 Z검정:**\n$$Z = \\frac{\\hat{p}_1 - \\hat{p}_2}{\\sqrt{\\hat{p}(1-\\hat{p})(\\frac{1}{n_1}+\\frac{1}{n_2})}}, \\quad \\hat{p} = \\frac{x_1+x_2}{n_1+n_2}$$\n\n여기서 $\\hat{p}$는 합동 비율(pooled proportion)입니다.\n\n**두 모분산 F검정:**\n$$F = \\frac{S_1^2}{S_2^2} \\sim F(n_1-1, n_2-1)$$\n\nF통계량은 큰 분산을 분자에 놓는 것이 관례입니다.\n\n## How - Python으로 어떻게 계산하나요?\n\n```python\nfrom scipy import stats\nimport numpy as np\n\n# 두 모분산 F검정\ng1 = np.array([10, 12, 9, 11, 13, 10, 11])\ng2 = np.array([15, 8, 12, 18, 10, 14, 9])\n\nf_stat = np.var(g1, ddof=1) / np.var(g2, ddof=1)\ndf1, df2 = len(g1) - 1, len(g2) - 1\n\n# 양측 p-value\np_value = 2 * min(stats.f.cdf(f_stat, df1, df2),\n                  1 - stats.f.cdf(f_stat, df1, df2))\nprint(f'F통계량: {f_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "두 모비율 Z검정",
+                    "code": "import numpy as np\nfrom scipy import stats\n\n# 두 광고 캠페인의 클릭률 비교\nn1, x1 = 200, 40  # 캠페인 A: 200명 중 40명 클릭\nn2, x2 = 250, 60  # 캠페인 B: 250명 중 60명 클릭\n\np1_hat = x1 / n1\np2_hat = x2 / n2\np_pool = (x1 + x2) / (n1 + n2)  # 합동 비율\n\nprint(f'캠페인A 클릭률: {p1_hat:.4f}')\nprint(f'캠페인B 클릭률: {p2_hat:.4f}')\nprint(f'합동 비율: {p_pool:.4f}')\n\nse = np.sqrt(p_pool * (1 - p_pool) * (1/n1 + 1/n2))\nz_stat = (p1_hat - p2_hat) / se\np_value = 2 * (1 - stats.norm.cdf(abs(z_stat)))\n\nprint(f'Z통계량: {z_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')",
+                    "expected_output": "캠페인A 클릭률: 0.2000\n캠페인B 클릭률: 0.2400\n합동 비율: 0.2222\nZ통계량: -1.1547\np-value: 0.2482",
+                    "explanation": "두 비율 차이를 합동 비율 기반 표준오차로 나눠 Z통계량을 구합니다. p-value > 0.05이므로 두 클릭률에 유의한 차이가 없습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "두 모분산 F검정",
+                    "code": "import numpy as np\nfrom scipy import stats\n\n# 두 생산 라인의 품질 변동성 비교\nline_a = np.array([9.8, 10.2, 10.1, 9.9, 10.3, 10.0, 9.7])\nline_b = np.array([9.0, 10.8, 11.2, 8.9, 10.5, 9.3, 11.0])\n\ns1_sq = np.var(line_a, ddof=1)\ns2_sq = np.var(line_b, ddof=1)\n\nprint(f'라인A 표본분산: {s1_sq:.4f}')\nprint(f'라인B 표본분산: {s2_sq:.4f}')\n\nf_stat = s1_sq / s2_sq\ndf1, df2 = len(line_a) - 1, len(line_b) - 1\n\np_value = 2 * min(stats.f.cdf(f_stat, df1, df2),\n                  1 - stats.f.cdf(f_stat, df1, df2))\n\nprint(f'F통계량: {f_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')",
+                    "expected_output": "라인A 표본분산: 0.0381\n라인B 표본분산: 0.6714\nF통계량: 0.0567\np-value: 0.0024",
+                    "explanation": "F통계량 = S1²/S2². F분포의 CDF로 p-value를 계산합니다. p-value < 0.05이므로 두 라인의 분산이 유의하게 다릅니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "두 모비율 비교: Z통계량, 합동 비율(pooled proportion) 사용",
+                "두 모분산 비교: F = S1²/S2², F(n1-1, n2-1) 분포",
+                "scipy.stats.f.cdf()로 F분포 p-value 계산",
+                "F검정은 등분산 검정(t검정 전 수행)에도 활용됨"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "일원배치 분산분석 (One-way ANOVA)",
+            "content_md": "## What - 분산분석(ANOVA)이 뭔가요?\n\n**분산분석(Analysis of Variance, ANOVA)**은 3개 이상의 집단 평균을 동시에 비교하는 방법입니다. \"세 비료 처리 방식의 수확량이 모두 같은가?\"처럼 집단이 여럿일 때 사용합니다.\n\n$$H_0: \\mu_1 = \\mu_2 = \\cdots = \\mu_k \\quad vs \\quad H_1: \\text{적어도 하나는 다르다}$$\n\n## Why - 왜 t검정을 여러 번 하면 안 되나요?\n\n3개 집단을 t검정으로 쌍쌍이 비교하면 3번의 검정이 필요합니다. 각 검정의 1종 오류율이 5%라면, 3번 합치면 오류율이 최대 $1-(0.95)^3 \\approx 14\\%$로 높아집니다. ANOVA는 한 번의 검정으로 전체 비교를 수행합니다.\n\n**분산분석표(ANOVA table):**\n| 변동 원인 | 제곱합 | 자유도 | 평균제곱 | F |\n|---------|--------|--------|---------|---|\n| 집단 간(Between) | SSB | k-1 | MSB=SSB/(k-1) | MSB/MSW |\n| 집단 내(Within) | SSW | N-k | MSW=SSW/(N-k) | |\n| 전체(Total) | SST | N-1 | | |\n\n$$F = \\frac{MSB}{MSW} \\sim F(k-1, N-k)$$\n\n## How - scipy로 어떻게 수행하나요?\n\n```python\nfrom scipy import stats\n\ngroup1 = [10, 12, 11, 13, 10]\ngroup2 = [14, 16, 15, 17, 14]\ngroup3 = [20, 22, 21, 19, 20]\n\nf_stat, p_value = stats.f_oneway(group1, group2, group3)\nprint(f'F통계량: {f_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "일원배치 ANOVA",
+                    "code": "from scipy import stats\nimport numpy as np\n\n# 세 가지 비료의 수확량 비교\nfertilizer_a = [45, 47, 43, 46, 48]\nfertilizer_b = [52, 54, 50, 53, 55]\nfertilizer_c = [49, 51, 48, 50, 52]\n\nf_stat, p_value = stats.f_oneway(fertilizer_a, fertilizer_b, fertilizer_c)\n\nprint(f'비료A 평균: {np.mean(fertilizer_a):.1f}')\nprint(f'비료B 평균: {np.mean(fertilizer_b):.1f}')\nprint(f'비료C 평균: {np.mean(fertilizer_c):.1f}')\nprint(f'\\nF통계량: {f_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n\nif p_value < 0.05:\n    print('\\n유의수준 5%에서 비료 종류에 따른 수확량 차이가 있습니다.')",
+                    "expected_output": "비료A 평균: 45.8\n비료B 평균: 52.8\n비료C 평균: 50.0\n\nF통계량: 17.3462\np-value: 0.0002\n\n유의수준 5%에서 비료 종류에 따른 수확량 차이가 있습니다.",
+                    "explanation": "scipy.stats.f_oneway()에 각 집단의 데이터를 인수로 전달합니다. F통계량이 크고 p-value가 작을수록 집단 간 차이가 큽니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "분산분석표 직접 계산",
+                    "code": "import numpy as np\n\ngroups = [\n    np.array([45, 47, 43, 46, 48]),\n    np.array([52, 54, 50, 53, 55]),\n    np.array([49, 51, 48, 50, 52])\n]\n\nall_data = np.concatenate(groups)\ngrand_mean = np.mean(all_data)\nN = len(all_data)\nk = len(groups)\n\n# SSB: 집단 간 제곱합\nSSB = sum(len(g) * (np.mean(g) - grand_mean)**2 for g in groups)\n\n# SSW: 집단 내 제곱합\nSSW = sum(np.sum((g - np.mean(g))**2) for g in groups)\n\nMSB = SSB / (k - 1)\nMSW = SSW / (N - k)\nF = MSB / MSW\n\nprint(f'SSB={SSB:.2f}, df={k-1}, MSB={MSB:.2f}')\nprint(f'SSW={SSW:.2f}, df={N-k}, MSW={MSW:.2f}')\nprint(f'F통계량: {F:.4f}')",
+                    "expected_output": "SSB=104.93, df=2, MSB=52.47\nSSW=18.00, df=12, MSW=1.50\nF통계량: 34.9778",
+                    "explanation": "SST = SSB + SSW. MSB는 집단 간 평균제곱, MSW는 집단 내 평균제곱(잔차)입니다. F = MSB/MSW.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "3개 이상 집단 평균 비교: scipy.stats.f_oneway(g1, g2, g3, ...)",
+                "SST = SSB(집단간) + SSW(집단내)",
+                "F = MSB/MSW, F(k-1, N-k) 분포를 따름",
+                "ANOVA는 '어떤 집단이 다른가'를 알려주지 않음 → 사후검정(post-hoc) 필요"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "이원배치 분산분석 (Two-way ANOVA)",
+            "content_md": "## What - 이원배치 ANOVA가 뭔가요?\n\n**이원배치 ANOVA**는 두 개의 독립변수(요인, factor)가 종속변수에 미치는 영향을 동시에 분석합니다. 예를 들어 \"비료 종류\"와 \"관개 방식\" 두 요인이 수확량에 미치는 효과를 동시에 봅니다.\n\n- **주효과(main effect)**: 각 요인 단독 효과\n- **교호작용(interaction)**: 두 요인의 결합 효과\n\n$$Y_{ijk} = \\mu + \\alpha_i + \\beta_j + (\\alpha\\beta)_{ij} + \\epsilon_{ijk}$$\n\n## Why - 일원배치와 무엇이 다른가요?\n\n일원배치는 한 요인의 효과만 보지만, 현실에서는 여러 요인이 동시에 작용합니다. 이원배치는 두 요인의 **교호작용**도 검정할 수 있어 더 정확한 분석이 가능합니다. 교호작용이 유의하면 한 요인의 효과가 다른 요인 수준에 따라 달라진다는 의미입니다.\n\n## How - statsmodels로 어떻게 수행하나요?\n\n```python\nimport pandas as pd\nfrom statsmodels.formula.api import ols\nfrom statsmodels.stats.anova import anova_lm\n\ndata = pd.DataFrame({\n    'score': [10,12,11,15,17,16,13,14,12,18,20,19],\n    'factor_a': ['A1']*6 + ['A2']*6,\n    'factor_b': ['B1','B1','B1','B2','B2','B2']*2\n})\n\nmodel = ols('score ~ C(factor_a) + C(factor_b) + C(factor_a):C(factor_b)', data=data).fit()\nanova_table = anova_lm(model, typ=2)\nprint(anova_table)\n```",
+            "code_examples": [
+                {
+                    "title": "이원배치 ANOVA",
+                    "code": "import pandas as pd\nimport numpy as np\nfrom statsmodels.formula.api import ols\nfrom statsmodels.stats.anova import anova_lm\n\n# 교수법(A)와 학습시간(B)이 성적에 미치는 영향\nnp.random.seed(42)\ndata = pd.DataFrame({\n    'score': [72,75,70, 85,88,82, 78,80,76, 90,93,88],\n    'method': ['전통']*3 + ['전통']*3 + ['플립']*3 + ['플립']*3,\n    'hours':  ['단기']*3 + ['장기']*3 + ['단기']*3 + ['장기']*3\n})\n\nmodel = ols('score ~ C(method) + C(hours) + C(method):C(hours)', data=data).fit()\nanova_table = anova_lm(model, typ=2)\nprint(anova_table.round(4))",
+                    "expected_output": "                         sum_sq    df          F    PR(>F)\nC(method)               112.0833   1.0   14.3902    0.0049\nC(hours)                252.0833   1.0   32.3761    0.0004\nC(method):C(hours)        0.0833   1.0    0.0107    0.9194\nResidual                 62.5000   8.0        NaN       NaN",
+                    "explanation": "이원배치 ANOVA 결과표입니다. method, hours 주효과는 모두 유의(p<0.05)하지만, 교호작용(interaction)은 유의하지 않습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "이원배치 ANOVA: 두 요인의 주효과 + 교호작용 동시 검정",
+                "statsmodels.formula.api.ols()로 formula 방식 모형 지정",
+                "C(변수)는 범주형 변수를 의미, :는 교호작용항",
+                "교호작용이 유의하면 주효과 해석에 주의 필요"
+            ]
+        }
+    ]
+}

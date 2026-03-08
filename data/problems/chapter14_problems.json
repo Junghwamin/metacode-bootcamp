@@ -1,0 +1,413 @@
+{
+    "chapter_id": 14,
+    "allowed_modules": ["numpy", "scipy", "statsmodels", "pandas", "matplotlib"],
+    "problems": [
+        {
+            "problem_id": "ch14_p01",
+            "title": "산점도와 상관계수",
+            "difficulty": "basic",
+            "description": "두 변수의 산점도를 그리고 상관계수를 계산하세요.",
+            "instructions": [
+                "x = [1, 2, 3, 4, 5, 6, 7, 8] 과 y = [2.1, 4.0, 6.2, 7.9, 10.1, 11.8, 14.2, 16.0] 를 정의하세요",
+                "numpy로 상관계수를 계산하여 소수점 4자리로 출력하세요",
+                "x의 평균과 y의 평균을 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8])\ny = np.array([2.1, 4.0, 6.2, 7.9, 10.1, 11.8, 14.2, 16.0])\n\n# 상관계수와 평균을 출력하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8])\ny = np.array([2.1, 4.0, 6.2, 7.9, 10.1, 11.8, 14.2, 16.0])\n\ncorr = np.corrcoef(x, y)[0, 1]\nprint(f'{corr:.4f}')\nprint(f'{np.mean(x):.4f}')\nprint(f'{np.mean(y):.4f}')",
+            "hints": [
+                {"level": 1, "text": "np.corrcoef(x, y)는 2x2 상관행렬을 반환합니다"},
+                {"level": 2, "text": "np.corrcoef(x, y)[0, 1]로 x와 y의 상관계수를 얻습니다"},
+                {"level": 3, "text": "corr = np.corrcoef(x, y)[0, 1]\\nprint(f'{corr:.4f}')\\nprint(f'{np.mean(x):.4f}')\\nprint(f'{np.mean(y):.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.9998\n4.5000\n9.0375",
+                "tolerance": 0.001
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["산점도", "상관계수", "회귀입문"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch14_p02",
+            "title": "회귀계수 직접 계산",
+            "difficulty": "basic",
+            "description": "최소제곱법 공식으로 β₁과 β₀를 직접 계산하세요.",
+            "instructions": [
+                "x = [1, 2, 3, 4, 5] 와 y = [3, 5, 7, 9, 11] 을 numpy 배열로 정의하세요",
+                "Sxx = Σ(xᵢ - x̄)², Sxy = Σ(xᵢ - x̄)(yᵢ - ȳ)를 계산하세요",
+                "β₁ = Sxy/Sxx 와 β₀ = ȳ - β₁x̄ 를 계산하여 소수점 4자리로 각각 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([3, 5, 7, 9, 11])\n\n# 최소제곱법으로 β₁과 β₀를 계산하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([3, 5, 7, 9, 11])\n\nx_mean = np.mean(x)\ny_mean = np.mean(y)\n\nSxx = np.sum((x - x_mean)**2)\nSxy = np.sum((x - x_mean) * (y - y_mean))\n\nbeta1 = Sxy / Sxx\nbeta0 = y_mean - beta1 * x_mean\n\nprint(f'{beta1:.4f}')\nprint(f'{beta0:.4f}')",
+            "hints": [
+                {"level": 1, "text": "x_mean = np.mean(x), y_mean = np.mean(y)로 평균을 먼저 구합니다"},
+                {"level": 2, "text": "Sxx = np.sum((x - x_mean)**2), Sxy = np.sum((x - x_mean)*(y - y_mean))"},
+                {"level": 3, "text": "beta1 = Sxy / Sxx\\nbeta0 = y_mean - beta1 * x_mean"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "2.0000\n1.0000",
+                "tolerance": 0.001
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["최소제곱법", "회귀계수", "OLS"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch14_p03",
+            "title": "회귀직선으로 예측",
+            "difficulty": "basic",
+            "description": "회귀계수를 구하고 새로운 값을 예측하세요.",
+            "instructions": [
+                "x = [2, 4, 6, 8, 10] 와 y = [7, 13, 19, 25, 31] 을 정의하세요",
+                "np.polyfit(x, y, 1)로 β₁, β₀를 구하세요",
+                "회귀식을 'Y = β₀ + β₁X' 형태로 소수점 2자리 값을 출력하세요",
+                "x=12일 때 예측값을 소수점 2자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([2, 4, 6, 8, 10])\ny = np.array([7, 13, 19, 25, 31])\n\n# 회귀계수를 구하고 예측하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([2, 4, 6, 8, 10])\ny = np.array([7, 13, 19, 25, 31])\n\nbeta1, beta0 = np.polyfit(x, y, 1)\nprint(f'Y = {beta0:.2f} + {beta1:.2f}X')\n\nx_new = 12\ny_pred = beta0 + beta1 * x_new\nprint(f'{y_pred:.2f}')",
+            "hints": [
+                {"level": 1, "text": "np.polyfit(x, y, 1)은 (기울기, 절편) 순으로 반환합니다"},
+                {"level": 2, "text": "beta1, beta0 = np.polyfit(x, y, 1) 순서에 주의하세요"},
+                {"level": 3, "text": "y_pred = beta0 + beta1 * x_new 로 예측합니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "Y = 1.00 + 3.00X\n37.00",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["예측", "회귀직선", "polyfit"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch14_p04",
+            "title": "R² 계산",
+            "difficulty": "basic",
+            "description": "회귀모형의 결정계수 R²를 계산하세요.",
+            "instructions": [
+                "x = [1, 2, 3, 4, 5] 와 y = [2.5, 5.1, 7.4, 10.0, 12.5] 를 정의하세요",
+                "최소제곱법 또는 polyfit으로 회귀계수를 구하세요",
+                "SST, SSE, SSR을 계산하세요",
+                "R² = SSR/SST 를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2.5, 5.1, 7.4, 10.0, 12.5])\n\n# R²을 계산하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2.5, 5.1, 7.4, 10.0, 12.5])\n\nbeta1, beta0 = np.polyfit(x, y, 1)\ny_pred = beta0 + beta1 * x\ny_mean = np.mean(y)\n\nSST = np.sum((y - y_mean)**2)\nSSE = np.sum((y - y_pred)**2)\nSSR = SST - SSE\nR2 = SSR / SST\n\nprint(f'{R2:.4f}')",
+            "hints": [
+                {"level": 1, "text": "SST = Σ(yᵢ - ȳ)², SSE = Σ(yᵢ - ŷᵢ)², SSR = SST - SSE"},
+                {"level": 2, "text": "R² = SSR/SST = 1 - SSE/SST"},
+                {"level": 3, "text": "y_pred = beta0 + beta1 * x 로 예측값을 구한 후 각 제곱합을 계산합니다"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.9997",
+                "tolerance": 0.001
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["R²", "결정계수", "모형평가"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch14_p05",
+            "title": "잔차 계산",
+            "difficulty": "basic",
+            "description": "회귀모형의 잔차를 계산하고 기본 성질을 확인하세요.",
+            "instructions": [
+                "x = [1, 2, 3, 4, 5] 와 y = [3.1, 5.0, 6.9, 9.2, 10.8] 을 정의하세요",
+                "np.polyfit으로 회귀계수를 구하고 예측값을 계산하세요",
+                "잔차 = y - 예측값 을 계산하세요",
+                "잔차의 합을 소수점 6자리로 출력하세요 (0에 가까워야 함)"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([3.1, 5.0, 6.9, 9.2, 10.8])\n\n# 잔차를 계산하고 합을 출력하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([3.1, 5.0, 6.9, 9.2, 10.8])\n\nbeta1, beta0 = np.polyfit(x, y, 1)\ny_pred = beta0 + beta1 * x\nresiduals = y - y_pred\n\nprint(f'{residuals.sum():.6f}')",
+            "hints": [
+                {"level": 1, "text": "잔차 eᵢ = yᵢ - ŷᵢ 입니다"},
+                {"level": 2, "text": "y_pred = beta0 + beta1 * x 로 예측값을 계산합니다"},
+                {"level": 3, "text": "OLS에서 잔차의 합 Σeᵢ = 0은 수학적으로 항상 성립합니다"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.000000",
+                "tolerance": 0.000001
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["잔차", "OLS성질", "회귀진단"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch14_p06",
+            "title": "최소제곱법 완전 구현",
+            "difficulty": "intermediate",
+            "description": "최소제곱법 공식을 활용하여 회귀분석을 완전히 수행하세요.",
+            "instructions": [
+                "광고비(만원) x=[5,10,15,20,25,30] 와 매출(백만원) y=[12,22,31,41,50,60] 를 정의하세요",
+                "Sxx, Sxy를 계산하여 β₁, β₀를 구하세요",
+                "β₁과 β₀를 소수점 4자리로 출력하세요",
+                "x=35일 때 예측 매출을 소수점 2자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([5, 10, 15, 20, 25, 30])\ny = np.array([12, 22, 31, 41, 50, 60])\n\n# 최소제곱법으로 완전한 회귀분석을 수행하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([5, 10, 15, 20, 25, 30])\ny = np.array([12, 22, 31, 41, 50, 60])\n\nx_mean = np.mean(x)\ny_mean = np.mean(y)\n\nSxx = np.sum((x - x_mean)**2)\nSxy = np.sum((x - x_mean) * (y - y_mean))\n\nbeta1 = Sxy / Sxx\nbeta0 = y_mean - beta1 * x_mean\n\nprint(f'{beta1:.4f}')\nprint(f'{beta0:.4f}')\n\nx_new = 35\ny_pred = beta0 + beta1 * x_new\nprint(f'{y_pred:.2f}')",
+            "hints": [
+                {"level": 1, "text": "Sxx = np.sum((x - x_mean)**2), Sxy = np.sum((x - x_mean)*(y - y_mean))"},
+                {"level": 2, "text": "beta1 = Sxy/Sxx, beta0 = y_mean - beta1*x_mean"},
+                {"level": 3, "text": "예측: y_pred = beta0 + beta1 * x_new"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "1.9257\n2.3429\n69.7429",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["최소제곱법", "OLS", "예측"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch14_p07",
+            "title": "statsmodels로 회귀 적합",
+            "difficulty": "intermediate",
+            "description": "statsmodels OLS로 회귀모형을 적합하고 주요 결과를 출력하세요.",
+            "instructions": [
+                "x=[1,2,3,4,5,6,7,8,9,10], y=[2.3,4.1,5.9,8.0,9.8,12.1,13.9,16.0,17.8,20.2] 를 정의하세요",
+                "statsmodels.api.OLS에 sm.add_constant(x)를 추가하여 모형을 적합하세요",
+                "절편(β₀)과 기울기(β₁)을 소수점 4자리로 출력하세요",
+                "R²를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([2.3, 4.1, 5.9, 8.0, 9.8, 12.1, 13.9, 16.0, 17.8, 20.2])\n\n# statsmodels로 회귀분석을 수행하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([2.3, 4.1, 5.9, 8.0, 9.8, 12.1, 13.9, 16.0, 17.8, 20.2])\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\n\nprint(f'{model.params[0]:.4f}')\nprint(f'{model.params[1]:.4f}')\nprint(f'{model.rsquared:.4f}')",
+            "hints": [
+                {"level": 1, "text": "sm.add_constant(x)로 절편항을 추가합니다"},
+                {"level": 2, "text": "sm.OLS(y, X).fit()으로 모형을 적합하고 결과 객체를 얻습니다"},
+                {"level": 3, "text": "model.params[0]은 절편, model.params[1]은 기울기, model.rsquared는 R²입니다"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.1636\n1.9939\n0.9999",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["statsmodels", "OLS", "회귀적합"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch14_p08",
+            "title": "잔차 분석과 시각화",
+            "difficulty": "intermediate",
+            "description": "회귀모형의 잔차를 분석하고 플롯을 그리세요.",
+            "instructions": [
+                "x=[1,2,3,4,5,6], y=[2.1,4.5,6.0,8.3,10.1,11.9] 를 정의하세요",
+                "polyfit으로 회귀계수를 구하고 잔차를 계산하세요",
+                "잔차의 평균을 소수점 6자리로 출력하세요",
+                "잔차의 표준편차(ddof=2)를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5, 6])\ny = np.array([2.1, 4.5, 6.0, 8.3, 10.1, 11.9])\n\n# 잔차의 평균과 표준편차를 출력하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5, 6])\ny = np.array([2.1, 4.5, 6.0, 8.3, 10.1, 11.9])\n\nbeta1, beta0 = np.polyfit(x, y, 1)\ny_pred = beta0 + beta1 * x\nresiduals = y - y_pred\n\nprint(f'{residuals.mean():.6f}')\nprint(f'{residuals.std(ddof=2):.4f}')",
+            "hints": [
+                {"level": 1, "text": "잔차 = y - y_pred, OLS에서 잔차 평균은 수학적으로 0입니다"},
+                {"level": 2, "text": "잔차 표준편차는 ddof=2 (추정된 파라미터 수가 2: β₀, β₁)"},
+                {"level": 3, "text": "residuals = y - (beta0 + beta1 * x)\\nprint(f'{residuals.mean():.6f}')\\nprint(f'{residuals.std(ddof=2):.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.000000\n0.2449",
+                "tolerance": 0.001
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["잔차분석", "잔차표준편차", "회귀진단"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch14_p09",
+            "title": "회귀계수 신뢰구간",
+            "difficulty": "intermediate",
+            "description": "statsmodels로 회귀계수의 95% 신뢰구간을 구하세요.",
+            "instructions": [
+                "x=[2,4,6,8,10,12,14,16], y=[5,9,14,18,23,28,32,37] 를 정의하세요",
+                "statsmodels OLS로 모형을 적합하세요",
+                "model.conf_int()로 95% 신뢰구간을 구하세요",
+                "기울기(β₁)의 신뢰구간 하한과 상한을 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 4, 6, 8, 10, 12, 14, 16], dtype=float)\ny = np.array([5, 9, 14, 18, 23, 28, 32, 37], dtype=float)\n\n# 회귀계수의 신뢰구간을 구하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 4, 6, 8, 10, 12, 14, 16], dtype=float)\ny = np.array([5, 9, 14, 18, 23, 28, 32, 37], dtype=float)\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\nci = model.conf_int(alpha=0.05)\n\nprint(f'{ci.iloc[1, 0]:.4f}')\nprint(f'{ci.iloc[1, 1]:.4f}')",
+            "hints": [
+                {"level": 1, "text": "model.conf_int()는 [하한, 상한] 형태의 DataFrame을 반환합니다"},
+                {"level": 2, "text": "ci.iloc[0, :]은 절편 신뢰구간, ci.iloc[1, :]은 기울기 신뢰구간입니다"},
+                {"level": 3, "text": "ci = model.conf_int(alpha=0.05)\\nprint(f'{ci.iloc[1, 0]:.4f}')\\nprint(f'{ci.iloc[1, 1]:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "2.1524\n2.2762",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["신뢰구간", "회귀계수", "추론"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch14_p10",
+            "title": "β₁ 유의성 검정",
+            "difficulty": "intermediate",
+            "description": "회귀계수의 유의성을 검정하고 결론을 내리세요.",
+            "instructions": [
+                "x=[1,2,3,4,5,6,7,8,9,10], y=[3.0,3.2,2.8,3.1,3.3,2.9,3.0,3.2,2.8,3.1] 를 정의하세요 (거의 관계 없음)",
+                "statsmodels OLS로 모형을 적합하세요",
+                "기울기의 t통계량을 소수점 4자리로 출력하세요",
+                "기울기의 p-value를 소수점 4자리로 출력하세요",
+                "p-value >= 0.05이면 '기울기가 유의하지 않습니다.'를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([3.0, 3.2, 2.8, 3.1, 3.3, 2.9, 3.0, 3.2, 2.8, 3.1])\n\n# β₁의 유의성을 검정하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([3.0, 3.2, 2.8, 3.1, 3.3, 2.9, 3.0, 3.2, 2.8, 3.1])\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\n\nprint(f'{model.tvalues[1]:.4f}')\nprint(f'{model.pvalues[1]:.4f}')\n\nif model.pvalues[1] >= 0.05:\n    print('기울기가 유의하지 않습니다.')",
+            "hints": [
+                {"level": 1, "text": "model.tvalues[1]은 β₁의 t통계량, model.pvalues[1]은 β₁의 p-value입니다"},
+                {"level": 2, "text": "p-value >= 0.05이면 귀무가설(β₁=0)을 기각할 수 없습니다"},
+                {"level": 3, "text": "print(f'{model.tvalues[1]:.4f}')\\nprint(f'{model.pvalues[1]:.4f}')\\nif model.pvalues[1] >= 0.05: print('기울기가 유의하지 않습니다.')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.1483\n0.8856\n기울기가 유의하지 않습니다.",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["t검정", "유의성검정", "β₁"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch14_p11",
+            "title": "statsmodels summary 해석",
+            "difficulty": "advanced",
+            "description": "statsmodels의 회귀 요약 결과에서 주요 지표를 추출하세요.",
+            "instructions": [
+                "x=[3,6,9,12,15,18,21,24,27,30], y=[8,15,22,30,37,45,52,60,67,75] 를 정의하세요",
+                "statsmodels OLS로 적합하세요",
+                "R², adj-R², AIC를 각각 소수점 4자리로 출력하세요",
+                "F통계량을 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([3, 6, 9, 12, 15, 18, 21, 24, 27, 30], dtype=float)\ny = np.array([8, 15, 22, 30, 37, 45, 52, 60, 67, 75], dtype=float)\n\n# 회귀 요약 지표를 출력하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([3, 6, 9, 12, 15, 18, 21, 24, 27, 30], dtype=float)\ny = np.array([8, 15, 22, 30, 37, 45, 52, 60, 67, 75], dtype=float)\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\n\nprint(f'{model.rsquared:.4f}')\nprint(f'{model.rsquared_adj:.4f}')\nprint(f'{model.aic:.4f}')\nprint(f'{model.fvalue:.4f}')",
+            "hints": [
+                {"level": 1, "text": "model.rsquared는 R², model.rsquared_adj는 조정 R²입니다"},
+                {"level": 2, "text": "model.aic는 AIC, model.fvalue는 F통계량입니다"},
+                {"level": 3, "text": "print(f'{model.rsquared:.4f}')\\nprint(f'{model.rsquared_adj:.4f}')\\nprint(f'{model.aic:.4f}')\\nprint(f'{model.fvalue:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "1.0000\n1.0000\n-29.6887\n159984.0000",
+                "tolerance": 0.1
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["statsmodels", "AIC", "조정R²"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch14_p12",
+            "title": "두 모형의 R² 비교",
+            "difficulty": "advanced",
+            "description": "같은 데이터에서 두 가지 변환을 적용한 모형의 R²를 비교하세요.",
+            "instructions": [
+                "x=[1,2,3,4,5,6,7,8,9,10], y=[1.2,3.5,4.8,8.9,12.1,17.8,24.3,33.5,45.2,61.0] 를 정의하세요",
+                "선형 회귀(x ~ y)의 R²를 소수점 4자리로 출력하세요",
+                "log 변환 회귀(x ~ log(y))의 R²를 소수점 4자리로 출력하세요",
+                "R²가 더 높은 모형을 '선형모형' 또는 '로그변환모형' 으로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([1.2, 3.5, 4.8, 8.9, 12.1, 17.8, 24.3, 33.5, 45.2, 61.0])\n\n# 두 모형의 R²를 비교하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([1.2, 3.5, 4.8, 8.9, 12.1, 17.8, 24.3, 33.5, 45.2, 61.0])\n\nX = sm.add_constant(x)\nmodel_linear = sm.OLS(y, X).fit()\nr2_linear = model_linear.rsquared\n\nlog_y = np.log(y)\nmodel_log = sm.OLS(log_y, X).fit()\nr2_log = model_log.rsquared\n\nprint(f'{r2_linear:.4f}')\nprint(f'{r2_log:.4f}')\n\nif r2_log > r2_linear:\n    print('로그변환모형')\nelse:\n    print('선형모형')",
+            "hints": [
+                {"level": 1, "text": "np.log(y)로 y를 로그 변환한 후 회귀분석을 수행합니다"},
+                {"level": 2, "text": "두 모형의 model.rsquared를 비교합니다"},
+                {"level": 3, "text": "지수적으로 증가하는 데이터는 로그 변환 후 선형 관계가 됩니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.9139\n0.9950\n로그변환모형",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["모형비교", "로그변환", "R²"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch14_p13",
+            "title": "이상치가 회귀에 미치는 영향",
+            "difficulty": "advanced",
+            "description": "이상치 포함/제외 시 회귀계수와 R²가 어떻게 달라지는지 비교하세요.",
+            "instructions": [
+                "x=[1,2,3,4,5,6,7,8,9,10] 와 y=[2,4,6,8,10,12,14,16,18,50] 를 정의하세요 (마지막 값 50이 이상치)",
+                "전체 데이터로 기울기와 R²를 계산하세요",
+                "이상치 제외(처음 9개) 후 기울기와 R²를 계산하세요",
+                "전체: 기울기와 R²를 소수점 4자리로 출력하세요",
+                "이상치제외: 기울기와 R²를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([2, 4, 6, 8, 10, 12, 14, 16, 18, 50], dtype=float)\n\n# 이상치 유무에 따른 회귀계수와 R²를 비교하세요\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([2, 4, 6, 8, 10, 12, 14, 16, 18, 50], dtype=float)\n\ndef calc_regression(x, y):\n    beta1, beta0 = np.polyfit(x, y, 1)\n    y_pred = beta0 + beta1 * x\n    ss_res = np.sum((y - y_pred)**2)\n    ss_tot = np.sum((y - np.mean(y))**2)\n    r2 = 1 - ss_res / ss_tot\n    return beta1, r2\n\nbeta1_full, r2_full = calc_regression(x, y)\nbeta1_clean, r2_clean = calc_regression(x[:9], y[:9])\n\nprint(f'{beta1_full:.4f}')\nprint(f'{r2_full:.4f}')\nprint(f'{beta1_clean:.4f}')\nprint(f'{r2_clean:.4f}')",
+            "hints": [
+                {"level": 1, "text": "x[:9], y[:9]로 이상치를 제외합니다"},
+                {"level": 2, "text": "R² = 1 - SSE/SST로 계산합니다"},
+                {"level": 3, "text": "이상치 하나로 기울기와 R²가 크게 달라짐을 확인하세요"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "4.4970\n0.7593\n2.0000\n1.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["이상치", "회귀진단", "영향점"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch14_p14",
+            "title": "예측구간과 신뢰구간 비교",
+            "difficulty": "advanced",
+            "description": "statsmodels로 예측값의 신뢰구간과 예측구간을 구하고 폭을 비교하세요.",
+            "instructions": [
+                "x=[1,2,3,4,5,6,7,8,9,10], y=[3,5,7,9,11,14,16,18,20,22] 를 정의하세요",
+                "statsmodels OLS로 적합하고 x=11에 대한 예측을 수행하세요",
+                "평균 95% 신뢰구간의 폭을 소수점 4자리로 출력하세요",
+                "개별 95% 예측구간의 폭을 소수점 4자리로 출력하세요",
+                "예측구간 폭이 신뢰구간 폭보다 크면 '예측구간이 더 넓습니다.'를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([3, 5, 7, 9, 11, 14, 16, 18, 20, 22], dtype=float)\n\n# 신뢰구간과 예측구간의 폭을 비교하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([3, 5, 7, 9, 11, 14, 16, 18, 20, 22], dtype=float)\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\n\nx_new = np.array([[1, 11.0]])\npred = model.get_prediction(x_new)\n\nmean_ci = pred.conf_int(alpha=0.05)\nobs_ci = pred.conf_int(obs=True, alpha=0.05)\n\nci_width = mean_ci[0, 1] - mean_ci[0, 0]\npi_width = obs_ci[0, 1] - obs_ci[0, 0]\n\nprint(f'{ci_width:.4f}')\nprint(f'{pi_width:.4f}')\n\nif pi_width > ci_width:\n    print('예측구간이 더 넓습니다.')",
+            "hints": [
+                {"level": 1, "text": "model.get_prediction(x_new)로 예측 객체를 얻습니다"},
+                {"level": 2, "text": "conf_int(alpha=0.05)는 평균 신뢰구간, conf_int(obs=True, alpha=0.05)는 개별 예측구간입니다"},
+                {"level": 3, "text": "폭 = 상한 - 하한 = ci[0,1] - ci[0,0]"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "1.7097\n2.8749\n",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["예측구간", "신뢰구간", "예측"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch14_p15",
+            "title": "회귀분석 종합",
+            "difficulty": "advanced",
+            "description": "실전 데이터에 대해 회귀분석 전 과정을 수행하세요.",
+            "instructions": [
+                "집 크기(㎡) x=[50,65,80,95,110,125,140,155,170,185] 와 가격(천만원) y=[180,230,280,340,400,460,520,590,650,720] 를 정의하세요",
+                "상관계수를 소수점 4자리로 출력하세요",
+                "OLS로 회귀계수(β₀, β₁)를 각각 소수점 2자리로 출력하세요",
+                "R²를 소수점 4자리로 출력하세요",
+                "β₁의 p-value를 출력하고 0.05 미만이면 '기울기 유의'를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([50, 65, 80, 95, 110, 125, 140, 155, 170, 185], dtype=float)\ny = np.array([180, 230, 280, 340, 400, 460, 520, 590, 650, 720], dtype=float)\n\n# 회귀분석 전 과정을 수행하세요\n",
+            "solution_code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([50, 65, 80, 95, 110, 125, 140, 155, 170, 185], dtype=float)\ny = np.array([180, 230, 280, 340, 400, 460, 520, 590, 650, 720], dtype=float)\n\ncorr = np.corrcoef(x, y)[0, 1]\nprint(f'{corr:.4f}')\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\n\nprint(f'{model.params[0]:.2f}')\nprint(f'{model.params[1]:.2f}')\nprint(f'{model.rsquared:.4f}')\n\nif model.pvalues[1] < 0.05:\n    print('기울기 유의')",
+            "hints": [
+                {"level": 1, "text": "np.corrcoef(x, y)[0,1]로 상관계수를 구합니다"},
+                {"level": 2, "text": "sm.OLS(y, sm.add_constant(x)).fit()으로 모형을 적합합니다"},
+                {"level": 3, "text": "model.params[0], model.params[1], model.rsquared, model.pvalues[1]을 출력합니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.9998\n-9.33\n3.97\n0.9995\n기울기 유의",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["회귀분석종합", "상관계수", "statsmodels"],
+            "related_section": "s4"
+        }
+    ]
+}

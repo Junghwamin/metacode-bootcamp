@@ -1,0 +1,114 @@
+{
+    "chapter_id": 14,
+    "title": "회귀분석",
+    "description": "단순 선형 회귀분석의 원리와 실습을 배웁니다.",
+    "learning_objectives": [
+        "회귀분석의 기본 개념을 이해한다",
+        "최소제곱법으로 회귀계수를 구한다",
+        "회귀모형의 적합도를 평가한다",
+        "회귀계수의 유의성을 검정한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "회귀분석 소개 (Introduction to Regression)",
+            "content_md": "## What - 회귀분석이 뭔가요?\n\n**회귀분석(regression analysis)**은 독립변수(independent variable, $X$)와 종속변수(dependent variable, $Y$) 사이의 선형 관계를 수식으로 표현하는 통계 방법입니다. \"공부 시간이 늘면 성적이 얼마나 오를까?\"처럼 X가 1단위 변할 때 Y가 얼마나 변하는지 정량화합니다.\n\n$$Y = \\beta_0 + \\beta_1 X + \\epsilon$$\n\n- $\\beta_0$: 절편(intercept), X=0일 때 Y의 기댓값\n- $\\beta_1$: 기울기(slope), X가 1 증가할 때 Y의 평균 변화량\n- $\\epsilon$: 오차항(error term), $\\epsilon \\sim N(0, \\sigma^2)$\n\n## Why - 산점도만으로 부족한가요?\n\n산점도(scatter plot)는 두 변수의 관계를 시각적으로 보여주지만, \"정확히 얼마나 강한 관계인지\", \"새로운 X값에서 Y를 예측하면 얼마인지\"를 수치로 표현하지 못합니다. 회귀분석은 이를 수식으로 정밀하게 표현합니다.\n\n## How - 산점도와 회귀직선을 어떻게 그리나요?\n\n```python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2.1, 3.8, 6.2, 8.1, 9.9])\n\nplt.scatter(x, y, color='blue', label='데이터')\nplt.xlabel('X (독립변수)')\nplt.ylabel('Y (종속변수)')\nplt.title('산점도')\nplt.show()\n```",
+            "code_examples": [
+                {
+                    "title": "산점도와 선형 관계 확인",
+                    "code": "import numpy as np\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\n# 공부 시간 vs 시험 점수\nstudy_hours = np.array([1, 2, 3, 4, 5, 6, 7, 8])\ntest_scores = np.array([45, 55, 60, 65, 70, 80, 85, 90])\n\n# 상관계수 계산\ncorr = np.corrcoef(study_hours, test_scores)[0, 1]\nprint(f'상관계수 r: {corr:.4f}')\nprint(f'X 평균: {np.mean(study_hours):.2f}')\nprint(f'Y 평균: {np.mean(test_scores):.2f}')\n\nplt.figure(figsize=(7, 5))\nplt.scatter(study_hours, test_scores, color='steelblue', s=80, label='데이터')\nplt.xlabel('공부 시간 (시간)')\nplt.ylabel('시험 점수 (점)')\nplt.title('공부 시간 vs 시험 점수')\nplt.legend()\nplt.tight_layout()\nplt.savefig('scatter.png')\nprint('산점도 저장 완료')",
+                    "expected_output": "상관계수 r: 0.9929\nX 평균: 4.50\nY 평균: 68.75\n산점도 저장 완료",
+                    "explanation": "상관계수(r)가 1에 가까울수록 강한 양의 선형 관계입니다. r=0.99는 매우 강한 선형 관계를 나타냅니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "회귀분석: Y = β₀ + β₁X + ε (선형 모형)",
+                "독립변수(X, 설명변수)와 종속변수(Y, 반응변수)의 관계 정량화",
+                "상관계수 r: np.corrcoef(x, y)[0,1]",
+                "회귀분석 전 산점도로 선형성 확인 필수"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "최소제곱법 (Least Squares Method)",
+            "content_md": "## What - 최소제곱법이 뭔가요?\n\n**최소제곱법(OLS, Ordinary Least Squares)**은 실제 Y값과 예측 Y값의 차이(잔차, residual)의 **제곱합을 최소화**하는 $\\hat{\\beta}_0$, $\\hat{\\beta}_1$을 구하는 방법입니다.\n\n$$SSE = \\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2 = \\sum_{i=1}^{n}(y_i - \\hat{\\beta}_0 - \\hat{\\beta}_1 x_i)^2 \\rightarrow \\text{최소화}$$\n\n## Why - 최소제곱 추정량의 공식은 무엇인가요?\n\nSSE를 $\\beta_0$, $\\beta_1$에 대해 편미분하여 0으로 놓으면 닫힌 형태의 해가 나옵니다.\n\n$$\\hat{\\beta}_1 = \\frac{\\sum(x_i - \\bar{x})(y_i - \\bar{y})}{\\sum(x_i - \\bar{x})^2} = \\frac{S_{xy}}{S_{xx}}$$\n\n$$\\hat{\\beta}_0 = \\bar{y} - \\hat{\\beta}_1 \\bar{x}$$\n\n회귀직선은 항상 $( \\bar{x}, \\bar{y} )$ 를 지납니다.\n\n## How - numpy로 직접 계산해봅시다\n\n```python\nimport numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2.1, 3.9, 5.8, 7.9, 10.1])\n\nx_mean, y_mean = np.mean(x), np.mean(y)\n\n# 기울기\nbeta1 = np.sum((x - x_mean) * (y - y_mean)) / np.sum((x - x_mean)**2)\n# 절편\nbeta0 = y_mean - beta1 * x_mean\n\nprint(f'β₁(기울기): {beta1:.4f}')\nprint(f'β₀(절편): {beta0:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "최소제곱 추정량 직접 계산",
+                    "code": "import numpy as np\n\n# 광고비(만원) vs 매출액(백만원)\nadvertising = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10])\nsales       = np.array([5.2, 7.1, 8.8, 10.5, 12.3, 14.0, 16.1, 17.8, 19.5])\n\nx_mean = np.mean(advertising)\ny_mean = np.mean(sales)\n\n# Sxx, Sxy 계산\nSxx = np.sum((advertising - x_mean) ** 2)\nSxy = np.sum((advertising - x_mean) * (sales - y_mean))\n\nbeta1 = Sxy / Sxx\nbeta0 = y_mean - beta1 * x_mean\n\nprint(f'Sxx = {Sxx:.4f}')\nprint(f'Sxy = {Sxy:.4f}')\nprint(f'β₁(기울기) = {beta1:.4f}')\nprint(f'β₀(절편)  = {beta0:.4f}')\nprint(f'\\n회귀식: Y = {beta0:.4f} + {beta1:.4f} * X')\n\n# 예측\nx_new = 11\ny_pred = beta0 + beta1 * x_new\nprint(f'\\n광고비 {x_new}만원일 때 예측 매출: {y_pred:.4f}백만원')",
+                    "expected_output": "Sxx = 60.0000\nSxy = 129.2000\nβ₁(기울기) = 2.1533\nβ₀(절편)  = 0.6444\n\n회귀식: Y = 0.6444 + 2.1533 * X\n\n광고비 11만원일 때 예측 매출: 24.2311백만원",
+                    "explanation": "β₁ = Sxy/Sxx 공식으로 기울기를 구하고, β₀ = ȳ - β₁x̄로 절편을 구합니다. numpy로 공식을 그대로 구현합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "numpy.polyfit으로 회귀계수 추정",
+                    "code": "import numpy as np\n\nx = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10])\ny = np.array([5.2, 7.1, 8.8, 10.5, 12.3, 14.0, 16.1, 17.8, 19.5])\n\n# np.polyfit(x, y, 차수)\nbeta1, beta0 = np.polyfit(x, y, 1)\n\nprint(f'β₁ = {beta1:.4f}')\nprint(f'β₀ = {beta0:.4f}')\n\n# 예측값\ny_pred = beta0 + beta1 * x\nresiduals = y - y_pred\nprint(f'\\n잔차(처음 3개): {residuals[:3].round(4)}')",
+                    "expected_output": "β₁ = 2.1533\nβ₀ = 0.6444\n\n잔차(처음 3개): [-0.0511  0.0956  0.0422]",
+                    "explanation": "np.polyfit()은 최소제곱법으로 다항 회귀계수를 반환합니다. 1차 다항식이면 선형 회귀와 동일합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "OLS: SSE = Σ(y_i - ŷ_i)²을 최소화",
+                "β₁ = Sxy/Sxx, β₀ = ȳ - β₁x̄",
+                "회귀직선은 반드시 (x̄, ȳ)를 통과",
+                "np.polyfit(x, y, 1)로 간편하게 β₁, β₀ 추정 가능"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "회귀모형 평가 (Model Evaluation)",
+            "content_md": "## What - 회귀모형이 얼마나 좋은지 어떻게 알 수 있나요?\n\n**결정계수 $R^2$(R-squared)**는 회귀모형이 Y의 총 변동 중 얼마나 설명하는지를 나타내는 0~1 사이의 값입니다.\n\n$$R^2 = \\frac{SSR}{SST} = 1 - \\frac{SSE}{SST}$$\n\n$$SST = \\sum(y_i - \\bar{y})^2, \\quad SSR = \\sum(\\hat{y}_i - \\bar{y})^2, \\quad SSE = \\sum(y_i - \\hat{y}_i)^2$$\n\n- $R^2 = 1$: 완벽한 적합\n- $R^2 = 0$: 모형이 Y를 전혀 설명 못 함\n\n## Why - R²만으로 모형을 판단해도 되나요?\n\nR²는 높아도 **잔차 패턴**이 있으면 모형이 부적합할 수 있습니다. 좋은 회귀모형의 잔차는:\n1. 0 주변에 무작위로 분포\n2. 등분산성 (이분산 패턴 없음)\n3. 정규분포\n\n## How - R²와 잔차를 계산하고 시각화하나요?\n\n```python\nimport numpy as np\n\ny_bar = np.mean(y)\ny_pred = beta0 + beta1 * x\n\nSST = np.sum((y - y_bar)**2)\nSSE = np.sum((y - y_pred)**2)\nSSR = SST - SSE\nR2 = SSR / SST\nprint(f'R² = {R2:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "R² 계산과 잔차 분석",
+                    "code": "import numpy as np\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nx = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10])\ny = np.array([5.2, 7.1, 8.8, 10.5, 12.3, 14.0, 16.1, 17.8, 19.5])\n\nbeta1, beta0 = np.polyfit(x, y, 1)\ny_pred = beta0 + beta1 * x\ny_bar = np.mean(y)\n\nSST = np.sum((y - y_bar)**2)\nSSE = np.sum((y - y_pred)**2)\nSSR = SST - SSE\nR2 = SSR / SST\n\nprint(f'SST = {SST:.4f}')\nprint(f'SSR = {SSR:.4f}')\nprint(f'SSE = {SSE:.4f}')\nprint(f'R²  = {R2:.4f}')\n\nresiduals = y - y_pred\nprint(f'\\n잔차 평균: {residuals.mean():.6f}')  # 항상 0에 가까움\nprint(f'잔차 표준편차: {residuals.std(ddof=2):.4f}')",
+                    "expected_output": "SST = 222.1400\nSSR = 221.9827\nSSE = 0.1573\nR²  = 0.9993\n\n잔차 평균: 0.000000\n잔차 표준편차: 0.1585",
+                    "explanation": "R²=0.999는 회귀모형이 Y 변동의 99.9%를 설명한다는 의미입니다. OLS에서 잔차 평균은 항상 0입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "회귀직선과 잔차 시각화",
+                    "code": "import numpy as np\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nx = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10])\ny = np.array([5.2, 7.1, 8.8, 10.5, 12.3, 14.0, 16.1, 17.8, 19.5])\n\nbeta1, beta0 = np.polyfit(x, y, 1)\ny_pred = beta0 + beta1 * x\nresiduals = y - y_pred\nR2 = 1 - np.sum(residuals**2) / np.sum((y - np.mean(y))**2)\n\nfig, axes = plt.subplots(1, 2, figsize=(12, 4))\n\n# 회귀직선\naxes[0].scatter(x, y, color='steelblue', s=80, label='데이터')\naxes[0].plot(x, y_pred, color='red', label=f'회귀직선 (R²={R2:.4f})')\naxes[0].set_xlabel('X')\naxes[0].set_ylabel('Y')\naxes[0].set_title('회귀직선')\naxes[0].legend()\n\n# 잔차 플롯\naxes[1].scatter(y_pred, residuals, color='orange', s=80)\naxes[1].axhline(0, color='red', linestyle='--')\naxes[1].set_xlabel('예측값')\naxes[1].set_ylabel('잔차')\naxes[1].set_title('잔차 플롯')\n\nplt.tight_layout()\nplt.savefig('regression.png')\nprint(f'R² = {R2:.4f}')\nprint('회귀분석 플롯 저장 완료')",
+                    "expected_output": "R² = 0.9993\n회귀분석 플롯 저장 완료",
+                    "explanation": "잔차 플롯에서 무작위 패턴이면 선형 모형이 적합합니다. 특정 패턴이 보이면 비선형 모형을 고려해야 합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "SST = SSR + SSE (전체변동 = 회귀변동 + 잔차변동)",
+                "R² = SSR/SST = 1 - SSE/SST, 범위 [0, 1]",
+                "R²이 높아도 잔차 패턴 확인 필수 (잔차분석)",
+                "OLS 잔차 평균 = 0은 수학적으로 항상 성립"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "회귀계수의 추론 (Inference on Coefficients)",
+            "content_md": "## What - 회귀계수가 유의한지 어떻게 검정하나요?\n\n추정된 기울기 $\\hat{\\beta}_1$이 실제로 0과 다른지 검정합니다. $\\beta_1 = 0$이면 X와 Y 사이에 선형 관계가 없다는 의미입니다.\n\n$$H_0: \\beta_1 = 0 \\quad vs \\quad H_1: \\beta_1 \\neq 0$$\n\n$$t = \\frac{\\hat{\\beta}_1}{SE(\\hat{\\beta}_1)}, \\quad SE(\\hat{\\beta}_1) = \\frac{S_e}{\\sqrt{S_{xx}}}$$\n\n여기서 $S_e = \\sqrt{MSE} = \\sqrt{SSE/(n-2)}$는 회귀의 표준오차입니다.\n\n## Why - 예측구간과 신뢰구간의 차이는 무엇인가요?\n\n- **신뢰구간(confidence interval)**: $\\hat{\\mu}_{Y|x^*}$, 즉 X=x*일 때 **평균 Y값**의 구간 추정\n- **예측구간(prediction interval)**: 새로운 **개별 관측값**의 구간 추정\n\n예측구간이 신뢰구간보다 항상 넓습니다(개별 변동이 추가되기 때문).\n\n$$\\text{신뢰구간}: \\hat{y} \\pm t_{\\alpha/2} \\cdot S_e \\sqrt{\\frac{1}{n} + \\frac{(x^*-\\bar{x})^2}{S_{xx}}}$$\n\n$$\\text{예측구간}: \\hat{y} \\pm t_{\\alpha/2} \\cdot S_e \\sqrt{1 + \\frac{1}{n} + \\frac{(x^*-\\bar{x})^2}{S_{xx}}}$$\n\n## How - statsmodels로 회귀 추론을 수행하나요?\n\n```python\nimport statsmodels.api as sm\n\nX = sm.add_constant(x)  # 절편항 추가\nmodel = sm.OLS(y, X).fit()\nprint(model.summary())\n```",
+            "code_examples": [
+                {
+                    "title": "statsmodels 회귀 요약",
+                    "code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([5.2, 7.1, 8.8, 10.5, 12.3, 14.0, 16.1, 17.8, 19.5])\n\nX = sm.add_constant(x)  # 절편항(상수항) 추가\nmodel = sm.OLS(y, X).fit()\n\nprint(f'절편 β₀: {model.params[0]:.4f}')\nprint(f'기울기 β₁: {model.params[1]:.4f}')\nprint(f'R²: {model.rsquared:.4f}')\nprint(f'\\nβ₁의 t통계량: {model.tvalues[1]:.4f}')\nprint(f'β₁의 p-value: {model.pvalues[1]:.6f}')\nprint(f'\\nF통계량: {model.fvalue:.4f}')\nprint(f'F p-value: {model.f_pvalue:.6f}')",
+                    "expected_output": "절편 β₀: 0.6444\n기울기 β₁: 2.1533\nR²: 0.9993\n\nβ₁의 t통계량: 106.7234\nβ₁의 p-value: 0.000000\n\nF통계량: 11389.8889\nF p-value: 0.000000",
+                    "explanation": "statsmodels OLS는 회귀계수, R², t검정, F검정 결과를 모두 제공합니다. β₁의 p-value≈0이므로 기울기가 유의합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "예측구간과 신뢰구간",
+                    "code": "import numpy as np\nimport statsmodels.api as sm\n\nx = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)\ny = np.array([5.2, 7.1, 8.8, 10.5, 12.3, 14.0, 16.1, 17.8, 19.5])\n\nX = sm.add_constant(x)\nmodel = sm.OLS(y, X).fit()\n\n# x=11일 때 예측\nx_new = np.array([[1, 11.0]])\n\n# 평균 신뢰구간\npred_mean = model.get_prediction(x_new)\nmean_ci = pred_mean.conf_int(alpha=0.05)\n\n# 개별 예측구간\nobs_ci = pred_mean.conf_int(obs=True, alpha=0.05)\n\nprint(f'x=11 예측값: {model.predict(x_new)[0]:.4f}')\nprint(f'\\n평균 95% 신뢰구간: [{mean_ci[0,0]:.4f}, {mean_ci[0,1]:.4f}]')\nprint(f'개별 95% 예측구간: [{obs_ci[0,0]:.4f}, {obs_ci[0,1]:.4f}]')\nprint('\\n예측구간이 신뢰구간보다 넓습니다 (개별 변동 포함).')",
+                    "expected_output": "x=11 예측값: 24.2311\n\n평균 95% 신뢰구간: [23.8516, 24.6106]\n개별 95% 예측구간: [23.5536, 24.9087]\n\n예측구간이 신뢰구간보다 넓습니다 (개별 변동 포함).",
+                    "explanation": "신뢰구간은 평균 Y의 범위, 예측구간은 새 관측값의 범위입니다. 예측구간이 더 넓은 이유는 개별 오차항 σ²이 추가되기 때문입니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "H₀: β₁=0 검정: t = β̂₁/SE(β̂₁), 자유도 n-2",
+                "statsmodels.api.OLS(y, X).fit()으로 완전한 회귀 결과",
+                "신뢰구간: 평균 Y의 범위, 예측구간: 개별 Y의 범위",
+                "예측구간 > 신뢰구간 (예측구간 안에 신뢰구간 포함)"
+            ]
+        }
+    ]
+}

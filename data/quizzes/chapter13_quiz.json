@@ -1,0 +1,117 @@
+{
+    "chapter_id": 13,
+    "quiz_title": "챕터 13 확인 퀴즈 - 두 모집단 비교와 분산분석",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch13_q01",
+            "type": "multiple_choice",
+            "question": "두 독립표본 t검정에서 두 집단의 분산이 다를 것으로 의심될 때 권장되는 검정 방법은?",
+            "options": [
+                "등분산 가정 t검정 (equal_var=True)",
+                "Welch t검정 (equal_var=False)",
+                "카이제곱 검정",
+                "McNemar 검정"
+            ],
+            "correct_answer": "Welch t검정 (equal_var=False)",
+            "explanation": "분산이 다른 두 집단을 비교할 때는 Welch t검정(equal_var=False)이 더 안전합니다. 등분산 가정이 위배되면 1종 오류율이 높아집니다. scipy.stats.ttest_ind(a, b, equal_var=False)로 사용합니다."
+        },
+        {
+            "question_id": "ch13_q02",
+            "type": "multiple_choice",
+            "question": "대응표본 t검정을 사용하는 상황으로 적절한 것은?",
+            "options": [
+                "남성 그룹과 여성 그룹의 평균 신장 비교",
+                "두 개의 서로 다른 학교 학생들의 성적 비교",
+                "동일 환자의 약물 투여 전후 혈압 비교",
+                "두 도시의 월 평균 기온 비교"
+            ],
+            "correct_answer": "동일 환자의 약물 투여 전후 혈압 비교",
+            "explanation": "대응표본 t검정은 같은 개체에서 두 번 측정한 쌍체 데이터에 사용합니다. 전후 비교, 쌍둥이 연구, 왼손/오른손 비교 등이 해당됩니다. scipy.stats.ttest_rel()을 사용합니다."
+        },
+        {
+            "question_id": "ch13_q03",
+            "type": "ox",
+            "question": "독립표본 t검정의 귀무가설은 '두 모집단의 평균이 같다'이다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "독립표본 t검정의 귀무가설은 H₀: μ₁ - μ₂ = 0, 즉 두 모집단 평균이 같다는 것입니다. p-value < α이면 귀무가설을 기각하여 두 집단 평균이 다르다고 결론 내립니다."
+        },
+        {
+            "question_id": "ch13_q04",
+            "type": "fill_blank",
+            "question": "등분산 가정 하에서 두 집단의 분산을 가중 평균한 추정량을 _______ 분산이라고 한다.",
+            "options": [],
+            "correct_answer": "풀링",
+            "explanation": "풀링 분산(pooled variance)은 S_p² = [(n₁-1)S₁² + (n₂-1)S₂²] / (n₁+n₂-2)로 계산합니다. 두 집단의 표본 크기를 가중치로 사용한 분산의 평균입니다."
+        },
+        {
+            "question_id": "ch13_q05",
+            "type": "multiple_choice",
+            "question": "두 모분산 비교 F검정에서 사용하는 통계량은?",
+            "options": [
+                "F = (S₁² + S₂²) / 2",
+                "F = S₁² / S₂²",
+                "F = |S₁² - S₂²|",
+                "F = n₁S₁² / n₂S₂²"
+            ],
+            "correct_answer": "F = S₁² / S₂²",
+            "explanation": "두 모분산 F검정의 통계량은 F = S₁²/S₂²이며 F(n₁-1, n₂-1) 분포를 따릅니다. scipy.stats.f.cdf()로 p-value를 계산합니다. 두 분산이 같을수록 F값은 1에 가까워집니다."
+        },
+        {
+            "question_id": "ch13_q06",
+            "type": "multiple_choice",
+            "question": "일원배치 ANOVA에서 귀무가설은?",
+            "options": [
+                "모든 집단의 분산이 같다",
+                "모든 집단의 평균이 같다",
+                "각 집단에서 적어도 하나의 평균이 다르다",
+                "두 집단의 평균 차이가 0이다"
+            ],
+            "correct_answer": "모든 집단의 평균이 같다",
+            "explanation": "일원배치 ANOVA의 귀무가설은 H₀: μ₁ = μ₂ = ... = μₖ, 즉 모든 집단의 평균이 같다는 것입니다. 대립가설은 '적어도 하나의 집단 평균이 다르다'입니다."
+        },
+        {
+            "question_id": "ch13_q07",
+            "type": "ox",
+            "question": "ANOVA에서 F통계량은 집단 간 분산(MSB)을 집단 내 분산(MSW)으로 나눈 값이다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "F = MSB/MSW입니다. MSB = SSB/(k-1)은 집단 간 평균제곱, MSW = SSW/(N-k)는 집단 내 평균제곱(오차)입니다. 집단 간 차이가 클수록 F값이 커집니다."
+        },
+        {
+            "question_id": "ch13_q08",
+            "type": "multiple_choice",
+            "question": "일원배치 ANOVA에서 p-value < 0.05가 나왔다. 다음 중 올바른 해석은?",
+            "options": [
+                "모든 집단 평균이 서로 다르다",
+                "적어도 하나의 집단 평균이 다르다는 증거가 있다",
+                "첫 번째와 두 번째 집단 평균만 다르다",
+                "모든 집단 분산이 같다"
+            ],
+            "correct_answer": "적어도 하나의 집단 평균이 다르다는 증거가 있다",
+            "explanation": "ANOVA의 p-value < 0.05는 집단 평균 간 유의한 차이가 있다는 의미이지만, '어느 집단이 다른가'는 알려주지 않습니다. 구체적인 쌍을 비교하려면 사후검정(Tukey HSD 등)이 필요합니다."
+        },
+        {
+            "question_id": "ch13_q09",
+            "type": "fill_blank",
+            "question": "ANOVA의 전체 변동(SST)은 집단 간 변동(SSB)과 집단 _______ 변동(SSW)의 합이다.",
+            "options": [],
+            "correct_answer": "내",
+            "explanation": "분산분석의 핵심 분해: SST = SSB + SSW. SST는 전체 변동, SSB(Between)는 집단 간 변동, SSW(Within)는 집단 내 변동입니다. 자유도도 마찬가지로 N-1 = (k-1) + (N-k)."
+        },
+        {
+            "question_id": "ch13_q10",
+            "type": "multiple_choice",
+            "question": "이원배치 ANOVA에서 교호작용(interaction)이 유의하다는 것의 의미는?",
+            "options": [
+                "두 요인이 종속변수에 아무런 영향을 미치지 않는다",
+                "한 요인의 효과가 다른 요인의 수준에 따라 달라진다",
+                "두 요인의 효과가 완전히 독립적이다",
+                "두 요인의 주효과만 유의하다"
+            ],
+            "correct_answer": "한 요인의 효과가 다른 요인의 수준에 따라 달라진다",
+            "explanation": "교호작용(interaction)이 유의하면 한 요인의 효과가 다른 요인의 수준에 따라 달라진다는 의미입니다. 예: '운동 효과'가 식이요법 종류에 따라 달라지는 경우. 교호작용이 유의하면 주효과 해석에 주의가 필요합니다."
+        }
+    ]
+}

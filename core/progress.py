@@ -64,8 +64,16 @@ class ProgressManager:
         >>> stats = pm.get_overall_stats()
     """
 
-    CHAPTER_PROBLEM_COUNTS = {1: 15, 2: 15, 3: 15, 4: 15, 5: 15, 6: 15, 7: 15, 8: 15}
-    CHAPTER_QUIZ_COUNTS = {1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10}
+    CHAPTER_PROBLEM_COUNTS = {
+        1: 15, 2: 15, 3: 15, 4: 15, 5: 15, 6: 15, 7: 15, 8: 15,
+        9: 15, 10: 15, 11: 15, 12: 15, 13: 15, 14: 15,
+        15: 15, 16: 15, 17: 15,
+    }
+    CHAPTER_QUIZ_COUNTS = {
+        1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10,
+        9: 10, 10: 10, 11: 10, 12: 10, 13: 10, 14: 10,
+        15: 10, 16: 10, 17: 10,
+    }
 
     def __init__(self):
         """ProgressManager를 초기화하고 진행도 데이터를 로드한다."""
@@ -173,7 +181,7 @@ class ProgressManager:
 
         chapter_completions = {
             ch_id: self.get_chapter_completion(ch_id)
-            for ch_id in range(1, 9)
+            for ch_id in range(1, 18)
         }
 
         return {

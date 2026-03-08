@@ -1,0 +1,115 @@
+{
+    "chapter_id": 11,
+    "quiz_title": "챕터 11 확인 퀴즈",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch11_q01",
+            "type": "multiple_choice",
+            "question": "이항분포 B(n, p)의 기대값(평균)은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "n + p"},
+                {"label": "B", "text": "np"},
+                {"label": "C", "text": "np(1-p)"},
+                {"label": "D", "text": "n/p"}
+            ],
+            "correct_answer": "B",
+            "explanation": "이항분포 B(n, p)의 기대값은 np, 분산은 np(1-p)입니다. 예를 들어 동전 10번 던지기(n=10, p=0.5)의 기대 앞면 수는 10×0.5 = 5입니다."
+        },
+        {
+            "question_id": "ch11_q02",
+            "type": "ox",
+            "question": "포아송분포 Poi(λ)에서 기대값과 분산은 모두 λ로 동일하다.",
+            "correct_answer": true,
+            "explanation": "맞습니다. 포아송분포의 특징은 기대값 = 분산 = λ입니다. 이 성질은 포아송분포를 식별하거나 적합성을 판단할 때 유용하게 사용됩니다."
+        },
+        {
+            "question_id": "ch11_q03",
+            "type": "multiple_choice",
+            "question": "scipy.stats.binom.pmf(3, 10, 0.4)가 계산하는 것은?",
+            "options": [
+                {"label": "A", "text": "이항분포 B(10, 0.4)에서 X ≤ 3일 누적확률"},
+                {"label": "B", "text": "이항분포 B(10, 0.4)에서 X = 3일 확률"},
+                {"label": "C", "text": "이항분포 B(3, 0.4)에서 X = 10일 확률"},
+                {"label": "D", "text": "포아송분포에서 X = 3일 확률"}
+            ],
+            "correct_answer": "B",
+            "explanation": "pmf(k, n, p)는 P(X = k)를 계산합니다. binom.pmf(3, 10, 0.4)는 B(10, 0.4)에서 X = 3인 확률, 즉 10번 중 정확히 3번 성공할 확률입니다. 누적확률은 cdf()를 사용합니다."
+        },
+        {
+            "question_id": "ch11_q04",
+            "type": "fill_blank",
+            "question": "정규분포 N(μ, σ²)에서 μ ± 2σ 범위에 포함되는 데이터의 비율은 약 몇 %인가요? (정수로 입력)",
+            "correct_answer": "95",
+            "accept_answers": ["95%", "95.4", "95.45"],
+            "explanation": "68-95-99.7 법칙에 따라 μ±2σ 범위에 약 95.4%의 데이터가 포함됩니다. 정확히는 95.45%이지만 통상 95%라고 말합니다."
+        },
+        {
+            "question_id": "ch11_q05",
+            "type": "multiple_choice",
+            "question": "Z점수(Z-score)의 공식으로 올바른 것은?",
+            "options": [
+                {"label": "A", "text": "Z = (X - σ) / μ"},
+                {"label": "B", "text": "Z = μ / (X - σ)"},
+                {"label": "C", "text": "Z = (X - μ) / σ"},
+                {"label": "D", "text": "Z = σ / (X - μ)"}
+            ],
+            "correct_answer": "C",
+            "explanation": "Z점수 공식은 Z = (X - μ) / σ입니다. 관측값에서 평균을 빼고 표준편차로 나누어 '평균으로부터 몇 표준편차 떨어졌는가'를 나타냅니다."
+        },
+        {
+            "question_id": "ch11_q06",
+            "type": "ox",
+            "question": "중심극한정리(CLT)에 따르면 원래 분포가 정규분포일 때만 표본평균이 정규분포에 근사한다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. CLT의 핵심은 원래 분포에 관계없이, 표본 크기 n이 충분히 크면(보통 n≥30) 표본평균의 분포가 정규분포에 근사한다는 것입니다. 지수분포, 균일분포 등 어떤 분포에서도 적용됩니다."
+        },
+        {
+            "question_id": "ch11_q07",
+            "type": "multiple_choice",
+            "question": "표본크기 n=100, 모표준편차 σ=20일 때 표본평균의 표준오차(SE)는?",
+            "options": [
+                {"label": "A", "text": "20"},
+                {"label": "B", "text": "2"},
+                {"label": "C", "text": "0.2"},
+                {"label": "D", "text": "200"}
+            ],
+            "correct_answer": "B",
+            "explanation": "표준오차 SE = σ/√n = 20/√100 = 20/10 = 2입니다. 표본크기가 클수록 표준오차가 작아져 표본평균이 모평균에 더 집중됩니다."
+        },
+        {
+            "question_id": "ch11_q08",
+            "type": "multiple_choice",
+            "question": "t분포에 대한 설명 중 옳지 않은 것은?",
+            "options": [
+                {"label": "A", "text": "자유도가 클수록 표준정규분포에 가까워진다"},
+                {"label": "B", "text": "표준정규분포보다 꼬리(tail)가 두껍다"},
+                {"label": "C", "text": "항상 양수 값만 가진다"},
+                {"label": "D", "text": "모분산을 모를 때 평균 검정에 사용한다"}
+            ],
+            "correct_answer": "C",
+            "explanation": "t분포는 0을 중심으로 좌우 대칭인 분포로, 음수 값도 가집니다. 항상 양수 값만 갖는 것은 카이제곱분포(χ²)와 F분포입니다. 나머지 보기는 모두 t분포의 올바른 특징입니다."
+        },
+        {
+            "question_id": "ch11_q09",
+            "type": "fill_blank",
+            "question": "scipy.stats에서 정규분포의 누적분포함수(CDF)를 계산하는 함수 이름은 무엇인가요?",
+            "correct_answer": "cdf",
+            "accept_answers": ["norm.cdf", "cdf()"],
+            "explanation": "norm.cdf(x, loc=μ, scale=σ)로 P(X ≤ x)를 계산합니다. 반대로 누적확률로부터 분위수를 구하려면 norm.ppf()를 사용합니다."
+        },
+        {
+            "question_id": "ch11_q10",
+            "type": "multiple_choice",
+            "question": "카이제곱분포(χ²)의 특징으로 올바른 것은?",
+            "options": [
+                {"label": "A", "text": "좌우 대칭인 분포이다"},
+                {"label": "B", "text": "음수 값을 가질 수 있다"},
+                {"label": "C", "text": "자유도 매개변수로 모양이 결정된다"},
+                {"label": "D", "text": "두 정규분포 확률변수의 합으로 정의된다"}
+            ],
+            "correct_answer": "C",
+            "explanation": "카이제곱분포는 자유도(df) 매개변수에 의해 모양이 결정됩니다. 항상 양수 값만 가지며(표준정규의 제곱합), 오른쪽으로 치우쳐 있고(비대칭), 자유도가 클수록 정규분포에 근사합니다."
+        }
+    ]
+}

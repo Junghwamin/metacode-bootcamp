@@ -1,0 +1,411 @@
+{
+    "chapter_id": 13,
+    "allowed_modules": ["numpy", "scipy", "statsmodels", "pandas", "matplotlib"],
+    "problems": [
+        {
+            "problem_id": "ch13_p01",
+            "title": "독립표본 t검정 기초",
+            "difficulty": "basic",
+            "description": "두 그룹의 평균이 통계적으로 다른지 독립표본 t검정으로 확인하세요.",
+            "instructions": [
+                "group_a = [72, 78, 80, 75, 82, 70] 와 group_b = [85, 88, 90, 86, 92, 84] 를 정의하세요",
+                "scipy.stats.ttest_ind(group_a, group_b, equal_var=True) 로 t검정을 수행하세요",
+                "t통계량을 소수점 4자리로 출력하세요",
+                "p-value를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "from scipy import stats\n\n# 두 그룹 데이터\ngroup_a = [72, 78, 80, 75, 82, 70]\ngroup_b = [85, 88, 90, 86, 92, 84]\n\n# 독립표본 t검정을 수행하세요\n",
+            "solution_code": "from scipy import stats\n\ngroup_a = [72, 78, 80, 75, 82, 70]\ngroup_b = [85, 88, 90, 86, 92, 84]\n\nt_stat, p_value = stats.ttest_ind(group_a, group_b, equal_var=True)\nprint(f'{t_stat:.4f}')\nprint(f'{p_value:.4f}')",
+            "hints": [
+                {"level": 1, "text": "from scipy import stats 로 가져온 후 stats.ttest_ind()를 사용합니다"},
+                {"level": 2, "text": "ttest_ind()는 (t통계량, p-value) 튜플을 반환합니다"},
+                {"level": 3, "text": "t_stat, p_value = stats.ttest_ind(group_a, group_b, equal_var=True)\\nprint(f'{t_stat:.4f}')\\nprint(f'{p_value:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "-8.6832\n0.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["scipy"],
+            "tags": ["t검정", "독립표본", "가설검정"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch13_p02",
+            "title": "대응표본 t검정",
+            "difficulty": "basic",
+            "description": "운동 프로그램 전후 체중 변화가 유의한지 대응표본 t검정으로 확인하세요.",
+            "instructions": [
+                "before = [80, 75, 90, 85, 70, 95] 와 after = [77, 73, 87, 82, 67, 92] 를 정의하세요",
+                "scipy.stats.ttest_rel(before, after) 로 대응표본 t검정을 수행하세요",
+                "t통계량을 소수점 4자리로 출력하세요",
+                "p-value를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "from scipy import stats\n\nbefore = [80, 75, 90, 85, 70, 95]\nafter  = [77, 73, 87, 82, 67, 92]\n\n# 대응표본 t검정을 수행하세요\n",
+            "solution_code": "from scipy import stats\n\nbefore = [80, 75, 90, 85, 70, 95]\nafter  = [77, 73, 87, 82, 67, 92]\n\nt_stat, p_value = stats.ttest_rel(before, after)\nprint(f'{t_stat:.4f}')\nprint(f'{p_value:.4f}')",
+            "hints": [
+                {"level": 1, "text": "대응표본은 독립이 아닌 쌍체 데이터입니다. ttest_rel()을 사용합니다"},
+                {"level": 2, "text": "stats.ttest_rel(before, after) 는 before-after의 평균=0 검정입니다"},
+                {"level": 3, "text": "t_stat, p_value = stats.ttest_rel(before, after)\\nprint(f'{t_stat:.4f}')\\nprint(f'{p_value:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "13.8564\n0.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["scipy"],
+            "tags": ["대응표본", "t검정", "전후비교"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch13_p03",
+            "title": "두 모비율 Z검정",
+            "difficulty": "basic",
+            "description": "두 제품의 불량률이 다른지 Z검정으로 확인하세요.",
+            "instructions": [
+                "제품A: n1=100, 불량 x1=8 / 제품B: n2=120, 불량 x2=15 로 설정하세요",
+                "합동 비율 p_pool = (x1+x2)/(n1+n2) 를 계산하세요",
+                "Z통계량을 계산하고 소수점 4자리로 출력하세요",
+                "양측 p-value를 계산하고 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\n\nn1, x1 = 100, 8\nn2, x2 = 120, 15\n\n# 합동 비율과 Z통계량을 계산하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\n\nn1, x1 = 100, 8\nn2, x2 = 120, 15\n\np1_hat = x1 / n1\np2_hat = x2 / n2\np_pool = (x1 + x2) / (n1 + n2)\n\nse = np.sqrt(p_pool * (1 - p_pool) * (1/n1 + 1/n2))\nz_stat = (p1_hat - p2_hat) / se\np_value = 2 * (1 - stats.norm.cdf(abs(z_stat)))\n\nprint(f'{z_stat:.4f}')\nprint(f'{p_value:.4f}')",
+            "hints": [
+                {"level": 1, "text": "p̂₁=x1/n1, p̂₂=x2/n2, p_pool=(x1+x2)/(n1+n2)를 먼저 계산합니다"},
+                {"level": 2, "text": "se = sqrt(p_pool*(1-p_pool)*(1/n1+1/n2)), z = (p̂₁-p̂₂)/se"},
+                {"level": 3, "text": "p_value = 2*(1-stats.norm.cdf(abs(z_stat)))"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "-1.3936\n0.1635",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "scipy"],
+            "tags": ["모비율", "Z검정", "비율비교"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch13_p04",
+            "title": "F검정으로 분산 비교",
+            "difficulty": "basic",
+            "description": "두 집단의 분산이 같은지 F검정으로 확인하세요.",
+            "instructions": [
+                "g1 = [10, 11, 9, 10, 12, 10, 11, 9] 와 g2 = [10, 15, 8, 16, 9, 14, 7, 13] 를 정의하세요",
+                "numpy로 각 집단의 표본분산(ddof=1)을 계산하세요",
+                "F = s1²/s2² 를 계산하고 소수점 4자리로 출력하세요",
+                "scipy.stats.f.cdf()로 양측 p-value를 계산하고 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\n\ng1 = np.array([10, 11, 9, 10, 12, 10, 11, 9])\ng2 = np.array([10, 15, 8, 16, 9, 14, 7, 13])\n\n# F통계량과 p-value를 계산하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\n\ng1 = np.array([10, 11, 9, 10, 12, 10, 11, 9])\ng2 = np.array([10, 15, 8, 16, 9, 14, 7, 13])\n\ns1_sq = np.var(g1, ddof=1)\ns2_sq = np.var(g2, ddof=1)\n\nf_stat = s1_sq / s2_sq\ndf1, df2 = len(g1) - 1, len(g2) - 1\np_value = 2 * min(stats.f.cdf(f_stat, df1, df2),\n                  1 - stats.f.cdf(f_stat, df1, df2))\n\nprint(f'{f_stat:.4f}')\nprint(f'{p_value:.4f}')",
+            "hints": [
+                {"level": 1, "text": "np.var(배열, ddof=1) 로 표본분산을 계산합니다"},
+                {"level": 2, "text": "F = s1²/s2², 자유도는 df1=n1-1, df2=n2-1"},
+                {"level": 3, "text": "p_value = 2 * min(stats.f.cdf(f, df1, df2), 1-stats.f.cdf(f, df1, df2))"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.0974\n0.0024",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "scipy"],
+            "tags": ["F검정", "분산비교", "등분산검정"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch13_p05",
+            "title": "일원배치 ANOVA 개념 확인",
+            "difficulty": "basic",
+            "description": "세 집단의 평균이 같은지 일원배치 ANOVA로 검정하세요.",
+            "instructions": [
+                "a = [5, 6, 7, 6, 5], b = [8, 9, 10, 9, 8], c = [6, 7, 8, 7, 6] 을 정의하세요",
+                "scipy.stats.f_oneway(a, b, c) 로 ANOVA를 수행하세요",
+                "F통계량을 소수점 4자리로 출력하세요",
+                "p-value를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "from scipy import stats\n\na = [5, 6, 7, 6, 5]\nb = [8, 9, 10, 9, 8]\nc = [6, 7, 8, 7, 6]\n\n# 일원배치 ANOVA를 수행하세요\n",
+            "solution_code": "from scipy import stats\n\na = [5, 6, 7, 6, 5]\nb = [8, 9, 10, 9, 8]\nc = [6, 7, 8, 7, 6]\n\nf_stat, p_value = stats.f_oneway(a, b, c)\nprint(f'{f_stat:.4f}')\nprint(f'{p_value:.4f}')",
+            "hints": [
+                {"level": 1, "text": "일원배치 ANOVA는 stats.f_oneway()를 사용합니다"},
+                {"level": 2, "text": "f_oneway(a, b, c) 처럼 각 집단 데이터를 순서대로 전달합니다"},
+                {"level": 3, "text": "f_stat, p_value = stats.f_oneway(a, b, c)\\nprint(f'{f_stat:.4f}')\\nprint(f'{p_value:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "18.0000\n0.0002",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["scipy"],
+            "tags": ["ANOVA", "일원배치", "F검정"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch13_p06",
+            "title": "실전 독립표본 t검정",
+            "difficulty": "intermediate",
+            "description": "두 학교의 수학 성적을 비교하고 유의성을 판단하세요.",
+            "instructions": [
+                "school_a = [75, 80, 85, 72, 90, 68, 82, 78, 88, 71] 와 school_b = [82, 88, 91, 85, 95, 79, 87, 83, 92, 80] 를 정의하세요",
+                "각 학교의 평균을 소수점 2자리로 출력하세요",
+                "Welch t검정(equal_var=False)을 수행하세요",
+                "p-value < 0.05이면 '두 학교 성적에 유의한 차이가 있습니다.'를, 아니면 '두 학교 성적에 유의한 차이가 없습니다.'를 출력하세요"
+            ],
+            "initial_code": "from scipy import stats\nimport numpy as np\n\nschool_a = [75, 80, 85, 72, 90, 68, 82, 78, 88, 71]\nschool_b = [82, 88, 91, 85, 95, 79, 87, 83, 92, 80]\n\n# 평균 출력 및 t검정 수행\n",
+            "solution_code": "from scipy import stats\nimport numpy as np\n\nschool_a = [75, 80, 85, 72, 90, 68, 82, 78, 88, 71]\nschool_b = [82, 88, 91, 85, 95, 79, 87, 83, 92, 80]\n\nprint(f'{np.mean(school_a):.2f}')\nprint(f'{np.mean(school_b):.2f}')\n\nt_stat, p_value = stats.ttest_ind(school_a, school_b, equal_var=False)\nif p_value < 0.05:\n    print('두 학교 성적에 유의한 차이가 있습니다.')\nelse:\n    print('두 학교 성적에 유의한 차이가 없습니다.')",
+            "hints": [
+                {"level": 1, "text": "np.mean()으로 평균을 계산하고, Welch 검정은 equal_var=False입니다"},
+                {"level": 2, "text": "p-value < 0.05 조건으로 유의성을 판단합니다"},
+                {"level": 3, "text": "print(f'{np.mean(school_a):.2f}')\\nprint(f'{np.mean(school_b):.2f}')\\nt_stat, p_value = stats.ttest_ind(school_a, school_b, equal_var=False)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "78.90\n86.20\n두 학교 성적에 유의한 차이가 있습니다.",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["scipy", "numpy"],
+            "tags": ["t검정", "Welch", "가설검정"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch13_p07",
+            "title": "분산분석표 구성요소 계산",
+            "difficulty": "intermediate",
+            "description": "세 집단 데이터에서 SSB, SSW, F통계량을 직접 계산하세요.",
+            "instructions": [
+                "g1=[10,12,11], g2=[15,17,16], g3=[20,22,21] 을 정의하세요",
+                "전체 평균(grand_mean)을 계산하세요",
+                "SSB(집단 간 제곱합)를 계산하고 소수점 4자리로 출력하세요",
+                "SSW(집단 내 제곱합)를 계산하고 소수점 4자리로 출력하세요",
+                "F통계량을 계산하고 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\ng1 = np.array([10, 12, 11])\ng2 = np.array([15, 17, 16])\ng3 = np.array([20, 22, 21])\n\n# SSB, SSW, F통계량을 계산하세요\n",
+            "solution_code": "import numpy as np\n\ng1 = np.array([10, 12, 11])\ng2 = np.array([15, 17, 16])\ng3 = np.array([20, 22, 21])\n\ngroups = [g1, g2, g3]\nall_data = np.concatenate(groups)\ngrand_mean = np.mean(all_data)\nN = len(all_data)\nk = len(groups)\n\nSSB = sum(len(g) * (np.mean(g) - grand_mean)**2 for g in groups)\nSSW = sum(np.sum((g - np.mean(g))**2) for g in groups)\n\nMSB = SSB / (k - 1)\nMSW = SSW / (N - k)\nF = MSB / MSW\n\nprint(f'{SSB:.4f}')\nprint(f'{SSW:.4f}')\nprint(f'{F:.4f}')",
+            "hints": [
+                {"level": 1, "text": "SSB = Σ nᵢ(ȳᵢ - ȳ_grand)², SSW = Σ Σ(yᵢⱼ - ȳᵢ)²"},
+                {"level": 2, "text": "MSB = SSB/(k-1), MSW = SSW/(N-k), F = MSB/MSW"},
+                {"level": 3, "text": "SSB = sum(len(g) * (np.mean(g) - grand_mean)**2 for g in groups)\\nSSW = sum(np.sum((g - np.mean(g))**2) for g in groups)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "150.0000\n4.0000\n225.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy"],
+            "tags": ["ANOVA", "SSB", "SSW", "분산분석표"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch13_p08",
+            "title": "Tukey HSD 사후검정",
+            "difficulty": "intermediate",
+            "description": "ANOVA 후 어떤 집단 간 차이가 있는지 사후검정으로 확인하세요.",
+            "instructions": [
+                "statsmodels.stats.multicomp에서 pairwise_tukeyhsd를 import하세요",
+                "세 그룹 데이터: g1=[20,21,22,19,20], g2=[25,26,27,24,25], g3=[30,31,32,29,30] 를 정의하세요",
+                "numpy로 labels 배열을 생성하세요 (각 5개: 'A', 'B', 'C')",
+                "pairwise_tukeyhsd(endog=전체데이터, groups=labels, alpha=0.05)를 수행하세요",
+                "결과를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom statsmodels.stats.multicomp import pairwise_tukeyhsd\n\ng1 = np.array([20, 21, 22, 19, 20])\ng2 = np.array([25, 26, 27, 24, 25])\ng3 = np.array([30, 31, 32, 29, 30])\n\n# 전체 데이터와 레이블을 만들어 Tukey HSD 검정을 수행하세요\n",
+            "solution_code": "import numpy as np\nfrom statsmodels.stats.multicomp import pairwise_tukeyhsd\n\ng1 = np.array([20, 21, 22, 19, 20])\ng2 = np.array([25, 26, 27, 24, 25])\ng3 = np.array([30, 31, 32, 29, 30])\n\nall_data = np.concatenate([g1, g2, g3])\nlabels = np.array(['A']*5 + ['B']*5 + ['C']*5)\n\nresult = pairwise_tukeyhsd(endog=all_data, groups=labels, alpha=0.05)\nprint(result)",
+            "hints": [
+                {"level": 1, "text": "np.concatenate([g1, g2, g3])로 모든 데이터를 하나로 합칩니다"},
+                {"level": 2, "text": "labels = np.array(['A']*5 + ['B']*5 + ['C']*5) 로 집단 레이블을 만듭니다"},
+                {"level": 3, "text": "result = pairwise_tukeyhsd(endog=all_data, groups=labels, alpha=0.05)\\nprint(result)"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"result": "TukeyHSDResults"}
+            },
+            "allowed_modules": ["numpy", "statsmodels"],
+            "tags": ["사후검정", "Tukey", "다중비교"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch13_p09",
+            "title": "F통계량으로 집단 비교",
+            "difficulty": "intermediate",
+            "description": "직접 F통계량을 계산하고 scipy의 결과와 비교하세요.",
+            "instructions": [
+                "a=[12,14,13,15,12], b=[18,20,19,21,18], c=[24,26,25,27,24] 를 정의하세요",
+                "numpy로 SSB, SSW를 직접 계산하여 F통계량을 구하고 소수점 2자리로 출력하세요",
+                "scipy.stats.f_oneway()로 F통계량을 구하고 소수점 2자리로 출력하세요",
+                "두 결과가 같으면 '일치' 를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\n\na = np.array([12, 14, 13, 15, 12])\nb = np.array([18, 20, 19, 21, 18])\nc = np.array([24, 26, 25, 27, 24])\n\n# 직접 계산과 scipy 결과를 비교하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\n\na = np.array([12, 14, 13, 15, 12])\nb = np.array([18, 20, 19, 21, 18])\nc = np.array([24, 26, 25, 27, 24])\n\ngroups = [a, b, c]\nall_data = np.concatenate(groups)\ngrand_mean = np.mean(all_data)\nN = len(all_data)\nk = len(groups)\n\nSSB = sum(len(g) * (np.mean(g) - grand_mean)**2 for g in groups)\nSSW = sum(np.sum((g - np.mean(g))**2) for g in groups)\nF_manual = (SSB / (k-1)) / (SSW / (N-k))\n\nF_scipy, _ = stats.f_oneway(a, b, c)\n\nprint(f'{F_manual:.2f}')\nprint(f'{F_scipy:.2f}')\nif round(F_manual, 2) == round(F_scipy, 2):\n    print('일치')",
+            "hints": [
+                {"level": 1, "text": "SSB = Σ nᵢ(ȳᵢ - ȳ)², SSW = Σ Σ(yᵢⱼ - ȳᵢ)²"},
+                {"level": 2, "text": "F = (SSB/(k-1)) / (SSW/(N-k))"},
+                {"level": 3, "text": "round(F_manual, 2) == round(F_scipy, 2) 로 두 값을 비교합니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "300.00\n300.00\n일치",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["numpy", "scipy"],
+            "tags": ["ANOVA", "F통계량", "검증"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch13_p10",
+            "title": "이원배치 ANOVA 수행",
+            "difficulty": "intermediate",
+            "description": "두 요인의 효과를 statsmodels로 분석하세요.",
+            "instructions": [
+                "pandas DataFrame으로 데이터를 만드세요: score=[70,72,75,80,82,85,78,80,83,88,90,93], method=['A']*6+['B']*6, time=['단기','단기','단기','장기','장기','장기']*2",
+                "statsmodels.formula.api.ols로 'score ~ C(method) + C(time) + C(method):C(time)' 모형을 적합하세요",
+                "anova_lm(model, typ=2)로 분산분석표를 구하세요",
+                "분산분석표를 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\nfrom statsmodels.formula.api import ols\nfrom statsmodels.stats.anova import anova_lm\n\n# 이원배치 ANOVA를 수행하세요\n",
+            "solution_code": "import pandas as pd\nfrom statsmodels.formula.api import ols\nfrom statsmodels.stats.anova import anova_lm\n\ndata = pd.DataFrame({\n    'score': [70, 72, 75, 80, 82, 85, 78, 80, 83, 88, 90, 93],\n    'method': ['A']*6 + ['B']*6,\n    'time': ['단기', '단기', '단기', '장기', '장기', '장기'] * 2\n})\n\nmodel = ols('score ~ C(method) + C(time) + C(method):C(time)', data=data).fit()\nanova_table = anova_lm(model, typ=2)\nprint(anova_table.round(4))",
+            "hints": [
+                {"level": 1, "text": "pd.DataFrame({'score':..., 'method':..., 'time':...})로 데이터를 만듭니다"},
+                {"level": 2, "text": "ols('score ~ C(method) + C(time) + C(method):C(time)', data=data).fit()"},
+                {"level": 3, "text": "anova_lm(model, typ=2)로 Type II ANOVA 표를 구합니다"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"anova_table": "DataFrame"}
+            },
+            "allowed_modules": ["pandas", "statsmodels"],
+            "tags": ["이원배치", "ANOVA", "statsmodels"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch13_p11",
+            "title": "시뮬레이션으로 1종 오류율 확인",
+            "difficulty": "advanced",
+            "description": "t검정을 반복 수행했을 때 1종 오류율이 어떻게 달라지는지 시뮬레이션하세요.",
+            "instructions": [
+                "numpy 랜덤 시드 42를 설정하세요",
+                "같은 분포(mu=0, std=1)에서 n=20인 두 표본을 1000번 반복 추출하여 t검정(alpha=0.05)을 수행하세요",
+                "귀무가설을 기각한 횟수(p_value < 0.05)를 세고 1종 오류율(비율)을 소수점 4자리로 출력하세요",
+                "이론적 1종 오류율 0.05와 출력 결과가 가까운지 확인하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(42)\n\n# 1000번 반복 시뮬레이션\nrejections = 0\nfor _ in range(1000):\n    # 같은 분포에서 두 표본을 추출하세요\n    pass\n\n# 1종 오류율을 출력하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(42)\n\nrejections = 0\nfor _ in range(1000):\n    a = np.random.normal(0, 1, 20)\n    b = np.random.normal(0, 1, 20)\n    _, p = stats.ttest_ind(a, b)\n    if p < 0.05:\n        rejections += 1\n\ntype1_error = rejections / 1000\nprint(f'{type1_error:.4f}')",
+            "hints": [
+                {"level": 1, "text": "np.random.normal(0, 1, 20)으로 표본을 추출합니다"},
+                {"level": 2, "text": "stats.ttest_ind(a, b)[1]로 p-value를 얻고 0.05 미만이면 카운트합니다"},
+                {"level": 3, "text": "for _ in range(1000):\\n    a = np.random.normal(0, 1, 20)\\n    b = np.random.normal(0, 1, 20)\\n    _, p = stats.ttest_ind(a, b)\\n    if p < 0.05: rejections += 1"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.0540",
+                "tolerance": 0.02
+            },
+            "allowed_modules": ["numpy", "scipy"],
+            "tags": ["시뮬레이션", "1종오류", "몬테카를로"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch13_p12",
+            "title": "Welch vs 등분산 t검정 비교",
+            "difficulty": "advanced",
+            "description": "분산이 크게 다른 두 집단에서 등분산/이분산 검정 결과를 비교하세요.",
+            "instructions": [
+                "numpy 랜덤 시드 0을 설정하세요",
+                "g1 = 평균 10, 표준편차 1인 정규분포에서 30개 표본, g2 = 평균 12, 표준편차 5인 정규분포에서 30개 표본을 생성하세요",
+                "등분산 t검정(equal_var=True)과 Welch t검정(equal_var=False)의 p-value를 각각 소수점 4자리로 출력하세요",
+                "Levene 검정의 p-value를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(0)\n\n# 두 집단을 생성하고 세 가지 검정을 수행하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(0)\n\ng1 = np.random.normal(10, 1, 30)\ng2 = np.random.normal(12, 5, 30)\n\n_, p_equal = stats.ttest_ind(g1, g2, equal_var=True)\n_, p_welch = stats.ttest_ind(g1, g2, equal_var=False)\n_, p_levene = stats.levene(g1, g2)\n\nprint(f'{p_equal:.4f}')\nprint(f'{p_welch:.4f}')\nprint(f'{p_levene:.4f}')",
+            "hints": [
+                {"level": 1, "text": "np.random.normal(mu, sigma, n)으로 정규분포 표본을 생성합니다"},
+                {"level": 2, "text": "stats.levene(g1, g2)로 등분산 검정(Levene test)을 수행합니다"},
+                {"level": 3, "text": "분산이 크게 다른 경우 Welch 검정이 더 신뢰할 수 있습니다"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.0032\n0.0233\n0.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "scipy"],
+            "tags": ["Welch", "등분산", "Levene"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch13_p13",
+            "title": "종합 분석: 세 병원 치료 효과 비교",
+            "difficulty": "advanced",
+            "description": "세 병원의 치료 전후 혈압 감소량을 ANOVA로 비교하세요.",
+            "instructions": [
+                "세 병원의 혈압 감소량 데이터를 정의하세요: hosp_a=[15,18,12,20,16,14,19], hosp_b=[22,25,20,28,24,21,26], hosp_c=[18,21,16,23,20,17,22]",
+                "일원배치 ANOVA를 수행하세요",
+                "F통계량과 p-value를 소수점 4자리로 출력하세요",
+                "p-value < 0.05이면 Tukey HSD 사후검정을 수행하고 결과를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\nfrom statsmodels.stats.multicomp import pairwise_tukeyhsd\n\nhosp_a = np.array([15, 18, 12, 20, 16, 14, 19])\nhosp_b = np.array([22, 25, 20, 28, 24, 21, 26])\nhosp_c = np.array([18, 21, 16, 23, 20, 17, 22])\n\n# ANOVA와 사후검정을 수행하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\nfrom statsmodels.stats.multicomp import pairwise_tukeyhsd\n\nhosp_a = np.array([15, 18, 12, 20, 16, 14, 19])\nhosp_b = np.array([22, 25, 20, 28, 24, 21, 26])\nhosp_c = np.array([18, 21, 16, 23, 20, 17, 22])\n\nf_stat, p_value = stats.f_oneway(hosp_a, hosp_b, hosp_c)\nprint(f'{f_stat:.4f}')\nprint(f'{p_value:.4f}')\n\nif p_value < 0.05:\n    all_data = np.concatenate([hosp_a, hosp_b, hosp_c])\n    labels = np.array(['A']*7 + ['B']*7 + ['C']*7)\n    result = pairwise_tukeyhsd(endog=all_data, groups=labels, alpha=0.05)\n    print(result)",
+            "hints": [
+                {"level": 1, "text": "stats.f_oneway(hosp_a, hosp_b, hosp_c)로 ANOVA를 수행합니다"},
+                {"level": 2, "text": "p_value < 0.05이면 어떤 집단이 다른지 사후검정이 필요합니다"},
+                {"level": 3, "text": "np.concatenate와 레이블 배열을 만들어 pairwise_tukeyhsd()에 전달합니다"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "22.3784\n0.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["numpy", "scipy", "statsmodels"],
+            "tags": ["ANOVA", "사후검정", "종합분석"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch13_p14",
+            "title": "Bonferroni 보정으로 다중비교",
+            "difficulty": "advanced",
+            "description": "여러 그룹을 쌍쌍이 비교할 때 Bonferroni 보정을 적용하세요.",
+            "instructions": [
+                "네 그룹: g1=[10,11,12], g2=[14,15,16], g3=[18,19,20], g4=[22,23,24] 를 정의하세요",
+                "모든 쌍(6쌍)에 대해 t검정을 수행하여 p-value 리스트를 만드세요",
+                "Bonferroni 보정 유의수준 alpha_bonf = 0.05 / 6 을 계산하고 소수점 4자리로 출력하세요",
+                "각 쌍의 p-value가 Bonferroni 보정 기준보다 작은 쌍의 수를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\nfrom itertools import combinations\n\ng1 = np.array([10, 11, 12])\ng2 = np.array([14, 15, 16])\ng3 = np.array([18, 19, 20])\ng4 = np.array([22, 23, 24])\n\n# 모든 쌍에 대해 t검정과 Bonferroni 보정을 수행하세요\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\nfrom itertools import combinations\n\ng1 = np.array([10, 11, 12])\ng2 = np.array([14, 15, 16])\ng3 = np.array([18, 19, 20])\ng4 = np.array([22, 23, 24])\n\ngroups = [g1, g2, g3, g4]\nalpha_bonf = 0.05 / 6\nprint(f'{alpha_bonf:.4f}')\n\nsig_count = 0\nfor (i, gi), (j, gj) in combinations(enumerate(groups), 2):\n    _, p = stats.ttest_ind(gi, gj)\n    if p < alpha_bonf:\n        sig_count += 1\n\nprint(sig_count)",
+            "hints": [
+                {"level": 1, "text": "from itertools import combinations를 사용하면 모든 쌍을 쉽게 생성합니다"},
+                {"level": 2, "text": "Bonferroni 보정: alpha_bonf = 0.05 / 비교횟수 (6쌍이면 0.05/6)"},
+                {"level": 3, "text": "for (i, gi), (j, gj) in combinations(enumerate(groups), 2): 로 쌍을 순회합니다"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.0083\n6",
+                "normalize_whitespace": true
+            },
+            "allowed_modules": ["numpy", "scipy"],
+            "tags": ["Bonferroni", "다중비교", "오류율보정"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch13_p15",
+            "title": "종합: 실험 데이터 완전 분석",
+            "difficulty": "advanced",
+            "description": "운동 방법과 식이요법 두 요인이 체중 감소에 미치는 영향을 이원배치 ANOVA로 분석하세요.",
+            "instructions": [
+                "pandas DataFrame: weight_loss=[3,4,5,6,7,8,5,6,7,8,9,10], exercise=['유산소']*6+['근력']*6, diet=['일반','일반','일반','저탄수','저탄수','저탄수']*2 를 만드세요",
+                "이원배치 ANOVA 모형을 적합하고 분산분석표를 구하세요",
+                "exercise 주효과의 p-value를 소수점 4자리로 출력하세요",
+                "교호작용의 p-value를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\nfrom statsmodels.formula.api import ols\nfrom statsmodels.stats.anova import anova_lm\n\n# 데이터 생성 및 이원배치 ANOVA 수행\n",
+            "solution_code": "import pandas as pd\nfrom statsmodels.formula.api import ols\nfrom statsmodels.stats.anova import anova_lm\n\ndata = pd.DataFrame({\n    'weight_loss': [3, 4, 5, 6, 7, 8, 5, 6, 7, 8, 9, 10],\n    'exercise': ['유산소']*6 + ['근력']*6,\n    'diet': ['일반', '일반', '일반', '저탄수', '저탄수', '저탄수'] * 2\n})\n\nmodel = ols('weight_loss ~ C(exercise) + C(diet) + C(exercise):C(diet)', data=data).fit()\nanova_table = anova_lm(model, typ=2)\n\nprint(f\"{anova_table.loc['C(exercise)', 'PR(>F)']:.4f}\")\nprint(f\"{anova_table.loc['C(exercise):C(diet)', 'PR(>F)']:.4f}\")",
+            "hints": [
+                {"level": 1, "text": "pd.DataFrame으로 데이터를 구성하고 이원배치 ANOVA 공식을 지정합니다"},
+                {"level": 2, "text": "anova_table.loc['C(exercise)', 'PR(>F)']로 특정 효과의 p-value에 접근합니다"},
+                {"level": 3, "text": "교호작용 행의 이름은 'C(exercise):C(diet)'입니다"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.0002\n1.0000",
+                "tolerance": 0.01
+            },
+            "allowed_modules": ["pandas", "statsmodels"],
+            "tags": ["이원배치", "교호작용", "주효과"],
+            "related_section": "s5"
+        }
+    ]
+}

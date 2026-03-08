@@ -1,0 +1,115 @@
+{
+    "chapter_id": 15,
+    "quiz_title": "챕터 15 확인 퀴즈 - Pandas 데이터 분석",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch15_q01",
+            "type": "multiple_choice",
+            "question": "딕셔너리로 DataFrame을 생성하는 올바른 코드는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "pd.DataFrame(['name', 'age'])"},
+                {"label": "B", "text": "pd.DataFrame({'name': ['Alice', 'Bob'], 'age': [25, 30]})"},
+                {"label": "C", "text": "pd.DataFrame([['Alice', 25], ['Bob', 30]])"},
+                {"label": "D", "text": "pd.read_csv({'name': ['Alice', 'Bob']})"}
+            ],
+            "correct_answer": "B",
+            "explanation": "pd.DataFrame(딕셔너리)에서 딕셔너리의 키가 열 이름이 되고, 값(리스트)이 각 열의 데이터가 됩니다. C처럼 2차원 리스트로도 생성할 수 있지만, 이 경우 열 이름을 별도로 지정해야 합니다."
+        },
+        {
+            "question_id": "ch15_q02",
+            "type": "ox",
+            "question": "df['col']과 df[['col']]은 동일한 타입(DataFrame)을 반환한다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. df['col']은 Series를 반환하고, df[['col']]처럼 이중 대괄호를 사용하면 DataFrame을 반환합니다. 열이 하나여도 대괄호의 개수에 따라 반환 타입이 달라집니다."
+        },
+        {
+            "question_id": "ch15_q03",
+            "type": "multiple_choice",
+            "question": "df.iloc[2, 1]이 선택하는 데이터는 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "인덱스 레이블이 2인 행의 'col1' 열"},
+                {"label": "B", "text": "3번째 행(0-based), 2번째 열(0-based)"},
+                {"label": "C", "text": "2번째 행(1-based), 1번째 열(1-based)"},
+                {"label": "D", "text": "인덱스 레이블이 2인 행, 열 이름이 1인 열"}
+            ],
+            "correct_answer": "B",
+            "explanation": "iloc은 0-based 정수 위치를 사용합니다. iloc[2, 1]은 0번째부터 세어 2번째 행(3번째 행)과 0번째부터 세어 1번째 열(2번째 열)을 가리킵니다. 레이블 기반 접근은 loc을 사용합니다."
+        },
+        {
+            "question_id": "ch15_q04",
+            "type": "fill_blank",
+            "question": "DataFrame에서 'score'가 90 이상이고 'dept'가 '개발'인 행을 필터링할 때 빈칸에 들어갈 기호는?\n\ndf[(df['score'] >= 90) ___ (df['dept'] == '개발')]",
+            "correct_answer": "&",
+            "accept_answers": ["&", " & "],
+            "explanation": "Pandas에서 AND 조건을 결합할 때는 파이썬의 and가 아닌 & 기호를 사용합니다. 또한 각 조건은 반드시 괄호로 묶어야 합니다. OR 조건은 | 기호를 사용합니다."
+        },
+        {
+            "question_id": "ch15_q05",
+            "type": "multiple_choice",
+            "question": "df.groupby('channel')['revenue'].sum().reset_index()에서 reset_index()의 역할은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "DataFrame의 인덱스를 0부터 다시 번호 매기기"},
+                {"label": "B", "text": "그룹 키(channel)를 인덱스에서 일반 열로 변환"},
+                {"label": "C", "text": "집계 결과를 원래 순서로 되돌리기"},
+                {"label": "D", "text": "NaN 값을 0으로 초기화"}
+            ],
+            "correct_answer": "B",
+            "explanation": "groupby 후 집계 결과에서 그룹 키(channel)는 기본적으로 인덱스가 됩니다. reset_index()를 호출하면 이 인덱스가 일반 열로 변환되어 이후 데이터 조작이 편리해집니다."
+        },
+        {
+            "question_id": "ch15_q06",
+            "type": "ox",
+            "question": "pd.to_datetime()으로 변환하지 않은 날짜 문자열 열에서도 .dt.month로 월(month)을 추출할 수 있다.",
+            "correct_answer": false,
+            "explanation": "틀립니다. .dt 접근자는 datetime64 타입의 Series에서만 사용할 수 있습니다. 날짜가 문자열(object 타입)인 상태에서 .dt를 사용하면 AttributeError가 발생합니다. 반드시 pd.to_datetime()으로 변환 후 사용해야 합니다."
+        },
+        {
+            "question_id": "ch15_q07",
+            "type": "multiple_choice",
+            "question": "다음 중 pd.merge()의 how='left' 동작에 대한 올바른 설명은?",
+            "options": [
+                {"label": "A", "text": "두 DataFrame 모두에 존재하는 키의 행만 결과에 포함된다"},
+                {"label": "B", "text": "오른쪽 DataFrame의 모든 행이 유지되고, 왼쪽에 없으면 NaN으로 채워진다"},
+                {"label": "C", "text": "왼쪽 DataFrame의 모든 행이 유지되고, 오른쪽에 매칭이 없으면 NaN으로 채워진다"},
+                {"label": "D", "text": "두 DataFrame의 모든 행이 포함되고, 매칭이 없는 경우 NaN으로 채워진다"}
+            ],
+            "correct_answer": "C",
+            "explanation": "how='left'는 SQL의 LEFT JOIN과 같습니다. 왼쪽 DataFrame의 모든 행을 유지하고, 오른쪽에 매칭되는 키가 없는 경우 해당 열들이 NaN으로 채워집니다. A는 inner, B는 right, D는 outer에 해당합니다."
+        },
+        {
+            "question_id": "ch15_q08",
+            "type": "multiple_choice",
+            "question": "df['score'].value_counts(normalize=True)의 반환값은 무엇인가요?",
+            "options": [
+                {"label": "A", "text": "각 고유값의 등장 횟수 (정수)"},
+                {"label": "B", "text": "각 고유값의 등장 비율 (0~1 사이의 실수)"},
+                {"label": "C", "text": "각 고유값을 0~1 사이로 정규화한 값"},
+                {"label": "D", "text": "score 열 전체를 평균이 0, 표준편차가 1로 변환한 값"}
+            ],
+            "correct_answer": "B",
+            "explanation": "normalize=True를 사용하면 각 고유값의 등장 횟수 대신 전체에서 차지하는 비율(0~1)을 반환합니다. 모든 비율의 합은 1이 됩니다. 분포 비교나 백분율 계산에 유용합니다."
+        },
+        {
+            "question_id": "ch15_q09",
+            "type": "fill_blank",
+            "question": "DataFrame의 각 열에 있는 결측값(NaN)의 개수를 한 번에 확인하는 코드를 완성하세요.\n\ndf.___().sum()",
+            "correct_answer": "isna",
+            "accept_answers": ["isna", "isnull"],
+            "explanation": "df.isna()는 각 원소가 NaN이면 True, 아니면 False인 Boolean DataFrame을 반환합니다. 여기에 .sum()을 붙이면 각 열의 True 개수, 즉 결측값 수가 계산됩니다. df.isnull()도 동일한 결과를 반환합니다."
+        },
+        {
+            "question_id": "ch15_q10",
+            "type": "multiple_choice",
+            "question": "아래 코드의 실행 결과로 옳은 것은?\n\n```python\nimport pandas as pd\ndf = pd.DataFrame({'region': ['서울','부산','서울'], 'sales': [100, 200, 150]})\nprint(df.groupby('region')['sales'].mean().reset_index())\n```",
+            "options": [
+                {"label": "A", "text": "region    sales\n0     부산  200.0\n1     서울  125.0"},
+                {"label": "B", "text": "region    sales\n0     서울  125.0\n1     부산  200.0"},
+                {"label": "C", "text": "region    sales\n0     서울  250.0\n1     부산  200.0"},
+                {"label": "D", "text": "region    sales\n0     부산  200.0\n1     서울  250.0"}
+            ],
+            "correct_answer": "A",
+            "explanation": "groupby 후 reset_index()하면 그룹 키가 알파벳/가나다 순으로 정렬되어 반환됩니다. '부산'이 '서울'보다 앞에 옵니다. 서울의 평균은 (100+150)/2=125.0, 부산은 200.0입니다."
+        }
+    ]
+}

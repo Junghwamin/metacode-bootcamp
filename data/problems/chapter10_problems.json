@@ -1,0 +1,388 @@
+{
+    "chapter_id": 10,
+    "problems": [
+        {
+            "problem_id": "ch10_p01",
+            "title": "주사위 확률 계산",
+            "difficulty": "basic",
+            "description": "주사위를 한 번 던질 때 다음 확률을 계산하세요.\n- P(짝수)\n- P(3 이하)\n- P(소수): 소수는 2, 3, 5\n\n각 확률을 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "표본공간은 {1, 2, 3, 4, 5, 6}이며 총 6가지입니다",
+                "각 사건의 원소 수를 세어 확률을 계산하세요",
+                "확률 = 사건의 원소 수 / 전체 경우의 수"
+            ],
+            "initial_code": "# 주사위 확률을 계산하세요\ntotal = 6  # 표본공간 크기\n\n# P(짝수): 짝수는 2, 4, 6\np_even = \n\n# P(3 이하): 1, 2, 3\np_le3 = \n\n# P(소수): 2, 3, 5\np_prime = \n\nprint(f'P(짝수): {p_even:.4f}')\nprint(f'P(3 이하): {p_le3:.4f}')\nprint(f'P(소수): {p_prime:.4f}')\n",
+            "solution_code": "total = 6\n\np_even = 3 / total\np_le3 = 3 / total\np_prime = 3 / total\n\nprint(f'P(짝수): {p_even:.4f}')\nprint(f'P(3 이하): {p_le3:.4f}')\nprint(f'P(소수): {p_prime:.4f}')",
+            "hints": [
+                {"level": 1, "text": "확률 = 해당 사건의 원소 수 / 전체 경우의 수(6)"},
+                {"level": 2, "text": "짝수: {2,4,6} → 3개, 3이하: {1,2,3} → 3개, 소수: {2,3,5} → 3개"},
+                {"level": 3, "text": "p_even = 3/6\np_le3 = 3/6\np_prime = 3/6"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "P(짝수): 0.5000\nP(3 이하): 0.5000\nP(소수): 0.5000",
+                "normalize_whitespace": true
+            },
+            "tags": ["확률", "표본공간", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch10_p02",
+            "title": "여사건 확률",
+            "difficulty": "basic",
+            "description": "다음 상황에서 여사건 확률을 계산하세요.\n\n1. 동전을 3번 던질 때 한 번도 앞면이 안 나올 확률\n   (앞면 1번 이상 나올 확률의 여사건)\n2. 주사위를 한 번 던져 6이 안 나올 확률\n\n각 확률을 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "여사건: P(A^c) = 1 - P(A)",
+                "동전 3번 모두 앞면: (1/2)^3, 최소 1번 앞면 = 여사건",
+                "주사위에서 6이 나올 확률 = 1/6"
+            ],
+            "initial_code": "# 여사건 확률을 계산하세요\n\n# 1. 동전 3번 중 한 번도 앞면이 안 나올 확률\n# P(최소 1번 앞면) = 1 - P(앞면 0번)\np_no_head = (1/2) ** 3  # 모두 뒷면\np_at_least_one_head = 1 - p_no_head\n\n# 2. 주사위에서 6이 안 나올 확률\np_six = \np_not_six = \n\nprint(f'P(한 번도 앞면 없음): {p_no_head:.4f}')\nprint(f'P(최소 1번 앞면): {p_at_least_one_head:.4f}')\nprint(f'P(6이 안 나옴): {p_not_six:.4f}')\n",
+            "solution_code": "p_no_head = (1/2) ** 3\np_at_least_one_head = 1 - p_no_head\n\np_six = 1 / 6\np_not_six = 1 - p_six\n\nprint(f'P(한 번도 앞면 없음): {p_no_head:.4f}')\nprint(f'P(최소 1번 앞면): {p_at_least_one_head:.4f}')\nprint(f'P(6이 안 나옴): {p_not_six:.4f}')",
+            "hints": [
+                {"level": 1, "text": "여사건 공식: P(A^c) = 1 - P(A)"},
+                {"level": 2, "text": "동전 3번 모두 뒷면: (1/2)³ = 0.125. 여사건(최소 1번 앞면) = 1 - 0.125 = 0.875"},
+                {"level": 3, "text": "p_six = 1/6\np_not_six = 1 - p_six"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "P(한 번도 앞면 없음): 0.1250\nP(최소 1번 앞면): 0.8750\nP(6이 안 나옴): 0.8333",
+                "normalize_whitespace": true
+            },
+            "tags": ["여사건", "확률계산", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch10_p03",
+            "title": "조건부확률 계산",
+            "difficulty": "basic",
+            "description": "카드 52장 중 1장을 뽑을 때 다음을 계산하세요.\n\n주어진 정보:\n- P(에이스) = 4/52\n- P(하트) = 13/52  \n- P(에이스 AND 하트) = 1/52\n\n계산할 것:\n- P(에이스 | 하트): 하트 카드임을 알 때 에이스일 확률\n- P(하트 | 에이스): 에이스임을 알 때 하트일 확률",
+            "instructions": [
+                "조건부확률 공식: P(A|B) = P(A∩B) / P(B)",
+                "P(에이스|하트) = P(에이스∩하트) / P(하트)",
+                "각각 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "# 기본 확률 정의\np_ace = 4 / 52\np_heart = 13 / 52\np_ace_and_heart = 1 / 52\n\n# 조건부확률 계산\n# P(에이스|하트) = P(에이스∩하트) / P(하트)\np_ace_given_heart = \n\n# P(하트|에이스) = P(에이스∩하트) / P(에이스)\np_heart_given_ace = \n\nprint(f'P(에이스|하트): {p_ace_given_heart:.4f}')\nprint(f'P(하트|에이스): {p_heart_given_ace:.4f}')\n",
+            "solution_code": "p_ace = 4 / 52\np_heart = 13 / 52\np_ace_and_heart = 1 / 52\n\np_ace_given_heart = p_ace_and_heart / p_heart\np_heart_given_ace = p_ace_and_heart / p_ace\n\nprint(f'P(에이스|하트): {p_ace_given_heart:.4f}')\nprint(f'P(하트|에이스): {p_heart_given_ace:.4f}')",
+            "hints": [
+                {"level": 1, "text": "조건부확률 공식: P(A|B) = P(A∩B) / P(B)"},
+                {"level": 2, "text": "P(에이스|하트) = P(에이스∩하트) / P(하트) = (1/52) / (13/52) = 1/13"},
+                {"level": 3, "text": "p_ace_given_heart = p_ace_and_heart / p_heart\np_heart_given_ace = p_ace_and_heart / p_ace"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "P(에이스|하트): 0.0769\nP(하트|에이스): 0.2500",
+                "tolerance": 0.001
+            },
+            "tags": ["조건부확률", "카드", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch10_p04",
+            "title": "독립사건 판별",
+            "difficulty": "basic",
+            "description": "두 사건이 독립인지 판별하세요.\n독립 조건: P(A∩B) = P(A) × P(B)\n\n상황 1: 주사위를 두 번 던져 첫 번째 3 이상, 두 번째 짝수\n- P(A) = 4/6 (3 이상)\n- P(B) = 3/6 (짝수)\n- P(A∩B) = 6/36 (첫 번째 3이상 AND 두 번째 짝수)\n\n독립 여부를 'True' 또는 'False'로 출력하세요.",
+            "instructions": [
+                "P(A)×P(B)를 계산하세요",
+                "P(A∩B)와 비교하세요",
+                "부동소수점 오차를 고려해 abs(차이) < 1e-10으로 비교하세요"
+            ],
+            "initial_code": "# 두 사건의 확률\np_a = 4 / 6    # 첫 번째 주사위 3 이상\np_b = 3 / 6    # 두 번째 주사위 짝수\np_a_and_b = 6 / 36  # 동시에 발생\n\n# 독립 조건: P(A∩B) = P(A) × P(B)\np_a_times_b = \n\n# 독립 여부 판별\nis_independent = \n\nprint(f'P(A) × P(B) = {p_a_times_b:.4f}')\nprint(f'P(A∩B) = {p_a_and_b:.4f}')\nprint(f'독립 여부: {is_independent}')\n",
+            "solution_code": "p_a = 4 / 6\np_b = 3 / 6\np_a_and_b = 6 / 36\n\np_a_times_b = p_a * p_b\nis_independent = abs(p_a_times_b - p_a_and_b) < 1e-10\n\nprint(f'P(A) × P(B) = {p_a_times_b:.4f}')\nprint(f'P(A∩B) = {p_a_and_b:.4f}')\nprint(f'독립 여부: {is_independent}')",
+            "hints": [
+                {"level": 1, "text": "독립 조건: P(A∩B) = P(A)×P(B). 두 값이 같으면 독립입니다."},
+                {"level": 2, "text": "p_a_times_b = p_a * p_b. 부동소수점 오차로 ==보다 abs(차이) < 1e-10 비교를 사용하세요."},
+                {"level": 3, "text": "p_a_times_b = p_a * p_b\nis_independent = abs(p_a_times_b - p_a_and_b) < 1e-10"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "P(A) × P(B) = 0.3333\nP(A∩B) = 0.1667\n독립 여부: False",
+                "normalize_whitespace": true
+            },
+            "tags": ["독립사건", "조건부확률", "기초"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch10_p05",
+            "title": "기대값 계산",
+            "difficulty": "basic",
+            "description": "주사위 두 개를 던져 나온 눈의 합 X에 대한 기대값 E(X)를 계산하세요.\n\n두 주사위의 합은 2에서 12까지 가능합니다.\nnumpy로 모든 가능한 합과 그 확률을 구한 뒤, 기대값을 계산하세요.\n\n기대값을 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "np.arange(1, 7)로 주사위 눈을 정의하세요",
+                "np.meshgrid나 이중 반복으로 모든 합 경우를 구하세요",
+                "E(X) = Σ x × P(X=x) 공식을 적용하세요"
+            ],
+            "initial_code": "import numpy as np\n\n# 두 주사위 합의 모든 경우\ndice = np.arange(1, 7)\n\n# 모든 가능한 합 계산 (힌트: np.add.outer 또는 이중 리스트 컴프리헨션)\nall_sums = np.add.outer(dice, dice).flatten()\n\n# 각 합의 확률 계산\nunique_sums, counts = np.unique(all_sums, return_counts=True)\nprobs = counts / len(all_sums)\n\n# 기대값 계산\ne_x = \n\nprint(f'E(X) = {e_x:.4f}')\n",
+            "solution_code": "import numpy as np\n\ndice = np.arange(1, 7)\nall_sums = np.add.outer(dice, dice).flatten()\n\nunique_sums, counts = np.unique(all_sums, return_counts=True)\nprobs = counts / len(all_sums)\n\ne_x = np.sum(unique_sums * probs)\nprint(f'E(X) = {e_x:.4f}')",
+            "hints": [
+                {"level": 1, "text": "기대값 E(X) = Σ(x × P(X=x)). 각 합의 확률은 나오는 경우의 수 / 36입니다."},
+                {"level": 2, "text": "unique_sums와 probs가 준비되면 e_x = np.sum(unique_sums * probs)로 계산하세요."},
+                {"level": 3, "text": "e_x = np.sum(unique_sums * probs)\nprint(f'E(X) = {e_x:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "E(X) = 7.0000",
+                "tolerance": 0.0001
+            },
+            "tags": ["기대값", "확률분포", "기초"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch10_p06",
+            "title": "베이즈 정리 - 질병 검사",
+            "difficulty": "intermediate",
+            "description": "베이즈 정리를 적용하여 검사 결과의 의미를 분석하세요.\n\n조건:\n- 질병 유병률(P(D)): 5% (0.05)\n- 민감도(P(+|D)): 95% (검진 양성일 때 실제 환자 비율)\n- 특이도(P(-|D^c)): 90% (정상인을 음성으로 판정할 비율)\n- 따라서 P(+|D^c) = 1 - 0.90 = 0.10 (위양성률)\n\n검사 양성 판정 시 실제 질병일 확률 P(D|+)를 구하세요.",
+            "instructions": [
+                "전확률 공식: P(+) = P(+|D)×P(D) + P(+|D^c)×P(D^c)",
+                "베이즈 정리: P(D|+) = P(+|D)×P(D) / P(+)",
+                "결과를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "# 주어진 확률\nP_D = 0.05         # 유병률\nP_pos_D = 0.95     # 민감도\nP_neg_no_D = 0.90  # 특이도\nP_pos_no_D = 1 - P_neg_no_D  # 위양성률\n\n# 전확률 공식: P(+) = P(+|D)×P(D) + P(+|D^c)×P(D^c)\nP_pos = \n\n# 베이즈 정리: P(D|+) = P(+|D)×P(D) / P(+)\nP_D_given_pos = \n\nprint(f'P(+): {P_pos:.4f}')\nprint(f'P(D|양성): {P_D_given_pos:.4f}')\nprint(f'→ 양성 판정 시 실제 질병 확률: {P_D_given_pos:.2%}')\n",
+            "solution_code": "P_D = 0.05\nP_pos_D = 0.95\nP_neg_no_D = 0.90\nP_pos_no_D = 1 - P_neg_no_D\n\nP_pos = P_pos_D * P_D + P_pos_no_D * (1 - P_D)\nP_D_given_pos = (P_pos_D * P_D) / P_pos\n\nprint(f'P(+): {P_pos:.4f}')\nprint(f'P(D|양성): {P_D_given_pos:.4f}')\nprint(f'→ 양성 판정 시 실제 질병 확률: {P_D_given_pos:.2%}')",
+            "hints": [
+                {"level": 1, "text": "전확률 공식으로 P(+)를 먼저 구한 뒤 베이즈 정리를 적용합니다."},
+                {"level": 2, "text": "P_pos = P_pos_D * P_D + P_pos_no_D * (1 - P_D)\nP_D_given_pos = P_pos_D * P_D / P_pos"},
+                {"level": 3, "text": "P_pos = P_pos_D * P_D + P_pos_no_D * (1 - P_D)\nP_D_given_pos = (P_pos_D * P_D) / P_pos\nprint(f'P(D|양성): {P_D_given_pos:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "P(+): 0.1425\nP(D|양성): 0.3333\n→ 양성 판정 시 실제 질병 확률: 33.33%",
+                "tolerance": 0.001
+            },
+            "tags": ["베이즈정리", "조건부확률", "중급"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch10_p07",
+            "title": "이항분포 PMF 계산",
+            "difficulty": "intermediate",
+            "description": "이항분포 B(n=8, p=0.4)에서 다음을 계산하세요.\n- P(X = 3)\n- P(X <= 3)\n- P(X >= 5)\n\nscipy.stats.binom을 사용하여 계산하고 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy import stats로 임포트하세요",
+                "binom = stats.binom(n=8, p=0.4)로 분포를 정의하세요",
+                "binom.pmf(k)로 PMF를, binom.cdf(k)로 CDF를 구하세요",
+                "P(X>=5) = 1 - P(X<=4)로 계산하세요"
+            ],
+            "initial_code": "from scipy import stats\n\n# 이항분포 B(8, 0.4) 정의\nbinom = stats.binom(n=8, p=0.4)\n\n# P(X = 3)\np_x3 = \n\n# P(X <= 3)\np_le3 = \n\n# P(X >= 5)\np_ge5 = \n\nprint(f'P(X=3): {p_x3:.4f}')\nprint(f'P(X<=3): {p_le3:.4f}')\nprint(f'P(X>=5): {p_ge5:.4f}')\n",
+            "solution_code": "from scipy import stats\n\nbinom = stats.binom(n=8, p=0.4)\n\np_x3 = binom.pmf(3)\np_le3 = binom.cdf(3)\np_ge5 = 1 - binom.cdf(4)\n\nprint(f'P(X=3): {p_x3:.4f}')\nprint(f'P(X<=3): {p_le3:.4f}')\nprint(f'P(X>=5): {p_ge5:.4f}')",
+            "hints": [
+                {"level": 1, "text": "scipy.stats.binom을 사용합니다. pmf()는 특정 값의 확률, cdf()는 누적확률입니다."},
+                {"level": 2, "text": "P(X>=5) = 1 - P(X<=4) = 1 - binom.cdf(4). 여사건을 이용합니다."},
+                {"level": 3, "text": "p_x3 = binom.pmf(3)\np_le3 = binom.cdf(3)\np_ge5 = 1 - binom.cdf(4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "P(X=3): 0.2787\nP(X<=3): 0.5941\nP(X>=5): 0.2503",
+                "tolerance": 0.001
+            },
+            "tags": ["이항분포", "PMF", "CDF", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch10_p08",
+            "title": "정규분포 CDF 활용",
+            "difficulty": "intermediate",
+            "description": "성인 남성의 키가 정규분포 N(μ=172, σ²=64) (σ=8)를 따를 때 다음 확률을 구하세요.\n\n1. P(키 < 160)\n2. P(160 ≤ 키 ≤ 184)\n3. 상위 10%에 해당하는 키 (90번째 백분위수)\n\nscipy.stats.norm을 사용하세요.",
+            "instructions": [
+                "normal = stats.norm(loc=172, scale=8)로 정규분포를 정의하세요",
+                "normal.cdf(x)로 P(X<=x)를 계산하세요",
+                "normal.ppf(0.9)로 90번째 백분위수를 구하세요",
+                "확률은 소수점 4자리, 키는 소수점 2자리로 출력하세요"
+            ],
+            "initial_code": "from scipy import stats\n\n# 정규분포 N(172, 8^2) 정의\nnormal = stats.norm(loc=172, scale=8)\n\n# P(키 < 160)\np_lt160 = \n\n# P(160 <= 키 <= 184)\np_160_184 = \n\n# 상위 10%에 해당하는 키 (90 퍼센타일)\ntop10_height = \n\nprint(f'P(키 < 160): {p_lt160:.4f}')\nprint(f'P(160 <= 키 <= 184): {p_160_184:.4f}')\nprint(f'상위 10% 키: {top10_height:.2f}cm')\n",
+            "solution_code": "from scipy import stats\n\nnormal = stats.norm(loc=172, scale=8)\n\np_lt160 = normal.cdf(160)\np_160_184 = normal.cdf(184) - normal.cdf(160)\ntop10_height = normal.ppf(0.9)\n\nprint(f'P(키 < 160): {p_lt160:.4f}')\nprint(f'P(160 <= 키 <= 184): {p_160_184:.4f}')\nprint(f'상위 10% 키: {top10_height:.2f}cm')",
+            "hints": [
+                {"level": 1, "text": "stats.norm(loc=평균, scale=표준편차)로 정규분포를 정의합니다. cdf(x)로 누적확률, ppf(p)로 백분위수를 구합니다."},
+                {"level": 2, "text": "P(160 <= X <= 184) = P(X<=184) - P(X<=160) = normal.cdf(184) - normal.cdf(160)"},
+                {"level": 3, "text": "p_160_184 = normal.cdf(184) - normal.cdf(160)\ntop10_height = normal.ppf(0.9)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "P(키 < 160): 0.0668\nP(160 <= 키 <= 184): 0.8664\n상위 10% 키: 182.26cm",
+                "tolerance": 0.001
+            },
+            "tags": ["정규분포", "CDF", "백분위수", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch10_p09",
+            "title": "확률변수의 분산 계산",
+            "difficulty": "intermediate",
+            "description": "다음 이산 확률변수 X의 기대값과 분산을 계산하세요.\n\nX의 확률분포:\n| x  | 1    | 2    | 3    | 4    | 5    |\n|----|------|------|------|------|------|\n| P  | 0.10 | 0.20 | 0.40 | 0.20 | 0.10 |\n\nVar(X) = E(X²) - [E(X)]² 공식을 사용하세요.",
+            "instructions": [
+                "x와 p 배열을 numpy로 정의하세요",
+                "E(X) = np.sum(x * p)로 기대값을 계산하세요",
+                "E(X²) = np.sum(x**2 * p)로 계산하세요",
+                "Var(X) = E(X²) - E(X)² 공식을 적용하세요"
+            ],
+            "initial_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\np = np.array([0.10, 0.20, 0.40, 0.20, 0.10])\n\n# 기대값 E(X)\ne_x = \n\n# E(X²)\ne_x2 = \n\n# 분산 Var(X) = E(X²) - [E(X)]²\nvar_x = \n\nprint(f'E(X): {e_x:.4f}')\nprint(f'Var(X): {var_x:.4f}')\nprint(f'표준편차: {var_x**0.5:.4f}')\n",
+            "solution_code": "import numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\np = np.array([0.10, 0.20, 0.40, 0.20, 0.10])\n\ne_x = np.sum(x * p)\ne_x2 = np.sum(x**2 * p)\nvar_x = e_x2 - e_x**2\n\nprint(f'E(X): {e_x:.4f}')\nprint(f'Var(X): {var_x:.4f}')\nprint(f'표준편차: {var_x**0.5:.4f}')",
+            "hints": [
+                {"level": 1, "text": "E(X) = Σ x·P(X=x) = np.sum(x * p). Var(X) = E(X²) - [E(X)]²"},
+                {"level": 2, "text": "e_x2 = np.sum(x**2 * p). var_x = e_x2 - e_x**2"},
+                {"level": 3, "text": "e_x = np.sum(x * p)\ne_x2 = np.sum(x**2 * p)\nvar_x = e_x2 - e_x**2"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "E(X): 3.0000\nVar(X): 1.2000\n표준편차: 1.0954",
+                "tolerance": 0.001
+            },
+            "tags": ["기대값", "분산", "확률변수", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch10_p10",
+            "title": "확률변수 선형변환",
+            "difficulty": "intermediate",
+            "description": "확률변수 X의 E(X) = 4, Var(X) = 9일 때, 선형변환 Y = 3X - 2의 기대값과 분산을 구하세요.\n\n선형변환 공식:\n- E(aX + b) = a·E(X) + b\n- Var(aX + b) = a²·Var(X)\n\n직접 공식을 적용하여 계산하고, 검증도 수행하세요.",
+            "instructions": [
+                "a = 3, b = -2로 정의하세요",
+                "E(Y) = a * E(X) + b 공식을 적용하세요",
+                "Var(Y) = a**2 * Var(X) 공식을 적용하세요",
+                "표준편차도 함께 출력하세요"
+            ],
+            "initial_code": "# 확률변수 X의 모수\ne_x = 4\nvar_x = 9\n\n# Y = 3X - 2 선형변환\na = 3\nb = -2\n\n# E(Y) = a*E(X) + b\ne_y = \n\n# Var(Y) = a²*Var(X)\nvar_y = \n\nstd_y = var_y ** 0.5\n\nprint(f'E(Y) = {e_y}')\nprint(f'Var(Y) = {var_y}')\nprint(f'표준편차(Y) = {std_y:.4f}')\n",
+            "solution_code": "e_x = 4\nvar_x = 9\n\na = 3\nb = -2\n\ne_y = a * e_x + b\nvar_y = a**2 * var_x\nstd_y = var_y ** 0.5\n\nprint(f'E(Y) = {e_y}')\nprint(f'Var(Y) = {var_y}')\nprint(f'표준편차(Y) = {std_y:.4f}')",
+            "hints": [
+                {"level": 1, "text": "선형변환 공식: E(aX+b) = a·E(X)+b, Var(aX+b) = a²·Var(X). 상수 b는 분산에 영향을 주지 않습니다."},
+                {"level": 2, "text": "e_y = a * e_x + b = 3*4 + (-2) = 10\nvar_y = a**2 * var_x = 9 * 9 = 81"},
+                {"level": 3, "text": "e_y = a * e_x + b\nvar_y = a**2 * var_x\nstd_y = var_y ** 0.5"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "E(Y) = 10\nVar(Y) = 81\n표준편차(Y) = 9.0000",
+                "normalize_whitespace": true
+            },
+            "tags": ["선형변환", "기대값", "분산", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch10_p11",
+            "title": "복합 확률 - 비복원 추출",
+            "difficulty": "advanced",
+            "description": "주머니에 빨간 공 4개, 파란 공 6개가 있습니다. 공 2개를 비복원 추출할 때:\n\n1. 두 공 모두 빨간 확률\n2. 두 공 모두 파란 확률\n3. 두 공의 색이 다른(한 개 빨간, 한 개 파란) 확률\n4. 세 확률의 합이 1인지 검증\n\n각 확률을 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "비복원 추출에서 첫 번째 추출이 두 번째에 영향을 미칩니다",
+                "P(RR) = P(R1) × P(R2|R1) = 4/10 × 3/9",
+                "P(BB) = 6/10 × 5/9",
+                "P(다른 색) = 1 - P(RR) - P(BB) 또는 직접 계산"
+            ],
+            "initial_code": "# 비복원 추출 확률 계산\ntotal = 10\nred = 4\nblue = 6\n\n# P(두 공 모두 빨간) = P(R1) × P(R2|R1)\np_rr = \n\n# P(두 공 모두 파란) = P(B1) × P(B2|B1)\np_bb = \n\n# P(색이 다름) = 1 - P(RR) - P(BB)\np_diff = \n\nprint(f'P(RR): {p_rr:.4f}')\nprint(f'P(BB): {p_bb:.4f}')\nprint(f'P(색 다름): {p_diff:.4f}')\nprint(f'합계: {p_rr + p_bb + p_diff:.4f}')\n",
+            "solution_code": "total = 10\nred = 4\nblue = 6\n\np_rr = (red / total) * ((red - 1) / (total - 1))\np_bb = (blue / total) * ((blue - 1) / (total - 1))\np_diff = 1 - p_rr - p_bb\n\nprint(f'P(RR): {p_rr:.4f}')\nprint(f'P(BB): {p_bb:.4f}')\nprint(f'P(색 다름): {p_diff:.4f}')\nprint(f'합계: {p_rr + p_bb + p_diff:.4f}')",
+            "hints": [
+                {"level": 1, "text": "비복원 추출: 첫 번째 뽑은 후 개수가 줄어듭니다. 빨간 2번: 4/10 × 3/9"},
+                {"level": 2, "text": "p_rr = (red/total) * ((red-1)/(total-1))\np_bb = (blue/total) * ((blue-1)/(total-1))"},
+                {"level": 3, "text": "p_rr = (red/total) * ((red-1)/(total-1))\np_bb = (blue/total) * ((blue-1)/(total-1))\np_diff = 1 - p_rr - p_bb"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "P(RR): 0.1333\nP(BB): 0.3333\nP(색 다름): 0.5333\n합계: 1.0000",
+                "normalize_whitespace": true
+            },
+            "tags": ["비복원추출", "조건부확률", "심화"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch10_p12",
+            "title": "베이즈 정리 - 연쇄 업데이트",
+            "difficulty": "advanced",
+            "description": "동전 2개 중 하나는 양면이 앞면(불공정 동전), 나머지는 정상 동전입니다.\n랜덤으로 동전 1개를 선택하여 3번 던졌더니 모두 앞면이 나왔습니다.\n\n선택한 동전이 불공정 동전일 사후확률을 구하세요.\n\n- P(불공정) = 0.5 (사전)\n- P(앞앞앞 | 불공정) = 1.0 (불공정 동전은 항상 앞면)\n- P(앞앞앞 | 정상) = (0.5)³ = 0.125",
+            "instructions": [
+                "베이즈 정리: P(불공정|앞앞앞) = P(앞앞앞|불공정)×P(불공정) / P(앞앞앞)",
+                "전확률 공식으로 P(앞앞앞)을 구하세요",
+                "결과를 소수점 4자리로 출력하세요"
+            ],
+            "initial_code": "# 사전 확률\nP_biased = 0.5\nP_fair = 0.5\n\n# 우도: 3번 연속 앞면이 나올 확률\nP_3heads_biased = 1.0       # 불공정 동전: 항상 앞면\nP_3heads_fair = 0.5 ** 3   # 정상 동전: (1/2)³\n\n# 전확률 공식: P(앞앞앞)\nP_3heads = \n\n# 베이즈 정리: P(불공정|앞앞앞)\nP_biased_given_3heads = \n\nprint(f'P(앞앞앞): {P_3heads:.4f}')\nprint(f'P(불공정|앞앞앞): {P_biased_given_3heads:.4f}')\nprint(f'→ 3번 연속 앞면 후 불공정 동전 확률: {P_biased_given_3heads:.2%}')\n",
+            "solution_code": "P_biased = 0.5\nP_fair = 0.5\n\nP_3heads_biased = 1.0\nP_3heads_fair = 0.5 ** 3\n\nP_3heads = P_3heads_biased * P_biased + P_3heads_fair * P_fair\nP_biased_given_3heads = (P_3heads_biased * P_biased) / P_3heads\n\nprint(f'P(앞앞앞): {P_3heads:.4f}')\nprint(f'P(불공정|앞앞앞): {P_biased_given_3heads:.4f}')\nprint(f'→ 3번 연속 앞면 후 불공정 동전 확률: {P_biased_given_3heads:.2%}')",
+            "hints": [
+                {"level": 1, "text": "전확률 공식: P(앞앞앞) = P(앞앞앞|불공정)×P(불공정) + P(앞앞앞|정상)×P(정상)"},
+                {"level": 2, "text": "P_3heads = 1.0 * 0.5 + 0.125 * 0.5 = 0.5625\nP_biased_given_3heads = (1.0 * 0.5) / 0.5625"},
+                {"level": 3, "text": "P_3heads = P_3heads_biased * P_biased + P_3heads_fair * P_fair\nP_biased_given_3heads = (P_3heads_biased * P_biased) / P_3heads"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "P(앞앞앞): 0.5625\nP(불공정|앞앞앞): 0.8889\n→ 3번 연속 앞면 후 불공정 동전 확률: 88.89%",
+                "tolerance": 0.001
+            },
+            "tags": ["베이즈정리", "사후확률", "심화"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch10_p13",
+            "title": "확률분포 시뮬레이션",
+            "difficulty": "advanced",
+            "description": "포아송 분포(Poisson distribution)를 시뮬레이션하세요.\n\n어느 콜센터에 1분당 평균 3건의 전화가 옵니다 (λ=3).\n\n1. 1분에 5건 이상 전화가 올 확률 P(X>=5) 계산 (이론값)\n2. 10000번 시뮬레이션으로 실험적 확률 추정\n3. 이론값과 실험값의 차이 출력",
+            "instructions": [
+                "from scipy import stats 사용",
+                "poisson = stats.poisson(mu=3)로 분포를 정의하세요",
+                "P(X>=5) = 1 - P(X<=4) = 1 - poisson.cdf(4)",
+                "np.random.poisson(lam=3, size=10000)으로 시뮬레이션하세요"
+            ],
+            "initial_code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(42)\n\n# 포아송 분포 lambda=3\npoisson = stats.poisson(mu=3)\n\n# 이론적 확률: P(X >= 5) = 1 - P(X <= 4)\nP_ge5_theory = \n\n# 시뮬레이션: 10000번 반복\nsimulations = np.random.poisson(lam=3, size=10000)\nP_ge5_sim = \n\nprint(f'이론값 P(X>=5): {P_ge5_theory:.4f}')\nprint(f'실험값 P(X>=5): {P_ge5_sim:.4f}')\nprint(f'차이: {abs(P_ge5_theory - P_ge5_sim):.4f}')\n",
+            "solution_code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(42)\n\npoisson = stats.poisson(mu=3)\n\nP_ge5_theory = 1 - poisson.cdf(4)\n\nsimulations = np.random.poisson(lam=3, size=10000)\nP_ge5_sim = np.mean(simulations >= 5)\n\nprint(f'이론값 P(X>=5): {P_ge5_theory:.4f}')\nprint(f'실험값 P(X>=5): {P_ge5_sim:.4f}')\nprint(f'차이: {abs(P_ge5_theory - P_ge5_sim):.4f}')",
+            "hints": [
+                {"level": 1, "text": "P(X>=5) = 1 - P(X<=4) = 1 - poisson.cdf(4). 여사건을 활용합니다."},
+                {"level": 2, "text": "시뮬레이션: simulations = np.random.poisson(lam=3, size=10000)\nP_ge5_sim = np.mean(simulations >= 5)"},
+                {"level": 3, "text": "P_ge5_theory = 1 - poisson.cdf(4)\nsimulations = np.random.poisson(lam=3, size=10000)\nP_ge5_sim = np.mean(simulations >= 5)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "이론값 P(X>=5): 0.1847\n실험값 P(X>=5): 0.1836\n차이: 0.0011",
+                "tolerance": 0.01
+            },
+            "tags": ["포아송분포", "시뮬레이션", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch10_p14",
+            "title": "몬테카를로 방법 - 원주율 추정",
+            "difficulty": "advanced",
+            "description": "몬테카를로 시뮬레이션으로 원주율(π)을 추정하세요.\n\n방법: 정사각형 [-1, 1]×[-1, 1] 안에 점을 무작위로 뿌립니다.\n원의 방정식: x² + y² <= 1 (반지름 1인 원)\n\n원 안의 점 개수 / 전체 점 개수 ≈ 원 넓이 / 정사각형 넓이 = π/4\n\n따라서 π ≈ 4 × (원 안의 점 / 전체 점)\n\n10만 개 점으로 시뮬레이션하여 π를 추정하세요.",
+            "instructions": [
+                "np.random.seed(42) 설정",
+                "np.random.uniform(-1, 1, 100000)으로 x, y 좌표 생성",
+                "x²+y² <= 1 조건으로 원 내부 점 판별",
+                "π_estimate = 4 * (원 내부 점 수 / 전체 점 수)"
+            ],
+            "initial_code": "import numpy as np\n\nnp.random.seed(42)\nn_points = 100000\n\n# 무작위 점 생성\nx = np.random.uniform(-1, 1, n_points)\ny = np.random.uniform(-1, 1, n_points)\n\n# 원 내부 판별: x² + y² <= 1\ninside_circle = \n\n# π 추정\npi_estimate = \n\nprint(f'시뮬레이션 점 수: {n_points:,}')\nprint(f'원 내부 점 수: {np.sum(inside_circle):,}')\nprint(f'π 추정값: {pi_estimate:.4f}')\nprint(f'실제 π: {np.pi:.4f}')\nprint(f'오차: {abs(pi_estimate - np.pi):.4f}')\n",
+            "solution_code": "import numpy as np\n\nnp.random.seed(42)\nn_points = 100000\n\nx = np.random.uniform(-1, 1, n_points)\ny = np.random.uniform(-1, 1, n_points)\n\ninside_circle = (x**2 + y**2) <= 1\npi_estimate = 4 * np.sum(inside_circle) / n_points\n\nprint(f'시뮬레이션 점 수: {n_points:,}')\nprint(f'원 내부 점 수: {np.sum(inside_circle):,}')\nprint(f'π 추정값: {pi_estimate:.4f}')\nprint(f'실제 π: {np.pi:.4f}')\nprint(f'오차: {abs(pi_estimate - np.pi):.4f}')",
+            "hints": [
+                {"level": 1, "text": "원의 내부 조건: x² + y² <= 1. numpy 불린 배열 연산으로 한 번에 판별할 수 있습니다."},
+                {"level": 2, "text": "inside_circle = (x**2 + y**2) <= 1\npi_estimate = 4 * np.sum(inside_circle) / n_points"},
+                {"level": 3, "text": "inside_circle = (x**2 + y**2) <= 1\npi_estimate = 4 * np.sum(inside_circle) / n_points\nprint(f'π 추정값: {pi_estimate:.4f}')"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "시뮬레이션 점 수: 100,000\n원 내부 점 수: 78,558\nπ 추정값: 3.1423\n실제 π: 3.1416\n오차: 0.0007",
+                "tolerance": 0.01
+            },
+            "tags": ["몬테카를로", "시뮬레이션", "원주율", "심화"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch10_p15",
+            "title": "종합 - 확률분포 비교 분석",
+            "difficulty": "advanced",
+            "description": "이항분포 B(20, 0.5)와 정규분포 N(10, 5)를 비교 분석하세요.\n(정규분포의 μ=np=10, σ²=np(1-p)=5는 이항분포의 정규근사)\n\n다음을 계산하고 출력하세요:\n1. 이항분포 B(20, 0.5): E(X), Var(X), P(8<=X<=12)\n2. 정규분포 N(10, √5): P(8<=X<=12)\n3. 두 분포의 P(8<=X<=12) 차이 (정규근사 오차)",
+            "instructions": [
+                "from scipy import stats 사용",
+                "이항분포: stats.binom(n=20, p=0.5)",
+                "정규분포: stats.norm(loc=10, scale=5**0.5)",
+                "이항분포 E(X)=np, Var(X)=np(1-p) 공식 사용"
+            ],
+            "initial_code": "from scipy import stats\nimport numpy as np\n\n# 이항분포 B(20, 0.5)\nn, p = 20, 0.5\nbinom = stats.binom(n=n, p=p)\n\n# 이항분포 모수\ne_binom = \nvar_binom = \n\n# P(8 <= X <= 12) 이항분포\np_binom = \n\n# 정규분포 N(10, sqrt(5)) - 이항분포의 정규근사\nnormal = stats.norm(loc=10, scale=5**0.5)\np_normal = \n\nprint(f'이항분포 E(X): {e_binom}')\nprint(f'이항분포 Var(X): {var_binom}')\nprint(f'P(8<=X<=12) 이항분포: {p_binom:.4f}')\nprint(f'P(8<=X<=12) 정규근사: {p_normal:.4f}')\nprint(f'정규근사 오차: {abs(p_binom - p_normal):.4f}')\n",
+            "solution_code": "from scipy import stats\nimport numpy as np\n\nn, p = 20, 0.5\nbinom = stats.binom(n=n, p=p)\n\ne_binom = n * p\nvar_binom = n * p * (1 - p)\n\n# P(8 <= X <= 12) = P(X<=12) - P(X<=7)\np_binom = binom.cdf(12) - binom.cdf(7)\n\nnormal = stats.norm(loc=10, scale=5**0.5)\np_normal = normal.cdf(12) - normal.cdf(8)\n\nprint(f'이항분포 E(X): {e_binom}')\nprint(f'이항분포 Var(X): {var_binom}')\nprint(f'P(8<=X<=12) 이항분포: {p_binom:.4f}')\nprint(f'P(8<=X<=12) 정규근사: {p_normal:.4f}')\nprint(f'정규근사 오차: {abs(p_binom - p_normal):.4f}')",
+            "hints": [
+                {"level": 1, "text": "이항분포 모수: E(X)=np, Var(X)=np(1-p). P(8<=X<=12) = P(X<=12) - P(X<=7) (CDF 활용)"},
+                {"level": 2, "text": "p_binom = binom.cdf(12) - binom.cdf(7)\n정규분포: p_normal = normal.cdf(12) - normal.cdf(8) (연속형이므로 경계가 다름)"},
+                {"level": 3, "text": "e_binom = n * p\nvar_binom = n * p * (1 - p)\np_binom = binom.cdf(12) - binom.cdf(7)\np_normal = normal.cdf(12) - normal.cdf(8)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "이항분포 E(X): 10.0\n이항분포 Var(X): 5.0\nP(8<=X<=12) 이항분포: 0.7368\nP(8<=X<=12) 정규근사: 0.6311\n정규근사 오차: 0.1057",
+                "normalize_whitespace": true
+            },
+            "tags": ["이항분포", "정규분포", "정규근사", "심화"],
+            "related_section": "s4"
+        }
+    ]
+}

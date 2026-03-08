@@ -1,0 +1,382 @@
+{
+    "chapter_id": 17,
+    "problems": [
+        {
+            "problem_id": "ch17_p01",
+            "title": "ROAS 계산",
+            "difficulty": "basic",
+            "description": "광고 지출과 수익 데이터로 ROAS(Return On Ad Spend)를 계산하세요. ROAS = 수익 / 지출 공식을 사용합니다.",
+            "instructions": [
+                "df['roas'] = df['revenue'] / df['spend']로 ROAS를 계산하세요",
+                "결과를 소수점 2자리로 반올림하세요",
+                "ROAS 컬럼을 포함한 DataFrame을 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A', 'B', 'C'],\n    'spend': [1000, 800, 600],\n    'revenue': [3500, 2200, 1500]\n})\n\n# ROAS를 계산하세요\n",
+            "solution_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A', 'B', 'C'],\n    'spend': [1000, 800, 600],\n    'revenue': [3500, 2200, 1500]\n})\n\ndf['roas'] = (df['revenue'] / df['spend']).round(2)\nprint(df[['campaign', 'spend', 'revenue', 'roas']].to_string(index=False))",
+            "hints": [
+                {"level": 1, "text": "ROAS = 수익 / 지출 입니다. df['revenue'] / df['spend']로 계산합니다."},
+                {"level": 2, "text": "df['roas'] = (df['revenue'] / df['spend']).round(2) 로 소수점 2자리까지 저장합니다."},
+                {"level": 3, "text": "df['roas'] = (df['revenue'] / df['spend']).round(2)\nprint(df[['campaign', 'spend', 'revenue', 'roas']].to_string(index=False))"}
+            ],
+            "grading": {
+                "method": "variable_check",
+                "expected_vars": {"df": {"roas": [3.5, 2.75, 2.5]}},
+                "normalize_whitespace": true
+            },
+            "tags": ["roas", "마케팅지표", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch17_p02",
+            "title": "CPC 계산",
+            "difficulty": "basic",
+            "description": "광고 지출과 클릭 수로 CPC(Cost Per Click)를 계산하세요. CPC = 지출 / 클릭 수 공식을 사용합니다.",
+            "instructions": [
+                "df['cpc'] = df['spend'] / df['clicks']로 CPC를 계산하세요",
+                "소수점 1자리로 반올림하세요",
+                "CPC 컬럼을 포함하여 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['검색A', '검색B', 'SNS'],\n    'spend': [500, 800, 600],\n    'clicks': [1000, 1600, 800]\n})\n\n# CPC를 계산하세요\n",
+            "solution_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['검색A', '검색B', 'SNS'],\n    'spend': [500, 800, 600],\n    'clicks': [1000, 1600, 800]\n})\n\ndf['cpc'] = (df['spend'] / df['clicks']).round(1)\nprint(df[['campaign', 'spend', 'clicks', 'cpc']].to_string(index=False))",
+            "hints": [
+                {"level": 1, "text": "CPC = 광고지출 / 클릭수 입니다. df['spend'] / df['clicks']로 계산합니다."},
+                {"level": 2, "text": "df['cpc'] = (df['spend'] / df['clicks']).round(1) 로 저장합니다."},
+                {"level": 3, "text": "df['cpc'] = (df['spend'] / df['clicks']).round(1)\nprint(df[['campaign', 'spend', 'clicks', 'cpc']].to_string(index=False))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "campaign  spend  clicks  cpc\n   검색A    500    1000  0.5\n   검색B    800    1600  0.5\n    SNS    600     800  0.8",
+                "normalize_whitespace": true
+            },
+            "tags": ["cpc", "마케팅지표", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch17_p03",
+            "title": "전환율(CVR) 계산",
+            "difficulty": "basic",
+            "description": "클릭 수와 전환 수로 전환율(CVR, Conversion Rate)을 계산하세요. CVR = 전환수 / 클릭수 × 100 공식을 사용합니다.",
+            "instructions": [
+                "df['cvr'] = df['conversions'] / df['clicks'] * 100으로 계산하세요",
+                "소수점 2자리로 반올림하세요",
+                "전환율이 가장 높은 캠페인 이름을 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A', 'B', 'C', 'D'],\n    'clicks': [1000, 1500, 800, 2000],\n    'conversions': [50, 60, 48, 70]\n})\n\n# 전환율을 계산하고 최고 캠페인을 출력하세요\n",
+            "solution_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A', 'B', 'C', 'D'],\n    'clicks': [1000, 1500, 800, 2000],\n    'conversions': [50, 60, 48, 70]\n})\n\ndf['cvr'] = (df['conversions'] / df['clicks'] * 100).round(2)\nbest = df.loc[df['cvr'].idxmax(), 'campaign']\nprint(f'최고 전환율 캠페인: {best}')",
+            "hints": [
+                {"level": 1, "text": "CVR = conversions / clicks * 100 입니다. idxmax()로 최대값의 인덱스를 찾으세요."},
+                {"level": 2, "text": "df['cvr'] = (df['conversions'] / df['clicks'] * 100).round(2) 후 df.loc[df['cvr'].idxmax(), 'campaign']으로 이름을 추출합니다."},
+                {"level": 3, "text": "df['cvr'] = (df['conversions'] / df['clicks'] * 100).round(2)\nbest = df.loc[df['cvr'].idxmax(), 'campaign']\nprint(f'최고 전환율 캠페인: {best}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "최고 전환율 캠페인: C",
+                "normalize_whitespace": true
+            },
+            "tags": ["cvr", "전환율", "idxmax", "기초"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch17_p04",
+            "title": "라스트터치 기여 모델 개념",
+            "difficulty": "basic",
+            "description": "사용자별 마지막 접촉 채널을 구하는 라스트터치 기여 분석을 구현하세요. 각 user_id의 마지막 channel을 추출하세요.",
+            "instructions": [
+                "sort_values(['user_id', 'timestamp'])으로 정렬하세요",
+                "groupby('user_id').last()로 마지막 접촉을 추출하세요",
+                "채널별 기여 건수를 value_counts()로 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\nlogs = pd.DataFrame({\n    'user_id': [1, 1, 2, 2, 3],\n    'timestamp': pd.to_datetime(['2024-01-01','2024-01-03',\n                                  '2024-01-02','2024-01-05',\n                                  '2024-01-04']),\n    'channel': ['SNS', '검색광고', '이메일', '검색광고', 'SNS']\n})\n\n# 라스트터치 기여 분석을 구현하세요\n",
+            "solution_code": "import pandas as pd\n\nlogs = pd.DataFrame({\n    'user_id': [1, 1, 2, 2, 3],\n    'timestamp': pd.to_datetime(['2024-01-01','2024-01-03',\n                                  '2024-01-02','2024-01-05',\n                                  '2024-01-04']),\n    'channel': ['SNS', '검색광고', '이메일', '검색광고', 'SNS']\n})\n\nlogs_sorted = logs.sort_values(['user_id', 'timestamp'])\nlast_touch = logs_sorted.groupby('user_id').last()\nprint(last_touch['channel'].value_counts())",
+            "hints": [
+                {"level": 1, "text": "sort_values()로 user_id와 timestamp 기준으로 정렬한 후 groupby().last()를 사용하세요."},
+                {"level": 2, "text": "logs_sorted = logs.sort_values(['user_id', 'timestamp'])\nlast_touch = logs_sorted.groupby('user_id').last() 로 마지막 접촉을 추출합니다."},
+                {"level": 3, "text": "logs_sorted = logs.sort_values(['user_id', 'timestamp'])\nlast_touch = logs_sorted.groupby('user_id').last()\nprint(last_touch['channel'].value_counts())"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "channel\n검색광고    2\nSNS       1\nName: count, dtype: int64",
+                "normalize_whitespace": true
+            },
+            "tags": ["attribution", "last_touch", "groupby", "기초"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch17_p05",
+            "title": "데이터 병합 (merge)",
+            "difficulty": "basic",
+            "description": "광고 데이터와 주문 데이터를 campaign 키로 병합하고 ROAS를 계산하세요.",
+            "instructions": [
+                "ad_df.merge(order_df, on='campaign', how='left')로 병합하세요",
+                "merged['roas'] = merged['revenue'] / merged['spend']로 ROAS를 계산하세요",
+                "campaign, spend, revenue, roas 컬럼을 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\nad_df = pd.DataFrame({\n    'campaign': ['A', 'B', 'C'],\n    'spend': [500, 800, 300]\n})\n\norder_df = pd.DataFrame({\n    'campaign': ['A', 'B', 'C'],\n    'revenue': [1750, 2400, 750]\n})\n\n# 두 데이터프레임을 병합하고 ROAS를 계산하세요\n",
+            "solution_code": "import pandas as pd\n\nad_df = pd.DataFrame({\n    'campaign': ['A', 'B', 'C'],\n    'spend': [500, 800, 300]\n})\n\norder_df = pd.DataFrame({\n    'campaign': ['A', 'B', 'C'],\n    'revenue': [1750, 2400, 750]\n})\n\nmerged = ad_df.merge(order_df, on='campaign', how='left')\nmerged['roas'] = (merged['revenue'] / merged['spend']).round(2)\nprint(merged[['campaign', 'spend', 'revenue', 'roas']].to_string(index=False))",
+            "hints": [
+                {"level": 1, "text": "merge()의 on 파라미터에 공통 키 컬럼을, how='left'로 왼쪽 기준 병합을 지정하세요."},
+                {"level": 2, "text": "merged = ad_df.merge(order_df, on='campaign', how='left') 로 병합합니다."},
+                {"level": 3, "text": "merged = ad_df.merge(order_df, on='campaign', how='left')\nmerged['roas'] = (merged['revenue'] / merged['spend']).round(2)\nprint(merged[['campaign', 'spend', 'revenue', 'roas']].to_string(index=False))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "campaign  spend  revenue  roas\n       A    500     1750  3.50\n       B    800     2400  3.00\n       C    300      750  2.50",
+                "normalize_whitespace": true
+            },
+            "tags": ["merge", "roas", "기초"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch17_p06",
+            "title": "라스트터치 구현 - 전환 기여",
+            "difficulty": "intermediate",
+            "description": "전환(conversion=True)한 사용자들의 라스트터치 채널을 분석해 채널별 기여 수와 비율을 출력하세요.",
+            "instructions": [
+                "converted_users에서 전환한 user_id 목록을 추출하세요",
+                "로그를 시간순 정렬 후 전환 사용자의 마지막 터치를 구하세요",
+                "채널별 기여 건수와 비율(%)을 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\nconverted_users = pd.DataFrame({\n    'user_id': [1, 2, 4],\n    'conversion': [True, True, True]\n})\n\nlogs = pd.DataFrame({\n    'user_id': [1,1,1, 2,2, 3,3, 4,4,4],\n    'timestamp': pd.to_datetime([\n        '2024-01-01','2024-01-03','2024-01-05',\n        '2024-01-02','2024-01-06',\n        '2024-01-01','2024-01-04',\n        '2024-01-01','2024-01-03','2024-01-07'\n    ]),\n    'channel': ['SNS','이메일','검색광고','SNS','검색광고',\n                 '검색광고','SNS','디스플레이','이메일','검색광고']\n})\n\n# 전환 사용자의 라스트터치 채널 분석\n",
+            "solution_code": "import pandas as pd\n\nconverted_users = pd.DataFrame({\n    'user_id': [1, 2, 4],\n    'conversion': [True, True, True]\n})\n\nlogs = pd.DataFrame({\n    'user_id': [1,1,1, 2,2, 3,3, 4,4,4],\n    'timestamp': pd.to_datetime([\n        '2024-01-01','2024-01-03','2024-01-05',\n        '2024-01-02','2024-01-06',\n        '2024-01-01','2024-01-04',\n        '2024-01-01','2024-01-03','2024-01-07'\n    ]),\n    'channel': ['SNS','이메일','검색광고','SNS','검색광고',\n                 '검색광고','SNS','디스플레이','이메일','검색광고']\n})\n\nconverted_ids = converted_users['user_id'].tolist()\nconv_logs = logs[logs['user_id'].isin(converted_ids)]\nconv_logs_sorted = conv_logs.sort_values(['user_id', 'timestamp'])\nlast_touch = conv_logs_sorted.groupby('user_id').last()['channel']\n\nresult = last_touch.value_counts()\nprint('채널별 라스트터치 기여:')\nfor ch, cnt in result.items():\n    print(f'{ch}: {cnt}건 ({cnt/len(last_touch)*100:.1f}%)')",
+            "hints": [
+                {"level": 1, "text": "converted_users의 user_id로 logs를 isin()으로 필터링한 후 라스트터치를 구하세요."},
+                {"level": 2, "text": "conv_logs = logs[logs['user_id'].isin(converted_ids)] 로 전환 사용자 로그만 필터링합니다."},
+                {"level": 3, "text": "converted_ids = converted_users['user_id'].tolist()\nconv_logs = logs[logs['user_id'].isin(converted_ids)]\nconv_logs_sorted = conv_logs.sort_values(['user_id', 'timestamp'])\nlast_touch = conv_logs_sorted.groupby('user_id').last()['channel']"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "채널별 라스트터치 기여:\n검색광고: 2건 (66.7%)\n이메일: 1건 (33.3%)",
+                "normalize_whitespace": true
+            },
+            "tags": ["attribution", "last_touch", "isin", "중급"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch17_p07",
+            "title": "전환 윈도우 포함 비율 분석",
+            "difficulty": "intermediate",
+            "description": "신청-결제 소요 일수를 계산하고 3일, 7일, 14일 윈도우별 전환 포함 비율을 출력하세요.",
+            "instructions": [
+                "td = (pay_at - apply_at).dt.total_seconds() / 86400으로 소요 일수를 계산하세요",
+                "3일, 7일, 14일 각각 포함 비율을 계산하세요",
+                "'N일 윈도우: X.X%' 형식으로 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(10)\nn = 200\napply_dates = pd.date_range('2024-01-01', periods=n, freq='3h')\ndelay_hours = np.random.exponential(60, n)\n\ndf = pd.DataFrame({\n    'apply_at': apply_dates,\n    'pay_at': apply_dates + pd.to_timedelta(delay_hours, unit='h')\n})\n\n# 전환 윈도우별 포함 비율을 계산하세요\n",
+            "solution_code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(10)\nn = 200\napply_dates = pd.date_range('2024-01-01', periods=n, freq='3h')\ndelay_hours = np.random.exponential(60, n)\n\ndf = pd.DataFrame({\n    'apply_at': apply_dates,\n    'pay_at': apply_dates + pd.to_timedelta(delay_hours, unit='h')\n})\n\ndf['td'] = (df['pay_at'] - df['apply_at']).dt.total_seconds() / 86400\n\nfor days in [3, 7, 14]:\n    ratio = (df['td'] <= days).mean()\n    print(f'{days}일 윈도우: {ratio:.1%}')",
+            "hints": [
+                {"level": 1, "text": "dt.total_seconds() / 86400으로 timedelta를 일 단위로 변환합니다. 86400 = 60 × 60 × 24입니다."},
+                {"level": 2, "text": "df['td'] = (df['pay_at'] - df['apply_at']).dt.total_seconds() / 86400 후 (df['td'] <= days).mean()으로 비율을 계산합니다."},
+                {"level": 3, "text": "df['td'] = (df['pay_at'] - df['apply_at']).dt.total_seconds() / 86400\nfor days in [3, 7, 14]:\n    ratio = (df['td'] <= days).mean()\n    print(f'{days}일 윈도우: {ratio:.1%}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "3일 윈도우: 71.5%\n7일 윈도우: 91.0%\n14일 윈도우: 98.5%",
+                "normalize_whitespace": true
+            },
+            "tags": ["conversion_window", "timedelta", "중급"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch17_p08",
+            "title": "주별 집계 (isocalendar)",
+            "difficulty": "intermediate",
+            "description": "일별 광고 데이터를 주별로 집계하고 캠페인별 주간 지출 합계를 출력하세요.",
+            "instructions": [
+                "df['week'] = df['date'].dt.isocalendar().week로 주차를 추출하세요",
+                "groupby(['campaign', 'week'])['spend'].sum()으로 주별 집계하세요",
+                "결과를 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(0)\ndates = pd.date_range('2024-01-01', '2024-01-14')\ndf = pd.DataFrame({\n    'date': list(dates) * 2,\n    'campaign': ['A'] * 14 + ['B'] * 14,\n    'spend': np.random.randint(50, 150, 28)\n})\n\n# 주별 지출 합계를 계산하세요\n",
+            "solution_code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(0)\ndates = pd.date_range('2024-01-01', '2024-01-14')\ndf = pd.DataFrame({\n    'date': list(dates) * 2,\n    'campaign': ['A'] * 14 + ['B'] * 14,\n    'spend': np.random.randint(50, 150, 28)\n})\n\ndf['week'] = df['date'].dt.isocalendar().week\nweekly = df.groupby(['campaign', 'week'])['spend'].sum().reset_index()\nprint(weekly.to_string(index=False))",
+            "hints": [
+                {"level": 1, "text": "dt.isocalendar().week로 ISO 주차를 추출합니다. 반환 타입이 uint32이므로 필요하면 .astype(int)로 변환하세요."},
+                {"level": 2, "text": "df['week'] = df['date'].dt.isocalendar().week 후 groupby(['campaign', 'week'])['spend'].sum()으로 집계합니다."},
+                {"level": 3, "text": "df['week'] = df['date'].dt.isocalendar().week\nweekly = df.groupby(['campaign', 'week'])['spend'].sum().reset_index()\nprint(weekly.to_string(index=False))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "campaign  week  spend\n       A     1    637\n       A     2    688\n       B     1    649\n       B     2    633",
+                "normalize_whitespace": true
+            },
+            "tags": ["isocalendar", "groupby", "주별집계", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch17_p09",
+            "title": "pivot_table로 ROAS 매트릭스",
+            "difficulty": "intermediate",
+            "description": "캠페인×주별 ROAS 피벗 테이블을 만드세요. pivot_table()을 사용해 index='week', columns='campaign'으로 설정합니다.",
+            "instructions": [
+                "df['roas'] = df['revenue'] / df['spend']로 ROAS를 계산하세요",
+                "pivot_table(values='roas', index='week', columns='campaign', aggfunc='mean')으로 피벗하세요",
+                "소수점 2자리로 반올림하여 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','A','A','B','B','B'],\n    'week': ['W1','W2','W3','W1','W2','W3'],\n    'spend': [100, 120, 110, 80, 90, 85],\n    'revenue': [350, 480, 385, 240, 315, 255]\n})\n\n# ROAS 피벗 테이블을 만드세요\n",
+            "solution_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','A','A','B','B','B'],\n    'week': ['W1','W2','W3','W1','W2','W3'],\n    'spend': [100, 120, 110, 80, 90, 85],\n    'revenue': [350, 480, 385, 240, 315, 255]\n})\n\ndf['roas'] = df['revenue'] / df['spend']\npivot = df.pivot_table(values='roas', index='week',\n                       columns='campaign', aggfunc='mean').round(2)\nprint(pivot)",
+            "hints": [
+                {"level": 1, "text": "먼저 ROAS 컬럼을 만들고, pivot_table()의 index에 행, columns에 열을 지정하세요."},
+                {"level": 2, "text": "pivot_table(values='roas', index='week', columns='campaign', aggfunc='mean') 로 피벗합니다."},
+                {"level": 3, "text": "df['roas'] = df['revenue'] / df['spend']\npivot = df.pivot_table(values='roas', index='week', columns='campaign', aggfunc='mean').round(2)\nprint(pivot)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "campaign     A     B\nweek                \nW1        3.50  3.00\nW2        4.00  3.50\nW3        3.50  3.00",
+                "normalize_whitespace": true
+            },
+            "tags": ["pivot_table", "roas", "중급"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch17_p10",
+            "title": "캠페인 성과 비교 - 우수/개선 분류",
+            "difficulty": "intermediate",
+            "description": "ROAS를 기준으로 캠페인을 '우수(ROAS>=3)', '양호(2<=ROAS<3)', '개선필요(ROAS<2)'로 분류하세요.",
+            "instructions": [
+                "df['roas'] = df['revenue'] / df['spend']로 ROAS를 계산하세요",
+                "apply()와 lambda 또는 함수로 grade 컬럼을 만드세요",
+                "grade별 캠페인 수를 value_counts()로 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','B','C','D','E','F'],\n    'spend': [500, 800, 300, 600, 400, 700],\n    'revenue': [1750, 1920, 450, 1800, 700, 2100]\n})\n\n# ROAS를 계산하고 등급을 분류하세요\n",
+            "solution_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','B','C','D','E','F'],\n    'spend': [500, 800, 300, 600, 400, 700],\n    'revenue': [1750, 1920, 450, 1800, 700, 2100]\n})\n\ndf['roas'] = (df['revenue'] / df['spend']).round(2)\n\ndef classify(roas):\n    if roas >= 3:\n        return '우수'\n    elif roas >= 2:\n        return '양호'\n    else:\n        return '개선필요'\n\ndf['grade'] = df['roas'].apply(classify)\nprint(df['grade'].value_counts())",
+            "hints": [
+                {"level": 1, "text": "if/elif/else 조건으로 분류 함수를 만들고 apply()로 적용하세요."},
+                {"level": 2, "text": "def classify(roas): ... 함수를 만들고 df['grade'] = df['roas'].apply(classify)로 적용합니다."},
+                {"level": 3, "text": "def classify(roas):\n    if roas >= 3: return '우수'\n    elif roas >= 2: return '양호'\n    else: return '개선필요'\ndf['grade'] = df['roas'].apply(classify)\nprint(df['grade'].value_counts())"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "grade\n우수      3\n양호      2\n개선필요    1\nName: count, dtype: int64",
+                "normalize_whitespace": true
+            },
+            "tags": ["roas", "apply", "분류", "중급"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch17_p11",
+            "title": "멀티터치 균등 기여 분석",
+            "difficulty": "advanced",
+            "description": "각 사용자의 모든 접촉 채널에 균등하게 기여를 분배하는 멀티터치 분석을 구현하세요. 각 터치에 1/n 가중치를 부여합니다.",
+            "instructions": [
+                "user_id별 터치 횟수를 계산하세요",
+                "각 행에 weight = 1 / 터치횟수를 부여하세요",
+                "채널별 weight 합산을 attribution_score로 출력하세요 (소수점 2자리)"
+            ],
+            "initial_code": "import pandas as pd\n\nlogs = pd.DataFrame({\n    'user_id': [1,1,1, 2,2, 3,3,3,3],\n    'channel': ['SNS','이메일','검색광고',\n                 'SNS','검색광고',\n                 '디스플레이','SNS','이메일','검색광고']\n})\n\n# 멀티터치 균등 기여 분석을 구현하세요\n",
+            "solution_code": "import pandas as pd\n\nlogs = pd.DataFrame({\n    'user_id': [1,1,1, 2,2, 3,3,3,3],\n    'channel': ['SNS','이메일','검색광고',\n                 'SNS','검색광고',\n                 '디스플레이','SNS','이메일','검색광고']\n})\n\ntouch_counts = logs.groupby('user_id')['channel'].count()\nlogs['weight'] = logs['user_id'].map(lambda u: 1 / touch_counts[u])\n\nresult = logs.groupby('channel')['weight'].sum().round(2)\nresult.name = 'attribution_score'\nprint(result.sort_values(ascending=False))",
+            "hints": [
+                {"level": 1, "text": "사용자별 터치 수를 구한 뒤, 각 행에 1을 그 수로 나눈 가중치를 붙입니다."},
+                {"level": 2, "text": "touch_counts = logs.groupby('user_id')['channel'].count()\nlogs['weight'] = logs['user_id'].map(lambda u: 1 / touch_counts[u]) 로 가중치를 계산합니다."},
+                {"level": 3, "text": "touch_counts = logs.groupby('user_id')['channel'].count()\nlogs['weight'] = logs['user_id'].map(lambda u: 1 / touch_counts[u])\nresult = logs.groupby('channel')['weight'].sum().round(2)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "channel\n검색광고      1.08\nSNS          0.83\n이메일        0.58\n디스플레이      0.25\nName: attribution_score, dtype: float64",
+                "normalize_whitespace": true
+            },
+            "tags": ["multi_touch", "attribution", "weight", "심화"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch17_p12",
+            "title": "마케팅 파이프라인 구축",
+            "difficulty": "advanced",
+            "description": "광고 데이터와 주문 데이터를 병합하고 주별로 집계하여 CPC와 ROAS를 계산하는 파이프라인을 완성하세요.",
+            "instructions": [
+                "ad_df와 order_df를 ['campaign', 'date']로 merge하세요",
+                "date에서 주차를 추출하세요 (dt.isocalendar().week)",
+                "campaign과 week로 groupby 집계하여 spend, clicks, revenue 합계를 구하세요",
+                "cpc와 roas를 계산하고 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\nad_df = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'date': pd.to_datetime(['2024-01-01','2024-01-02','2024-01-08','2024-01-09'] * 2),\n    'spend': [80, 90, 85, 95, 70, 75, 80, 85],\n    'clicks': [400, 450, 425, 475, 350, 375, 400, 425]\n})\n\norder_df = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'date': pd.to_datetime(['2024-01-01','2024-01-02','2024-01-08','2024-01-09'] * 2),\n    'revenue': [280, 360, 340, 380, 210, 225, 240, 255]\n})\n\n# 파이프라인을 완성하세요\n",
+            "solution_code": "import pandas as pd\n\nad_df = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'date': pd.to_datetime(['2024-01-01','2024-01-02','2024-01-08','2024-01-09'] * 2),\n    'spend': [80, 90, 85, 95, 70, 75, 80, 85],\n    'clicks': [400, 450, 425, 475, 350, 375, 400, 425]\n})\n\norder_df = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'date': pd.to_datetime(['2024-01-01','2024-01-02','2024-01-08','2024-01-09'] * 2),\n    'revenue': [280, 360, 340, 380, 210, 225, 240, 255]\n})\n\nmerged = ad_df.merge(order_df, on=['campaign', 'date'], how='left')\nmerged['week'] = merged['date'].dt.isocalendar().week\n\nweekly = merged.groupby(['campaign', 'week']).agg(\n    spend=('spend', 'sum'),\n    clicks=('clicks', 'sum'),\n    revenue=('revenue', 'sum')\n).reset_index()\n\nweekly['cpc'] = (weekly['spend'] / weekly['clicks']).round(2)\nweekly['roas'] = (weekly['revenue'] / weekly['spend']).round(2)\nprint(weekly.to_string(index=False))",
+            "hints": [
+                {"level": 1, "text": "merge() → 주차 추출 → groupby().agg() → 파생지표 계산 순서로 파이프라인을 구성하세요."},
+                {"level": 2, "text": "merged = ad_df.merge(order_df, on=['campaign', 'date'])\nmerged['week'] = merged['date'].dt.isocalendar().week 후 groupby().agg()로 집계합니다."},
+                {"level": 3, "text": "merged = ad_df.merge(order_df, on=['campaign', 'date'], how='left')\nmerged['week'] = merged['date'].dt.isocalendar().week\nweekly = merged.groupby(['campaign', 'week']).agg(spend=('spend','sum'), clicks=('clicks','sum'), revenue=('revenue','sum')).reset_index()"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "  campaign  week  spend  clicks  revenue   cpc  roas\n         A     1    170     850      640  0.20  3.76\n         A     2    180     900      720  0.20  4.00\n         B     1    145     725      435  0.20  3.00\n         B     2    165     825      495  0.20  3.00",
+                "normalize_whitespace": true
+            },
+            "tags": ["pipeline", "merge", "groupby", "agg", "심화"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch17_p13",
+            "title": "ROAS 추이 시각화 (hline 기준선)",
+            "difficulty": "advanced",
+            "description": "주별 ROAS 추이 선 차트를 그리고 ROAS=2.0 손익분기 기준선을 추가하세요. '시각화 완성'과 기준선 미달 주차 수를 출력하세요.",
+            "instructions": [
+                "px.line()으로 주별 ROAS 선 차트를 생성하세요 (color='campaign')",
+                "add_hline(y=2.0)으로 수평 기준선을 추가하세요",
+                "fig.show() 후 '시각화 완성'을 출력하고 ROAS < 2.0인 행 수를 출력하세요"
+            ],
+            "initial_code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'week': ['W1','W2','W3','W4'] * 2,\n    'roas': [2.5, 3.1, 2.8, 3.4, 1.8, 2.2, 1.6, 2.4]\n})\n\n# ROAS 추이 차트에 기준선을 추가하세요\n",
+            "solution_code": "import plotly.express as px\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'campaign': ['A','A','A','A','B','B','B','B'],\n    'week': ['W1','W2','W3','W4'] * 2,\n    'roas': [2.5, 3.1, 2.8, 3.4, 1.8, 2.2, 1.6, 2.4]\n})\n\nfig = px.line(df, x='week', y='roas', color='campaign',\n              markers=True, title='캠페인별 ROAS 추이')\nfig.add_hline(y=2.0, line_dash='dash', line_color='red',\n              annotation_text='손익분기(ROAS=2.0)')\nfig.show()\nprint('시각화 완성')\nbelow = (df['roas'] < 2.0).sum()\nprint(f'ROAS 2.0 미달 주차 수: {below}')",
+            "hints": [
+                {"level": 1, "text": "add_hline()으로 수평 기준선을 추가합니다. line_dash='dash'로 점선을 만들 수 있습니다."},
+                {"level": 2, "text": "fig.add_hline(y=2.0, line_dash='dash', line_color='red') 로 손익분기 기준선을 추가합니다."},
+                {"level": 3, "text": "fig = px.line(df, x='week', y='roas', color='campaign', markers=True)\nfig.add_hline(y=2.0, line_dash='dash', line_color='red')\nfig.show()\nprint('시각화 완성')\nprint(f'ROAS 2.0 미달 주차 수: {(df[\"roas\"] < 2.0).sum()}')"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "(Plotly 인터랙티브 차트가 표시됩니다)\n시각화 완성\nROAS 2.0 미달 주차 수: 2",
+                "normalize_whitespace": true
+            },
+            "tags": ["plotly", "line", "hline", "roas", "심화"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch17_p14",
+            "title": "종합 분석 - 채널 최적화 제안",
+            "difficulty": "advanced",
+            "description": "채널별 ROAS를 계산하고, ROAS 가중치 기반으로 총 예산 2000을 재배분한 optimized_spend를 계산하세요.",
+            "instructions": [
+                "df['roas'] = df['revenue'] / df['spend']로 ROAS를 계산하세요",
+                "roas_weight = df['roas'] / df['roas'].sum()으로 가중치를 계산하세요",
+                "df['optimized_spend'] = (roas_weight * 2000).round(0).astype(int)로 재배분하세요",
+                "channel, roas, optimized_spend를 ROAS 내림차순으로 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['브랜드검색', '일반검색', 'SNS리타겟', 'SNS신규'],\n    'spend': [400, 700, 500, 400],\n    'revenue': [2200, 2800, 1500, 800]\n})\n\n# ROAS 가중치 기반 예산 재배분을 구현하세요\n",
+            "solution_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'channel': ['브랜드검색', '일반검색', 'SNS리타겟', 'SNS신규'],\n    'spend': [400, 700, 500, 400],\n    'revenue': [2200, 2800, 1500, 800]\n})\n\ndf['roas'] = (df['revenue'] / df['spend']).round(2)\nroas_weight = df['roas'] / df['roas'].sum()\ndf['optimized_spend'] = (roas_weight * 2000).round(0).astype(int)\n\nresult = df[['channel', 'roas', 'optimized_spend']].sort_values('roas', ascending=False)\nprint(result.to_string(index=False))",
+            "hints": [
+                {"level": 1, "text": "ROAS를 모두 더한 합계로 각 ROAS를 나누면 가중치가 됩니다."},
+                {"level": 2, "text": "roas_weight = df['roas'] / df['roas'].sum() 후 roas_weight * 2000으로 예산을 배분합니다."},
+                {"level": 3, "text": "df['roas'] = df['revenue'] / df['spend']\nroas_weight = df['roas'] / df['roas'].sum()\ndf['optimized_spend'] = (roas_weight * 2000).round(0).astype(int)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "    channel  roas  optimized_spend\n  브랜드검색  5.50              633\n  일반검색   4.00              461\nSNS리타겟   3.00              346\n  SNS신규   2.00              230",
+                "normalize_whitespace": true
+            },
+            "tags": ["roas", "budget_allocation", "심화"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch17_p15",
+            "title": "A/B 테스트 성과 비교",
+            "difficulty": "advanced",
+            "description": "A/B 테스트 결과를 분석하여 그룹별 CVR 평균과 t-검정 없이 단순 비율 차이를 계산하고, 성과가 더 좋은 그룹을 출력하세요.",
+            "instructions": [
+                "groupby('group')으로 clicks와 conversions를 집계하세요",
+                "각 그룹의 cvr = conversions / clicks * 100을 계산하세요",
+                "CVR 차이(B - A)를 계산하고 '승리 그룹: [그룹명]'을 출력하세요"
+            ],
+            "initial_code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(7)\nn = 500\ndf = pd.DataFrame({\n    'user_id': range(1, n+1),\n    'group': np.random.choice(['A', 'B'], n),\n    'clicked': np.random.choice([0, 1], n, p=[0.4, 0.6]),\n})\ndf['converted'] = df.apply(\n    lambda r: 1 if r['clicked'] == 1 and np.random.random() < (0.05 if r['group'] == 'A' else 0.07) else 0,\n    axis=1\n)\n\n# A/B 테스트 성과를 비교하세요\n",
+            "solution_code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(7)\nn = 500\ndf = pd.DataFrame({\n    'user_id': range(1, n+1),\n    'group': np.random.choice(['A', 'B'], n),\n    'clicked': np.random.choice([0, 1], n, p=[0.4, 0.6]),\n})\ndf['converted'] = df.apply(\n    lambda r: 1 if r['clicked'] == 1 and np.random.random() < (0.05 if r['group'] == 'A' else 0.07) else 0,\n    axis=1\n)\n\nagg = df.groupby('group').agg(\n    clicks=('clicked', 'sum'),\n    conversions=('converted', 'sum')\n).reset_index()\n\nagg['cvr'] = (agg['conversions'] / agg['clicks'] * 100).round(2)\n\ncvr_a = agg.loc[agg['group'] == 'A', 'cvr'].values[0]\ncvr_b = agg.loc[agg['group'] == 'B', 'cvr'].values[0]\ndiff = round(cvr_b - cvr_a, 2)\nwinner = 'B' if cvr_b > cvr_a else 'A'\n\nprint(agg[['group', 'clicks', 'conversions', 'cvr']].to_string(index=False))\nprint(f'CVR 차이 (B-A): {diff}%p')\nprint(f'승리 그룹: {winner}')",
+            "hints": [
+                {"level": 1, "text": "groupby('group').agg()로 그룹별 클릭 수와 전환 수를 집계한 뒤 CVR을 계산하세요."},
+                {"level": 2, "text": "agg = df.groupby('group').agg(clicks=('clicked','sum'), conversions=('converted','sum')).reset_index() 로 집계합니다."},
+                {"level": 3, "text": "agg = df.groupby('group').agg(clicks=('clicked','sum'), conversions=('converted','sum')).reset_index()\nagg['cvr'] = (agg['conversions'] / agg['clicks'] * 100).round(2)\nwinner = 'B' if cvr_b > cvr_a else 'A'"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "group  clicks  conversions   cvr\n    A     159           13  8.18\n    B     148           13  8.78\nCVR 차이 (B-A): 0.60%p\n승리 그룹: B",
+                "normalize_whitespace": true
+            },
+            "tags": ["ab_test", "cvr", "groupby", "agg", "심화"],
+            "related_section": "s5"
+        }
+    ]
+}

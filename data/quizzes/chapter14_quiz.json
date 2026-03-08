@@ -1,0 +1,122 @@
+{
+    "chapter_id": 14,
+    "quiz_title": "챕터 14 확인 퀴즈 - 회귀분석",
+    "passing_score": 0.6,
+    "questions": [
+        {
+            "question_id": "ch14_q01",
+            "type": "multiple_choice",
+            "question": "단순 선형 회귀모형 Y = β₀ + β₁X + ε 에서 β₁의 의미는?",
+            "options": [
+                "X가 0일 때 Y의 평균값",
+                "X가 1단위 증가할 때 Y의 평균 변화량",
+                "Y가 1단위 증가할 때 X의 변화량",
+                "오차항의 분산"
+            ],
+            "correct_answer": "X가 1단위 증가할 때 Y의 평균 변화량",
+            "explanation": "β₁은 회귀계수(기울기)로, X가 1단위 증가할 때 Y의 평균이 β₁만큼 변한다는 의미입니다. β₀는 절편으로 X=0일 때 Y의 기댓값입니다."
+        },
+        {
+            "question_id": "ch14_q02",
+            "type": "multiple_choice",
+            "question": "최소제곱법(OLS)이 최소화하는 것은?",
+            "options": [
+                "Σ|yᵢ - ŷᵢ|",
+                "Σ(yᵢ - ŷᵢ)²",
+                "Σ(xᵢ - x̄)²",
+                "max|yᵢ - ŷᵢ|"
+            ],
+            "correct_answer": "Σ(yᵢ - ŷᵢ)²",
+            "explanation": "최소제곱법은 잔차 제곱합(SSE = Σ(yᵢ - ŷᵢ)²)을 최소화하는 β₀, β₁을 구합니다. 절댓값 대신 제곱을 사용하면 미분이 가능하여 닫힌 형태의 해를 구할 수 있습니다."
+        },
+        {
+            "question_id": "ch14_q03",
+            "type": "ox",
+            "question": "OLS 회귀분석에서 잔차의 합 Σeᵢ = 0은 항상 성립한다.",
+            "options": ["O", "X"],
+            "correct_answer": "O",
+            "explanation": "OLS 추정량의 수학적 성질로, 절편항이 포함된 회귀모형에서 잔차의 합은 항상 0입니다. 이는 OLS의 정규방정식에서 유도됩니다. 이 성질로 인해 회귀직선은 항상 (x̄, ȳ)를 지납니다."
+        },
+        {
+            "question_id": "ch14_q04",
+            "type": "multiple_choice",
+            "question": "기울기 β₁의 최소제곱 추정량 공식은?",
+            "options": [
+                "β̂₁ = Σ(xᵢ - x̄)² / Σ(xᵢ - x̄)(yᵢ - ȳ)",
+                "β̂₁ = Σ(xᵢ - x̄)(yᵢ - ȳ) / Σ(xᵢ - x̄)²",
+                "β̂₁ = ȳ / x̄",
+                "β̂₁ = Σxᵢyᵢ / Σxᵢ²"
+            ],
+            "correct_answer": "β̂₁ = Σ(xᵢ - x̄)(yᵢ - ȳ) / Σ(xᵢ - x̄)²",
+            "explanation": "β̂₁ = Sxy/Sxx = Σ(xᵢ-x̄)(yᵢ-ȳ) / Σ(xᵢ-x̄)²입니다. 분자 Sxy는 x와 y의 공분산에 비례하고, 분모 Sxx는 x의 분산에 비례합니다. numpy로 계산할 때: beta1 = np.sum((x-x_mean)*(y-y_mean)) / np.sum((x-x_mean)**2)"
+        },
+        {
+            "question_id": "ch14_q05",
+            "type": "fill_blank",
+            "question": "결정계수 R²는 Y의 전체 변동(SST) 중 회귀모형이 설명하는 변동(SSR)의 _______이다.",
+            "options": [],
+            "correct_answer": "비율",
+            "explanation": "R² = SSR/SST = 1 - SSE/SST. R²은 0~1 사이의 값으로, 1에 가까울수록 회귀모형이 Y 변동을 잘 설명합니다. 예를 들어 R²=0.90이면 회귀모형이 Y 변동의 90%를 설명합니다."
+        },
+        {
+            "question_id": "ch14_q06",
+            "type": "multiple_choice",
+            "question": "OLS에서 SST, SSR, SSE의 관계는?",
+            "options": [
+                "SST = SSR × SSE",
+                "SST = SSR + SSE",
+                "SST = SSR - SSE",
+                "SSR = SST × SSE"
+            ],
+            "correct_answer": "SST = SSR + SSE",
+            "explanation": "전체변동 = 회귀변동 + 잔차변동, 즉 SST = SSR + SSE입니다. SST = Σ(yᵢ-ȳ)², SSR = Σ(ŷᵢ-ȳ)², SSE = Σ(yᵢ-ŷᵢ)²이며 R² = SSR/SST."
+        },
+        {
+            "question_id": "ch14_q07",
+            "type": "ox",
+            "question": "R²가 높은 회귀모형은 항상 좋은 모형이다.",
+            "options": ["O", "X"],
+            "correct_answer": "X",
+            "explanation": "R²이 높아도 잔차 플롯에 패턴(비선형성, 이분산성)이 있으면 모형이 부적합할 수 있습니다. 또한 이상치 하나로 R²가 크게 변할 수 있고, 과적합(overfitting) 문제도 있습니다. 잔차분석을 반드시 병행해야 합니다."
+        },
+        {
+            "question_id": "ch14_q08",
+            "type": "multiple_choice",
+            "question": "statsmodels에서 회귀분석 시 sm.add_constant(x)를 추가하는 이유는?",
+            "options": [
+                "x 변수를 표준화하기 위해",
+                "절편(β₀) 항을 모형에 포함시키기 위해",
+                "데이터를 정규화하기 위해",
+                "이상치를 제거하기 위해"
+            ],
+            "correct_answer": "절편(β₀) 항을 모형에 포함시키기 위해",
+            "explanation": "statsmodels.OLS는 설계행렬 X를 직접 받습니다. sm.add_constant(x)는 X 행렬에 1로 채워진 열을 추가하여 β₀(절편)를 추정할 수 있게 합니다. 이 없이 적합하면 원점을 통과하는 모형이 됩니다."
+        },
+        {
+            "question_id": "ch14_q09",
+            "type": "multiple_choice",
+            "question": "회귀계수 β₁의 유의성 검정 귀무가설은?",
+            "options": [
+                "H₀: β₁ = 1",
+                "H₀: β₁ = β₀",
+                "H₀: β₁ = 0",
+                "H₀: β₁ > 0"
+            ],
+            "correct_answer": "H₀: β₁ = 0",
+            "explanation": "H₀: β₁ = 0은 X와 Y 사이에 선형 관계가 없다는 의미입니다. t = β̂₁/SE(β̂₁)로 검정하며, p-value < 0.05이면 귀무가설을 기각하여 선형 관계가 유의하다고 결론 내립니다."
+        },
+        {
+            "question_id": "ch14_q10",
+            "type": "multiple_choice",
+            "question": "신뢰구간(confidence interval)과 예측구간(prediction interval)의 차이는?",
+            "options": [
+                "신뢰구간은 β₁에 대한 구간이고, 예측구간은 β₀에 대한 구간이다",
+                "신뢰구간은 평균 Y에 대한 구간이고, 예측구간은 개별 새 관측값에 대한 구간이다",
+                "두 구간은 동일하다",
+                "예측구간은 신뢰구간보다 좁다"
+            ],
+            "correct_answer": "신뢰구간은 평균 Y에 대한 구간이고, 예측구간은 개별 새 관측값에 대한 구간이다",
+            "explanation": "신뢰구간은 주어진 x*에서 μ_{Y|x*}(평균 Y)의 범위, 예측구간은 새 개별 관측값 Y*의 범위입니다. 예측구간이 항상 신뢰구간보다 넓습니다(오차항 분산이 추가되기 때문). statsmodels에서 conf_int(obs=True)가 예측구간입니다."
+        }
+    ]
+}

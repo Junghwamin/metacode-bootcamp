@@ -1,0 +1,403 @@
+{
+    "chapter_id": 11,
+    "problems": [
+        {
+            "problem_id": "ch11_p01",
+            "title": "이항분포 확률 계산",
+            "difficulty": "basic",
+            "description": "어느 시험의 합격률이 40%입니다. 5명이 시험을 볼 때 정확히 2명이 합격할 확률을 계산하세요.\n\n`scipy.stats.binom.pmf(k, n, p)`를 사용하여 계산하고, 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import binom 으로 임포트하세요",
+                "binom.pmf(k, n, p)를 사용하세요 (k=합격자수, n=5, p=0.4)",
+                "결과를 round(결과, 4)로 반올림하여 변수 prob에 저장하세요",
+                "print(prob)로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import binom\n\n# n=5, p=0.4일 때 정확히 k=2명 합격 확률\nn, p, k = 5, 0.4, 2\n\n# prob 변수에 계산 결과를 저장하세요\n\nprint(prob)\n",
+            "solution_code": "from scipy.stats import binom\n\nn, p, k = 5, 0.4, 2\nprob = round(binom.pmf(k, n, p), 4)\nprint(prob)",
+            "hints": [
+                {"level": 1, "text": "이항분포의 확률질량함수(PMF)를 계산합니다. binom.pmf(k, n, p) 형태로 사용합니다."},
+                {"level": 2, "text": "binom.pmf(2, 5, 0.4)를 계산하고 round()로 4자리 반올림하세요."},
+                {"level": 3, "text": "prob = round(binom.pmf(2, 5, 0.4), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.3456",
+                "tolerance": 0.001,
+                "test_input": []
+            },
+            "tags": ["이항분포", "PMF", "확률"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch11_p02",
+            "title": "포아송분포 확률 계산",
+            "difficulty": "basic",
+            "description": "어느 콜센터에 시간당 평균 4건의 전화가 옵니다. 1시간 동안 정확히 6건 전화가 올 확률을 계산하세요.\n\n`scipy.stats.poisson.pmf(k, mu)`를 사용하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import poisson 으로 임포트하세요",
+                "poisson.pmf(k, mu)를 사용하세요 (k=6, mu=4)",
+                "결과를 round(결과, 4)로 반올림하여 변수 prob에 저장하세요",
+                "print(prob)로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import poisson\n\n# λ=4일 때 정확히 k=6건인 확률\nlambda_ = 4\nk = 6\n\n# prob에 계산 결과를 저장하세요\n\nprint(prob)\n",
+            "solution_code": "from scipy.stats import poisson\n\nlambda_ = 4\nk = 6\nprob = round(poisson.pmf(k, mu=lambda_), 4)\nprint(prob)",
+            "hints": [
+                {"level": 1, "text": "포아송분포는 poisson.pmf(k, mu=λ)로 계산합니다."},
+                {"level": 2, "text": "poisson.pmf(6, mu=4)를 계산하고 round()로 4자리 반올림하세요."},
+                {"level": 3, "text": "prob = round(poisson.pmf(6, mu=4), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.1042",
+                "tolerance": 0.001,
+                "test_input": []
+            },
+            "tags": ["포아송분포", "PMF", "확률"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch11_p03",
+            "title": "정규분포 확률 계산",
+            "difficulty": "basic",
+            "description": "어느 지역 성인 남성의 키가 평균 172cm, 표준편차 7cm인 정규분포를 따릅니다. 키가 180cm 이하일 확률을 구하세요.\n\n`scipy.stats.norm.cdf(x, loc, scale)`을 사용하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import norm 으로 임포트하세요",
+                "norm.cdf(x, loc=mu, scale=sigma)로 계산하세요",
+                "결과를 round(결과, 4)로 반올림하여 변수 prob에 저장하세요",
+                "print(prob)로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import norm\n\nmu = 172\nsigma = 7\nx = 180\n\n# 키가 180 이하일 확률을 prob에 저장하세요\n\nprint(prob)\n",
+            "solution_code": "from scipy.stats import norm\n\nmu = 172\nsigma = 7\nx = 180\nprob = round(norm.cdf(x, loc=mu, scale=sigma), 4)\nprint(prob)",
+            "hints": [
+                {"level": 1, "text": "정규분포의 누적확률은 norm.cdf()를 사용합니다."},
+                {"level": 2, "text": "norm.cdf(180, loc=172, scale=7)를 계산하세요."},
+                {"level": 3, "text": "prob = round(norm.cdf(180, loc=172, scale=7), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.8729",
+                "tolerance": 0.001,
+                "test_input": []
+            },
+            "tags": ["정규분포", "CDF", "확률"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch11_p04",
+            "title": "Z점수 계산",
+            "difficulty": "basic",
+            "description": "수학 시험 점수가 평균 65점, 표준편차 12점인 정규분포를 따릅니다. 점수가 89점인 학생의 Z점수를 계산하세요.\n\nZ = (X - μ) / σ 공식을 사용하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "Z점수 공식 Z = (X - mu) / sigma를 사용하세요",
+                "결과를 round(z, 4)로 반올림하여 변수 z에 저장하세요",
+                "print(z)로 출력하세요"
+            ],
+            "initial_code": "# 평균=65, 표준편차=12, 점수=89\nmu = 65\nsigma = 12\nx = 89\n\n# Z점수를 계산하여 z에 저장하세요\n\nprint(z)\n",
+            "solution_code": "mu = 65\nsigma = 12\nx = 89\nz = round((x - mu) / sigma, 4)\nprint(z)",
+            "hints": [
+                {"level": 1, "text": "Z점수는 (값 - 평균) / 표준편차로 계산합니다."},
+                {"level": 2, "text": "z = (x - mu) / sigma 공식을 그대로 코드로 작성하세요."},
+                {"level": 3, "text": "z = round((89 - 65) / 12, 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "2.0",
+                "tolerance": 0.01,
+                "test_input": []
+            },
+            "tags": ["Z점수", "표준화", "정규분포"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch11_p05",
+            "title": "표준화와 확률 계산",
+            "difficulty": "basic",
+            "description": "영어 시험 점수가 평균 70점, 표준편차 8점인 정규분포를 따릅니다. 점수가 84점 이상일 확률(상위 확률)을 구하세요.\n\n표준화 후 `norm.cdf()`를 사용하여 계산하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "Z = (84 - 70) / 8 로 Z점수를 계산하세요",
+                "P(X >= 84) = 1 - norm.cdf(z) 로 상위 확률을 계산하세요",
+                "결과를 round(결과, 4)로 반올림하여 변수 prob에 저장하세요",
+                "print(prob)로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import norm\n\nmu, sigma, x = 70, 8, 84\n\n# Z점수 계산\nz = (x - mu) / sigma\n\n# P(X >= x) = 1 - P(X < x) 를 prob에 저장하세요\n\nprint(prob)\n",
+            "solution_code": "from scipy.stats import norm\n\nmu, sigma, x = 70, 8, 84\nz = (x - mu) / sigma\nprob = round(1 - norm.cdf(z), 4)\nprint(prob)",
+            "hints": [
+                {"level": 1, "text": "P(X >= x)는 1 - P(X < x) = 1 - cdf(z)로 계산합니다."},
+                {"level": 2, "text": "먼저 z = (84-70)/8 = 1.75를 계산하고, 1 - norm.cdf(1.75)를 구하세요."},
+                {"level": 3, "text": "z = (84-70)/8\nprob = round(1 - norm.cdf(z), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.0401",
+                "tolerance": 0.001,
+                "test_input": []
+            },
+            "tags": ["Z점수", "표준화", "상위확률"],
+            "related_section": "s3"
+        },
+        {
+            "problem_id": "ch11_p06",
+            "title": "CLT 시뮬레이션",
+            "difficulty": "intermediate",
+            "description": "지수분포(lambda=1, 평균=1)에서 표본크기 n=50으로 5000번 표본을 추출하여 표본평균의 표준편차(표준오차)를 계산하세요.\n\n이론값 SE = 1/√50과 비교하고, 시뮬레이션 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "import numpy as np와 np.random.seed(42)를 사용하세요",
+                "np.random.exponential(scale=1, size=50)으로 표본 생성",
+                "5000번 반복하여 각 표본의 평균을 sample_means 리스트에 저장하세요",
+                "np.std(sample_means)로 표준편차를 계산하여 se_simul에 저장하고 round(se_simul, 4)를 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nnp.random.seed(42)\nn = 50\nN_simul = 5000\n\n# 5000번 표본평균을 계산하여 sample_means에 저장하세요\nsample_means = []\nfor _ in range(N_simul):\n    # 지수분포에서 n=50개 추출 후 평균 계산\n    pass\n\n# 표준오차 계산\nse_simul = np.std(sample_means)\nprint(round(se_simul, 4))\n",
+            "solution_code": "import numpy as np\n\nnp.random.seed(42)\nn = 50\nN_simul = 5000\n\nsample_means = []\nfor _ in range(N_simul):\n    sample = np.random.exponential(scale=1, size=n)\n    sample_means.append(sample.mean())\n\nse_simul = np.std(sample_means)\nprint(round(se_simul, 4))",
+            "hints": [
+                {"level": 1, "text": "for 루프 안에서 np.random.exponential(1, 50)으로 표본을 생성하고 .mean()으로 평균을 계산하세요."},
+                {"level": 2, "text": "sample_means.append(np.random.exponential(1, 50).mean()) 형태로 루프를 채우세요."},
+                {"level": 3, "text": "for _ in range(N_simul):\n    sample_means.append(np.random.exponential(1, n).mean())"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.1414",
+                "tolerance": 0.005,
+                "test_input": []
+            },
+            "tags": ["CLT", "시뮬레이션", "표준오차"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch11_p07",
+            "title": "이항분포 → 정규분포 근사",
+            "difficulty": "intermediate",
+            "description": "이항분포 B(200, 0.4)에서 X >= 90인 확률을 두 가지 방법으로 계산하세요:\n1. `binom.cdf`로 정확한 확률\n2. 정규분포 근사: N(np, np(1-p))로 `norm.cdf` 사용\n\n두 결과를 각각 소수점 4자리로 출력하세요 (정확값, 근사값 순).",
+            "instructions": [
+                "n=200, p=0.4일 때 기대값 mu=n*p, 표준편차 sigma=sqrt(n*p*(1-p))를 계산하세요",
+                "방법 1: 1 - binom.cdf(89, n, p)로 P(X>=90) 계산",
+                "방법 2: 1 - norm.cdf(90, mu, sigma)로 근사 계산",
+                "두 값을 각각 print(round(값, 4))로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import binom, norm\nimport numpy as np\n\nn, p = 200, 0.4\nmu = n * p\nsigma = np.sqrt(n * p * (1 - p))\n\n# 방법 1: 이항분포 정확값 P(X>=90)\nexact = 1 - binom.cdf(89, n, p)\n\n# 방법 2: 정규분포 근사값\napprox = 1 - norm.cdf(90, mu, sigma)\n\nprint(round(exact, 4))\nprint(round(approx, 4))\n",
+            "solution_code": "from scipy.stats import binom, norm\nimport numpy as np\n\nn, p = 200, 0.4\nmu = n * p\nsigma = np.sqrt(n * p * (1 - p))\n\nexact = 1 - binom.cdf(89, n, p)\napprox = 1 - norm.cdf(90, mu, sigma)\n\nprint(round(exact, 4))\nprint(round(approx, 4))",
+            "hints": [
+                {"level": 1, "text": "P(X>=90) = 1 - P(X<=89) = 1 - binom.cdf(89, n, p)로 계산합니다."},
+                {"level": 2, "text": "정규근사는 mu=200*0.4=80, sigma=sqrt(200*0.4*0.6)≈6.93을 사용합니다."},
+                {"level": 3, "text": "exact = 1 - binom.cdf(89, 200, 0.4)\napprox = 1 - norm.cdf(90, 80, np.sqrt(200*0.4*0.6))"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.0775\n0.0743",
+                "normalize_whitespace": true
+            },
+            "tags": ["이항분포", "정규근사", "CLT"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch11_p08",
+            "title": "카이제곱분포 확률 계산",
+            "difficulty": "intermediate",
+            "description": "자유도 8인 카이제곱분포에서 P(X > 15.507)을 계산하세요.\n\n`scipy.stats.chi2.cdf(x, df)`를 사용하여 계산하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import chi2 로 임포트하세요",
+                "P(X > 15.507) = 1 - chi2.cdf(15.507, df=8) 로 계산하세요",
+                "결과를 round(결과, 4)로 반올림하여 변수 prob에 저장하세요",
+                "print(prob)로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import chi2\n\ndf = 8\nx = 15.507\n\n# P(X > 15.507)을 prob에 저장하세요\n\nprint(prob)\n",
+            "solution_code": "from scipy.stats import chi2\n\ndf = 8\nx = 15.507\nprob = round(1 - chi2.cdf(x, df=df), 4)\nprint(prob)",
+            "hints": [
+                {"level": 1, "text": "P(X > x) = 1 - P(X <= x) = 1 - chi2.cdf(x, df)로 계산합니다."},
+                {"level": 2, "text": "1 - chi2.cdf(15.507, df=8)을 계산하세요."},
+                {"level": 3, "text": "prob = round(1 - chi2.cdf(15.507, df=8), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "0.0498",
+                "tolerance": 0.002,
+                "test_input": []
+            },
+            "tags": ["카이제곱분포", "자유도", "확률"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch11_p09",
+            "title": "t분포 임계값",
+            "difficulty": "intermediate",
+            "description": "자유도 15인 t분포에서 95% 양측 신뢰구간의 임계값 t(0.025, 15)를 구하세요.\n\n`scipy.stats.t.ppf(q, df)`를 사용하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import t 로 임포트하세요",
+                "양측 5% → 각 꼬리에 2.5% → ppf(0.975, df=15)를 계산하세요",
+                "결과를 round(결과, 4)로 반올림하여 변수 t_crit에 저장하세요",
+                "print(t_crit)으로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import t\n\ndf = 15\n\n# 95% 양측 신뢰구간 임계값 (각 꼬리 2.5%)\n# t_crit에 저장하세요\n\nprint(t_crit)\n",
+            "solution_code": "from scipy.stats import t\n\ndf = 15\nt_crit = round(t.ppf(0.975, df=df), 4)\nprint(t_crit)",
+            "hints": [
+                {"level": 1, "text": "양측 95% 구간은 각 꼬리에 2.5%이므로 상위 2.5%의 임계값 = ppf(0.975)입니다."},
+                {"level": 2, "text": "t.ppf(0.975, df=15)를 계산하세요."},
+                {"level": 3, "text": "t_crit = round(t.ppf(0.975, df=15), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "2.1314",
+                "tolerance": 0.001,
+                "test_input": []
+            },
+            "tags": ["t분포", "임계값", "자유도"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch11_p10",
+            "title": "F분포 임계값",
+            "difficulty": "intermediate",
+            "description": "F분포 F(5, 20)에서 유의수준 0.05에 해당하는 상위 임계값을 구하세요.\n\n`scipy.stats.f.ppf(q, dfn, dfd)`를 사용하고 결과를 소수점 4자리로 출력하세요.",
+            "instructions": [
+                "from scipy.stats import f 로 임포트하세요",
+                "상위 5% 임계값 → f.ppf(0.95, dfn=5, dfd=20) 계산",
+                "결과를 round(결과, 4)로 반올림하여 변수 f_crit에 저장하세요",
+                "print(f_crit)으로 출력하세요"
+            ],
+            "initial_code": "from scipy.stats import f\n\ndfn, dfd = 5, 20\n\n# 유의수준 0.05의 상위 임계값을 f_crit에 저장하세요\n\nprint(f_crit)\n",
+            "solution_code": "from scipy.stats import f\n\ndfn, dfd = 5, 20\nf_crit = round(f.ppf(0.95, dfn=dfn, dfd=dfd), 4)\nprint(f_crit)",
+            "hints": [
+                {"level": 1, "text": "상위 5% 임계값은 누적확률 0.95에 해당하는 값입니다."},
+                {"level": 2, "text": "f.ppf(0.95, dfn=5, dfd=20)을 계산하세요."},
+                {"level": 3, "text": "f_crit = round(f.ppf(0.95, dfn=5, dfd=20), 4)"}
+            ],
+            "grading": {
+                "method": "numeric_output",
+                "expected_output": "2.7109",
+                "tolerance": 0.01,
+                "test_input": []
+            },
+            "tags": ["F분포", "임계값", "자유도"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch11_p11",
+            "title": "분포 적합성 판단",
+            "difficulty": "advanced",
+            "description": "다음 세 가지 상황에서 적합한 분포를 선택하고, 각 상황의 기대값(평균)을 계산하여 출력하세요.\n\n상황 A: 성공률 0.3인 실험 20회 반복 → 이항분포\n상황 B: 시간당 평균 7건 발생 → 포아송분포  \n상황 C: 평균 100, 표준편차 15 → 정규분포 (mean 그대로)",
+            "instructions": [
+                "이항분포 기대값: mean_A = n * p = 20 * 0.3",
+                "포아송분포 기대값: mean_B = lambda = 7",
+                "정규분포 기대값: mean_C = mu = 100",
+                "print(mean_A, mean_B, mean_C) 순서로 한 줄에 출력하세요"
+            ],
+            "initial_code": "# 각 분포의 기대값을 계산하세요\n# A: 이항분포 B(20, 0.3)\n# B: 포아송분포 Poi(7)\n# C: 정규분포 N(100, 15^2)\n\nmean_A = None  # 이항분포 기대값\nmean_B = None  # 포아송분포 기대값\nmean_C = None  # 정규분포 기대값\n\nprint(mean_A, mean_B, mean_C)\n",
+            "solution_code": "mean_A = 20 * 0.3\nmean_B = 7\nmean_C = 100\n\nprint(mean_A, mean_B, mean_C)",
+            "hints": [
+                {"level": 1, "text": "이항분포 기대값 = np, 포아송분포 기대값 = λ, 정규분포 기대값 = μ입니다."},
+                {"level": 2, "text": "mean_A = 20*0.3=6.0, mean_B = 7, mean_C = 100으로 계산합니다."},
+                {"level": 3, "text": "mean_A = 6.0\nmean_B = 7\nmean_C = 100\nprint(mean_A, mean_B, mean_C)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "6.0 7 100",
+                "normalize_whitespace": true
+            },
+            "tags": ["분포 선택", "기대값", "이항분포", "포아송분포"],
+            "related_section": "s1"
+        },
+        {
+            "problem_id": "ch11_p12",
+            "title": "시뮬레이션으로 CLT 비교",
+            "difficulty": "advanced",
+            "description": "균일분포 U(0, 10)에서 n=40 표본을 3000번 추출하여 표본평균 분포의 평균과 표준편차를 계산하세요.\n\n이론값: 평균=5.0, 표준오차=10/(√12 × √40)\n\n시뮬레이션 결과를 mean_simul, se_simul에 저장하고 각각 소수점 2자리로 출력하세요.",
+            "instructions": [
+                "np.random.seed(0)을 설정하세요",
+                "np.random.uniform(0, 10, 40)으로 표본 생성",
+                "3000번 반복 후 np.mean(sample_means), np.std(sample_means)로 계산",
+                "print(round(mean_simul, 2), round(se_simul, 2))로 출력하세요"
+            ],
+            "initial_code": "import numpy as np\n\nnp.random.seed(0)\nn = 40\nN_simul = 3000\n\nsample_means = []\nfor _ in range(N_simul):\n    sample = np.random.uniform(0, 10, n)\n    sample_means.append(sample.mean())\n\nmean_simul = np.mean(sample_means)\nse_simul = np.std(sample_means)\n\nprint(round(mean_simul, 2), round(se_simul, 2))\n",
+            "solution_code": "import numpy as np\n\nnp.random.seed(0)\nn = 40\nN_simul = 3000\n\nsample_means = []\nfor _ in range(N_simul):\n    sample = np.random.uniform(0, 10, n)\n    sample_means.append(sample.mean())\n\nmean_simul = np.mean(sample_means)\nse_simul = np.std(sample_means)\n\nprint(round(mean_simul, 2), round(se_simul, 2))",
+            "hints": [
+                {"level": 1, "text": "균일분포 U(0,10)의 평균=5, 분산=100/12이므로 이론적 표준오차=√(100/12/40)≈0.456입니다."},
+                {"level": 2, "text": "for 루프로 sample_means 리스트를 채우고, np.mean()과 np.std()로 통계를 구하세요."},
+                {"level": 3, "text": "기존 코드가 완성되어 있습니다. 그대로 실행하면 됩니다."}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "4.99 0.46",
+                "normalize_whitespace": true
+            },
+            "tags": ["CLT", "시뮬레이션", "균일분포"],
+            "related_section": "s4"
+        },
+        {
+            "problem_id": "ch11_p13",
+            "title": "정규분포 혼합 확률 계산",
+            "difficulty": "advanced",
+            "description": "어느 공장 제품의 무게가 N(500, 20²)을 따릅니다. 다음 세 가지 확률을 계산하세요:\n\n- P(480 < X < 520)\n- P(X < 460 또는 X > 540)  \n- 상위 1% 기준값 (norm.ppf 사용)\n\n각각 소수점 4자리로 출력하세요 (3줄 출력).",
+            "instructions": [
+                "from scipy.stats import norm, mu=500, sigma=20",
+                "p1 = norm.cdf(520, mu, sigma) - norm.cdf(480, mu, sigma)",
+                "p2 = norm.cdf(460, mu, sigma) + (1 - norm.cdf(540, mu, sigma))",
+                "x_top1 = norm.ppf(0.99, mu, sigma) → 소수점 4자리 출력"
+            ],
+            "initial_code": "from scipy.stats import norm\n\nmu, sigma = 500, 20\n\n# P(480 < X < 520)\np1 = None\n\n# P(X < 460 또는 X > 540)\np2 = None\n\n# 상위 1% 기준값\nx_top1 = None\n\nprint(round(p1, 4))\nprint(round(p2, 4))\nprint(round(x_top1, 4))\n",
+            "solution_code": "from scipy.stats import norm\n\nmu, sigma = 500, 20\n\np1 = norm.cdf(520, mu, sigma) - norm.cdf(480, mu, sigma)\np2 = norm.cdf(460, mu, sigma) + (1 - norm.cdf(540, mu, sigma))\nx_top1 = norm.ppf(0.99, mu, sigma)\n\nprint(round(p1, 4))\nprint(round(p2, 4))\nprint(round(x_top1, 4))",
+            "hints": [
+                {"level": 1, "text": "P(a<X<b) = cdf(b) - cdf(a), P(X<a 또는 X>b) = cdf(a) + (1-cdf(b))"},
+                {"level": 2, "text": "p1은 ±1σ 범위(480~520)이므로 약 68%이고, 상위 1%는 ppf(0.99)입니다."},
+                {"level": 3, "text": "p1 = norm.cdf(520, 500, 20) - norm.cdf(480, 500, 20)\np2 = norm.cdf(460, 500, 20) + (1 - norm.cdf(540, 500, 20))\nx_top1 = norm.ppf(0.99, 500, 20)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.6827\n0.0456\n546.5262",
+                "normalize_whitespace": true
+            },
+            "tags": ["정규분포", "혼합확률", "분위수"],
+            "related_section": "s2"
+        },
+        {
+            "problem_id": "ch11_p14",
+            "title": "분포 시각화 코드 완성",
+            "difficulty": "advanced",
+            "description": "자유도별 t분포와 표준정규분포를 비교하는 코드를 완성하세요.\n\nx = linspace(-4, 4, 300) 범위에서 df=3, df=10, df=30인 t분포와 N(0,1)의 PDF를 계산하여\n각 분포의 x=2.0에서의 PDF 값을 소수점 4자리로 출력하세요 (df=3, df=10, df=30, 정규 순).",
+            "instructions": [
+                "from scipy.stats import norm, t 로 임포트하세요",
+                "x_val = 2.0 에서 각 분포의 PDF 계산",
+                "t.pdf(x_val, df=3), t.pdf(x_val, df=10), t.pdf(x_val, df=30), norm.pdf(x_val) 계산",
+                "각각 round(값, 4)로 4자리 출력 (4줄)"
+            ],
+            "initial_code": "from scipy.stats import norm, t\n\nx_val = 2.0\n\n# 각 분포에서 x=2.0의 PDF 값을 계산하세요\npdf_t3 = None\npdf_t10 = None\npdf_t30 = None\npdf_norm = None\n\nprint(round(pdf_t3, 4))\nprint(round(pdf_t10, 4))\nprint(round(pdf_t30, 4))\nprint(round(pdf_norm, 4))\n",
+            "solution_code": "from scipy.stats import norm, t\n\nx_val = 2.0\n\npdf_t3 = t.pdf(x_val, df=3)\npdf_t10 = t.pdf(x_val, df=10)\npdf_t30 = t.pdf(x_val, df=30)\npdf_norm = norm.pdf(x_val)\n\nprint(round(pdf_t3, 4))\nprint(round(pdf_t10, 4))\nprint(round(pdf_t30, 4))\nprint(round(pdf_norm, 4))",
+            "hints": [
+                {"level": 1, "text": "t분포 PDF는 t.pdf(x, df=자유도), 정규분포는 norm.pdf(x)로 계산합니다."},
+                {"level": 2, "text": "pdf_t3 = t.pdf(2.0, df=3) 형태로 각각 계산하세요."},
+                {"level": 3, "text": "pdf_t3 = t.pdf(2.0, df=3)\npdf_t10 = t.pdf(2.0, df=10)\npdf_t30 = t.pdf(2.0, df=30)\npdf_norm = norm.pdf(2.0)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.0675\n0.0603\n0.0578\n0.054",
+                "normalize_whitespace": true
+            },
+            "tags": ["t분포", "정규분포", "PDF", "자유도"],
+            "related_section": "s5"
+        },
+        {
+            "problem_id": "ch11_p15",
+            "title": "확률분포 종합 문제",
+            "difficulty": "advanced",
+            "description": "다음 세 가지 분포 관련 값을 계산하고 출력하세요:\n\nA) 이항분포 B(100, 0.25)에서 P(20 <= X <= 30) 계산\nB) 포아송분포 Poi(5)에서 P(X >= 8) 계산  \nC) 정규분포 N(0, 1)에서 하위 5%의 Z값 (ppf 사용)\n\n각각 소수점 4자리로 출력하세요 (3줄).",
+            "instructions": [
+                "A: binom.cdf(30, 100, 0.25) - binom.cdf(19, 100, 0.25)",
+                "B: 1 - poisson.cdf(7, mu=5)",
+                "C: norm.ppf(0.05)",
+                "각각 round(값, 4)로 출력 (3줄)"
+            ],
+            "initial_code": "from scipy.stats import binom, poisson, norm\n\n# A: B(100, 0.25)에서 P(20 <= X <= 30)\nprob_a = None\n\n# B: Poi(5)에서 P(X >= 8)\nprob_b = None\n\n# C: N(0,1) 하위 5% Z값\nz_c = None\n\nprint(round(prob_a, 4))\nprint(round(prob_b, 4))\nprint(round(z_c, 4))\n",
+            "solution_code": "from scipy.stats import binom, poisson, norm\n\nprob_a = binom.cdf(30, 100, 0.25) - binom.cdf(19, 100, 0.25)\nprob_b = 1 - poisson.cdf(7, mu=5)\nz_c = norm.ppf(0.05)\n\nprint(round(prob_a, 4))\nprint(round(prob_b, 4))\nprint(round(z_c, 4))",
+            "hints": [
+                {"level": 1, "text": "P(a<=X<=b) = cdf(b) - cdf(a-1) (이산), P(X>=k) = 1 - cdf(k-1)"},
+                {"level": 2, "text": "A: binom.cdf(30,100,0.25) - binom.cdf(19,100,0.25), B: 1-poisson.cdf(7,5)"},
+                {"level": 3, "text": "prob_a = binom.cdf(30, 100, 0.25) - binom.cdf(19, 100, 0.25)\nprob_b = 1 - poisson.cdf(7, mu=5)\nz_c = norm.ppf(0.05)"}
+            ],
+            "grading": {
+                "method": "exact_output",
+                "expected_output": "0.7059\n0.1334\n-1.6449",
+                "normalize_whitespace": true
+            },
+            "tags": ["종합", "이항분포", "포아송분포", "정규분포"],
+            "related_section": "s5"
+        }
+    ]
+}

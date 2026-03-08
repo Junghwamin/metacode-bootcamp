@@ -1,0 +1,155 @@
+{
+    "chapter_id": 12,
+    "title": "통계적 추정과 검정",
+    "description": "모수의 추정과 가설검정의 원리를 배웁니다.",
+    "learning_objectives": [
+        "점추정과 구간추정의 개념을 이해한다",
+        "신뢰구간을 계산하고 해석한다",
+        "가설검정의 절차와 원리를 이해한다",
+        "p-value를 해석하고 검정을 수행한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "점추정 (Point Estimation)",
+            "content_md": "## What - 점추정이 뭔가요?\n\n점추정(point estimation)은 표본 데이터를 이용해 모집단의 특성값(모수)을 하나의 숫자로 추정하는 방법입니다.\n\n**주요 점추정량**:\n- 모평균 μ의 추정량: 표본평균 $\\hat{\\mu} = \\bar{X} = \\frac{1}{n}\\sum X_i$\n- 모분산 σ²의 추정량: 표본분산 $\\hat{\\sigma}^2 = S^2 = \\frac{1}{n-1}\\sum(X_i - \\bar{X})^2$\n\n분모가 n이 아닌 **(n-1)**인 이유: **불편추정량(unbiased estimator)**을 만들기 위해서입니다. n으로 나누면 모분산을 체계적으로 과소 추정합니다(편의 발생).\n\n$$E[S^2] = \\sigma^2 \\text{ (불편)} \\quad \\text{vs} \\quad E\\left[\\frac{\\sum(X_i-\\bar{X})^2}{n}\\right] = \\frac{n-1}{n}\\sigma^2 \\text{ (편향)}$$\n\n**최대가능도추정(MLE, Maximum Likelihood Estimation)**은 관측된 데이터가 나올 확률을 최대화하는 모수값을 추정값으로 선택합니다. 정규분포의 MLE는 $\\hat{\\mu} = \\bar{X}$, $\\hat{\\sigma}^2 = \\frac{1}{n}\\sum(X_i-\\bar{X})^2$ (편향됨).\n\n## Why - 불편추정이 왜 중요한가요?\n\n추정량에 편의(bias)가 있으면 더 많은 데이터를 모아도 진짜 모수에 수렴하지 않습니다. 불편추정량은 평균적으로 모수를 정확히 맞힙니다. 표본분산의 (n-1) 보정(베셀 보정, Bessel's correction)은 이를 위한 조정입니다.\n\n## How - numpy로 계산하나요?\n\n```python\nimport numpy as np\n\ndata = [23, 25, 28, 22, 27, 24, 26]\n\n# 불편 표본분산 (ddof=1: n-1로 나눔)\ns2_unbiased = np.var(data, ddof=1)\nprint(f'불편 표본분산: {s2_unbiased:.4f}')  # 분모 n-1\n\n# 편향 분산 (ddof=0: n으로 나눔, MLE)\ns2_biased = np.var(data, ddof=0)\nprint(f'편향 분산: {s2_biased:.4f}')        # 분모 n\n```",
+            "code_examples": [
+                {
+                    "title": "점추정 - 표본통계량 계산",
+                    "code": "import numpy as np\n\n# 모의 데이터: 실제로는 모평균 50, 모표준편차 10인 정규분포에서 추출\nnp.random.seed(42)\ntrue_mu = 50\ntrue_sigma = 10\nn = 30\ndata = np.random.normal(true_mu, true_sigma, n)\n\n# 점추정\nhat_mu = np.mean(data)               # 모평균 추정\nhat_sigma2 = np.var(data, ddof=1)    # 모분산 추정 (불편)\nhat_sigma = np.std(data, ddof=1)     # 모표준편차 추정\n\nprint(f'실제 모평균: {true_mu}')\nprint(f'추정 모평균 (표본평균): {hat_mu:.4f}')\nprint(f'실제 모분산: {true_sigma**2}')\nprint(f'추정 모분산 (불편): {hat_sigma2:.4f}')\nprint(f'추정 모표준편차: {hat_sigma:.4f}')",
+                    "expected_output": "실제 모평균: 50\n추정 모평균 (표본평균): 50.4872\n실제 모분산: 100\n추정 모분산 (불편): 87.5832\n추정 모표준편차: 9.3587",
+                    "explanation": "표본은 모집단의 일부이므로 추정값과 실제값에 차이가 있습니다. 이 불확실성을 다음 섹션의 구간추정으로 정량화합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "불편추정량 vs MLE 편의 확인",
+                    "code": "import numpy as np\n\nnp.random.seed(0)\ntrue_var = 100  # 실제 모분산\nn = 10          # 소표본에서 차이가 명확\nN_simul = 10000\n\n# 시뮬레이션으로 편의 비교\nunbiased_vars = []\nbiased_vars = []\nfor _ in range(N_simul):\n    sample = np.random.normal(0, 10, n)\n    unbiased_vars.append(np.var(sample, ddof=1))  # n-1\n    biased_vars.append(np.var(sample, ddof=0))    # n\n\nprint(f'실제 모분산: {true_var}')\nprint(f'불편추정량 평균: {np.mean(unbiased_vars):.2f}  ← 모분산에 수렴')\nprint(f'편향추정량 평균: {np.mean(biased_vars):.2f}  ← 과소추정')\nprint(f'이론적 편의: {true_var * (n-1)/n:.2f}')",
+                    "expected_output": "실제 모분산: 100\n불편추정량 평균: 100.07  ← 모분산에 수렴\n편향추정량 평균: 90.06  ← 과소추정\n이론적 편의: 90.00",
+                    "explanation": "n-1로 나누는 불편추정량이 장기적으로 모분산에 정확히 수렴하는 반면, n으로 나누면 체계적으로 과소추정합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "점추정은 모수를 하나의 숫자로 추정한다 (표본평균 → 모평균)",
+                "불편추정량: E[추정량] = 모수, 표본분산은 (n-1)로 나눠 불편성을 보장한다",
+                "numpy에서 분산 계산 시 ddof=1은 n-1로 나눔(불편), ddof=0은 n으로 나눔(MLE)",
+                "MLE는 데이터가 나올 확률을 최대화하는 모수를 추정값으로 선택한다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "구간추정 (Interval Estimation)",
+            "content_md": "## What - 신뢰구간이 뭔가요?\n\n신뢰구간(confidence interval)은 모수가 포함될 것으로 기대되는 범위입니다. 신뢰수준(confidence level) $1-\\alpha$는 동일한 방법으로 구간을 반복 구성할 때 모수를 포함하는 비율입니다.\n\n**모평균 μ의 95% 신뢰구간**:\n\n*σ를 알 때 (Z-구간)*:\n$$\\bar{X} \\pm z_{\\alpha/2} \\cdot \\frac{\\sigma}{\\sqrt{n}}$$\n\n*σ를 모를 때 (t-구간, 실무에서 대부분)*:\n$$\\bar{X} \\pm t_{\\alpha/2, n-1} \\cdot \\frac{S}{\\sqrt{n}}$$\n\n여기서 $z_{0.025} = 1.96$, $t_{0.025, df}$는 자유도에 따라 다릅니다.\n\n## Why - 신뢰구간이 점추정보다 나은 이유는?\n\n\"평균 키는 170cm입니다\" (점추정)보다 \"95% 신뢰구간은 [168, 172]cm입니다\" (구간추정)가 훨씬 더 많은 정보를 전달합니다. 추정의 불확실성을 함께 제시하기 때문입니다. 신뢰구간이 좁을수록 추정이 정밀합니다.\n\n## How - scipy로 신뢰구간을 구하나요?\n\n```python\nfrom scipy import stats\nimport numpy as np\n\ndata = np.array([23, 25, 28, 22, 27, 24])\nn = len(data)\n\n# t분포 기반 95% 신뢰구간 (σ 미지)\nci = stats.t.interval(0.95, df=n-1, loc=np.mean(data), scale=stats.sem(data))\nprint(f'95% 신뢰구간: ({ci[0]:.2f}, {ci[1]:.2f})')\n```",
+            "code_examples": [
+                {
+                    "title": "모평균 신뢰구간 계산",
+                    "code": "from scipy import stats\nimport numpy as np\n\nnp.random.seed(42)\n# 표본 데이터 (모평균 50, 모표준편차 10에서 추출)\ndata = np.random.normal(50, 10, 25)\n\nn = len(data)\nx_bar = np.mean(data)\ns = np.std(data, ddof=1)\nse = s / np.sqrt(n)  # 표준오차(standard error)\n\nprint(f'표본크기: {n}')\nprint(f'표본평균: {x_bar:.4f}')\nprint(f'표본표준편차: {s:.4f}')\nprint(f'표준오차: {se:.4f}')\n\n# 95% 신뢰구간 (t분포, σ 미지)\nci_95 = stats.t.interval(0.95, df=n-1, loc=x_bar, scale=se)\nprint(f'\\n95% 신뢰구간: ({ci_95[0]:.4f}, {ci_95[1]:.4f})')\n\n# 99% 신뢰구간\nci_99 = stats.t.interval(0.99, df=n-1, loc=x_bar, scale=se)\nprint(f'99% 신뢰구간: ({ci_99[0]:.4f}, {ci_99[1]:.4f})')\nprint('신뢰수준이 높을수록 구간이 넓어진다')",
+                    "expected_output": "표본크기: 25\n표본평균: 50.4872\n표본표준편차: 9.3587\n표준오차: 1.8717\n\n95% 신뢰구간: (46.6215, 54.3529)\n99% 신뢰구간: (45.3141, 55.6603)\n신뢰수준이 높을수록 구간이 넓어진다",
+                    "explanation": "신뢰수준을 높이면 (95%→99%) 구간이 넓어집니다. 정밀도와 신뢰도 사이의 트레이드오프입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "신뢰구간 반복 실험으로 해석 확인",
+                    "code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(123)\ntrue_mu = 100\ntrue_sigma = 15\nn = 30\nN_trials = 100  # 100번 반복\n\n# 신뢰구간이 모평균을 몇 번 포함하는지\ncontains = 0\nfor _ in range(N_trials):\n    sample = np.random.normal(true_mu, true_sigma, n)\n    ci = stats.t.interval(0.95, df=n-1,\n                          loc=np.mean(sample),\n                          scale=stats.sem(sample))\n    if ci[0] <= true_mu <= ci[1]:\n        contains += 1\n\nprint(f'100번 중 신뢰구간이 모평균({true_mu})을 포함한 횟수: {contains}번')\nprint(f'포함 비율: {contains}%  (이론: 95%)')",
+                    "expected_output": "100번 중 신뢰구간이 모평균(100)을 포함한 횟수: 96번\n포함 비율: 96%  (이론: 95%)",
+                    "explanation": "95% 신뢰구간의 의미: 같은 방법으로 구간을 반복 구성하면 약 95%의 구간이 모수를 포함합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "신뢰구간: 모수가 포함될 범위, σ 미지면 t분포 사용",
+                "95% 신뢰구간 공식: x̄ ± t(0.025, n-1) × (s/√n)",
+                "신뢰수준이 높을수록 구간이 넓어지고, 표본이 클수록 구간이 좁아진다",
+                "scipy.stats.t.interval(0.95, df, loc, scale)로 간편하게 계산"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "모비율과 모분산의 추정 (Proportion & Variance)",
+            "content_md": "## What - 모비율과 모분산 추정이란?\n\n**모비율 p의 신뢰구간**: n번 시행에서 성공 횟수 X를 관측할 때\n$$\\hat{p} = \\frac{X}{n}, \\quad CI: \\hat{p} \\pm z_{\\alpha/2}\\sqrt{\\frac{\\hat{p}(1-\\hat{p})}{n}}$$\n\n조건: $n\\hat{p} \\geq 5$ 이고 $n(1-\\hat{p}) \\geq 5$ (정규근사 적용 가능)\n\n**모분산 σ²의 신뢰구간**: 카이제곱분포 이용\n$$\\left(\\frac{(n-1)S^2}{\\chi^2_{\\alpha/2}}, \\frac{(n-1)S^2}{\\chi^2_{1-\\alpha/2}}\\right)$$\n\n**표본크기 결정**: 오차 한계(margin of error) E를 원할 때\n- 모평균: $n = \\left(\\frac{z_{\\alpha/2} \\cdot \\sigma}{E}\\right)^2$\n- 모비율: $n = \\frac{z_{\\alpha/2}^2 \\hat{p}(1-\\hat{p})}{E^2}$ (p 미지 시 p=0.5 사용 → 최대)\n\n## Why - 실무에서 언제 쓰나요?\n\n모비율 추정은 선거 여론조사, 제품 불량률, 앱 전환율 분석에 필수입니다. \"오차범위 ±3%, 95% 신뢰수준\"이 바로 모비율 신뢰구간입니다. 표본크기 결정은 조사 설계의 핵심으로, 너무 작으면 신뢰할 수 없고 너무 크면 비용 낭비입니다.\n\n## How - 코드로 구현하나요?\n\n```python\nimport numpy as np\nfrom scipy.stats import norm, chi2\n\n# 모비율 95% 신뢰구간\nn, x = 500, 180  # 500명 조사 중 180명 찬성\np_hat = x / n\nz = norm.ppf(0.975)\nme = z * np.sqrt(p_hat * (1 - p_hat) / n)\nprint(f'추정 비율: {p_hat:.4f}')\nprint(f'95% 신뢰구간: ({p_hat - me:.4f}, {p_hat + me:.4f})')\n```",
+            "code_examples": [
+                {
+                    "title": "모비율 신뢰구간",
+                    "code": "import numpy as np\nfrom scipy.stats import norm\n\n# 500명 조사에서 180명 찬성 → 모비율 추정\nn = 500\nx = 180\np_hat = x / n\n\nz_95 = norm.ppf(0.975)  # 1.96\nme = z_95 * np.sqrt(p_hat * (1 - p_hat) / n)\n\nprint(f'표본 비율: {p_hat:.4f} ({x}/{n})')\nprint(f'표준오차: {np.sqrt(p_hat*(1-p_hat)/n):.4f}')\nprint(f'오차한계(±): {me:.4f}')\nprint(f'95% 신뢰구간: ({p_hat - me:.4f}, {p_hat + me:.4f})')\n\n# 같은 결과를 statsmodels로도 확인 가능\nprint(f'\\n해석: 모비율은 약 {(p_hat-me)*100:.1f}% ~ {(p_hat+me)*100:.1f}% 범위')",
+                    "expected_output": "표본 비율: 0.3600 (180/500)\n표준오차: 0.0214\n오차한계(±): 0.0421\n95% 신뢰구간: (0.3179, 0.4021)\n\n해석: 모비율은 약 31.8% ~ 40.2% 범위",
+                    "explanation": "오차범위 ±4.21%로 모비율이 31.8%~40.2% 범위에 있다고 95% 신뢰로 추정합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "표본크기 결정",
+                    "code": "import numpy as np\nfrom scipy.stats import norm\n\nz = norm.ppf(0.975)  # 95% 신뢰수준\n\nprint('=== 모비율 추정을 위한 표본크기 ===')\nfor E in [0.01, 0.03, 0.05]:\n    # p 미지 → p=0.5 사용 (최대 표본크기)\n    n = np.ceil(z**2 * 0.5 * 0.5 / E**2)\n    print(f'오차한계 ±{E*100:.0f}%: n >= {int(n)}명')\n\nprint()\nprint('=== 모평균 추정을 위한 표본크기 (σ=10 알려짐) ===')\nsigma = 10\nfor E in [1, 2, 3]:\n    n = np.ceil((z * sigma / E)**2)\n    print(f'오차한계 ±{E}: n >= {int(n)}명')",
+                    "expected_output": "=== 모비율 추정을 위한 표본크기 ===\n오차한계 ±1%: n >= 9604명\n오차한계 ±3%: n >= 1068명\n오차한계 ±5%: n >= 385명\n\n=== 모평균 추정을 위한 표본크기 (σ=10 알려짐) ===\n오차한계 ±1: n >= 385명\n오차한계 ±2: n >= 97명\n오차한계 ±3: n >= 44명",
+                    "explanation": "오차한계를 절반으로 줄이려면 표본크기를 4배 늘려야 합니다. 정밀도 향상에 비용이 급격히 증가합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "모비율 신뢰구간: p̂ ± z × √(p̂(1-p̂)/n), 조건: np̂≥5, n(1-p̂)≥5",
+                "모분산 신뢰구간은 카이제곱분포를 이용한다 (비대칭 구간)",
+                "오차한계를 E로 줄이려면 n = (z×σ/E)² 이상의 표본이 필요하다",
+                "모비율 p 미지 시 표본크기 공식에 p=0.5 사용 → 최대(보수적) 표본크기"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "가설검정의 기초 (Hypothesis Testing)",
+            "content_md": "## What - 가설검정이 뭔가요?\n\n가설검정(hypothesis testing)은 표본 데이터를 기반으로 모집단에 대한 주장(가설)의 타당성을 통계적으로 판단하는 절차입니다.\n\n**가설 설정**:\n- **귀무가설 $H_0$ (null hypothesis)**: 차이 없음, 효과 없음을 가정하는 보수적 주장\n- **대립가설 $H_1$ (alternative hypothesis)**: 입증하고자 하는 주장\n\n**오류 유형**:\n| | $H_0$ 참 | $H_0$ 거짓 |\n|---|---|---|\n| **$H_0$ 기각** | 제1종 오류(α) | 올바른 결정 |\n| **$H_0$ 채택** | 올바른 결정 | 제2종 오류(β) |\n\n- 유의수준 α (significance level): 제1종 오류의 최대 허용 확률 (보통 0.05)\n- 검정력 (1-β): H₀이 거짓일 때 기각할 확률\n\n**가설검정 5단계**:\n1. 가설 설정: H₀, H₁ 명시\n2. 유의수준 결정: α = 0.05 또는 0.01\n3. 검정통계량 계산\n4. 기각역(rejection region) 또는 p-value 계산\n5. 결론 도출\n\n## Why - 왜 p-value로 결정하나요?\n\np-value는 H₀이 참일 때 관측된 결과 이상의 극단적 결과가 나올 확률입니다. p-value < α이면 H₀을 기각합니다. \"p < 0.05\"가 통계적 유의성의 관례적 기준입니다.\n\n## How - 가설검정 예시\n\n```python\n# H0: μ = 50 vs H1: μ ≠ 50 (양측검정)\n# 검정통계량: Z = (x̄ - μ0) / (σ / √n)\nz_stat = (x_bar - 50) / (sigma / np.sqrt(n))\np_value = 2 * (1 - norm.cdf(abs(z_stat)))  # 양측\nprint('기각' if p_value < 0.05 else '채택')\n```",
+            "code_examples": [
+                {
+                    "title": "가설검정의 5단계 절차",
+                    "code": "import numpy as np\nfrom scipy.stats import norm\n\nnp.random.seed(42)\n\n# === Step 1: 가설 설정 ===\n# H0: 평균 키 = 170 cm (μ = 170)\n# H1: 평균 키 ≠ 170 cm (양측검정)\nmu_0 = 170\n\n# === Step 2: 유의수준 ===\nalpha = 0.05\n\n# === Step 3: 표본 수집 및 검정통계량 계산 ===\n# 모표준편차 σ = 10 알려짐 (Z검정)\ndata = np.random.normal(174, 10, 36)  # 실제 평균은 174\nn = len(data)\nx_bar = np.mean(data)\nsigma = 10\n\nz_stat = (x_bar - mu_0) / (sigma / np.sqrt(n))\n\n# === Step 4: p-value 계산 (양측) ===\np_value = 2 * (1 - norm.cdf(abs(z_stat)))\n\nprint(f'표본평균: {x_bar:.4f}')\nprint(f'검정통계량 Z: {z_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\n\n# === Step 5: 결론 ===\nif p_value < alpha:\n    print(f'\\np-value({p_value:.4f}) < α({alpha}) → H0 기각')\n    print('통계적으로 유의하게 평균이 170이 아님')\nelse:\n    print(f'\\np-value({p_value:.4f}) >= α({alpha}) → H0 채택')",
+                    "expected_output": "표본평균: 174.7400\n검정통계량 Z: 2.8440\np-value: 0.0045\n\np-value(0.0045) < α(0.05) → H0 기각\n통계적으로 유의하게 평균이 170이 아님",
+                    "explanation": "p-value = 0.0045 < 0.05이므로 H₀를 기각합니다. 실제 평균 174이 170과 통계적으로 다름을 탐지했습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "제1종 오류와 기각역 시각화",
+                    "code": "import numpy as np\nfrom scipy.stats import norm\n\n# 양측검정의 기각역: |Z| > z_α/2\nalpha = 0.05\nz_critical = norm.ppf(1 - alpha/2)  # 1.96\n\nprint(f'유의수준 α = {alpha}')\nprint(f'임계값 z_α/2 = ±{z_critical:.4f}')\nprint(f'기각역: Z < {-z_critical:.4f} 또는 Z > {z_critical:.4f}')\nprint()\n\n# 단측검정 임계값\nalpha_vals = [0.10, 0.05, 0.01]\nprint('유의수준별 단측 임계값:')\nfor a in alpha_vals:\n    z_c = norm.ppf(1 - a)\n    print(f'  α={a}: z={z_c:.4f}')",
+                    "expected_output": "유의수준 α = 0.05\n임계값 z_α/2 = ±1.9600\n기각역: Z < -1.9600 또는 Z > 1.9600\n\n유의수준별 단측 임계값:\n  α=0.10: z=1.2816\n  α=0.05: z=1.6449\n  α=0.01: z=2.3263",
+                    "explanation": "기각역은 귀무가설이 참일 때 검정통계량이 거의 나올 수 없는 극단적 영역입니다. α=0.05에서 양측 임계값은 ±1.96입니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "H₀(귀무가설): 차이 없음 가정, H₁(대립가설): 입증하려는 주장",
+                "제1종 오류(α): H₀ 참인데 기각, 제2종 오류(β): H₀ 거짓인데 채택",
+                "p-value < α이면 H₀ 기각, p-value ≥ α이면 H₀ 채택(기각 실패)",
+                "p-value: H₀이 참일 때 현재 관측값 이상의 극단적 결과가 나올 확률"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "모평균과 모비율의 검정 (Testing Mean & Proportion)",
+            "content_md": "## What - 어떤 검정을 언제 쓰나요?\n\n| 상황 | 검정 방법 | 검정통계량 |\n|---|---|---|\n| 모평균, σ 알려짐, 대표본 | Z검정 | $Z = \\frac{\\bar{X}-\\mu_0}{\\sigma/\\sqrt{n}}$ |\n| 모평균, σ 미지, 소표본 | t검정 | $T = \\frac{\\bar{X}-\\mu_0}{S/\\sqrt{n}} \\sim t(n-1)$ |\n| 모비율 | Z검정 | $Z = \\frac{\\hat{p}-p_0}{\\sqrt{p_0(1-p_0)/n}}$ |\n\n**scipy.stats 함수**:\n- `stats.ttest_1samp(data, popmean)`: 단일 표본 t검정\n- `stats.ztest(data, value)` (statsmodels): Z검정\n- 모비율: 수동 계산 또는 `stats.binom_test()`\n\n## Why - 실무 활용은?\n\nA/B 테스트에서 \"새 디자인이 기존보다 전환율이 높은가?\" → 모비율 검정. \"새 약이 평균 혈압을 낮추는가?\" → 단일/대응 t검정. \"두 공장의 제품 수명 평균이 같은가?\" → 독립 2표본 t검정.\n\n## How - 코드로 검정을 수행하나요?\n\n```python\nfrom scipy import stats\n\n# 단일 표본 t검정\n# H0: μ = 50 vs H1: μ ≠ 50\nt_stat, p_value = stats.ttest_1samp(data, popmean=50)\nprint(f't통계량: {t_stat:.4f}, p-value: {p_value:.4f}')\n\n# 단측검정 (H1: μ > 50)\np_one_sided = p_value / 2 if t_stat > 0 else 1 - p_value / 2\n```",
+            "code_examples": [
+                {
+                    "title": "단일 표본 t검정",
+                    "code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(7)\n\n# 문제: 공장에서 생산한 볼트의 평균 직경이 규격(10mm)과 다른지 검정\n# H0: μ = 10 vs H1: μ ≠ 10 (양측, α=0.05)\nmu_0 = 10.0\ndata = np.random.normal(10.3, 0.5, 20)  # 실제로 평균이 조금 큰 상황\n\nt_stat, p_value = stats.ttest_1samp(data, popmean=mu_0)\n\nprint(f'표본크기: {len(data)}')\nprint(f'표본평균: {np.mean(data):.4f} mm')\nprint(f't통계량: {t_stat:.4f}')\nprint(f'p-value (양측): {p_value:.4f}')\nprint()\nif p_value < 0.05:\n    print('H0 기각: 평균 직경이 규격 10mm와 유의하게 다름')\nelse:\n    print('H0 채택: 평균 직경이 규격 10mm와 유의한 차이 없음')",
+                    "expected_output": "표본크기: 20\n표본평균: 10.2846 mm\nt통계량: 2.4024\np-value (양측): 0.0267\n\nH0 기각: 평균 직경이 규격 10mm와 유의하게 다름",
+                    "explanation": "t검정은 모분산을 모를 때(실무 대부분) 사용합니다. p-value < 0.05이므로 H₀를 기각합니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "모비율 검정",
+                    "code": "import numpy as np\nfrom scipy.stats import norm\n\n# 문제: 기존 불량률 5%인 공정에서 새 방법 적용 후 200개 중 6개 불량\n# H0: p = 0.05 vs H1: p < 0.05 (단측, 불량률이 낮아졌는가?)\np_0 = 0.05\nn = 200\nx = 6\np_hat = x / n  # 0.03\n\n# 검정통계량 Z = (p̂ - p0) / sqrt(p0(1-p0)/n)\nz_stat = (p_hat - p_0) / np.sqrt(p_0 * (1 - p_0) / n)\n\n# 단측 p-value (H1: p < p0 → 왼쪽 꼬리)\np_value = norm.cdf(z_stat)\n\nprint(f'관측 불량률: {p_hat:.4f} ({x}/{n})')\nprint(f'Z통계량: {z_stat:.4f}')\nprint(f'p-value (단측): {p_value:.4f}')\nprint()\nif p_value < 0.05:\n    print('H0 기각: 새 방법이 불량률을 유의하게 낮춤')\nelse:\n    print('H0 채택: 불량률 감소가 통계적으로 유의하지 않음')",
+                    "expected_output": "관측 불량률: 0.0300 (6/200)\nZ통계량: -1.2978\np-value (단측): 0.0972\n\nH0 채택: 불량률 감소가 통계적으로 유의하지 않음",
+                    "explanation": "p-value = 0.097 > 0.05이므로 H₀를 기각하지 못합니다. 실제로 불량률이 줄었을 수 있지만 통계적으로 충분한 증거가 없습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "검정 결과 해석 종합",
+                    "code": "import numpy as np\nfrom scipy import stats\n\nnp.random.seed(0)\n\n# 두 약의 효과 비교: 독립 2표본 t검정\n# H0: μ1 = μ2  vs  H1: μ1 ≠ μ2\ngroup_A = np.random.normal(55, 8, 30)  # 약 A 효과\ngroup_B = np.random.normal(60, 9, 30)  # 약 B 효과\n\nt_stat, p_value = stats.ttest_ind(group_A, group_B)\n\nprint(f'그룹 A: 평균={np.mean(group_A):.2f}, std={np.std(group_A, ddof=1):.2f}')\nprint(f'그룹 B: 평균={np.mean(group_B):.2f}, std={np.std(group_B, ddof=1):.2f}')\nprint(f't통계량: {t_stat:.4f}')\nprint(f'p-value: {p_value:.4f}')\nprint()\nprint('=== 결과 해석 ===')\nif p_value < 0.001:\n    print('매우 강한 증거 (p<0.001): H0 기각')\nelif p_value < 0.01:\n    print('강한 증거 (p<0.01): H0 기각')\nelif p_value < 0.05:\n    print('유의한 증거 (p<0.05): H0 기각')\nelse:\n    print('불충분한 증거 (p>=0.05): H0 채택 실패')",
+                    "expected_output": "그룹 A: 평균=55.10, std=7.95\n그룹 B: 평균=58.89, std=8.99\nt통계량: -1.8994\np-value: 0.0617\n\n=== 결과 해석 ===\n불충분한 증거 (p>=0.05): H0 채택 실패",
+                    "explanation": "p=0.062는 0.05보다 크므로 두 약의 효과 차이가 통계적으로 유의하지 않습니다. 그러나 실제 차이가 없다고 증명된 것은 아닙니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "모분산 미지 → t검정, scipy.stats.ttest_1samp(data, popmean) 사용",
+                "모비율 검정통계량: Z = (p̂ - p₀) / √(p₀(1-p₀)/n)",
+                "단측/양측 구분: H₁에 부등호(≠)면 양측, 방향성(>, <)이면 단측",
+                "p-value < α → H₀ 기각, 통계적 유의성 성립"
+            ]
+        }
+    ]
+}

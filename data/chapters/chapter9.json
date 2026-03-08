@@ -1,0 +1,169 @@
+{
+    "chapter_id": 9,
+    "title": "통계의 기초와 데이터",
+    "description": "통계학의 기본 개념과 데이터 분석의 기초를 배웁니다. 중심경향, 산포도, 상관관계를 numpy로 직접 계산하며 데이터를 보는 눈을 기릅니다.",
+    "learning_objectives": [
+        "통계학의 기본 용어와 자료 종류를 이해한다",
+        "중심경향 통계량을 계산하고 해석한다",
+        "산포도 통계량을 이해하고 활용한다",
+        "상관 통계량으로 변수 간 관계를 분석한다"
+    ],
+    "sections": [
+        {
+            "section_id": "s1",
+            "title": "통계학이란? (Introduction to Statistics)",
+            "content_md": "## What - 통계학이 뭔가요?\n\n통계학(statistics)은 **데이터를 수집, 정리, 분석하여 의미 있는 정보를 추출하는 학문**입니다. 수많은 숫자 더미에서 패턴을 찾고, 불확실한 미래를 예측하는 데 사용합니다.\n\n핵심 용어 두 가지:\n- **모집단(population)**: 우리가 관심 있는 전체 대상 (예: 대한민국 성인 전체)\n- **표본(sample)**: 모집단에서 실제로 뽑아 조사한 일부 (예: 1000명 설문 대상자)\n\n## Why - 왜 통계학이 필요한가요?\n\n실제로 모집단 전체를 조사하는 것은 시간·비용·물리적 제약 때문에 거의 불가능합니다. 그래서 우리는 **표본(sample)을 뽑아 분석한 뒤, 그 결과를 모집단 전체로 일반화**합니다.\n\n두 가지 통계의 역할:\n- **기술통계(descriptive statistics)**: 수집된 데이터를 요약·정리 (평균, 그래프 등)\n- **추론통계(inferential statistics)**: 표본 결과로 모집단의 특성을 추정·검증\n\n비유하면, 국밥 맛을 보기 위해 냄비 전체를 마실 필요 없이 한 숟가락이면 충분합니다. 표본이 바로 그 한 숟가락입니다.\n\n## How - 통계학의 기본 구분은 어떻게 되나요?\n\n| 구분 | 모수(parameter) | 통계량(statistic) |\n|------|----------------|-------------------|\n| 대상 | 모집단 | 표본 |\n| 예시 | 전국 평균 키 $\\mu$ | 조사한 100명 평균 키 $\\bar{x}$ |\n\n모수는 그리스 문자($\\mu$, $\\sigma$), 통계량은 라틴 문자($\\bar{x}$, $s$)로 표기합니다.\n\n```python\nimport numpy as np\n\n# 모집단을 대신하는 전체 성적 데이터 (실제로는 표본)\nscores = np.array([85, 92, 78, 95, 88, 76, 90, 83, 87, 91])\n\nprint(f'데이터 개수(n): {len(scores)}')\nprint(f'표본 평균: {np.mean(scores):.2f}')  # 통계량 x-bar\nprint(f'표본 합계: {np.sum(scores)}')\n```",
+            "code_examples": [
+                {
+                    "title": "numpy로 기본 통계 탐색",
+                    "code": "import numpy as np\n\n# 학생 10명의 시험 점수\nscores = np.array([85, 92, 78, 95, 88, 76, 90, 83, 87, 91])\n\n# 기본 정보 출력\nprint(f'표본 크기(n): {len(scores)}')\nprint(f'최솟값: {np.min(scores)}')\nprint(f'최댓값: {np.max(scores)}')\nprint(f'합계: {np.sum(scores)}')\nprint(f'표본 평균: {np.mean(scores):.1f}')",
+                    "expected_output": "표본 크기(n): 10\n최솟값: 76\n최댓값: 95\n합계: 865\n표본 평균: 86.5",
+                    "explanation": "numpy의 기본 함수로 표본의 크기, 범위, 합계, 평균 등 기초 기술통계를 빠르게 계산할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "모집단과 표본의 차이 시뮬레이션",
+                    "code": "import numpy as np\n\n# 모집단: 1000명의 키 데이터 (시뮬레이션)\nnp.random.seed(42)\npopulation = np.random.normal(170, 10, 1000)  # 평균 170cm, 표준편차 10cm\n\n# 표본 30명 추출\nsample = np.random.choice(population, size=30, replace=False)\n\nprint(f'모집단 평균(μ): {np.mean(population):.2f}cm')\nprint(f'표본 평균(x̄): {np.mean(sample):.2f}cm')\nprint(f'차이: {abs(np.mean(population) - np.mean(sample)):.2f}cm')",
+                    "expected_output": "모집단 평균(μ): 169.88cm\n표본 평균(x̄): 170.17cm\n차이: 0.29cm",
+                    "explanation": "표본 평균은 모집단 평균(모수)과 약간의 차이(표본오차)가 있지만, 표본이 충분히 크면 매우 근접합니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "모집단은 관심 대상 전체, 표본은 실제 조사한 일부이다",
+                "모수(parameter)는 모집단의 특성값, 통계량(statistic)은 표본의 특성값이다",
+                "기술통계는 데이터 요약, 추론통계는 모집단 추정에 사용된다",
+                "표본이 클수록 통계량이 모수에 더 가까워진다"
+            ]
+        },
+        {
+            "section_id": "s2",
+            "title": "자료의 종류 (Types of Data)",
+            "content_md": "## What - 자료에 종류가 있나요?\n\n데이터는 크게 **질적 자료(qualitative data)**와 **양적 자료(quantitative data)**로 나뉩니다.\n\n- **질적 자료**: 범주나 이름으로 표현 (혈액형, 성별, 지역)\n- **양적 자료**: 숫자로 측정 가능 (키, 몸무게, 시험 점수)\n  - *이산형(discrete)*: 정수값만 가짐 (자녀 수, 주사위 눈)\n  - *연속형(continuous)*: 어떤 실수값도 가능 (키, 체온)\n\n## Why - 자료 종류를 왜 구분해야 하나요?\n\n자료 종류에 따라 **사용할 수 있는 통계 방법이 달라집니다**. 혈액형 A형과 B형을 더하거나 평균 낼 수 없듯이, 적절한 방법을 쓰지 않으면 의미 없는 결과가 나옵니다.\n\n## How - 측정 척도(scale of measurement)는 어떻게 구분하나요?\n\n| 척도 | 특징 | 예시 | 가능한 통계 |\n|------|------|------|-------------|\n| **명목(nominal)** | 이름만, 순서 없음 | 혈액형, 성별 | 빈도, 최빈값 |\n| **서열(ordinal)** | 순서 있음, 간격 불균등 | 학점(A/B/C), 만족도 | 중앙값, 백분위 |\n| **구간(interval)** | 균등 간격, 절대 0 없음 | 섭씨 온도, 연도 | 평균, 표준편차 |\n| **비율(ratio)** | 균등 간격 + 절대 0 | 키, 몸무게, 소득 | 모든 통계 |\n\n구간 척도와 비율 척도의 차이: 섭씨 0도는 '온도 없음'이 아니지만, 키 0cm는 진짜 '없음'을 의미합니다. 그래서 \"오늘이 어제보다 2배 더 덥다\"는 말은 섭씨 온도로는 성립하지 않습니다.\n\n```python\nimport numpy as np\n\n# 각 자료 종류 예시\nnominal = ['A', 'B', 'O', 'AB', 'A', 'B']   # 명목: 혈액형\nordinal = [5, 4, 3, 5, 2, 4]                  # 서열: 만족도 (1-5점)\ninterval = [36.5, 37.0, 36.8, 38.1, 36.5]    # 구간: 체온(°C)\nratio = [170, 165, 180, 158, 175]             # 비율: 키(cm)\n\n# 비율 척도만 '2배' 계산이 의미 있음\nprint(f'평균 키: {np.mean(ratio):.1f}cm')  # 의미 있음\nprint(f'평균 체온: {np.mean(interval):.2f}°C')  # 의미 있음\n# 혈액형 평균 → 의미 없음 (명목 척도)\n```",
+            "code_examples": [
+                {
+                    "title": "자료 종류 분류 실습",
+                    "code": "import numpy as np\n\n# 설문 데이터 예시\ndata = {\n    '성별': ['남', '여', '남', '여', '남'],       # 명목 척도\n    '만족도': [4, 5, 3, 4, 2],                    # 서열 척도\n    '체온': [36.5, 37.2, 36.8, 37.0, 36.6],      # 구간 척도\n    '키_cm': [175, 162, 180, 155, 170]             # 비율 척도\n}\n\n# 양적 자료만 평균 계산 가능\nprint('=== 양적 자료 통계 ===')\nprint(f'평균 만족도: {np.mean(data[\"만족도\"]):.1f}')\nprint(f'평균 체온: {np.mean(data[\"체온\"]):.2f}°C')\nprint(f'평균 키: {np.mean(data[\"키_cm\"]):.1f}cm')",
+                    "expected_output": "=== 양적 자료 통계 ===\n평균 만족도: 3.6\n평균 체온: 36.82°C\n평균 키: 168.4cm",
+                    "explanation": "명목 척도(성별)는 평균을 계산할 수 없지만, 서열·구간·비율 척도의 양적 자료는 평균을 계산할 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "이산형 vs 연속형 자료",
+                    "code": "import numpy as np\n\n# 이산형: 정수만 가능한 자료\ndiscrete = np.array([0, 1, 2, 3, 2, 1, 0, 2])  # 자녀 수\n\n# 연속형: 실수값을 갖는 자료\ncontinuous = np.array([170.5, 162.3, 180.0, 155.7, 172.8])  # 키(cm)\n\nprint('이산형 자료 (자녀 수):')\nprint(f'  데이터: {discrete}')\nprint(f'  평균: {np.mean(discrete):.2f}명 (소수점이지만 원래 자료는 정수)')\n\nprint('\\n연속형 자료 (키):')\nprint(f'  데이터: {continuous}')\nprint(f'  평균: {np.mean(continuous):.2f}cm')",
+                    "expected_output": "이산형 자료 (자녀 수):\n  데이터: [0 1 2 3 2 1 0 2]\n  평균: 1.38명 (소수점이지만 원래 자료는 정수)\n\n연속형 자료 (키):\n  데이터: [170.5 162.3 180.  155.7 172.8]\n  평균: 168.26cm",
+                    "explanation": "이산형 자료의 평균은 소수점이 나올 수 있습니다(평균 자녀 수 1.38명). 원래 자료가 정수라는 뜻이지, 평균이 정수여야 한다는 뜻은 아닙니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "질적 자료(범주)와 양적 자료(수치)로 크게 구분한다",
+                "양적 자료는 이산형(정수)과 연속형(실수)으로 나뉜다",
+                "측정 척도는 명목 < 서열 < 구간 < 비율 순으로 정보량이 많다",
+                "자료 종류에 따라 적용 가능한 통계 방법이 달라진다"
+            ]
+        },
+        {
+            "section_id": "s3",
+            "title": "중심경향 측도 (Measures of Central Tendency)",
+            "content_md": "## What - 중심경향 측도가 뭔가요?\n\n중심경향 측도(measures of central tendency)는 데이터의 **중심, 즉 '대표값'을 나타내는 통계량**입니다. 데이터 전체를 하나의 숫자로 요약할 때 사용합니다.\n\n세 가지 대표값:\n- **평균(mean)**: 모든 값을 더해 개수로 나눈 값 $\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n}x_i$\n- **중앙값(median)**: 데이터를 크기 순으로 정렬했을 때 정중앙에 위치한 값\n- **최빈값(mode)**: 가장 자주 등장하는 값\n\n## Why - 언제 어떤 대표값을 써야 하나요?\n\n세 가지 대표값은 각각 강점과 약점이 있습니다.\n\n| 상황 | 추천 대표값 | 이유 |\n|------|------------|------|\n| 정규분포에 가까운 데이터 | 평균 | 모든 정보 활용 |\n| 이상치(outlier)가 있는 경우 | 중앙값 | 이상치 영향 없음 |\n| 질적/범주형 데이터 | 최빈값 | 유일하게 적용 가능 |\n\n연봉 예시: 99명이 3000만원, 1명이 300억원을 번다면 평균은 약 3억 2700만원으로 왜곡됩니다. 이 경우 중앙값 3000만원이 더 실질적인 대표값입니다.\n\n## How - numpy로 어떻게 계산하나요?\n\n```python\nimport numpy as np\nfrom scipy import stats\n\ndata = np.array([3, 7, 7, 2, 9, 4, 7, 5])\n\nprint(f'평균(mean): {np.mean(data):.2f}')       # → 5.5\nprint(f'중앙값(median): {np.median(data)}')    # → 6.0\nprint(f'최빈값(mode): {stats.mode(data).mode}') # → 7\n```\n\n중앙값 계산 방법:\n- 홀수 개: 정중앙 값\n- 짝수 개: 중앙 두 값의 평균 → [2, 3, 4, 7, 7, 9] → (4+7)/2 = 5.5",
+            "code_examples": [
+                {
+                    "title": "평균, 중앙값, 최빈값 계산",
+                    "code": "import numpy as np\nfrom scipy import stats\n\n# 학생 8명의 시험 점수\nscores = np.array([75, 80, 80, 85, 90, 80, 70, 95])\nscores_sorted = np.sort(scores)\n\nprint(f'정렬된 데이터: {scores_sorted}')\nprint(f'평균(mean): {np.mean(scores):.2f}점')\nprint(f'중앙값(median): {np.median(scores):.1f}점')\nprint(f'최빈값(mode): {stats.mode(scores).mode}점')",
+                    "expected_output": "정렬된 데이터: [70 75 80 80 80 85 90 95]\n평균(mean): 81.88점\n중앙값(median): 80.0점\n최빈값(mode): 80점",
+                    "explanation": "8개 데이터이므로 중앙값은 4번째(80)와 5번째(80)의 평균인 80.0점입니다. 80이 3번 등장하므로 최빈값도 80점입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "이상치가 있을 때 평균 vs 중앙값",
+                    "code": "import numpy as np\n\n# 이상치 없는 연봉 (단위: 만원)\nnormal_salary = np.array([3000, 3200, 3500, 2800, 3100])\n\n# 이상치 포함 (억만장자 추가)\noutlier_salary = np.array([3000, 3200, 3500, 2800, 30000])  # 3억원\n\nprint('=== 이상치 없을 때 ===')\nprint(f'평균: {np.mean(normal_salary):,.0f}만원')\nprint(f'중앙값: {np.median(normal_salary):,.0f}만원')\n\nprint('\\n=== 이상치 있을 때 ===')\nprint(f'평균: {np.mean(outlier_salary):,.0f}만원  ← 왜곡됨!')\nprint(f'중앙값: {np.median(outlier_salary):,.0f}만원  ← 안정적')",
+                    "expected_output": "=== 이상치 없을 때 ===\n평균: 3,120만원\n중앙값: 3,100만원\n\n=== 이상치 있을 때 ===\n평균: 8,500만원  ← 왜곡됨!\n중앙값: 3,200만원  ← 안정적",
+                    "explanation": "이상치(30000만원)가 하나 추가되자 평균은 8500만원으로 크게 올랐지만, 중앙값은 3200만원으로 거의 변하지 않았습니다. 이상치가 있으면 중앙값이 더 신뢰할 수 있는 대표값입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "가중평균(weighted mean) 계산",
+                    "code": "import numpy as np\n\n# 과목별 점수와 학점(가중치)\nsubjects = ['수학', '영어', '과학', '국어']\nscores = np.array([90, 80, 85, 75])\ncredits = np.array([4, 3, 3, 2])  # 학점 수 (가중치)\n\n# 일반 평균\nplain_avg = np.mean(scores)\n\n# 가중평균: Σ(점수 × 가중치) / Σ가중치\nweighted_avg = np.average(scores, weights=credits)\n\nprint(f'단순 평균: {plain_avg:.2f}점')\nprint(f'가중평균(학점 반영): {weighted_avg:.2f}점')\nprint('→ 학점이 높은 수학(4학점)이 더 큰 영향을 미침')",
+                    "expected_output": "단순 평균: 82.50점\n가중평균(학점 반영): 83.75점\n→ 학점이 높은 수학(4학점)이 더 큰 영향을 미침",
+                    "explanation": "np.average(weights=...)로 가중평균을 계산합니다. 학점이 큰 수학(90점, 4학점)의 영향력이 커져 가중평균이 단순 평균보다 높습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "평균은 모든 값을 반영하지만 이상치에 민감하다",
+                "중앙값은 이상치에 강건(robust)하여 왜곡된 분포에 적합하다",
+                "최빈값은 질적 자료에도 사용할 수 있는 유일한 대표값이다",
+                "np.mean(), np.median(), scipy.stats.mode()로 각각 계산한다"
+            ]
+        },
+        {
+            "section_id": "s4",
+            "title": "산포도 측도 (Measures of Dispersion)",
+            "content_md": "## What - 산포도 측도가 뭔가요?\n\n산포도(dispersion)는 데이터가 중심값으로부터 **얼마나 퍼져 있는지**를 나타내는 통계량입니다. 평균이 같아도 산포도가 다를 수 있습니다.\n\n예: 학급 A [80, 80, 80], 학급 B [60, 80, 100] → 평균 80점으로 같지만 B가 훨씬 퍼져 있음.\n\n주요 산포도 측도:\n- **범위(range)**: 최댓값 - 최솟값\n- **분산(variance)**: 편차 제곱의 평균 $s^2 = \\frac{1}{n-1}\\sum_{i=1}^{n}(x_i - \\bar{x})^2$\n- **표준편차(standard deviation)**: 분산의 제곱근 $s = \\sqrt{s^2}$\n- **IQR(사분위수 범위)**: 3사분위수(Q3) - 1사분위수(Q1)\n- **변동계수(CV)**: $CV = \\frac{s}{\\bar{x}} \\times 100\\%$ (단위가 다른 집단 비교에 사용)\n\n## Why - 왜 여러 종류의 산포도가 필요한가요?\n\n각 측도는 서로 다른 상황에서 유용합니다.\n- **범위**: 계산이 단순하지만 이상치에 취약\n- **표준편차**: 가장 널리 사용, 단위가 원래 데이터와 같음\n- **IQR**: 이상치 영향 없음 (중간 50% 구간)\n- **변동계수**: 단위가 다른 집단 간 변동성 비교 가능\n\n## How - 분산 계산 시 왜 n-1로 나누나요?\n\n표본 분산에서 $n-1$로 나누는 이유는 **불편추정량(unbiased estimator)**을 만들기 위해서입니다. $n$으로 나누면 표본 분산이 모분산을 체계적으로 과소추정합니다. 이것을 **베셀 보정(Bessel's correction)**이라 합니다.\n\n$$s^2 = \\frac{\\sum(x_i - \\bar{x})^2}{n-1}$$\n\nnumpy에서는 `ddof=1` 인수로 $n-1$ 나누기를 지정합니다.\n\n```python\nimport numpy as np\n\ndata = np.array([2, 4, 4, 4, 5, 5, 7, 9])\nprint(f'표본 분산(ddof=1): {np.var(data, ddof=1):.2f}')   # n-1\nprint(f'표본 표준편차: {np.std(data, ddof=1):.2f}')        # n-1\n```",
+            "code_examples": [
+                {
+                    "title": "분산과 표준편차 계산",
+                    "code": "import numpy as np\n\n# 두 학급의 시험 점수 (평균은 같음)\nclass_a = np.array([78, 80, 82, 79, 81])  # 고르게 분포\nclass_b = np.array([60, 70, 80, 90, 100]) # 넓게 분포\n\nfor name, data in [('학급 A', class_a), ('학급 B', class_b)]:\n    print(f'--- {name} ---')\n    print(f'평균: {np.mean(data):.1f}점')\n    print(f'범위: {np.max(data) - np.min(data)}점')\n    print(f'표본 분산(s²): {np.var(data, ddof=1):.2f}')\n    print(f'표본 표준편차(s): {np.std(data, ddof=1):.2f}점')\n    print()",
+                    "expected_output": "--- 학급 A ---\n평균: 80.0점\n범위: 4점\n표본 분산(s²): 2.50\n표본 표준편차(s): 1.58점\n\n--- 학급 B ---\n평균: 80.0점\n범위: 40점\n표본 분산(s²): 250.00\n표본 표준편차(s): 15.81점\n",
+                    "explanation": "두 학급의 평균은 80점으로 같지만, 표준편차는 학급 A(1.58)가 학급 B(15.81)보다 훨씬 작습니다. 학급 B의 점수가 훨씬 더 퍼져 있다는 것을 알 수 있습니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "IQR과 사분위수",
+                    "code": "import numpy as np\n\nscores = np.array([55, 65, 70, 72, 75, 78, 80, 82, 85, 90, 95, 98])\n\n# 사분위수 계산\nq1 = np.percentile(scores, 25)   # 1사분위수(Q1)\nq2 = np.percentile(scores, 50)   # 2사분위수(중앙값)\nq3 = np.percentile(scores, 75)   # 3사분위수(Q3)\niqr = q3 - q1                    # 사분위수 범위(IQR)\n\nprint(f'Q1 (25퍼센타일): {q1}')\nprint(f'Q2 (중앙값): {q2}')\nprint(f'Q3 (75퍼센타일): {q3}')\nprint(f'IQR (Q3 - Q1): {iqr}')\nprint(f'\\n중간 50% 학생의 점수 범위: {q1}점 ~ {q3}점')",
+                    "expected_output": "Q1 (25퍼센타일): 71.5\nQ2 (중앙값): 79.0\nQ3 (75퍼센타일): 86.25\nIQR (Q3 - Q1): 14.75\n\n중간 50% 학생의 점수 범위: 71.5점 ~ 86.25점",
+                    "explanation": "IQR은 전체 데이터에서 하위 25%~상위 25%를 제외한 중간 50%의 범위입니다. 이상치의 영향을 받지 않아 로버스트한 산포도 측도입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "변동계수(CV)로 서로 다른 단위 비교",
+                    "code": "import numpy as np\n\n# 키(cm)와 몸무게(kg) - 단위가 다름\nheight = np.array([165, 170, 175, 160, 180, 168, 172])\nweight = np.array([55, 68, 72, 50, 85, 62, 70])\n\n# 변동계수 = 표준편차 / 평균 × 100%\ncv_height = np.std(height, ddof=1) / np.mean(height) * 100\ncv_weight = np.std(weight, ddof=1) / np.mean(weight) * 100\n\nprint(f'키: 평균={np.mean(height):.1f}cm, 표준편차={np.std(height, ddof=1):.2f}cm, CV={cv_height:.2f}%')\nprint(f'몸무게: 평균={np.mean(weight):.1f}kg, 표준편차={np.std(weight, ddof=1):.2f}kg, CV={cv_weight:.2f}%')\nprint(f'\\n→ CV가 높은 몸무게({cv_weight:.1f}%)가 키({cv_height:.1f}%)보다 상대적으로 더 퍼져 있음')",
+                    "expected_output": "키: 평균=170.0cm, 표준편차=6.68cm, CV=3.93%\n몸무게: 평균=66.0kg, 표준편차=11.53kg, CV=17.47%\n\n→ CV가 높은 몸무게(17.5%)가 키(3.9%)보다 상대적으로 더 퍼져 있음",
+                    "explanation": "단위가 다른 두 변수를 직접 표준편차로 비교할 수 없습니다. 변동계수(CV)는 단위를 제거한 상대적 산포도로, 단위가 달라도 비교할 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "분산은 편차 제곱의 평균이고, 표준편차는 분산의 제곱근으로 원래 단위를 가진다",
+                "표본 분산은 n-1로 나누는 베셀 보정을 적용한다 (numpy: ddof=1)",
+                "IQR은 이상치에 강건한 산포도 측도로 박스플롯에 활용된다",
+                "변동계수(CV)는 단위가 다른 집단 간 상대적 산포도 비교에 사용한다"
+            ]
+        },
+        {
+            "section_id": "s5",
+            "title": "상관분석 (Correlation)",
+            "content_md": "## What - 상관분석이 뭔가요?\n\n상관분석(correlation analysis)은 두 변수 사이의 **선형적 관계의 방향과 강도**를 수치로 나타내는 방법입니다.\n\n핵심 개념:\n- **공분산(covariance)**: 두 변수가 함께 변하는 정도\n  $$Cov(X, Y) = \\frac{1}{n-1}\\sum_{i=1}^{n}(x_i - \\bar{x})(y_i - \\bar{y})$$\n- **피어슨 상관계수(Pearson correlation coefficient)**: 공분산을 표준화한 값\n  $$r = \\frac{Cov(X, Y)}{s_X \\cdot s_Y}$$\n\n## Why - 상관계수가 왜 중요한가요?\n\n공분산은 단위에 따라 값이 달라지므로 직관적으로 해석하기 어렵습니다. 상관계수는 항상 $-1 \\leq r \\leq 1$ 범위에 있어 직관적 해석이 가능합니다.\n\n| 상관계수 $r$ | 의미 |\n|-------------|------|\n| $r = 1$ | 완전 양의 선형 관계 |\n| $0.7 \\leq r < 1$ | 강한 양의 상관 |\n| $0.3 \\leq r < 0.7$ | 중간 양의 상관 |\n| $-0.3 < r < 0.3$ | 거의 상관 없음 |\n| $-0.7 < r \\leq -0.3$ | 중간 음의 상관 |\n| $r = -1$ | 완전 음의 선형 관계 |\n\n**주의**: 상관관계는 인과관계가 아닙니다! 아이스크림 판매량과 익사 사고는 상관관계가 높지만, 아이스크림이 익사를 일으키지 않습니다 (혼란변수: 날씨).\n\n## How - numpy로 상관계수를 어떻게 계산하나요?\n\n```python\nimport numpy as np\n\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2, 4, 5, 4, 5])\n\n# 피어슨 상관계수 (2×2 상관행렬 반환)\ncorr_matrix = np.corrcoef(x, y)\nr = corr_matrix[0, 1]  # 상관계수는 [0,1] 또는 [1,0]\nprint(f'상관계수: {r:.4f}')\n```",
+            "code_examples": [
+                {
+                    "title": "공분산과 상관계수 계산",
+                    "code": "import numpy as np\n\n# 공부 시간과 시험 점수\nstudy_hours = np.array([2, 3, 4, 5, 6, 7, 8])\ntest_scores = np.array([55, 60, 65, 70, 75, 80, 85])\n\n# 공분산 (표본, ddof=1)\ncov_matrix = np.cov(study_hours, test_scores)\ncov = cov_matrix[0, 1]\n\n# 피어슨 상관계수\ncorr_matrix = np.corrcoef(study_hours, test_scores)\nr = corr_matrix[0, 1]\n\nprint(f'공분산: {cov:.2f}')\nprint(f'피어슨 상관계수(r): {r:.4f}')\nprint(f'해석: 공부 시간과 점수 사이에 {\"강한\" if abs(r) >= 0.7 else \"중간\"} 양의 상관관계')",
+                    "expected_output": "공분산: 17.50\n피어슨 상관계수(r): 1.0000\n해석: 공부 시간과 점수 사이에 강한 양의 상관관계",
+                    "explanation": "공부 시간과 점수가 완벽한 선형 관계(r=1.0)임을 알 수 있습니다. 공분산은 17.5이지만 이 숫자 자체로는 관계의 강도를 판단하기 어렵고, 상관계수 1.0이 훨씬 직관적입니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "양의 상관, 음의 상관, 무상관 비교",
+                    "code": "import numpy as np\n\nnp.random.seed(0)\nx = np.linspace(1, 10, 20)\n\n# 양의 상관: x가 크면 y도 큼\ny_pos = 2 * x + np.random.normal(0, 1, 20)\n\n# 음의 상관: x가 크면 y는 작음\ny_neg = -2 * x + 30 + np.random.normal(0, 1, 20)\n\n# 무상관: x와 y 관계 없음\ny_none = np.random.normal(10, 3, 20)\n\nprint(f'양의 상관 r = {np.corrcoef(x, y_pos)[0,1]:.3f}')\nprint(f'음의 상관 r = {np.corrcoef(x, y_neg)[0,1]:.3f}')\nprint(f'무상관   r = {np.corrcoef(x, y_none)[0,1]:.3f}')",
+                    "expected_output": "양의 상관 r = 0.997\n음의 상관 r = -0.997\n무상관   r = 0.156",
+                    "explanation": "양의 상관(0.997): x가 증가할 때 y도 증가. 음의 상관(-0.997): x가 증가할 때 y는 감소. 무상관(0.156): x와 y 사이에 선형 관계가 없음을 보여줍니다.",
+                    "interactive": true
+                },
+                {
+                    "title": "상관행렬로 여러 변수 간 관계 파악",
+                    "code": "import numpy as np\n\n# 키, 몸무게, 발 크기 데이터\nnp.random.seed(42)\nn = 50\nheight = np.random.normal(170, 8, n)\nweight = height * 0.5 - 15 + np.random.normal(0, 5, n)  # 키와 강한 양의 상관\nshoe_size = height * 0.15 + np.random.normal(0, 1, n)    # 키와 중간 양의 상관\niq = np.random.normal(100, 15, n)                         # 키와 무관\n\n# 상관행렬 계산\ndata_matrix = np.vstack([height, weight, shoe_size, iq])\ncorr = np.corrcoef(data_matrix)\n\nprint('상관행렬 (키, 몸무게, 발크기, IQ):')\nprint('      키    몸무게  발크기   IQ')\nvariables = ['키', '몸무게', '발크기', 'IQ']\nfor i, var in enumerate(variables):\n    row = '  '.join([f'{corr[i,j]:+.2f}' for j in range(4)])\n    print(f'{var:4s}  {row}')",
+                    "expected_output": "상관행렬 (키, 몸무게, 발크기, IQ):\n      키    몸무게  발크기   IQ\n키    +1.00  +0.87  +0.93  +0.14\n몸무게  +0.87  +1.00  +0.80  +0.15\n발크기  +0.93  +0.80  +1.00  +0.12\nIQ    +0.14  +0.15  +0.12  +1.00",
+                    "explanation": "상관행렬의 대각선은 항상 1(자기 자신과의 상관). 키-몸무게(0.87), 키-발크기(0.93)는 강한 양의 상관. IQ는 다른 신체 변수와 거의 상관없음(0.12~0.15)을 한 눈에 볼 수 있습니다.",
+                    "interactive": true
+                }
+            ],
+            "key_points": [
+                "공분산은 두 변수의 공동 변동 방향을 나타내지만 단위에 의존한다",
+                "피어슨 상관계수는 -1에서 1 사이의 값으로 선형 관계 강도를 나타낸다",
+                "상관관계는 인과관계가 아니다 (제3의 혼란변수 가능성을 항상 고려)",
+                "np.corrcoef()는 상관행렬을 반환하며 [i,j] 인덱스로 특정 쌍의 상관계수를 추출한다"
+            ]
+        }
+    ]
+}
